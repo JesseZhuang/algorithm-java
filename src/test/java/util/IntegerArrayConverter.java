@@ -23,7 +23,6 @@ public class IntegerArrayConverter extends SimpleArgumentConverter {
     }
 
     public static int[] unboxIntegerArray(Integer[] integers) {
-        if (integers == null) return new int[0];
         int[] result = new int[integers.length];
         for (int i = 0; i < integers.length; i++)
             result[i] = integers[i];
