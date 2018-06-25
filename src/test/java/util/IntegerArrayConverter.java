@@ -15,6 +15,7 @@ public class IntegerArrayConverter extends SimpleArgumentConverter {
         String array = (String) source;
         if (array.equals("{}")) return new Integer[0];
 
+        // split array elements with comma
         String[] stringArray = array.split("\\s*,\\s*");
         Integer[] result = new Integer[stringArray.length];
         for(int i = 0; i < stringArray.length; i++)

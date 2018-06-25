@@ -23,8 +23,7 @@ package dp;
  * <ul>
  * <li>use peak array, 2ms 46%, O(n) time, O(n) space.
  * <li>one scan maintain two variables, O(n) time, O(1) space.
- * <li>Kadane's algorithm, wikipedia maximum sub-array problem, basically same
- * as above.
+ * <li>Kadane's algorithm, wikipedia maximum sub-array problem, O(n) time, O(1) space.
  * </ul>
  */
 public class BuySellStock {

@@ -1,0 +1,9 @@
+// increasing, decreasing, empty array, skipping
+// int[], true|false(whether increasing triplet exists in the array)
+1,2,3,4,5 true
+1,2,4,6,7,8,10 true
+4,3,5,4,2,7,10 true
+5,4,3,2,1 false
+6,4,7,2,5,4,8,6 true
+5,1,5,5,2,5,4 true
+{} false

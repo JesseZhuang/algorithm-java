@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * <p>
  * Uses reflection to test a class's method with provided inputs and expected
  * results. The names of the class and method are specified as String
  * parameters. The {@code className} parameter should include its package name.
  * <p>
- * If one of the test cases fail, the program will print out the failed test and
- * exit.
+ * If one of the test cases fail, the program will print out the failed test and exit.
  */
 @SuppressWarnings("unchecked")
 public class Test {
@@ -24,16 +24,11 @@ public class Test {
      * Test method as if calling {@code className.methodName()} assuming only
      * one parameter for the tested method.
      *
-     * @param <R>
-     *            method return type
-     * @param className
-     *            the class to be tested
-     * @param methodName
-     *            the method to be tested
-     * @param inputs
-     *            an array containing all test cases' inputs
-     * @param expected
-     *            an array containing all expected results
+     * @param <R>        method return type
+     * @param className  the class to be tested
+     * @param methodName the method to be tested
+     * @param inputs     an array containing all test cases' inputs
+     * @param expected   an array containing all expected results
      */
     public static <R> void assertEqual(String className, String methodName,
                                        Object[] inputs, Object[] expected) {
@@ -104,16 +99,11 @@ public class Test {
      * Test method as if calling {@code className.methodName()} assuming the
      * tested method has only one parameter.
      *
-     * @param <T>
-     *            method input type
-     * @param <R>
-     *            method return type
-     * @param className
-     *            the class to be tested
-     * @param methodName
-     *            the method to be tested
-     * @param tests
-     *            a map containing the test inputs and expected results
+     * @param <T>        method input type
+     * @param <R>        method return type
+     * @param className  the class to be tested
+     * @param methodName the method to be tested
+     * @param tests      a map containing the test inputs and expected results
      */
     public static <T, R> void assertEqual(String className, String methodName,
                                           Map<T, R> tests) {
@@ -126,18 +116,12 @@ public class Test {
      * Test method as if calling {@code className.methodName()} assuming the
      * tested method has only one parameter.
      *
-     * @param <T>
-     *            method input type
-     * @param <R>
-     *            method return type
-     * @param className
-     *            the class to be tested
-     * @param methodName
-     *            the method to be tested
-     * @param inputs
-     *            a list containing all test cases' inputs
-     * @param expected
-     *            a list containing all expected results
+     * @param <T>        method input type
+     * @param <R>        method return type
+     * @param className  the class to be tested
+     * @param methodName the method to be tested
+     * @param inputs     a list containing all test cases' inputs
+     * @param expected   a list containing all expected results
      */
     public static <T, R> void assertEqual(String className, String methodName,
                                           List<T> inputs, List<R> expected) {
@@ -151,16 +135,11 @@ public class Test {
      * Test method as if calling {@code className.methodName()}, the method can
      * have multiple parameters.
      *
-     * @param <R>
-     *            method return type
-     * @param className
-     *            the class to be tested
-     * @param methodName
-     *            the method to be tested
-     * @param inputs
-     *            a list containing all test cases' inputs
-     * @param expected
-     *            a list containing all expected results
+     * @param <R>        method return type
+     * @param className  the class to be tested
+     * @param methodName the method to be tested
+     * @param inputs     a list containing all test cases' inputs
+     * @param expected   a list containing all expected results
      */
     public static <R> void assertMPEqual(String className, String methodName,
                                          List<Object[]> inputs, List<R> expected) {
@@ -173,16 +152,11 @@ public class Test {
      * Test method as if calling {@code className.methodName()}, the method can
      * have multiple parameters.
      *
-     * @param <R>
-     *            method return type
-     * @param className
-     *            the class to be tested
-     * @param methodName
-     *            the method to be tested
-     * @param inputs
-     *            an array containing all test cases' inputs
-     * @param expected
-     *            an array containing all expected results
+     * @param <R>        method return type
+     * @param className  the class to be tested
+     * @param methodName the method to be tested
+     * @param inputs     an array containing all test cases' inputs
+     * @param expected   an array containing all expected results
      */
     public static <R> void assertMPEqual(String className, String methodName,
                                          Object[][] inputs, R[] expected) {
@@ -241,16 +215,11 @@ public class Test {
      * Test method as if calling {@code className.methodName()} assuming the
      * tested method has multiple input parameters.
      *
-     * @param <T>
-     *            method input type
-     * @param <R>
-     *            method return type
-     * @param className
-     *            the class to be tested
-     * @param methodName
-     *            the method to be tested
-     * @param tests
-     *            a map containing the test inputs and expected results
+     * @param <T>        method input type
+     * @param <R>        method return type
+     * @param className  the class to be tested
+     * @param methodName the method to be tested
+     * @param tests      a map containing the test inputs and expected results
      */
     public static <T, R> void assertMPEqual(String className, String methodName,
                                             Map<T, R> tests) {
@@ -294,7 +263,7 @@ public class Test {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        int[] m = { 1, 2 };
+        int[] m = {1, 2};
         System.out.println(m.getClass());
         System.out.println(int.class);
 

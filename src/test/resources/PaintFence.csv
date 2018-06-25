@@ -1,0 +1,13 @@
+// 0 posts, num colors >= 1
+// numPosts, numColors, numWays
+1 2 2
+1 4 4
+0 2 0
+2 4 16
+3 2 6
+4 2 10
+4 4 228
+4 3 66
+4 5 580
+5 5 2800
+6 6 42150

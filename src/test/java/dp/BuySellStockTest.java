@@ -21,7 +21,8 @@ class BuySellStockTest {
     @CsvFileSource(resources = {"/BuySellStock.csv"}, delimiter = ' ', numLinesToSkip = 2)
         // Junit does not recognize this test if using int[] prices
     void testMaxProfit(@ConvertWith(IntegerArrayConverter.class) Integer[] prices, int profit) {
-        int[] intArray = (prices.length == 0) ? new int[]{} : IntegerArrayConverter.unboxIntegerArray(prices);
+//        int[] intArray = (prices.length == 0) ? new int[]{} : IntegerArrayConverter.unboxIntegerArray(prices);
+        int[] intArray = IntegerArrayConverter.unboxIntegerArray(prices);
         assertEquals(buySellStock.maxProfitPeakArray(intArray), profit);
         assertEquals(buySellStock.maxProfitKadane(intArray), profit);
         assertEquals(buySellStock.maxProfitMinPrice(intArray), profit);
