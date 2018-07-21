@@ -14,6 +14,7 @@ public class IntegerArrayConverter extends SimpleArgumentConverter {
         assertEquals(targetType, Integer[].class);
         String array = (String) source;
         if (array.equals("{}")) return new Integer[0];
+        if (array.equals("null")) return null;
 
         // split array elements with comma
         String[] stringArray = array.split("\\s*,\\s*");
@@ -24,6 +25,7 @@ public class IntegerArrayConverter extends SimpleArgumentConverter {
     }
 
     public static int[] unboxIntegerArray(Integer[] integers) {
+        if (integers == null) return null;
         int[] result = new int[integers.length];
         for (int i = 0; i < integers.length; i++)
             result[i] = integers[i];
