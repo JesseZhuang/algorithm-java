@@ -1,0 +1,9 @@
+test cases: table for prime number counts
+input: upper limit number; output: number of primes less than or equal to input number
+10, 4
+100, 25
+1000, 168
+10000, 1229
+100000, 9592
+1000000, 78498
+10000000, 664579

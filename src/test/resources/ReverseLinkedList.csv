@@ -1,0 +1,5 @@
+test cases: null, various length
+input: list node; output: head node of the reversed list
+NULL NULL
+1->2->3 3->2->1
+1->1 1->1

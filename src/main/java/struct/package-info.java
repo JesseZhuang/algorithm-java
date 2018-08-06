@@ -1,0 +1,4 @@
+/**
+ * data structures.
+ */
+package struct;
