@@ -1,0 +1,6 @@
+test cases: 1 number, overflow large number
+input: int n (number of versions), int answer; output: int first bad version
+1 1
+2 1
+11 5
+2126753390 1702766719

@@ -1,0 +1,11 @@
+test cases: for input 1 - 9
+input: number; output: String for count and say sequence
+1 1
+2 11
+3 21
+4 1211
+5 111221
+6 312211
+7 13112221
+8 1113213211
+9 31131211131221
