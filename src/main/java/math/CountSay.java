@@ -17,8 +17,8 @@ package math;
  * <li>recursive or iterative. O(N) time, O(1) space.
  * <li>check wikipedia look-and-say sequence, john conway, morris number
  * sequence.
- * <li>note: eclipse has a limit on concole output. Which cuts off if the string
- * is too long. For n = 70, string lenght is 179691598, 234241726.
+ * <li>note: eclipse has a limit on console output. Which cuts off if the string
+ * is too long. For n = 70, string length is 179691598, 234241726.
  * <li>the list function run out of heap space around 70 (-Xms 256m -Xmx 1024m).
  * </ul>
  */

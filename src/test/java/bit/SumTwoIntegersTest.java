@@ -21,7 +21,7 @@ class SumTwoIntegersTest {
     }
 
     @ParameterizedTest(name = "{0} + {1} = {2}")
-    @CsvFileSource(resources = {"/SumTwoIntergers.csv"}, numLinesToSkip = 2)
+    @CsvFileSource(resources = {"/SumTwoIntegers.csv"}, numLinesToSkip = 2)
     void testSum(int a, int b, int sum) throws InvocationTargetException, IllegalAccessException {
         List<Method> methods = MethodUtil.getDeclaredPublicMethods(sumTwoIntegers);
         for (Method method : methods) {

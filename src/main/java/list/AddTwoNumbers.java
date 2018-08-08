@@ -24,6 +24,7 @@ import struct.ListNode;
  * <li>plus arithmetic, O(N) time, O(1) space.
  * </ul>
  */
+@SuppressWarnings("WeakerAccess")
 public class AddTwoNumbers {
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {

@@ -1,0 +1,7 @@
+test cases: 0, carry over
+input: two numbers in string format; output: product in string format
+"0" "1" "0"
+"0" "0" "0"
+"2" "3" "6"
+"123" "45" "5535"
+"123" "456" "56088"

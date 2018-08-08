@@ -35,7 +35,7 @@ import java.util.Arrays;
  * <b>Summary</b>:
  * <p>
  * <ul>
- * <li>recursive or iterative, O(log5_n) time, O(1) space.
+ * <li>iterative, O(N) time, O(1) space.
  * </ul>
  */
 public class ProjectEuler8 {
@@ -49,7 +49,7 @@ public class ProjectEuler8 {
         int max = Integer.MIN_VALUE;
         int index = 0;
         for (int i = 0; i < number.length(); i++) {
-            /**
+            /*
              * 7 3 1 6
              * p = 126
              * p = 126 / 7 * 6 = 18 * 6 = 108

@@ -33,12 +33,12 @@ import java.util.HashSet;
  */
 public class ContainsDuplicateII {
 
-    public boolean containsNearbyDuplicateSet(int[] nums, int k) {
-        if(nums == null) return false;
+    public boolean containsNearbyDuplicateSet(int[] numbers, int k) {
+        if(numbers == null) return false;
         HashSet<Integer> set = new HashSet<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (i > k) set.remove(nums[i - k - 1]);
-            if (!set.add(nums[i])) return true;
+        for (int i = 0; i < numbers.length; i++) {
+            if (i > k) set.remove(numbers[i - k - 1]);
+            if (!set.add(numbers[i])) return true;
         }
         return false;
     }

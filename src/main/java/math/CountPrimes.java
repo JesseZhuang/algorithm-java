@@ -18,13 +18,13 @@ import java.util.List;
  * <li>trial division, dividing n by m [1,n^1/2] or primes in this range if
  * already known, number of primes less than n^1/2 is roughly (n^1/2)/ln(n^1/2),
  * so running time O(n^1.5), O(1) space.
- * <li>sieve of Eratosthenes, running time O(nloglog n), space O(n), segmented
+ * <li>sieve of Eratosthenes, running time O(nLogLog n), space O(n), segmented
  * version space O(n^0.5/log n), skip even numbers is useful optimization.
  * <li>sieve of Atkin, O(n) running time, same space as Eratosthenes, but does
  * not outperform a Sieve of Eratosthenes with maximum practical wheel
  * factorization(more constant factor).
  * <li>primality tests deterministic (AKS O(log^(6+epsilon) n)) and elliptical
- * curve (O(log^(5+epsilon) n)) and probalistic ones.
+ * curve (O(log^(5+epsilon) n)) and probabilistic ones.
  * </ul>
  * <p>
  * <a href>https://primes.utm.edu/howmany.html</a>
@@ -39,19 +39,17 @@ public class CountPrimes {
     public int countPrimesErato(int n) {
         if (n < 3) return 0;
         int count = n - 2;
-        if (n > 0) {
-            boolean[] isPrime = new boolean[n];
-            Arrays.fill(isPrime, true);
-            for (int i = 2; i * i < n; i++)
-                if (isPrime[i]) {
-                    for (int j = i * i; j < n; j += i) {
-                        if (isPrime[j]) {
-                            isPrime[j] = false;
-                            count--;
-                        }
+        boolean[] isPrime = new boolean[n];
+        Arrays.fill(isPrime, true);
+        for (int i = 2; i * i < n; i++)
+            if (isPrime[i]) {
+                for (int j = i * i; j < n; j += i) {
+                    if (isPrime[j]) {
+                        isPrime[j] = false;
+                        count--;
                     }
                 }
-        }
+            }
         return count;
     }
 

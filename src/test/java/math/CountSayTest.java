@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CountSayTest {
+class CountSayTest {
     private static CountSay countSay;
 
     @BeforeAll

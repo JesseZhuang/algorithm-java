@@ -42,13 +42,13 @@ import java.util.Set;
 public class ContainsDuplicate {
 
     /**
-     * hashset add operation takes constant time(average case, worst case lgN can
+     * hash set add operation takes constant time(average case, worst case lgN can
      * typically be avoided), so overall O(N) time, O(N) space.
      */
-    public boolean containsDuplicateSet(int[] nums) {
-        if (nums == null || nums.length == 0) return false;
+    public boolean containsDuplicateSet(int[] numbers) {
+        if (numbers == null || numbers.length == 0) return false;
         final Set<Integer> distinct = new HashSet<>();
-        for (int num : nums) {
+        for (int num : numbers) {
             // good trick on using the return boolean from add()
             if (!distinct.add(num)) {
                 return true;
@@ -58,18 +58,18 @@ public class ContainsDuplicate {
     }
 
     // syntactic sugar, functional version
-    public boolean containsDuplicate2(int[] nums) {
-        if (nums == null || nums.length == 0) return false;
+    public boolean containsDuplicate2(int[] numbers) {
+        if (numbers == null || numbers.length == 0) return false;
         Set<Integer> seen = new HashSet<>();
-        return Arrays.stream(nums).anyMatch(num -> !seen.add(num));
+        return Arrays.stream(numbers).anyMatch(num -> !seen.add(num));
     }
 
     // test machine glitch, should have passed
-    public boolean containsDuplicate4(int[] nums) {
+    public boolean containsDuplicate4(int[] numbers) {
         // [] empty array considered false!
-        if (nums != null) {
+        if (numbers != null) {
             HashSet<Integer> set = new HashSet<>();
-            for (int num : nums) {
+            for (int num : numbers) {
                 if (set.contains(num)) return true;
                 else set.add(num);
             }
@@ -77,13 +77,13 @@ public class ContainsDuplicate {
         return false;
     }
 
-    // time limit exceeded, nlgn time, 0 space
-    public boolean conTainsDuplicate(int[] nums) {
-        if (nums == null || nums.length == 0) return false;
-        if (nums.length > 1) {
-            Arrays.sort(nums);
-            for (int i = 0; i < nums.length - 1; i++) {
-                if (nums[i] == nums[i + 1]) return true;
+    // time limit exceeded, n lgn time, 0 space
+    public boolean containsDuplicate(int[] numbers) {
+        if (numbers == null || numbers.length == 0) return false;
+        if (numbers.length > 1) {
+            Arrays.sort(numbers);
+            for (int i = 0; i < numbers.length - 1; i++) {
+                if (numbers[i] == numbers[i + 1]) return true;
             }
         }
         return false;
@@ -93,7 +93,7 @@ public class ContainsDuplicate {
     // functional approach
     public boolean containsDuplicate1(int[] nums) {
         if (nums == null || nums.length == 0) return false;
-        // uses linked hashset, states not efficient recommends int specific map/set
+        // uses linked hash set, states not efficient recommends int specific map/set
         // see java.util.stream package, Stream interface, IntPipeline class
         return nums.length != Arrays.stream(nums).distinct().count();
     }

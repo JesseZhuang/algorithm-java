@@ -1,0 +1,10 @@
+test cases: sequences
+input: number; output: true/false
+1 true
+2 false
+4 false
+3 false
+5 false
+37 false
+22 false
+19 true

@@ -9,7 +9,7 @@ import util.ListNodeConverter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ReverseLinkedListTest {
+class ReverseLinkedListTest {
     private static ReverseLinkedList reverseLinkedList;
 
     @BeforeAll

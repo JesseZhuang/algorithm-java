@@ -7,11 +7,11 @@ import util.IntegerArrayConverter;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-public class ProjectEuler8Test {
+class ProjectEuler8Test {
 
     @ParameterizedTest(name = "{0}: {1} (maxProduct, startingIndex)")
     @CsvFileSource(resources = {"/ProjectEuler8-4.csv"}, delimiter = ' ', numLinesToSkip = 2)
-    void testFindMaxproduct(String number, @ConvertWith(IntegerArrayConverter.class) Integer[] result) {
-        assertArrayEquals(ProjectEuler8.findMaxProduct4Naive(number), IntegerArrayConverter.unboxIntegerArray(result));
+    void testFindMaxProduct(String number, @ConvertWith(IntegerArrayConverter.class) Integer[] result) {
+        assertArrayEquals(ProjectEuler8.findMaxProduct4Naive(number), IntegerArrayConverter.unBoxIntegerArray(result));
     }
 }

@@ -9,7 +9,7 @@ import util.ListNodeConverter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AddTwoNumbersTest {
+class AddTwoNumbersTest {
 
     private static AddTwoNumbers addTwoNumbers;
 

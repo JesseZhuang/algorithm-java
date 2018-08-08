@@ -35,7 +35,7 @@ public class FirstBadVersion {
      * isBadVersion(int version);
      */
 
-    private int firstBadVersion;
+    private final int firstBadVersion;
 
     public FirstBadVersion(int firstBadVersion) {
         this.firstBadVersion = firstBadVersion;

@@ -45,10 +45,10 @@ public class BuySellStock {
     public int maxProfitMinPrice(int[] prices) {
         int maxPro = 0;
         int minPrice = Integer.MAX_VALUE;
-        for (int i = 0; i < prices.length; i++) {
-            minPrice = Math.min(minPrice, prices[i]);
+        for (int price : prices) {
+            minPrice = Math.min(minPrice, price);
             // max profit if sold at current index
-            maxPro = Math.max(maxPro, prices[i] - minPrice);
+            maxPro = Math.max(maxPro, price - minPrice);
         }
         return maxPro;
     }
@@ -57,14 +57,14 @@ public class BuySellStock {
         int maxCur = 0, maxSoFar = 0;
         for(int i = 1; i < prices.length; i++) {
             // max profit if sold at current index
-            maxCur = Math.max(0, maxCur += prices[i] - prices[i-1]);
+            maxCur = Math.max(0, maxCur + (prices[i] - prices[i - 1]));
             maxSoFar = Math.max(maxCur, maxSoFar);
         }
         return maxSoFar;
     }
 
     @Deprecated
-    private int maxProfit2Pointer(int[] prices) {
+    public int maxProfit2Pointer(int[] prices) {
         int profit = 0;
         int i = 0, j = prices.length - 1;
         while (i < j) {

@@ -45,6 +45,8 @@ public class DeleteNodeLinkedList {
      * the node 3, you changed the node to points to 4 but java is pass by value, so
      * that passed in node will always point to the node 3.
      */
+    @SuppressWarnings({"UnusedAssignment", "DeprecatedIsStillUsed"})
+    @Deprecated
     public static void doesNotWork(ListNode node) {
         node = node.next;
     }
@@ -54,6 +56,7 @@ public class DeleteNodeLinkedList {
 
         ListNode head = ListNode.createFromArray(new int[]{0, 1, 2, 3, 4, 5});
         System.out.println("Original list: " + head);
+        //noinspection deprecation
         doesNotWork(head);
         System.out.println(head);
         /*

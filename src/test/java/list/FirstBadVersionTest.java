@@ -5,7 +5,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FirstBadVersionTest {
+class FirstBadVersionTest {
 
     @ParameterizedTest(name = "first bad version for {0}, {1}: {2}")
     @CsvFileSource(resources = {"/FirstBadVersion.csv"}, delimiter = ' ', numLinesToSkip = 2)

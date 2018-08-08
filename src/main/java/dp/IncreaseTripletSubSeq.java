@@ -40,12 +40,12 @@ public class IncreaseTripletSubSeq {
 
     public boolean increasingTriplet2(int[] nums) {
         int low = 0x7fffffff, medium = 0x7fffffff;
-        for (int i = 0, N = nums.length; i < N; i++) {
-            if (nums[i] > medium) {
-                System.out.printf("triplet: %d,%d,%d%n", low, medium, nums[i]);
+        for (int num : nums) {
+            if (num > medium) {
+                System.out.printf("triplet: %d,%d,%d%n", low, medium, num);
                 return true;
-            } else if (nums[i] > low) medium = Math.min(nums[i], medium);
-            else low = nums[i];
+            } else if (num > low) medium = Math.min(num, medium);
+            else low = num;
         }
         return false;
     }

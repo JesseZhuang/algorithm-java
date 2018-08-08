@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MethodUtilTest {
+class MethodUtilTest {
 
     private static MethodUtil methodUtil;
     private static final String METHOD_NAME = "getDeclaredPublicMethods";

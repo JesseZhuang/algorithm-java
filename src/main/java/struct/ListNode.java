@@ -6,6 +6,7 @@ import java.util.Objects;
 /**
  * A singly linked list node containing an {@code int}.
  */
+@SuppressWarnings("unused")
 public class ListNode {
 
     public int val;

@@ -19,12 +19,12 @@ public class IntegerArrayConverter extends SimpleArgumentConverter {
         // split array elements with comma
         String[] stringArray = array.split("\\s*,\\s*");
         Integer[] result = new Integer[stringArray.length];
-        for(int i = 0; i < stringArray.length; i++)
+        for (int i = 0; i < stringArray.length; i++)
             result[i] = Integer.parseInt(stringArray[i]);
         return result;
     }
 
-    public static int[] unboxIntegerArray(Integer[] integers) {
+    public static int[] unBoxIntegerArray(Integer[] integers) {
         if (integers == null) return null;
         int[] result = new int[integers.length];
         for (int i = 0; i < integers.length; i++)

@@ -8,7 +8,7 @@ import util.IntegerArrayConverter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ContainsDuplicateTest {
+class ContainsDuplicateTest {
     private static ContainsDuplicate containsDuplicate;
 
     @BeforeAll
@@ -19,8 +19,8 @@ public class ContainsDuplicateTest {
     @ParameterizedTest(name = "contains duplicate in {0} = {1}")
     @CsvFileSource(resources = {"/ContainsDuplicate.csv"}, delimiter = ' ', numLinesToSkip = 2)
     void testContainsDuplicate(@ConvertWith(IntegerArrayConverter.class) Integer[] array, boolean duplicateExists) {
-        int[] intArray = IntegerArrayConverter.unboxIntegerArray(array);
-        assertEquals(containsDuplicate.conTainsDuplicate(intArray), duplicateExists);
+        int[] intArray = IntegerArrayConverter.unBoxIntegerArray(array);
+        assertEquals(containsDuplicate.containsDuplicate(intArray), duplicateExists);
         assertEquals(containsDuplicate.containsDuplicate1(intArray), duplicateExists);
         assertEquals(containsDuplicate.containsDuplicate2(intArray), duplicateExists);
         assertEquals(containsDuplicate.containsDuplicate4(intArray), duplicateExists);

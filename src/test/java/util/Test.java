@@ -15,8 +15,8 @@ import java.util.Map;
  * <p>
  * If one of the test cases fail, the program will print out the failed test and exit.
  */
-@SuppressWarnings("unchecked")
-public class Test {
+@SuppressWarnings({"unchecked", "unused"})
+public abstract class Test {
 
     private final static String SUCCESS = "Congrats! All tests passed.";
 
@@ -43,17 +43,17 @@ public class Test {
             for (int i = 0; i < inputs.length; i++) {
                 Object e = expected[i];
                 R output = (R) m.invoke(o, inputs[i]);
-                String inputi = inputs[i] == null ? "null"
+                String inputI = inputs[i] == null ? "null"
                         : inputs[i].toString();
                 if (inputs[i] != null && inputs[i].getClass().isArray()) {
                     int n2 = Array.getLength(inputs[i]);
-                    Object boxedInputsi = Array.newInstance(
+                    Object boxedInputsI = Array.newInstance(
                             boxing(inputs[i].getClass().getComponentType()),
                             n2);
                     for (int j = 0; j < n2; j++) {
-                        Array.set(boxedInputsi, j, Array.get(inputs[i], j));
+                        Array.set(boxedInputsI, j, Array.get(inputs[i], j));
                     }
-                    inputi = Arrays.deepToString((Object[]) boxedInputsi);
+                    inputI = Arrays.deepToString((Object[]) boxedInputsI);
                 }
                 if (e != null && e.getClass().isArray()) {
                     int n1 = Array.getLength(e);
@@ -68,7 +68,7 @@ public class Test {
                     }
                     if (!Arrays.deepEquals((Object[]) boxedE,
                             (Object[]) boxedOutput)) {
-                        System.out.println("test failed for\n " + inputi
+                        System.out.println("test failed for\n " + inputI
                                 + " expected "
                                 + Arrays.deepToString((Object[]) boxedE)
                                 + ", output "
@@ -76,12 +76,12 @@ public class Test {
                         System.exit(-1);
                     }
                 } else if (e != null && !e.equals(output)) {
-                    System.out.println("test:\n " + inputi + " failed, "
+                    System.out.println("test:\n " + inputI + " failed, "
                             + " expected " + e + ", output " + output);
                     System.exit(-1);
-                } else if (e == null && e != output) {
-                    System.out.println("test:\n " + inputi + " failed, "
-                            + " expected " + e + ", output " + output);
+                } else if (e == null && null != output) {
+                    System.out.println("test:\n " + inputI + " failed, "
+                            + " expected " + null + ", output " + output);
                     System.exit(-1);
                 }
 
@@ -173,7 +173,7 @@ public class Test {
             for (int i = 0; i < inputs.length; i++) {
                 R e = expected[i];
                 R output = (R) m.invoke(o, inputs[i]);
-                String inputi = Arrays.deepToString(inputs[i]);
+                String inputI = Arrays.deepToString(inputs[i]);
                 if (e.getClass().isArray()) {
                     int n1 = Array.getLength(e);
                     Object boxedE = Array.newInstance(
@@ -187,7 +187,7 @@ public class Test {
                     }
                     if (!Arrays.deepEquals((Object[]) boxedE,
                             (Object[]) boxedOutput)) {
-                        System.out.println("test failed for\n " + inputi
+                        System.out.println("test failed for\n " + inputI
                                 + " expected "
                                 + Arrays.deepToString((Object[]) boxedE)
                                 + ", output "
@@ -195,7 +195,7 @@ public class Test {
                         System.exit(-1);
                     }
                 } else if (!e.equals(output)) {
-                    System.out.println("test:\n " + inputi + " failed, "
+                    System.out.println("test:\n " + inputI + " failed, "
                             + " expected " + e + ", output " + output);
                     System.exit(-1);
                 }
@@ -263,7 +263,7 @@ public class Test {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        int[] m = {1, 2};
+        @SuppressWarnings("MismatchedReadAndWriteOfArray") int[] m = {1, 2};
         System.out.println(m.getClass());
         System.out.println(int.class);
 

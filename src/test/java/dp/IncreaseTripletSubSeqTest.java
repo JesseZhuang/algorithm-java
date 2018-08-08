@@ -8,7 +8,7 @@ import util.IntegerArrayConverter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class IncreaseTripletSubSeqTest {
+class IncreaseTripletSubSeqTest {
     private static IncreaseTripletSubSeq increaseTripletSubSeq;
 
     @BeforeAll
@@ -19,7 +19,7 @@ public class IncreaseTripletSubSeqTest {
     @ParameterizedTest(name = "increasing triplet in {0} = {1}")
     @CsvFileSource(resources = {"/IncreaseTripletSubSeq.csv"}, delimiter = ' ', numLinesToSkip = 2)
     void testIncreasingTriplet(@ConvertWith(IntegerArrayConverter.class) Integer[] array, boolean tripletExists) {
-        int[] intArray = IntegerArrayConverter.unboxIntegerArray(array);
+        int[] intArray = IntegerArrayConverter.unBoxIntegerArray(array);
         assertEquals(increaseTripletSubSeq.increasingTriplet(intArray), tripletExists);
         assertEquals(increaseTripletSubSeq.increasingTriplet2(intArray), tripletExists);
     }
