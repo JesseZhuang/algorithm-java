@@ -13,7 +13,6 @@ import java.util.List;
  * Tags: Hash Table, Math.
  * <p>
  * <b>Summary:</b>
- * <p>
  * <ul>
  * <li>trial division, dividing n by m [1,n^1/2] or primes in this range if
  * already known, number of primes less than n^1/2 is roughly (n^1/2)/ln(n^1/2),

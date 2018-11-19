@@ -64,7 +64,6 @@ public class ContainsDuplicate {
         return Arrays.stream(numbers).anyMatch(num -> !seen.add(num));
     }
 
-    // test machine glitch, should have passed
     public boolean containsDuplicate4(int[] numbers) {
         // [] empty array considered false!
         if (numbers != null) {

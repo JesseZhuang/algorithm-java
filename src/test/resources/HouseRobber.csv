@@ -1,0 +1,4 @@
+test cases:
+input: int array of house money stash; output: max robbed money
+1,2,10,4 11
+2,1,4,10,100,3 106

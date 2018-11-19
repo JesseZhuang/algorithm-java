@@ -12,7 +12,6 @@ package math;
  * Note: The sequence of integers will be represented as a string.
  * <p>
  * <b>Summary:</b>
- * <p>
  * <ul>
  * <li>recursive or iterative. O(N) time, O(1) space.
  * <li>check wikipedia look-and-say sequence, john conway, morris number
