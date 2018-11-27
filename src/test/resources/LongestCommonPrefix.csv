@@ -1,0 +1,7 @@
+test cases: null, empty, long, short
+input: string array, output: longest prefix
+aca,acba;ac
+abcd,abcde;abcd
+dog,racecar,car;""
+;""
+flower,flow,flight;fl

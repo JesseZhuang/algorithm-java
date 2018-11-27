@@ -1,0 +1,4 @@
+/**
+ * string related.
+ */
+package string;

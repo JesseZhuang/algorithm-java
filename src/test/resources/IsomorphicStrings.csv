@@ -1,0 +1,7 @@
+test cases: two characters cannot map to same
+input: two strings, output: boolean
+aa ab false
+egg add true
+foo bar false
+paper title true
+paper tisle false
