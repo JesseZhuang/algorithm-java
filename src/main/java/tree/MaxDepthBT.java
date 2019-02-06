@@ -26,9 +26,9 @@ public class MaxDepthBT {
      * alg1: recursively calculate the height of left and right sub tree.
      * possibly to modify this to be tail recursive.
      */
-    public int maxDepth(TreeNode root) {
+    public int maxDepthRecursive(TreeNode root) {
         if (root == null) return 0;
-        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+        return 1 + Math.max(maxDepthRecursive(root.left), maxDepthRecursive(root.right));
     }
 
     /**
@@ -36,7 +36,7 @@ public class MaxDepthBT {
      * version is using the stack implicitly. can use Apache commons LinkedMap
      * to avoid using a stack (fundamentally still a stack).
      */
-    public int maxDepth2(TreeNode root) {
+    public int maxDepthIter(TreeNode root) {
         if (root == null)
             return 0;
         int curLevel = 1, maxLevel = 1;
@@ -68,9 +68,9 @@ public class MaxDepthBT {
         if (root != null) {
             int left = 0, right = 0;
             if (root.left != null)
-                left = 1 + maxDepth(root.left);
+                left = 1 + maxDepthRecursive(root.left);
             if (root.right != null)
-                right = 1 + maxDepth(root.right);
+                right = 1 + maxDepthRecursive(root.right);
             ans = Math.max(left, right);
         }
         return ans;
