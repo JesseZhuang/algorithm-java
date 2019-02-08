@@ -272,6 +272,7 @@ public class TreeNode {
         String[] nums = tree.split("[\\s,]");
         if (nums.length == 0) return null;
         TreeNode root = readOneNode(nums[0]);
+        if (root == null) return null;
         Queue<TreeNode> q = new ArrayDeque<>();
         q.add(root);
         int i = 1;

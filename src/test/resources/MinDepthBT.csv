@@ -1,0 +1,6 @@
+edge cases, null root, null left, null right
+input: root binary tree node; output: min depth;
+1,2,3,4,null,null,5 3
+0 1
+1,2 2
+null 0
