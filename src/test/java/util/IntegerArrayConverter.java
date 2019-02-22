@@ -24,21 +24,4 @@ public class IntegerArrayConverter extends SimpleArgumentConverter {
         return result;
     }
 
-    public static int[] unBoxIntegerArray(Integer[] integers) {
-        if (integers == null) return null;
-        int[] result = new int[integers.length];
-        for (int i = 0; i < integers.length; i++)
-            result[i] = integers[i];
-        return result;
-    }
-
-    @SuppressWarnings("unused")
-    public static Integer[] boxIntArray(int[] integers) {
-        if (integers == null) return null;
-        Integer[] result = new Integer[integers.length];
-        for (int i = 0; i < integers.length; i++)
-            result[i] = integers[i];
-        return result;
-    }
-
 }

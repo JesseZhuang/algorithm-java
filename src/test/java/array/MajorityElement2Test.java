@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static util.IntArrayUtil.unBoxIntegerArray;
 
 public class MajorityElement2Test {
     private static MajorityElement2 toBeTested;
@@ -24,7 +25,7 @@ public class MajorityElement2Test {
     @CsvFileSource(resources = {"/MajorityElement2.csv"}, delimiter = ' ', numLinesToSkip = 2)
     void testMajorityElement(@ConvertWith(IntegerArrayConverter.class) Integer[] nums,
                              @ConvertWith(IntegerArrayConverter.class) Integer[] majors) {
-        int[] intArray = IntegerArrayConverter.unBoxIntegerArray(nums);
+        int[] intArray = unBoxIntegerArray(nums);
         Set<Integer> expected = new HashSet<>(Arrays.asList(majors));
         assertEquals(expected, new HashSet<>(toBeTested.majorityElementMap(intArray)));
         assertEquals(expected, new HashSet<>(toBeTested.majorityElementBMVoting(intArray)));

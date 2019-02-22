@@ -8,6 +8,7 @@ import util.IntegerArrayConverter;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static util.IntArrayUtil.unBoxIntegerArray;
 
 public class MergeSortedArrayTest {
     private static MergeSortedArray toBeTested;
@@ -24,14 +25,14 @@ public class MergeSortedArrayTest {
                              @ConvertWith(IntegerArrayConverter.class) Integer[] nums2,
                              int n,
                              @ConvertWith(IntegerArrayConverter.class) Integer[] merged) {
-        int[] unboxedNums1 = IntegerArrayConverter.unBoxIntegerArray(nums1);
-        int[] unboxedNums2 = IntegerArrayConverter.unBoxIntegerArray(nums2);
-        int[] unboxedMerged = IntegerArrayConverter.unBoxIntegerArray(merged);
+        int[] unboxedNums1 = unBoxIntegerArray(nums1);
+        int[] unboxedNums2 = unBoxIntegerArray(nums2);
+        int[] unboxedMerged = unBoxIntegerArray(merged);
         toBeTested.merge1(unboxedNums1, m, unboxedNums2, n);
         assertArrayEquals(unboxedMerged, unboxedNums1);
 
-        unboxedNums1 = IntegerArrayConverter.unBoxIntegerArray(nums1);
-        unboxedNums2 = IntegerArrayConverter.unBoxIntegerArray(nums2);
+        unboxedNums1 = unBoxIntegerArray(nums1);
+        unboxedNums2 = unBoxIntegerArray(nums2);
         toBeTested.merge2(unboxedNums1, m, unboxedNums2, n);
         assertArrayEquals(unboxedMerged, unboxedNums1);
     }

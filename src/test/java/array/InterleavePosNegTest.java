@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static util.IntArrayUtil.unBoxIntegerArray;
 
 public class InterleavePosNegTest {
     private InterleavePosNeg interleavePosNeg;
@@ -22,9 +23,9 @@ public class InterleavePosNegTest {
     @ParameterizedTest(name = "rearrange: {0}\n")
     @CsvFileSource(resources = {"/InterleavePosNeg.csv"}, delimiter = ';', numLinesToSkip = 2)
     void testRearrange(@ConvertWith(IntegerArrayConverter.class) Integer[] nums) {
-        test(interleavePosNeg::rearrangeTwoPointer, IntegerArrayConverter.unBoxIntegerArray(nums));
-        test(interleavePosNeg::rearrangeAuxArray, IntegerArrayConverter.unBoxIntegerArray(nums));
-        int[] n = IntegerArrayConverter.unBoxIntegerArray(nums);
+        test(interleavePosNeg::rearrangeTwoPointer, unBoxIntegerArray(nums));
+        test(interleavePosNeg::rearrangeAuxArray, unBoxIntegerArray(nums));
+        int[] n = unBoxIntegerArray(nums);
         test(interleavePosNeg::rearrangeQuick, n);
         System.out.println(Arrays.toString(n));
     }

@@ -1,6 +1,6 @@
 package array;
 
-import util.IntUtil;
+import util.IntArrayUtil;
 
 import java.util.Arrays;
 
@@ -40,12 +40,12 @@ public class InterleavePosNeg {
             while (A[--pos] > 0)
                 if (pos == 0) break;
             if (neg >= pos) break;
-            IntUtil.swap(A, neg, pos);
+            IntArrayUtil.swap(A, neg, pos);
         }
         pos = 1;
         if (neg <= A.length / 2) pos = 0;
         while (neg < A.length && neg > pos) {
-            IntUtil.swap(A, pos, neg++);
+            IntArrayUtil.swap(A, pos, neg++);
             pos += 2;
         }
     }
@@ -64,7 +64,7 @@ public class InterleavePosNeg {
                 pos += 2;
             while (neg < A.length && A[neg] < 0)
                 neg += 2;
-            if (pos < A.length && neg < A.length) IntUtil.swap(A, pos, neg);
+            if (pos < A.length && neg < A.length) IntArrayUtil.swap(A, pos, neg);
             pos += 2;
             neg += 2;
         }

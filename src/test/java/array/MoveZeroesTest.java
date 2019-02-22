@@ -9,6 +9,8 @@ import util.IntegerArrayConverter;
 
 import java.util.Arrays;
 
+import static util.IntArrayUtil.unBoxIntegerArray;
+
 public class MoveZeroesTest {
     private static MoveZeroes tbt;
 
@@ -21,7 +23,7 @@ public class MoveZeroesTest {
     @CsvFileSource(resources = "/MoveZeroes.csv", delimiter = ' ', numLinesToSkip = 2)
     void testMoveZeroes(@ConvertWith(IntegerArrayConverter.class) Integer[] nums,
                         @ConvertWith(IntegerArrayConverter.class) Integer[] rearranged) {
-        int[] unBoxedExpected = IntegerArrayConverter.unBoxIntegerArray(rearranged);
+        int[] unBoxedExpected = unBoxIntegerArray(rearranged);
         int[] copy = makeCopy(nums);
         tbt.moveZeroesRec(copy);
         Assertions.assertArrayEquals(unBoxedExpected, copy);
@@ -37,6 +39,6 @@ public class MoveZeroesTest {
     }
 
     private int[] makeCopy(Integer[] nums) {
-        return nums == null? null:IntegerArrayConverter.unBoxIntegerArray(Arrays.copyOf(nums, nums.length));
+        return nums == null? null:unBoxIntegerArray(Arrays.copyOf(nums, nums.length));
     }
 }

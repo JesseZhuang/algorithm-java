@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import util.IntegerArrayConverter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static util.IntArrayUtil.unBoxIntegerArray;
 
 class ContainsDuplicateIITest {
     private static ContainsDuplicateII containsDuplicateII;
@@ -20,7 +21,7 @@ class ContainsDuplicateIITest {
     @CsvFileSource(resources = {"/ContainsDuplicateII.csv"}, delimiter = ' ', numLinesToSkip = 2)
     void testContainsDuplicate(@ConvertWith(IntegerArrayConverter.class) Integer[] array, int positionDifference,
                                boolean duplicateExists) {
-        int[] intArray = IntegerArrayConverter.unBoxIntegerArray(array);
+        int[] intArray = unBoxIntegerArray(array);
         assertEquals(containsDuplicateII.containsNearbyDuplicateMap(intArray, positionDifference), duplicateExists);
         assertEquals(containsDuplicateII.containsNearbyDuplicateSet(intArray, positionDifference), duplicateExists);
     }

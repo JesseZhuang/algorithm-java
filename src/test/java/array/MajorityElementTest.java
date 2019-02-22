@@ -7,6 +7,8 @@ import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import util.IntegerArrayConverter;
 
+import static util.IntArrayUtil.unBoxIntegerArray;
+
 public class MajorityElementTest {
     private static MajorityElement toBeTested;
 
@@ -18,7 +20,7 @@ public class MajorityElementTest {
     @ParameterizedTest(name = "major element of {0} = {1}")
     @CsvFileSource(resources = {"/MajorityElement.csv"}, delimiter = ' ', numLinesToSkip = 2)
     void testMajorityElement(@ConvertWith(IntegerArrayConverter.class) Integer[] nums, int major) {
-        int[] intArray = IntegerArrayConverter.unBoxIntegerArray(nums);
+        int[] intArray = unBoxIntegerArray(nums);
         Assertions.assertEquals(toBeTested.majorityElementBMVoting1(intArray), major);
         Assertions.assertEquals(toBeTested.majorityElementBMVoting2(intArray), major);
         Assertions.assertEquals(toBeTested.majorityElementMap1(intArray), major);

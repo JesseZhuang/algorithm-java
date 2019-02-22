@@ -1,0 +1,5 @@
+no edge case
+input: number of stones;output: true/false
+4 false
+5 true
+8 false
