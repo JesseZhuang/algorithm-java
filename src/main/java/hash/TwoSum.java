@@ -26,8 +26,8 @@ import static util.IntArrayUtil.boxIntArray;
  * <p>
  * <ul>
  * <li><b>HashMap, O(N) time, O(N) space.</b>
- * <li>QuickSort then Binary Search, O(NlgN) time, O(1) space.
- * <li>MergeSort then BS, O(NlgN) time, O(1) space.
+ * <li>QuickSort then Binary Search(NlgN)/Two Pointer Search(N), O(NlgN) time, O(1) space.
+ * <li>MergeSort then Binary Search(NlgN)/Two Pointer Search(N), O(NlgN) time, O(1) space.
  * <li>Radix array, O(R) space, O(n) time very fast, Subset Sum, wikipedia,
  */
 public class TwoSum {
@@ -92,12 +92,12 @@ public class TwoSum {
 
     public int[] twoSumMergeSort1(int[] nums, int target) {
         int[] sortedIndexes = Merge.indexSort(boxIntArray(nums));
-        return new int[2];
+        return twoSum2Pointer(nums, target, sortedIndexes);
     }
 
     public int[] twoSumMergeSort2(int[] nums, int target) {
         int[] originalIndexes = mergeSort(nums);
-        int[] indexes = twoSum2P(nums, target);
+        int[] indexes = twoSum2Pointer(nums, target);
         if (nums[indexes[0]] == nums[indexes[1]])
             return new int[]{originalIndexes[indexes[1]], originalIndexes[indexes[0]]};
         return new int[]{originalIndexes[indexes[0]], originalIndexes[indexes[1]]};
@@ -145,11 +145,23 @@ public class TwoSum {
         }
     }
 
-    private int[] twoSum2P(int[] numbers, int target) {
+    private int[] twoSum2Pointer(int[] numbers, int target) {
         int[] result = new int[2];
         int lo = 0, hi = numbers.length - 1;
         while (lo < hi) {
             int sum = numbers[lo] + numbers[hi];
+            if (sum > target) hi--;
+            else if (sum < target) lo++;
+            else return new int[]{lo, hi};
+        }
+        return result;
+    }
+
+    private int[] twoSum2Pointer(int[] numbers, int target, int[] sortedIndexes) {
+        int[] result = new int[2];
+        int lo = 0, hi = numbers.length - 1;
+        while (lo < hi) {
+            int sum = numbers[sortedIndexes[lo]] + numbers[sortedIndexes[hi]];
             if (sum > target) hi--;
             else if (sum < target) lo++;
             else return new int[]{lo, hi};

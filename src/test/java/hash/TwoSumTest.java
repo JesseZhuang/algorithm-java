@@ -27,5 +27,6 @@ public class TwoSumTest {
         assertArrayEquals(indexes, boxIntArray(tbt.twoSumMap(intArray, target)));
         assertArrayEquals(indexes, boxIntArray(tbt.twoSumJavaQuickSort(intArray, target)));
         assertArrayEquals(indexes, boxIntArray(tbt.twoSumMergeSort2(intArray, target)));
+        assertArrayEquals(indexes, boxIntArray(tbt.twoSumMergeSort1(intArray, target)));
     }
 }
