@@ -14,4 +14,12 @@ public class Sort1M32BitIntegersTest {
         assertArrayEquals(expected, test);
     }
 
+    @Test
+    void testSortDirectlyIntegers() {
+        int[] test = new int[]{4, 3, 2, 1, 4, 3, 2, 1};
+        int[] expected = new int[]{1, 1, 2, 2, 3, 3, 4, 4};
+        Sort1M32BitIntegers.sortDirectly(test);
+        assertArrayEquals(expected, test);
+    }
+
 }

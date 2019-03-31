@@ -7,13 +7,35 @@ package string;
  */
 public class Sort1M32BitIntegers {
 
+    // 32 bit converts to 4 8-bit chars, one string with length 4
+    private static final int WIDTH = 4;
+
     public static void sort(int[] ints) {
         String[] strings = new String[ints.length];
         for(int i = 0; i < ints.length; i++) strings[i] = intToString(ints[i]);
-        int[] index = LSDStringSort.indexSort(strings, 4);
+        int[] index = LSDStringSort.indexSort(strings, WIDTH);
         int[] aux = new int[ints.length];
         for(int i = 0; i < ints.length; i++) aux[i] = ints[index[i]];
         for(int i = 0; i < ints.length; i++) ints[i] = aux[i];
+    }
+
+    public static void sortDirectly(int[] ints) {
+        int N = ints.length;
+        int R = 256;   // extend ASCII alphabet size
+        int[] aux = new int[N];
+        String[] a = intsToStrings(ints);
+        for (int d = WIDTH - 1; d >= 0; d--) {
+            // sort by key-indexed counting on dth character
+            // compute frequency counts
+            int[] count = new int[R + 1];
+            for (int i = 0; i < N; i++)  count[a[i].charAt(d) + 1]++;
+            // compute cumulates
+            for (int r = 0; r < R; r++) count[r + 1] += count[r];
+            // move data
+            for (int i = 0; i < N; i++) aux[count[a[i].charAt(d)]++] = ints[i];
+            // copy back
+            for (int i = 0; i < N; i++) ints[i] = aux[i];
+        }
     }
 
     /**
@@ -28,12 +50,14 @@ public class Sort1M32BitIntegers {
         return new String(chars);
     }
 
-    private static char intToChar(int i, int mask) {
-        return (char) (i & mask);
+    private static String[] intsToStrings(int[] ints) {
+        String[] result = new String[ints.length];
+        for(int i = 0; i < ints.length; i++) result[i] = intToString(ints[i]);
+        return result;
     }
 
-    public static void main(String[] args) {
-
+    private static char intToChar(int i, int mask) {
+        return (char) (i & mask);
     }
 
 }
