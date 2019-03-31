@@ -1,7 +1,6 @@
 package array;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,9 @@ import java.util.Map;
  * Output: [1,2]
  * <p>
  * <b>Summary:</b>
+ * <p>
+ * This is generalization of https://en.wikipedia.org/wiki/Element_distinctness_problem. Decision tree complexity
+ * O(NlgK). Quantum complexity Theta(N^2/3) for distinctness (k = N).
  * <p>
  * <ul>
  * <li><b>use a HashMap, O(n) time, O(n) space.</b>
