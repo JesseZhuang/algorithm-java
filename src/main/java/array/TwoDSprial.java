@@ -36,8 +36,7 @@ import java.util.Arrays;
  * <b>Summary:</b>
  * <p>
  * <ul>
- * <li><b>.</b>
- * <li>find a pattern of how often you move each four direction O(n) time, 0 extra space.
+ * <li><b>find a pattern of how often you move each four direction O(n) time, 0 extra space.</b>
  * <li>recursive, O(n) time, stack space.
  * </ul>
  */

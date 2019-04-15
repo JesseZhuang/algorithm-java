@@ -1,0 +1,9 @@
+one longer(left right), null, same
+input: two strings, output: true/false whether is one edit away
+cat dog false
+cat cats true
+cat cut true
+cat cast true
+cat at true
+cat act false
+peaks geeks false
