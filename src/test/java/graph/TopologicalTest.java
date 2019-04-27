@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * DFS. Reverse post order.
+ */
 public class TopologicalTest {
 
     private Topological topological;
@@ -39,5 +42,11 @@ public class TopologicalTest {
         topological = new Topological(sg.G());
         assertEquals(order, CollectionUtil.toList(topological.order()).stream()
                 .map(v -> sg.name(v)).collect(Collectors.toList()));
+    }
+
+    @Test
+    void testBranchedGraph() {
+        topological = new Topological(new EdgeWeightedDigraph(new In("/graph/tinyEWDAG.2branch.01.txt")));
+        assertEquals(Arrays.asList(0, 1, 2, 3, 4), CollectionUtil.toList(topological.order()));
     }
 }

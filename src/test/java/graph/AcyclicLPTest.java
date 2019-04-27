@@ -11,6 +11,9 @@ import java.util.Arrays;
 import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Algorithm: relaxation when found a longer path.
+ */
 public class AcyclicLPTest {
     @Test
     void testTinyEWDAG() {
