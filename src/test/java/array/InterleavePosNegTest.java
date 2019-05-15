@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import util.IntegerArrayConverter;
+import junit.converter.IntegerArrayConverter;
 
 import java.util.Arrays;
 import java.util.function.Consumer;

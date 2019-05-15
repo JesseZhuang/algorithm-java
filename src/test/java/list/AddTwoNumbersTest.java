@@ -5,7 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import struct.ListNode;
-import util.ListNodeConverter;
+import junit.converter.ListNodeConverter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,4 +1,4 @@
-package util;
+package junit.converter;
 
 import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.SimpleArgumentConverter;

@@ -1,4 +1,4 @@
-package util;
+package reflection.test;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;

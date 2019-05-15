@@ -59,6 +59,31 @@ public class IntArrayUtil {
         return -1;
     }
 
+    /**
+     * Arrays.binarySearch or typical binary search returns -1 if not found. This version returns the position to be
+     * inserted.
+     *
+     * @param array array to search.
+     * @param target target to find.
+     * @return index where the target is found or where it should be inserted. For duplicates, return earliest position.
+     */
+    public static int binarySearchIndexToInsert(int[] array, int target){
+        int length = array.length;
+        int lo = 0, hi = length - 1;
+        while (lo <= hi) {
+            int middle = lo + (hi - lo) / 2;
+            if (target > array[middle]) {
+                lo = middle + 1;
+            } else if (target == array[middle]) {
+                while (middle - 1 >= lo && target == array[middle - 1]) middle--;
+                return middle;
+            } else {
+                hi = middle - 1;
+            }
+        }
+        return lo;
+    }
+
     public static Integer[] boxIntArray(int[] integers) {
         if (integers == null) return null;
         Integer[] result = new Integer[integers.length];
