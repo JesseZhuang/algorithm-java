@@ -22,6 +22,11 @@ public class FindDuplicateSortedLists {
         if (array1 == null || array2 == null) {
             return commonElements;
         }
+        if (array2.length > array1.length) {
+            int[] temp = array1;
+            array1 = array2;
+            array2 = temp;
+        }
         int length1 = array1.length;
         int length2 = array2.length;
         for (int i = 0, j = 0; i < length1 && j < length2;) {
