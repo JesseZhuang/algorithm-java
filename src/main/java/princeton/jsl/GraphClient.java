@@ -1,4 +1,4 @@
-package princeton;
+package princeton.jsl;
 
 import edu.princeton.cs.introcs.In;
 import edu.princeton.cs.introcs.StdOut;
