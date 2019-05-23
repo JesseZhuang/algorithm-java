@@ -39,9 +39,9 @@ public class TopologicalTest {
                 "Algorithms", "Theoretical CS", "Artificial Intelligence", "Robotics", "Machine Learning",
                 "Neural Networks", "Databases", "Scientific Computing", "Computational Biology");
         SymbolDigraph sg = new SymbolDigraph("/graph/jobs.txt", "/");
-        topological = new Topological(sg.G());
+        topological = new Topological(sg.digraph());
         assertEquals(order, CollectionUtil.toList(topological.order()).stream()
-                .map(v -> sg.name(v)).collect(Collectors.toList()));
+                .map(v -> sg.nameOf(v)).collect(Collectors.toList()));
     }
 
     @Test

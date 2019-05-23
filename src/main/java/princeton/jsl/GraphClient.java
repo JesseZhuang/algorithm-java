@@ -1,7 +1,7 @@
 package princeton.jsl;
 
-import edu.princeton.cs.introcs.In;
-import edu.princeton.cs.introcs.StdOut;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
 
 /******************************************************************************
  *  Compilation:  javac GraphClient.java

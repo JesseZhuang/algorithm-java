@@ -1,45 +1,8 @@
 package princeton.jsl;
 
-/******************************************************************************
- *  Compilation:  javac Graph.java
- *  Execution:    java Graph input.txt
- *  Dependencies: Bag.java Stack.java In.java StdOut.java
- *  Data files:   https://algs4.cs.princeton.edu/41graph/tinyG.txt
- *                https://algs4.cs.princeton.edu/41graph/mediumG.txt
- *                https://algs4.cs.princeton.edu/41graph/largeG.txt
- *
- *  A graph, implemented using an array of sets.
- *  Parallel edges and self-loops allowed.
- *
- *  % java Graph tinyG.txt
- *  13 vertices, 13 edges
- *  0: 6 2 1 5
- *  1: 0
- *  2: 0
- *  3: 5 4
- *  4: 5 6 3
- *  5: 3 4 0
- *  6: 0 4
- *  7: 8
- *  8: 7
- *  9: 11 10 12
- *  10: 9
- *  11: 9 12
- *  12: 11 9
- *
- *  % java Graph mediumG.txt
- *  250 vertices, 1273 edges
- *  0: 225 222 211 209 204 202 191 176 163 160 149 114 97 80 68 59 58 49 44 24 15
- *  1: 220 203 200 194 189 164 150 130 107 72
- *  2: 141 110 108 86 79 51 42 18 14
- *  ...
- *  
- ******************************************************************************/
-
-import edu.princeton.cs.algs4.Bag;
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stack;
-import edu.princeton.cs.introcs.In;
-import edu.princeton.cs.introcs.StdOut;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,12 +17,12 @@ public class Graph {
     private final int V;
     private int E;
     private List<List<Integer>> adj;
-    
+
     /**
      * Initializes an empty graph with {@code V} vertices and 0 edges.
      * param V the number of vertices
      *
-     * @param  V number of vertices
+     * @param V number of vertices
      * @throws IllegalArgumentException if {@code V < 0}
      */
     public Graph(int V) {
@@ -70,13 +33,13 @@ public class Graph {
         for (int v = 0; v < V; v++) adj.add(new ArrayList<>());
     }
 
-    /**  
+    /**
      * Initializes a graph from the specified input stream.
      * The format is the number of vertices <em>V</em>,
      * followed by the number of edges <em>E</em>,
      * followed by <em>E</em> pairs of vertices, with each entry separated by whitespace.
      *
-     * @param  in the input stream
+     * @param in the input stream
      * @throws IllegalArgumentException if the endpoints of any edge are not in prescribed range
      * @throws IllegalArgumentException if the number of vertices or edges is negative
      * @throws IllegalArgumentException if the input stream is in the wrong format
@@ -94,28 +57,28 @@ public class Graph {
                 int w = in.readInt();
                 validateVertex(v);
                 validateVertex(w);
-                addEdge(v, w); 
+                addEdge(v, w);
             }
-        }
-        catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             throw new IllegalArgumentException("invalid input format in Graph constructor", e);
         }
     }
 
     /**
      * Create a undirected graph with 2D array of edges.
+     *
      * @param edges array of edges for the graph.
      */
     public Graph(int[][] edges) {
         this(edges.length + 1);
-        for(int[] e : edges) addEdge(e[0], e[1]);
+        for (int[] e : edges) addEdge(e[0], e[1]);
     }
 
 
     /**
      * Initializes a new graph that is a deep copy of {@code G}.
      *
-     * @param  G the graph to copy
+     * @param G the graph to copy
      */
     public Graph(Graph G) {
         this(G.V());
@@ -153,14 +116,14 @@ public class Graph {
     // throw an IllegalArgumentException unless {@code 0 <= v < V}
     private void validateVertex(int v) {
         if (v < 0 || v >= V)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
+            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V - 1));
     }
 
     /**
      * Adds the undirected edge v-w to this graph.
      *
-     * @param  v one vertex in the edge
-     * @param  w the other vertex in the edge
+     * @param v one vertex in the edge
+     * @param w the other vertex in the edge
      * @throws IllegalArgumentException unless both {@code 0 <= v < V} and {@code 0 <= w < V}
      */
     public void addEdge(int v, int w) {
@@ -175,7 +138,7 @@ public class Graph {
     /**
      * Returns the vertices adjacent to vertex {@code v}.
      *
-     * @param  v the vertex
+     * @param v the vertex
      * @return the vertices adjacent to vertex {@code v}, as an iterable
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
@@ -187,7 +150,7 @@ public class Graph {
     /**
      * Returns the degree of vertex {@code v}.
      *
-     * @param  v the vertex
+     * @param v the vertex
      * @return the degree of vertex {@code v}
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
@@ -201,7 +164,7 @@ public class Graph {
      * Returns a string representation of this graph.
      *
      * @return the number of vertices <em>V</em>, followed by the number of edges <em>E</em>,
-     *         followed by the <em>V</em> adjacency lists
+     * followed by the <em>V</em> adjacency lists
      */
     public String toString() {
         StringBuilder s = new StringBuilder();
