@@ -1,7 +1,7 @@
 package graph;
 
 import edu.princeton.cs.algs4.Graph;
-import edu.princeton.cs.introcs.In;
+import edu.princeton.cs.algs4.In;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

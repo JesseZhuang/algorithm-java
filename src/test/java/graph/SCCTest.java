@@ -1,8 +1,8 @@
 package graph;
 
 import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.KosarajuSharirSCC;
-import edu.princeton.cs.introcs.In;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

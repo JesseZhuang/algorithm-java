@@ -2,7 +2,7 @@ package graph;
 
 import edu.princeton.cs.algs4.EdgeWeightedDigraph;
 import edu.princeton.cs.algs4.EdgeWeightedDirectedCycle;
-import edu.princeton.cs.introcs.In;
+import edu.princeton.cs.algs4.In;
 import org.junit.jupiter.api.Test;
 import util.CollectionUtil;
 
