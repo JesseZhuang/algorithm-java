@@ -69,9 +69,9 @@ public class Graph {
      *
      * @param edges array of edges for the graph.
      */
-    public Graph(int[][] edges) {
+    public Graph(Integer[][] edges) {
         this(edges.length + 1);
-        for (int[] e : edges) addEdge(e[0], e[1]);
+        for (Integer[] e : edges) addEdge(e[0], e[1]);
     }
 
 

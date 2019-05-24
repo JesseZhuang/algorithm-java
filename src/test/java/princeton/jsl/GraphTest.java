@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GraphTest {
     @Test
     void testGraph() {
-        int[][] edges = new int[][]{{0, 1}, {0, 2}};
+        Integer[][] edges = new Integer[][]{{0, 1}, {0, 2}};
         Graph g = new Graph(edges);
         assertEquals(3, g.V());
         assertEquals(2, g.E());

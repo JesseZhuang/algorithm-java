@@ -13,7 +13,8 @@ public class IntegerArrayConverter extends SimpleArgumentConverter {
     protected Object convert(Object source, Class<?> targetType) throws ArgumentConversionException {
         assertEquals(targetType, Integer[].class);
         String array = (String) source;
-        if (array.equals("{}")) return new Integer[0];
+        array = array.replaceAll("[{}\\[\\]]", "");
+        if (array.trim().isEmpty()) return new Integer[0];
         if (array.equals("null")) return null;
 
         // split array elements with comma and space

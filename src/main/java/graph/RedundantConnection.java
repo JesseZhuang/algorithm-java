@@ -1,6 +1,10 @@
 package graph;
 
+import princeton.jsl.Cycle;
 import princeton.jsl.Graph;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * LeetCode 684. Medium. Tags: Tree, Union Find, Graph.
@@ -42,15 +46,36 @@ import princeton.jsl.Graph;
  * <b>Summary</b>:
  * <p>
  * <ul>
- * <li>graph
+ * <li>graph, O(V+E) time, O(V+E) space. 3ms 40.09%, 36 MB 99.59%.
  * <li>union find
  * </ul>
  */
 public class RedundantConnection {
-    public int[] redundantGraph(int[][] edges) {
+    public int[] redundantGraph(Integer[][] edges) {
         int[] result = null;
-//        Graph g = new Graph(edges);
+        Cycle cycle = new Cycle(new Graph(edges));
+        Set<Integer> cycleSet = new HashSet<>();
+        for (int v : cycle.cycle()) cycleSet.add(v);
+        for (int i = edges.length - 1; i >= 0; i--) {
+            if (cycleSet.contains(edges[i][1]) && cycleSet.contains(edges[i][0])) {
+                result = new int[]{edges[i][0], edges[i][1]};
+                break;
+            }
+        }
+        return result;
+    }
 
+    @SuppressWarnings("unused")
+    public int[] redundantArray(Integer[][] edges) {
+        boolean[] marked = new boolean[edges.length + 2];
+        int[] result = null;
+        for (Integer[] e : edges) {
+            if (marked[e[0]] && marked[e[1]]) result = new int[]{e[0], e[1]};
+            else {
+                marked[e[0]] = true;
+                marked[e[1]] = true;
+            }
+        }
         return result;
     }
 }
