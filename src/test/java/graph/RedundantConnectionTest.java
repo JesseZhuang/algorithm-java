@@ -25,5 +25,6 @@ public class RedundantConnectionTest {
         // array method fails for third case, expected [4, 10], actual [6, 8]
         // assertArrayEquals(IntArrayUtil.unBoxIntegerArray(edge), tbt.redundantArray(edges));
          assertArrayEquals(IntArrayUtil.unBoxIntegerArray(edge), tbt.redundantGraph(edges));
+         assertArrayEquals(IntArrayUtil.unBoxIntegerArray(edge), tbt.redundantUF(edges));
     }
 }

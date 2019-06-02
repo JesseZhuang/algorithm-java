@@ -1,5 +1,6 @@
 package graph;
 
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import princeton.jsl.Cycle;
 import princeton.jsl.Graph;
 
@@ -63,6 +64,15 @@ public class RedundantConnection {
             }
         }
         return result;
+    }
+
+    public int[] redundantUF(Integer[][] edges) {
+        WeightedQuickUnionUF uf = new WeightedQuickUnionUF(edges.length + 1);
+        for (Integer[] e : edges) {
+            if (uf.connected(e[0], e[1])) return new int[]{e[0], e[1]};
+            else uf.union(e[0], e[1]);
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")
