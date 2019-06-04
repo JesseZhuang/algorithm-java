@@ -47,8 +47,8 @@ import java.util.Set;
  * <b>Summary</b>:
  * <p>
  * <ul>
- * <li>graph, O(V+E) time, O(V+E) space. 3ms 40.09%, 36 MB 99.59%.
- * <li>union find
+ * <li>graph, O(V+E) linear time, O(V+E) linear space. 3ms 40.09%, 36 MB 99.59%.
+ * <li>union find, O(V + E*Ackermann(V)) time, O(V) space. 1ms 90.03%, 40.7 MB 64.61%.
  * </ul>
  */
 public class RedundantConnection {
@@ -67,7 +67,7 @@ public class RedundantConnection {
     }
 
     public int[] redundantUF(Integer[][] edges) {
-        WeightedQuickUnionUF uf = new WeightedQuickUnionUF(edges.length + 1);
+        WeightedQuickUnionPathCompressionUF uf = new WeightedQuickUnionPathCompressionUF(edges.length + 1);
         for (Integer[] e : edges) {
             if (uf.connected(e[0], e[1])) return new int[]{e[0], e[1]};
             else uf.union(e[0], e[1]);
