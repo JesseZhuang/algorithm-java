@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import util.IntArrayUtil;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -23,5 +24,6 @@ public class RedundantConnectionIITest {
                            @ConvertWith(IntegerArrayConverter.class) Integer[] edge) {
         // assertArrayEquals(IntArrayUtil.unBoxIntegerArray(edge), tbt.redundantGraph(edges));
         assertArrayEquals(edge, tbt.redundantUFOnePass(edges));
+        assertArrayEquals(IntArrayUtil.unBoxIntegerArray(edge), tbt.redundantUFTwoPass(edges));
     }
 }

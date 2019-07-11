@@ -45,6 +45,7 @@ import java.util.Arrays;
  * <p>
  * <ul>
  * <li>union find one pass, O(V + E*Ackermann(V)) time, O(V) space. 1ms 98.61%, 42.3 MB 84.21%.
+ * <li>union find two pass, O(V + E*Ackermann(V)) time, O(V) space. 1ms 98.61%, 41.7 MB 86.84%.
  * </ul>
  */
 public class RedundantConnectionII {
@@ -67,5 +68,29 @@ public class RedundantConnectionII {
         if (last == -1) return edges[second]; // double parent
         if (second == -1) return edges[last]; // cycle
         return edges[first]; // cycle and double parent
+    }
+
+    public int[] redundantUFTwoPass(Integer[][] edges) {
+        WeightedQuickUnionPathCompressionUF uf = new WeightedQuickUnionPathCompressionUF(edges.length + 1);
+        int[] edgeToIndex = new int[edges.length + 1]; // array index in edges array for edge leading to vertex i
+        int[] first = new int[] {-1, -1};
+        int[] second = new int[] {-1, -1};
+        for (Integer[] e: edges) {
+            if (edgeToIndex[e[1]] != 0) {
+                second = new int[] {e[0], e[1]};
+                first = new int[] {edgeToIndex[e[1]], e[1]};
+                e[1] = 0;
+            } else edgeToIndex[e[1]] = e[0];
+        }
+        for (Integer[] e: edges) {
+            if (e[1] == 0) continue;
+            if (uf.connected(e[0], e[1])) {
+              if (first[1] != -1) return first;
+              else return new int[] {e[0], e[1]};
+            } else {
+                uf.union(e[0], e[1]);
+            }
+        }
+        return second;
     }
 }
