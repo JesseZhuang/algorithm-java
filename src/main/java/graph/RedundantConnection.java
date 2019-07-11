@@ -1,6 +1,5 @@
 package graph;
 
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 import princeton.jsl.Cycle;
 import princeton.jsl.Graph;
 
@@ -76,6 +75,7 @@ public class RedundantConnection {
     }
 
     @SuppressWarnings("unused")
+    // incorrect when one edge connecting two separate trees into one tree
     public int[] redundantArray(Integer[][] edges) {
         boolean[] marked = new boolean[edges.length + 2];
         int[] result = null;
