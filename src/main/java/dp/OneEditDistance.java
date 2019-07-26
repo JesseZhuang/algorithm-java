@@ -1,7 +1,7 @@
 package dp;
 
 /**
- * LeetCode 161. Medium. FB Edit Distance.
+ * LeetCode 161. Medium. FB Edit Distance. Levenshtein distance.
  * <p>
  * An edit between two strings is one of the following changes.
  * <p>
@@ -18,6 +18,8 @@ package dp;
  * <li><b>traverse and keep diff count. O(n) time, O(1) space.</b>
  * <li>brute force, O(n^2) time, O(n^2) space.
  * </ul>
+ * <p>https://en.wikipedia.org/wiki/Edit_distance
+ *
  */
 public class OneEditDistance {
     public boolean isEditDistanceOne1(String s1, String s2) {
