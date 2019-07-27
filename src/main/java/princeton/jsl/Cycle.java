@@ -3,6 +3,9 @@ package princeton.jsl;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * use List instead of Stack in algs4.
+ */
 public class Cycle {
     private List<Integer> cycle;
     private boolean[] marked;
