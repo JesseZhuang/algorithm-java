@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.StdOut;
 import java.util.Stack;
 
 /**
- *
+ * Use java standard library Stack.
  */
 public class DirectedCycle {
     private boolean[] marked;        // marked[v] = has vertex v been marked?
@@ -19,7 +19,7 @@ public class DirectedCycle {
      * finds such a cycle.
      * @param G the digraph
      */
-    public DirectedCycle(DirectedGraph G) {
+    public DirectedCycle(Digraph G) {
         marked  = new boolean[G.V()];
         onStack = new boolean[G.V()];
         edgeTo  = new int[G.V()];
@@ -28,7 +28,7 @@ public class DirectedCycle {
     }
 
     // check that algorithm computes either the topological order or finds a directed cycle
-    private void dfs(DirectedGraph G, int v) {
+    private void dfs(Digraph G, int v) {
         onStack[v] = true;
         marked[v] = true;
         for (int w : G.adj(v)) {
@@ -44,7 +44,7 @@ public class DirectedCycle {
 
             // trace back directed cycle
             else if (onStack[w]) {
-                cycle = new Stack<Integer>();
+                cycle = new Stack<>();
                 for (int x = v; x != w; x = edgeTo[x]) {
                     cycle.push(x);
                 }
@@ -101,7 +101,7 @@ public class DirectedCycle {
      */
     public static void main(String[] args) {
         In in = new In(args[0]);
-        DirectedGraph G = new DirectedGraph(in);
+        Digraph G = new Digraph(in);
 
         DirectedCycle finder = new DirectedCycle(G);
         if (finder.hasCycle()) {

@@ -1,6 +1,5 @@
 package princeton.jsl;
 
-import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stack;
 
@@ -11,7 +10,7 @@ import java.util.NoSuchElementException;
 /**
  * Implementation with List instead of Bag.
  */
-public class DirectedGraph {
+public class Digraph {
     private static final String NEWLINE = System.getProperty("line.separator");
 
     private final int V;           // number of vertices in this digraph
@@ -25,7 +24,7 @@ public class DirectedGraph {
      * @param V the number of vertices
      * @throws IllegalArgumentException if {@code V < 0}
      */
-    public DirectedGraph(int V) {
+    public Digraph(int V) {
         if (V < 0) throw new IllegalArgumentException("Number of vertices in a Digraph must be nonnegative");
         this.V = V;
         this.E = 0;
@@ -117,8 +116,8 @@ public class DirectedGraph {
      *
      * @return the reverse of the digraph
      */
-    public Digraph reverse() {
-        Digraph reverse = new Digraph(V);
+    public edu.princeton.cs.algs4.Digraph reverse() {
+        edu.princeton.cs.algs4.Digraph reverse = new edu.princeton.cs.algs4.Digraph(V);
         for (int v = 0; v < V; v++) {
             for (int w : adj(v)) {
                 reverse.addEdge(w, v);
@@ -138,7 +137,7 @@ public class DirectedGraph {
      * @throws IllegalArgumentException if the number of vertices or edges is negative
      * @throws IllegalArgumentException if the input stream is in the wrong format
      */
-    public DirectedGraph(In in) {
+    public Digraph(In in) {
         try {
             this.V = in.readInt();
             if (V < 0) throw new IllegalArgumentException("number of vertices in a Digraph must be nonnegative");
@@ -162,7 +161,7 @@ public class DirectedGraph {
      *
      * @param G the digraph to copy
      */
-    public DirectedGraph(Digraph G) {
+    public Digraph(edu.princeton.cs.algs4.Digraph G) {
         this(G.V());
         this.E = G.E();
         for (int v = 0; v < V; v++)

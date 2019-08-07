@@ -1,7 +1,7 @@
 package graph;
 
 import princeton.jsl.DirectedCycle;
-import princeton.jsl.DirectedGraph;
+import princeton.jsl.Digraph;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -51,7 +51,7 @@ import static java.util.stream.IntStream.range;
  */
 public class CourseSchedule {
     public boolean canFinishCycle(int numCourses, Integer[][] prerequisites) {
-        DirectedGraph digraph = new DirectedGraph(numCourses);
+        Digraph digraph = new Digraph(numCourses);
         range(0, prerequisites.length).forEach(i -> digraph.addEdge(prerequisites[i][0], prerequisites[i][1]));
         DirectedCycle cycle = new DirectedCycle(digraph);
         return !cycle.hasCycle();
