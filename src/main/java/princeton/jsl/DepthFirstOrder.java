@@ -5,7 +5,6 @@ import edu.princeton.cs.algs4.StdOut;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
-import java.util.Stack;
 
 /**
  * Returning List instead of Iterable.

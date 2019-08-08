@@ -1,7 +1,7 @@
 package princeton.jsl;
 
 /**
- * Implemented with List instead of Iterable.
+ * Takes jsl dependencies.
  */
 public class Topological {
     private Iterable<Integer> order;  // topological order

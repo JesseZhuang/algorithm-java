@@ -5,6 +5,9 @@ import edu.princeton.cs.algs4.DirectedEdge;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+/**
+ * Implement order with ArrayDeque.
+ */
 public class TopologicalX {
 
     private Queue<Integer> order;     // vertices in topological order

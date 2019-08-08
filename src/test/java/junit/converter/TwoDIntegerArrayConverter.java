@@ -16,8 +16,9 @@ public class TwoDIntegerArrayConverter extends SimpleArgumentConverter {
         assertEquals(targetType, Integer[][].class);
         String array = (String) source;
         //remove unimportant brackets
-        array = array.replaceAll("[\\[{]", "").replaceAll("[}\\]]{1,2}\\s*$", "");
+        array = array.replaceAll("[\\[{]", "").replaceAll("[}\\]]{2}\\s*$", "");
         String[] outer = array.split("[\\]}],\\s*");
+        if (outer[0].trim().isEmpty()) return new Integer[outer.length][0];
         String[] inner = outer[0].split("\\s*,\\s*");
         Integer[][] result = new Integer[outer.length][inner.length];
         for (int i = 0; i < outer.length; i++) {

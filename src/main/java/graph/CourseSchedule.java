@@ -61,7 +61,6 @@ public class CourseSchedule {
         List<Integer>[] adj = new LinkedList[numCourses]; // vertexes going into
         Queue<Integer> queue = new LinkedList<>();
         int[] inDegree = new int[numCourses];
-        int count = 0;
         for (int i = 0; i < numCourses; i++) adj[i] = new LinkedList<>();
         for (Integer[] pair : prerequisites) {
             adj[pair[1]].add(pair[0]);
@@ -69,6 +68,7 @@ public class CourseSchedule {
         }
         for (int i = 0; i < inDegree.length; i++)
             if (inDegree[i] == 0) queue.offer(i);
+        int count = 0;
         while (!queue.isEmpty()) {
             int course = queue.poll();
             count++;

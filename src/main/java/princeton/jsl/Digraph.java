@@ -116,8 +116,8 @@ public class Digraph {
      *
      * @return the reverse of the digraph
      */
-    public edu.princeton.cs.algs4.Digraph reverse() {
-        edu.princeton.cs.algs4.Digraph reverse = new edu.princeton.cs.algs4.Digraph(V);
+    public Digraph reverse() {
+        Digraph reverse = new Digraph(V);
         for (int v = 0; v < V; v++) {
             for (int w : adj(v)) {
                 reverse.addEdge(w, v);
