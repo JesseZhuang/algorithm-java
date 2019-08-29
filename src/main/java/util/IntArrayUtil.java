@@ -72,16 +72,13 @@ public class IntArrayUtil {
         int lo = 0, hi = length - 1;
         while (lo <= hi) {
             int middle = lo + (hi - lo) / 2;
-            if (target > array[middle]) {
-                lo = middle + 1;
-            } else if (target == array[middle]) {
+            if (target > array[middle]) lo = middle + 1;
+            else if (target == array[middle]) {
                 while (middle - 1 >= lo && target == array[middle - 1]) middle--;
                 return middle;
-            } else {
-                hi = middle - 1;
-            }
+            } else hi = middle - 1;
         }
-        return lo;
+        return lo;//hi < lo, array[lo] > target > array[lo - 1], so return lo. example find 2 in [1,2], hi=0, lo=1
     }
 
     public static Integer[] boxIntArray(int[] integers) {
