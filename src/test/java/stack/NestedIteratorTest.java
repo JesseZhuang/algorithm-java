@@ -8,10 +8,12 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NestedIteratorTest {
     static NestedIterator tbt1;
     static NestedIteratorEager tbt2;
+    static NestedIteratorLazy tbt3;
 
     @BeforeAll
     static void setup() {
@@ -28,6 +30,7 @@ public class NestedIteratorTest {
 
         tbt1 = new NestedIterator(list);
         tbt2 = new NestedIteratorEager(list);
+        tbt3 = new NestedIteratorLazy(list);
     }
 
     @Test
@@ -42,5 +45,13 @@ public class NestedIteratorTest {
         assertEquals(new Integer(1), tbt2.next());
         assertEquals(new Integer(2), tbt2.next());
         assertEquals(false, tbt2.hasNext());
+    }
+
+    @Test
+    void testLazy2() {
+        assertEquals(new Integer(1), tbt3.next());
+        assertTrue(tbt3.hasNext());
+        assertEquals(new Integer(2), tbt3.next());
+        assertEquals(false, tbt3.hasNext());
     }
 }

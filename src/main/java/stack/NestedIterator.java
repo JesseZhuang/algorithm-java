@@ -87,6 +87,36 @@ class NestedIteratorEager implements Iterator<Integer> {
     }
 }
 
+class NestedIteratorLazy implements Iterator<Integer> {
+    private final Stack<Iterator<NestedInteger>> stack;
+    private NestedInteger nextInt;
+
+    public NestedIteratorLazy(List<NestedInteger> nestedList) {
+        this.stack = new Stack<>();
+        this.stack.push(nestedList.iterator());
+        this.nextInt = null;//assuming no null integer allowed in NestedInteger
+    }
+
+    @Override
+    public Integer next() {
+        hasNext();
+        Integer ret = nextInt != null ? nextInt.getInteger() : null;
+        nextInt = null;
+        return ret;
+    }
+
+    @Override
+    public boolean hasNext() {
+        if (nextInt != null) return true;
+        while (!stack.isEmpty()) {
+            if (!stack.peek().hasNext()) stack.pop();
+            else if ((nextInt = stack.peek().next()).isInteger()) return true;
+            else stack.push(nextInt.getList().iterator());
+        }
+        return false;
+    }
+}
+
 // This is the interface that allows for creating nested stack.
 // You should not implement it, or speculate about its implementation
 interface NestedInteger {
