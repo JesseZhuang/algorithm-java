@@ -795,7 +795,7 @@ public class AVLTreeST<Key extends Comparable<Key>, Value> {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        AVLTreeST<String, Integer> st = new AVLTreeST<String, Integer>();
+        AVLTreeST<String, Integer> st = new AVLTreeST<>();
         for (int i = 0; !StdIn.isEmpty(); i++) {
             String key = StdIn.readString();
             st.put(key, i);
