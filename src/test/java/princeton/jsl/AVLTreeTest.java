@@ -1,8 +1,7 @@
-package tree;
+package princeton.jsl;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import princeton.jsl.AVLTreeST;
 import util.FileUtils;
 
 import java.util.Arrays;
