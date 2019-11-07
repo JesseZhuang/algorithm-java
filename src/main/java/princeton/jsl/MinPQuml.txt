@@ -1,0 +1,14 @@
+class MinPQ<K> {
+ -K[] pq
+ -int n
+ +boolean isEmpty()
+ +int size()
+ +void insert(K k)
+ +K delMin()
+ +Iterator<K> iterator()
+ -void resize(int capacity)
+ -void swim(int k)
+ -void sink(int k)
+ -boolean greater(int i, int j)
+ -void exch(int i, int j)
+}
