@@ -1,6 +1,9 @@
 package graph;
 
+import edu.princeton.cs.algs4.In;
 import javafx.util.Pair;
+import princeton.jsl.TrieSET;
+import sun.text.normalizer.Trie;
 
 import java.util.*;
 
@@ -42,17 +45,52 @@ import java.util.*;
  * Output: 0
  * <p>
  * Explanation: The endWord "cog" is not in wordList, therefore no possible transformation.
+ * <p>
+ * <b>Summary:</b>
+ * <p>Assume word length is M, number of words is N.
+ * <ul>
+ * <li>One way or two way BFS with hash map. O(MN) time, O(MN) space.
+ * <li>BFS with trie, practically faster, especially on search miss. O(MN) time, O(MN) space.</>
+ * </ul>
  */
 public class WordLadder {
-    public int ladderLengthBFS(String beginWord, String endWord, List<String> wordList) {
-
-        // Since all words are of same length.
+    public int ladderLengthBFSTrie(String beginWord, String endWord, List<String> wordList) {
         int L = beginWord.length();
+        TrieSET trie = new TrieSET();
+        for (String word : wordList) {
+            trie.add(word);
+        }
+        if (trie.contains(endWord)) {
+            Queue<Pair<String, Integer>> q = new ArrayDeque<>();
+            q.add(new Pair<>(beginWord, 1));
+            TrieSET visited = new TrieSET();
+            visited.add(beginWord);
+            while (!q.isEmpty()) {
+                Pair<String, Integer> curNode = q.remove();
+                String curWord = curNode.getKey();
+                int level = curNode.getValue();
+                for (int i = 0; i < L; i++) {
+                    String wild = curWord.substring(0, i) + "." + curWord.substring(i + 1, L);
+                    Iterable<String> matchedWords = trie.keysThatMatch(wild);
+                    for (String word : matchedWords) {
+                        if (endWord.equals(word)) return level + 1;
+                        if (!visited.contains(word)) {
+                            visited.add(word);
+                            q.add(new Pair<>(word, level + 1));
+                        }
+                    }
+                }
+            }
+        }
+        return 0;
+    }
 
-        // Dictionary to hold combination of words that can be formed,
-        // from any given word. By changing one letter at a time.
+
+    public int ladderLengthBFS(String beginWord, String endWord, List<String> wordList) {
+        int L = beginWord.length(); // Since all words are of same length.
+        // Dictionary of words that can be formed from any given word. By changing one letter at a time.
+        // e.g., h*t -> [hot,hat], *og -> [dog,log]
         HashMap<String, ArrayList<String>> allComboDict = new HashMap<String, ArrayList<String>>();
-
         wordList.forEach(
                 word -> {
                     for (int i = 0; i < L; i++) {
@@ -65,24 +103,19 @@ public class WordLadder {
                         allComboDict.put(newWord, transformations);
                     }
                 });
-
         // Queue for BFS
         Queue<Pair<String, Integer>> Q = new LinkedList<Pair<String, Integer>>();
         Q.add(new Pair(beginWord, 1));
-
         // Visited to make sure we don't repeat processing same word.
         HashMap<String, Boolean> visited = new HashMap<String, Boolean>();
         visited.put(beginWord, true);
-
         while (!Q.isEmpty()) {
             Pair<String, Integer> node = Q.remove();
             String word = node.getKey();
             int level = node.getValue();
             for (int i = 0; i < L; i++) {
-
                 // Intermediate words for current word
                 String newWord = word.substring(0, i) + '*' + word.substring(i + 1, L);
-
                 // Next states are all the words which share the same intermediate state.
                 for (String adjacentWord : allComboDict.getOrDefault(newWord, new ArrayList<String>())) {
                     // If at any point if we find what we are looking for
@@ -98,7 +131,6 @@ public class WordLadder {
                 }
             }
         }
-
         return 0;
     }
 
@@ -107,8 +139,7 @@ public class WordLadder {
 
     public WordLadder() {
         this.L = 0;
-        // Dictionary to hold combination of words that can be formed,
-        // from any given word. By changing one letter at a time.
+        // Dictionary of words that can be formed from any given word. By changing one letter at a time.
         this.allComboDict = new HashMap<String, ArrayList<String>>();
     }
 
@@ -119,12 +150,9 @@ public class WordLadder {
         Pair<String, Integer> node = Q.remove();
         String word = node.getKey();
         int level = node.getValue();
-
         for (int i = 0; i < this.L; i++) {
-
             // Intermediate words for current word
             String newWord = word.substring(0, i) + '*' + word.substring(i + 1, L);
-
             // Next states are all the words which share the same intermediate state.
             for (String adjacentWord : this.allComboDict.getOrDefault(newWord, new ArrayList<String>())) {
                 // If at any point if we find what we are looking for
@@ -132,9 +160,7 @@ public class WordLadder {
                 if (othersVisited.containsKey(adjacentWord)) {
                     return level + othersVisited.get(adjacentWord);
                 }
-
                 if (!visited.containsKey(adjacentWord)) {
-
                     // Save the level as the value of the dictionary, to save number of hops.
                     visited.put(adjacentWord, level + 1);
                     Q.add(new Pair(adjacentWord, level + 1));
@@ -144,15 +170,12 @@ public class WordLadder {
         return -1;
     }
 
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-
+    public int ladderLengthTwoWayBFS(String beginWord, String endWord, List<String> wordList) {
         if (!wordList.contains(endWord)) {
             return 0;
         }
-
         // Since all words are of same length.
         this.L = beginWord.length();
-
         wordList.forEach(
                 word -> {
                     for (int i = 0; i < L; i++) {
@@ -166,35 +189,30 @@ public class WordLadder {
                     }
                 });
 
-        // Queues for birdirectional BFS
+        // Queues for bi-directional BFS
         // BFS starting from beginWord
         Queue<Pair<String, Integer>> Q_begin = new LinkedList<Pair<String, Integer>>();
         // BFS starting from endWord
         Queue<Pair<String, Integer>> Q_end = new LinkedList<Pair<String, Integer>>();
         Q_begin.add(new Pair(beginWord, 1));
         Q_end.add(new Pair(endWord, 1));
-
         // Visited to make sure we don't repeat processing same word.
         HashMap<String, Integer> visitedBegin = new HashMap<String, Integer>();
         HashMap<String, Integer> visitedEnd = new HashMap<String, Integer>();
         visitedBegin.put(beginWord, 1);
         visitedEnd.put(endWord, 1);
-
         while (!Q_begin.isEmpty() && !Q_end.isEmpty()) {
-
             // One hop from begin word
             int ans = visitWordNode(Q_begin, visitedBegin, visitedEnd);
             if (ans > -1) {
                 return ans;
             }
-
             // One hop from end word
             ans = visitWordNode(Q_end, visitedEnd, visitedBegin);
             if (ans > -1) {
                 return ans;
             }
         }
-
         return 0;
     }
 }

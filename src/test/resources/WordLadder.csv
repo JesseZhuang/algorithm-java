@@ -1,0 +1,4 @@
+// input: String beginWord, String endWord, String[] wordList; output: number of transformations
+// edge case: endWrod not in list
+hit;cog;["hot","dot","dog","lot","log","cog"];5
+hit;cog;["hot","dot","dog","lot","log"];0
