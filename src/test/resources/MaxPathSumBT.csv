@@ -1,0 +1,7 @@
+edge cases: null root, null left, null right, negative, positive, zero
+input: root binary tree node; output: max sum;
+1,2,3 6
+-10,9,20,null,null,15,7 42
+2,-1,0 2
+null 0
+-1,null,-3 -1
