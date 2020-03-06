@@ -1,5 +1,6 @@
 package array;
 
+import princeton.jsl.BinarySearch;
 import util.IntArrayUtil;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class FindDuplicateSortedLists {
         if (array1 == null || array2 == null) {
             return commonElements;
         }
-        if (array2.length > array1.length) {
+        if (array1.length > array2.length) {
             int[] temp = array1;
             array1 = array2;
             array2 = temp;
@@ -37,7 +38,7 @@ public class FindDuplicateSortedLists {
             } else if (array1[i] < array2[j]) {
                 i++;
             } else {
-                int index2 = IntArrayUtil.binarySearchIndexToInsert(array2, array1[i]);
+                int index2 = BinarySearch.binarySearchIndexToInsert(array2, array1[i]);
                 j = index2;
             }
         }
