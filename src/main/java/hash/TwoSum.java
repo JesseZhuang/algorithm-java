@@ -32,9 +32,16 @@ import static util.IntArrayUtil.boxIntArray;
  */
 public class TwoSum {
 
+    /**
+     * Two sum return indexes.
+     *
+     * @param nums array, e.g. [0, 1, -3, 20, 10]
+     * @param target sum to look for, e.g. 10.
+     * @return the two indexes.
+     */
     public int[] twoSumRadixArray(int[] nums, int target) {
         int min = 0, max = 0;
-        // first loop to find max and min integers
+        // first loop to find max and min integers, e.g. min = -3, max = 20
         for (int i = 0; i < nums.length; i++) {
             if (i == 0) {
                 min = nums[i];
@@ -45,22 +52,23 @@ public class TwoSum {
             }
         }
         // valid range for input integers relative to target
-        int sMin = Math.max(min, target - max);
-        int sMax = Math.min(max, target - min);
+        int sMin = Math.max(min, target - max); // e.g. sMin = -3
+        int sMax = Math.min(max, target - min); // e.g. sMax = 13
         // array to keep indices of valid input integers initialize with -1
-        int radixSize = 1 + sMax - sMin; // Radix size R
+        int radixSize = 1 + sMax - sMin; // Radix size R, e.g. 17
         int[] arr = new int[radixSize];
         for (int i = 0; i < arr.length; i++) arr[i] = -1;
 
         // second loop
-        int offset = -sMin;
+        int offset = -sMin; // e.g. 3
         for (int i = 0; i < nums.length; i++) {
             // Skip if integer is not from a valid range
             if (nums[i] > sMax || nums[i] < sMin) continue;
             // if found valid X1 and corresponding element of indices array is still -1
             // then mark its pair X2 = target - X1 in indices array
             if (arr[nums[i] + offset] == -1) arr[target - nums[i] + offset] = i;
-            else return new int[]{arr[nums[i] + offset], i};
+            // e.g. arr[13]=0, arr[12]=1, arr[16]=2
+            else return new int[]{arr[nums[i] + offset], i};//e.g. arr[13]==0 != -1, return [0, 4]
         }
         return new int[]{0, 0};
     }
