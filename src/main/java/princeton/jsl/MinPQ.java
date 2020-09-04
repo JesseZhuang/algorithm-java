@@ -20,6 +20,12 @@ public class MinPQ<Key extends Comparable<Key>> {
         this.comparator = comparator;
     }
 
+    public MinPQ(Key[] keys) {
+        this(keys.length);
+        for (int i = 1; i <= keys.length; i++) pq[i] = keys[i - 1];
+        for (int i = keys.length / 2; i >= 1; i--) sink(i);
+    }
+
     void insert(Key key) throws Exception {
         if (size == pq.length - 1) {
             throw new Exception("pq is full");
