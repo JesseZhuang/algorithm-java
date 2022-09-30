@@ -20,12 +20,17 @@ package array;
 public class FindArrayPeak {
     public int peakIndex(Integer[] a) {
         int lo = 0, hi = a.length - 1;
-        while (lo <= hi) {
-            int mid = lo + (hi - lo) / 2;
-            if (a[mid - 1] < a[mid]) {
-                if (a[mid + 1] < a[mid]) return mid;
-                else lo = mid + 1;
-            } else hi = mid - 1;
+        try {
+            while (lo <= hi) {
+                int mid = lo + (hi - lo) / 2;
+                if (a[mid - 1] < a[mid]) {
+                    if (a[mid + 1] < a[mid]) return mid;
+                    else lo = mid + 1;
+                } else hi = mid - 1;
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(e);
+            throw new IllegalStateException("Could not find peak element.");
         }
         throw new IllegalStateException("Did not find peak element.");
     }

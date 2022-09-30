@@ -2,6 +2,7 @@ package array;
 
 import junit.converter.IntegerArrayConverter;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -23,6 +24,7 @@ public class FindArrayPeakTest {
         assertEquals(peakIndex, tbt.peakIndex(a));
     }
 
+    @Test
     void testInvalid() {
         Integer[] a = new Integer[]{4, 2, 4};
         assertThrows(IllegalStateException.class, () -> tbt.peakIndex(a));
