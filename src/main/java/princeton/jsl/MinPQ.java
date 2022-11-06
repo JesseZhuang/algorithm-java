@@ -20,6 +20,7 @@ public class MinPQ<Key extends Comparable<Key>> {
         this.comparator = comparator;
     }
 
+    // construct pq in O(N) time
     public MinPQ(Key[] keys) {
         this(keys.length);
         for (int i = 1; i <= keys.length; i++) pq[i] = keys[i - 1];
