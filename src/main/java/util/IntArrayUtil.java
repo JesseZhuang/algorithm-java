@@ -78,6 +78,18 @@ public class IntArrayUtil {
         nums[j] = temp;
     }
 
+    public static void swap(Integer[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public static boolean isSorted(Comparable[] a, int lo, int hi) {
+        for (int i = lo + 1; i <= hi; i++)
+            if (a[i].compareTo(a[i - 1]) < 0) return false;
+        return true;
+    }
+
     public static int binarySearchRange(int[] nums, int lo, int hi, int target) {
         while (lo <= hi) {
             int mid = lo + (hi - lo) / 2;
