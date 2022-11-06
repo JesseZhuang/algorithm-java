@@ -2,6 +2,7 @@ package graph;
 
 import edu.princeton.cs.algs4.CC;
 import edu.princeton.cs.algs4.Graph;
+import princeton.jsl.WeightedQuickUnionPathCompressionUF;
 
 import java.util.Arrays;
 

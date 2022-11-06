@@ -2,6 +2,7 @@ package graph;
 
 import princeton.jsl.Cycle;
 import princeton.jsl.Graph;
+import princeton.jsl.WeightedQuickUnionPathCompressionUF;
 
 import java.util.HashSet;
 import java.util.Set;

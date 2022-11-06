@@ -1,5 +1,7 @@
 package graph;
 
+import princeton.jsl.WeightedQuickUnionPathCompressionUF;
+
 import java.util.Arrays;
 
 /**

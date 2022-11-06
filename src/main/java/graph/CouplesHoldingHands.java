@@ -1,5 +1,7 @@
 package graph;
 
+import princeton.jsl.WeightedQuickUnionPathCompressionUF;
+
 /**
  * LeetCode 765. Hard. Tags: Greedy, Union Find, Graph.
  * <p>
