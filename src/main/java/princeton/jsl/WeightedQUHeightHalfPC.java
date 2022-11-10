@@ -32,7 +32,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 
 /**
- * Weight by height
+ * Weight by height, algs4 jar UF.java
  * <p>
  * The {@code WeightedQUHeightHalfPC} class represents a <em>union–find data type</em>
  * (also known as the <em>disjoint-sets data type</em>).
