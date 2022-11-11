@@ -1,10 +1,18 @@
 package princeton.jsl;
 
 
+import edu.princeton.cs.algs4.GraphGenerator;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
+
 import java.util.*;
 
 /**
- * Implement with jsl queue.
+ * The EulerianCycle class represents a data type for finding an Eulerian cycle or path in a graph.
+ * An Eulerian cycle is a cycle (not necessarily simple) that uses every edge in the graph exactly once.
+ * This implementation uses a nonrecursive depth-first search. The constructor runs in O(E + V) time,
+ * and uses O(E + V) extra space, where E is the number of edges and V the number of vertices
+ * All other methods take O(1) time.
  */
 public class EulerianCycle {
     private Stack<Integer> cycle = new Stack<Integer>();  // Eulerian cycle; null if no such cycle
@@ -183,5 +191,68 @@ public class EulerianCycle {
         if (first != last) return false;
 
         return true;
+    }
+
+    private static void unitTest(edu.princeton.cs.algs4.Graph G, String description) {
+        StdOut.println(description);
+        StdOut.println("-------------------------------------");
+        StdOut.print(G);
+
+        edu.princeton.cs.algs4.EulerianCycle euler = new edu.princeton.cs.algs4.EulerianCycle(G);
+
+        StdOut.print("Eulerian cycle: ");
+        if (euler.hasEulerianCycle()) {
+            for (int v : euler.cycle()) {
+                StdOut.print(v + " ");
+            }
+            StdOut.println();
+        }
+        else {
+            StdOut.println("none");
+        }
+        StdOut.println();
+    }
+
+    public static void main(String[] args) {
+        int V = 3;
+        int E = 3;
+
+        // Eulerian cycle
+        edu.princeton.cs.algs4.Graph G1 = GraphGenerator.eulerianCycle(V, E);
+        unitTest(G1, "Eulerian cycle");
+
+        // Eulerian path
+        edu.princeton.cs.algs4.Graph G2 = GraphGenerator.eulerianPath(V, E);
+        unitTest(G2, "Eulerian path");
+
+        // empty graph
+        edu.princeton.cs.algs4.Graph G3 = new edu.princeton.cs.algs4.Graph(V);
+        unitTest(G3, "empty graph");
+
+        // self loop
+        edu.princeton.cs.algs4.Graph G4 = new edu.princeton.cs.algs4.Graph(V);
+        int v4 = StdRandom.uniform(V);
+        G4.addEdge(v4, v4);
+        unitTest(G4, "single self loop");
+
+        // union of two disjoint cycles
+        edu.princeton.cs.algs4.Graph H1 = GraphGenerator.eulerianCycle(V/2, E/2);
+        edu.princeton.cs.algs4.Graph H2 = GraphGenerator.eulerianCycle(V - V/2, E - E/2);
+        int[] perm = new int[V];
+        for (int i = 0; i < V; i++)
+            perm[i] = i;
+        StdRandom.shuffle(perm);
+        edu.princeton.cs.algs4.Graph G5 = new edu.princeton.cs.algs4.Graph(V);
+        for (int v = 0; v < H1.V(); v++)
+            for (int w : H1.adj(v))
+                G5.addEdge(perm[v], perm[w]);
+        for (int v = 0; v < H2.V(); v++)
+            for (int w : H2.adj(v))
+                G5.addEdge(perm[V/2 + v], perm[V/2 + w]);
+        unitTest(G5, "Union of two disjoint cycles");
+
+        // random digraph
+        edu.princeton.cs.algs4.Graph G6 = GraphGenerator.simple(V, E);
+        unitTest(G6, "simple graph");
     }
 }
