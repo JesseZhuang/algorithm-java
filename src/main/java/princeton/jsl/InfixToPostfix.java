@@ -31,7 +31,6 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class InfixToPostfix {
     public static void main(String[] args) {
-        Stack<String> stack = new Stack<>();
         String[] tests = new String[]{
                 "( 2 + ( ( 3 + 4 ) * ( 5 * 6 ) ) )",
                 "( ( ( 5 + ( 7 * ( 1 + 1 ) ) ) * 3 ) + ( 2 * ( 1 + 1 ) ) )",
@@ -39,6 +38,7 @@ public class InfixToPostfix {
         };
         for (String test : tests) {
             String[] tokens = test.split(" ");
+            Stack<String> stack = new Stack<>();
             StringBuilder postFix = new StringBuilder();
             for (String token : tokens) {
                 if (token.equals("+")) stack.push(token);
@@ -47,6 +47,7 @@ public class InfixToPostfix {
                 else if (token.equals("("));
                 else postFix.append(token + " ");
             }
+            StdOut.println(test + ": ");
             StdOut.println(postFix.toString());
         }
     }
