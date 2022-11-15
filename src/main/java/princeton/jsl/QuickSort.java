@@ -1,5 +1,7 @@
 package princeton.jsl;
 
+import util.IntArrayUtil;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,14 +45,9 @@ public class QuickSort {
         Integer[] a = new Integer[]{2, 1, 3, 1, 2, 2, 2, 2, 2};
         QuickSort.sort(a);
         for (int i = 0; i < 100; i++) {
-            Random r = new Random();
-            int length = 20;
-            a = new Integer[length];
-            for (int j = 0; j < length; j++) {
-                a[j] = r.nextInt(10);
-            }
+            a = IntArrayUtil.generateRandomArray(20, 10);
             QuickSort.sort(a);
-            if (!isSorted(a, 0, length - 1)) System.out.println(Arrays.toString(a));
+            if (!isSorted(a, 0, 20 - 1)) System.out.println(Arrays.toString(a));
         }
     }
 }

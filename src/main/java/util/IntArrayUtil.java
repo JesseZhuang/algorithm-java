@@ -115,4 +115,13 @@ public class IntArrayUtil {
             result[i] = integers[i];
         return result;
     }
+
+    public static Integer[] generateRandomArray(int length, int bound) {
+        Random r = new Random();
+        Integer[] a = new Integer[length];
+        for (int j = 0; j < length; j++) {
+            a[j] = r.nextInt(bound);
+        }
+        return a;
+    }
 }
