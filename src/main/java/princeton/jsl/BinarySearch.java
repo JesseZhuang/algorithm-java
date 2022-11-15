@@ -56,8 +56,11 @@ public class BinarySearch {
      * @return index of key in array {@code a} if present; {@code -1} otherwise
      */
     public static int indexOf(int[] a, int key) {
-        int lo = 0;
-        int hi = a.length - 1;
+        return indexOf(a, key, 0, a.length - 1);
+    }
+
+    public static int indexOf(int[] a, int key, int lo, int hi) {
+        if (lo < 0 || hi > a.length - 1) throw new IllegalArgumentException("range is not valid");
         while (lo <= hi) {
             // Key is in a[lo..hi] or not present.
             int mid = lo + (hi - lo) / 2;

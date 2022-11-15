@@ -16,10 +16,20 @@ public class ThreeSumTest {
     }
 
     @Test
-    void testBruteForce () {
+    void testBruteForce() {
         for (int i = 0; i < 100; i++) {
             int[] unboxed = IntArrayUtil.unBoxIntegerArray(IntArrayUtil.generateRandomArray(30, 9));
             assertEquals(edu.princeton.cs.algs4.ThreeSum.count(unboxed), tbt.countBF(unboxed, 0));
         }
+    }
+
+    @Test
+    void testFastWithDuplicates() {
+        int[] a = new int[]{3, 3, 3, 3};
+        assertEquals(4, tbt.countBF(a, 9)); // 4 pick 3, 4 possibilities
+        assertEquals(4, tbt.count(a, 9));
+        a = new int[]{3, 3, 3, 3, 3};
+        assertEquals(10, tbt.countBF(a, 9)); // 5 pick 3, 10 possibilities
+        assertEquals(10, tbt.count(a, 9));
     }
 }
