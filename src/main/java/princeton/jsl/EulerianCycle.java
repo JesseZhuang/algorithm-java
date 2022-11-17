@@ -10,12 +10,12 @@ import java.util.*;
 /**
  * The EulerianCycle class represents a data type for finding an Eulerian cycle or path in a graph.
  * An Eulerian cycle is a cycle (not necessarily simple) that uses every edge in the graph exactly once.
- * This implementation uses a nonrecursive depth-first search. The constructor runs in O(E + V) time,
+ * This implementation uses depth-first search. The constructor runs in O(E + V) time,
  * and uses O(E + V) extra space, where E is the number of edges and V the number of vertices
  * All other methods take O(1) time.
  */
 public class EulerianCycle {
-    private Stack<Integer> cycle = new Stack<Integer>();  // Eulerian cycle; null if no such cycle
+    private Stack<Integer> cycle = new Stack<>();  // Eulerian cycle; null if no such cycle
 
     // an undirected edge, with a field to indicate whether the edge has already been used
     private static class Edge {
@@ -80,15 +80,27 @@ public class EulerianCycle {
 
         // initialize stack with any non-isolated vertex
         int s = nonIsolatedVertex(G);
+
+         // dfsStack(s, adj);
+         dfsRecursive(s, adj);
+
+        // check if all edges are used
+        if (cycle.size() != G.E() + 1)
+            cycle = null;
+
+        assert certifySolution(G);
+    }
+
+    private void dfsStack(int s, List<Queue<Edge>> simplifiedAdj) {
         Stack<Integer> stack = new Stack<Integer>();
         stack.push(s);
 
         // greedily search through edges in iterative DFS style
-        cycle = new Stack<Integer>();
+        cycle = new Stack<>();
         while (!stack.isEmpty()) {
             int v = stack.pop();
-            while (!adj.get(v).isEmpty()) {
-                Edge edge = adj.get(v).remove();
+            while (!simplifiedAdj.get(v).isEmpty()) {
+                Edge edge = simplifiedAdj.get(v).remove();
                 if (edge.isUsed) continue;
                 edge.isUsed = true;
                 stack.push(v);
@@ -97,12 +109,17 @@ public class EulerianCycle {
             // push vertex with no more leaving edges to cycle
             cycle.push(v);
         }
+    }
 
-        // check if all edges are used
-        if (cycle.size() != G.E() + 1)
-            cycle = null;
-
-        assert certifySolution(G);
+    private void dfsRecursive(int s, List<Queue<Edge>> simplifiedAdj) {
+        cycle = new Stack<>();
+        for(Edge e: simplifiedAdj.get(s)) {
+            if (e.isUsed) continue;
+            e.isUsed = true;
+            int w = e.other(s);
+            dfsRecursive(w, simplifiedAdj);
+        }
+        cycle.push(s);
     }
 
     /**
