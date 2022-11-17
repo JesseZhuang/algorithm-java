@@ -24,12 +24,15 @@ public class ThreeSumTest {
     }
 
     @Test
-    void testFastWithDuplicates() {
+    void testWithDuplicates() {
         int[] a = new int[]{3, 3, 3, 3};
         assertEquals(4, tbt.countBF(a, 9)); // 4 pick 3, 4 possibilities
         assertEquals(4, tbt.count(a, 9));
+        assertEquals(4, tbt.countWithMap(a, 9));
+
         a = new int[]{3, 3, 3, 3, 3};
         assertEquals(10, tbt.countBF(a, 9)); // 5 pick 3, 10 possibilities
         assertEquals(10, tbt.count(a, 9));
+        assertEquals(10, tbt.countWithMap(a, 9));
     }
 }
