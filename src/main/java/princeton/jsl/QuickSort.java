@@ -5,7 +5,6 @@ import util.IntArrayUtil;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import static util.IntArrayUtil.isSorted;
 import static util.IntArrayUtil.swap;

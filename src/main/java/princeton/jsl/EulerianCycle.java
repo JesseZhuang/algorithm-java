@@ -250,7 +250,7 @@ public class EulerianCycle {
         edu.princeton.cs.algs4.Graph G1 = GraphGenerator.eulerianCycle(V, E);
         unitTest(convertGraph(G1), "Eulerian cycle");
 
-        // Eulerian path
+        // Eulerian path, path can be a cycle
         edu.princeton.cs.algs4.Graph G2 = GraphGenerator.eulerianPath(V, E);
         unitTest(convertGraph(G2), "Eulerian path");
 
