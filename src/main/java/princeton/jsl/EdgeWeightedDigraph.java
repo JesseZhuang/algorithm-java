@@ -1,8 +1,8 @@
 package princeton.jsl;
 
-import edu.princeton.cs.algs4.DirectedEdge;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdRandom;
+import graph.DirectedEdge;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class EdgeWeightedDigraph {
     /**
      * Initializes an empty edge-weighted digraph with {@code V} vertices and 0 edges.
      *
-     * @param  V the number of vertices
+     * @param V the number of vertices
      * @throws IllegalArgumentException if {@code V < 0}
      */
     public EdgeWeightedDigraph(int V) {
@@ -37,7 +37,7 @@ public class EdgeWeightedDigraph {
     /**
      * Initializes a new edge-weighted digraph that is a deep copy of {@code G}.
      *
-     * @param  G the edge-weighted digraph to copy
+     * @param G the edge-weighted digraph to copy
      */
     public EdgeWeightedDigraph(EdgeWeightedDigraph G) {
         this(G.V());
@@ -77,15 +77,15 @@ public class EdgeWeightedDigraph {
     // throw an IllegalArgumentException unless {@code 0 <= v < V}
     private void validateVertex(int v) {
         if (v < 0 || v >= V)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
+            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V - 1));
     }
 
     /**
      * Adds the directed edge {@code e} to this edge-weighted digraph.
      *
-     * @param  e the edge
+     * @param e the edge
      * @throws IllegalArgumentException unless endpoints of edge are between {@code 0}
-     *         and {@code V-1}
+     *                                  and {@code V-1}
      */
     public void addEdge(DirectedEdge e) {
         int v = e.from();
@@ -101,7 +101,7 @@ public class EdgeWeightedDigraph {
     /**
      * Returns the directed edges incident from vertex {@code v}.
      *
-     * @param  v the vertex
+     * @param v the vertex
      * @return the directed edges incident from vertex {@code v} as an Iterable
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
@@ -114,7 +114,7 @@ public class EdgeWeightedDigraph {
      * Returns the number of directed edges incident from vertex {@code v}.
      * This is known as the <em>outdegree</em> of vertex {@code v}.
      *
-     * @param  v the vertex
+     * @param v the vertex
      * @return the outdegree of vertex {@code v}
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
@@ -127,7 +127,7 @@ public class EdgeWeightedDigraph {
      * Returns the number of directed edges incident to vertex {@code v}.
      * This is known as the <em>indegree</em> of vertex {@code v}.
      *
-     * @param  v the vertex
+     * @param v the vertex
      * @return the indegree of vertex {@code v}
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
@@ -157,7 +157,7 @@ public class EdgeWeightedDigraph {
      * Returns a string representation of this edge-weighted digraph.
      *
      * @return the number of vertices <em>V</em>, followed by the number of edges <em>E</em>,
-     *         followed by the <em>V</em> adjacency lists of edges
+     * followed by the <em>V</em> adjacency lists of edges
      */
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -175,8 +175,8 @@ public class EdgeWeightedDigraph {
     /**
      * Initializes a random edge-weighted digraph with {@code V} vertices and <em>E</em> edges.
      *
-     * @param  V the number of vertices
-     * @param  E the number of edges
+     * @param V the number of vertices
+     * @param E the number of edges
      * @throws IllegalArgumentException if {@code V < 0}
      * @throws IllegalArgumentException if {@code E < 0}
      */
@@ -199,7 +199,7 @@ public class EdgeWeightedDigraph {
      * followed by <em>E</em> pairs of vertices and edge weights,
      * with each entry separated by whitespace.
      *
-     * @param  in the input stream
+     * @param in the input stream
      * @throws IllegalArgumentException if the endpoints of any edge are not in prescribed range
      * @throws IllegalArgumentException if the number of vertices or edges is negative
      */
