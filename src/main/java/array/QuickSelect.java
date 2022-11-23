@@ -1,5 +1,7 @@
 package array;
 
+import util.IntArrayUtil;
+
 import static util.IntArrayUtil.swap;
 
 /**
@@ -29,6 +31,17 @@ public class QuickSelect {
         return pivotloc;
     }
 
+    public static int partitionLarge(int[] arr, int low, int high) {
+        int pivot = arr[low], pivotloc = high;
+        for (int i = high; i >= low; i--) {
+            // inserting elements of higher value to the right of the pivot location
+            if (arr[i] > pivot) swap(arr, i, pivotloc--);
+        }
+        // swapping pivot to the final pivot location
+        swap(arr, low, pivotloc);
+        return pivotloc;
+    }
+
     /**
      * finds the kth position (of the sorted array)
      * in a given unsorted array i.e this function
@@ -44,17 +57,27 @@ public class QuickSelect {
         else return kthSmallest(arr, low, partition - 1, k);
     }
 
+    public static int kthLargest(int[] array, int lo, int hi, int k) {
+        int partition = partitionLarge(array, lo, hi);
+        if (partition == array.length - k) return array[partition];
+        else if (partition < array.length - k) return kthLargest(array, partition + 1, hi, k);
+        else return kthLargest(array, lo, partition - 1, k);
+    }
+
     public static void main(String[] args) {
-        int[] array = new int[]{10, 4, 5, 8, 6, 11, 26};
+        int[] array = new int[]{10, 4, 5, 8, 6, 11, 26}; // 3rd smallest 6, 3rd largest 10
         int[] arraycopy = new int[]{10, 4, 5, 8, 6, 11, 26};
         int kPosition = 3;
         int length = array.length;
         if (kPosition > length) {
             System.out.println("Index out of bound");
         } else {
-            // find kth smallest value
+            IntArrayUtil.FYShuffle(arraycopy);
             System.out.println("K-th smallest element in array : "
-                            + kthSmallest(arraycopy, 0, length - 1,kPosition));
+                    + kthSmallest(arraycopy, 0, length - 1, kPosition));
+            IntArrayUtil.FYShuffle(arraycopy);
+            System.out.println("K-th largest element in array : "
+                    + kthLargest(arraycopy, 0, length - 1, kPosition));
         }
     }
 // adapted from geeks for geeks
