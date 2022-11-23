@@ -37,6 +37,7 @@ public class ThirdMax {
     public static void main(String[] args) {
         int[][] candies = new int[][]{
                 {3, 2, 1}, {1, 2}, {4, 3, 3, 2}, {}, {1, 2, 3}
+                // 1,        2,      2,          -1,  1
         };
         for (int i = 0; i < candies.length; i++) {
             System.out.println(thirdMaxCandies(candies[i]));

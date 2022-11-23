@@ -1,7 +1,7 @@
 package princeton.jsl;
 
-import edu.princeton.cs.algs4.DirectedEdge;
 import edu.princeton.cs.algs4.StdOut;
+import graph.DirectedEdge;
 
 import java.util.ArrayDeque;
 import java.util.Queue;

@@ -1,6 +1,6 @@
 package princeton.jsl;
 
-import edu.princeton.cs.algs4.DirectedEdge;
+import graph.DirectedEdge;
 
 import java.util.Stack;
 
