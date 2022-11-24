@@ -1,5 +1,8 @@
 package array;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Given an integer array nums, find the sum of the elements between indices i
  * and j (i ≤ j), inclusive.
@@ -30,6 +33,7 @@ public class RangeSum {
 
     private int[] sums;
 
+
     public RangeSum(int[] nums) {
         this.sums = new int[nums.length + 1];
         for (int i = 0; i < nums.length; i++) sums[i + 1] = nums[i] + sums[i];
@@ -38,5 +42,44 @@ public class RangeSum {
     public int sumRange(int i, int j) {
         // return Arrays.stream(nums, i, j + 1).sum();
         return sums[j + 1] - sums[i];
+    }
+
+    private List<Integer> accumSum;
+
+    public RangeSum() {
+        accumSum = new ArrayList<>();
+        accumSum.add(0); // adding a dummy to simplify code
+    }
+
+    public int get(int index) {
+//        if (accumSum.isEmpty()) throw new IllegalStateException("no integers available");
+//        int size = accumSum.size();
+//        if (index >= accumSum.size()) {
+//            throw new IllegalArgumentException("index is out of bound");
+//        }
+//        if (size == 1) {
+//            return accumSum.get(index);
+//        } else return accumSum.get(index) - accumSum.get(index - 1);
+        if (accumSum.size() == 1) throw new IllegalStateException("no integers available");
+        if (index + 1 >= accumSum.size()) throw new IllegalArgumentException("index is out of bound");
+        return accumSum.get(index + 1) - accumSum.get(index);
+    }
+
+    public void add(int n) {
+//        int size = accumSum.size();
+//        int prevSum = size == 0 ? 0 : accumSum.get(size - 1);
+//        int newSum = prevSum + n;
+//        accumSum.add(newSum);
+        accumSum.add(accumSum.get(accumSum.size() - 1) + n);
+    }
+
+    // i, j are non negative and j > i
+    public int sum(int i, int j) {
+//        if (accumSum.isEmpty()) return 0;
+//        if (i == 0) {
+//            return accumSum.get(j);
+//        } else return accumSum.get(j) - accumSum.get(i - 1);
+        if (accumSum.isEmpty()) return 0;
+        return accumSum.get(j + 1) - accumSum.get(i);
     }
 }
