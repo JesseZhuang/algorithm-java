@@ -34,6 +34,10 @@ public class DirectedEdge {
         else throw new IllegalArgumentException("edge does not contain vertex: " + vertex);
     }
 
+    public double weight() {
+        return weight.orElseThrow(() -> new IllegalStateException("not a weighted edge"));
+    }
+
     @Override
     public String toString() {
         return "DirectedEdge{" +
