@@ -1,7 +1,6 @@
 package princeton.jsl;
 
 import edu.princeton.cs.algs4.In;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

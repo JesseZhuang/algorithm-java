@@ -11,14 +11,14 @@ import java.util.TreeSet;
 /**
  * <p>
  * LeetCode 414 Easy. Tags: Array, Sorting.
- * Find third distinct maximum in the array.
+ * Find third (k th) distinct maximum in the array.
  * <p>
  * kth distinct Maximum
  * <p>
  * <ul>
  *     <ui>sort, O(NLgN) time, O(1) space</ui>
- *     <ui>min heap, O(N) time, O(1) space</ui>
- *     <ui>tree set, O(N) time, O(1) space</ui>
+ *     <ui>min heap, O(NLgk + kLgk) time, O(k) space</ui>
+ *     <ui>tree set, O(NLgk + Lgk) time, O(k) space</ui>
  *     <ui>quick select, set to dedupe, O(N) time, O(N) space</ui>
  * </ul>
  */
