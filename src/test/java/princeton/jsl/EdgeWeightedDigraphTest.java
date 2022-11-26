@@ -4,17 +4,16 @@ import edu.princeton.cs.algs4.In;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Scanner;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EdgeWeightedDigraphTest {
-    private static In in;
+    private In in;
 
     @BeforeEach
     void setup() {
-        ClassLoader classLoader = EdgeWeightedDigraphTest.class.getClassLoader();
-        in = new In(new Scanner(classLoader.getResourceAsStream("graph/1000EWD.txt")));
+        //ClassLoader classLoader = EdgeWeightedDigraphTest.class.getClassLoader();
+        //in = new In(new Scanner(classLoader.getResourceAsStream("graph/1000EWD.txt")));
+        in = new In("/graph/1000EWD.txt");
     }
 
     @Test
