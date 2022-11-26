@@ -2,13 +2,8 @@ package array;
 
 import util.IntArrayUtil;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Find third distinct maximum in the array.
@@ -51,11 +46,11 @@ public class ThirdMax {
         Set<Integer> set = new HashSet<>();
         int max = -1;
         for (int num : candyNumbers) {
-            if(num > max) max = num;
+            if (num > max) max = num;
             set.add(num);
         }
         candyNumbers = IntArrayUtil.unBoxIntegerArray(set.toArray(new Integer[0]));
-        if(set.size() < 3) return max;
+        if (set.size() < 3) return max;
         else return QuickSelect.kthLargest(candyNumbers, 0, candyNumbers.length - 1, 3);
     }
 
