@@ -5,6 +5,12 @@ import edu.princeton.cs.algs4.EdgeWeightedDigraph;
 import edu.princeton.cs.algs4.In;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import util.CollectionUtil;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DijkstraShortestPathTest {
     private In in1;
@@ -20,13 +26,27 @@ public class DijkstraShortestPathTest {
     void testPrincetonSameToPQVersion() {
         DijkstraSP sp1 = new DijkstraSP(new EdgeWeightedDigraph(in1), 0);
         DijkstraShortestPath sp2 = new DijkstraShortestPath(new princeton.jsl.EdgeWeightedDigraph(in2), 0);
-        for (int v = 0; v < 1000; v++) {
-            // assertEquals(sp1.hasPathTo(v), sp2.hasPathTo(v));
-            if (sp1.distTo(v) != sp2.distTo(v)) {
-                System.out.println("distTo: " + v);
-                System.out.println(sp1.distTo(v));
-                System.out.println(sp2.distTo(v));
-            }
-        }
+        for (int v = 0; v < 1000; v++) assertEquals(sp1.hasPathTo(v), sp2.hasPathTo(v));
+    }
+
+    @Test
+    void testPQVersion() {
+        DijkstraShortestPath sp = new DijkstraShortestPath(new princeton.jsl.EdgeWeightedDigraph(
+                new In("/graph/EWD.cycle.txt")), 2);
+        assertEquals(Arrays.asList(3, 4, 5, 7, 0), CollectionUtil.newArrayList(sp.pathTo(0)).stream()
+                .map(e -> e.to()).collect(Collectors.toList()));
+        assertEquals(0.68, sp.distTo(0));
+    }
+
+    @Test
+    void testPQVersionRelaxedRoute() {
+        DijkstraShortestPath sp = new DijkstraShortestPath(new princeton.jsl.EdgeWeightedDigraph(
+                new In("/graph/EWD.cycle.txt")), 1);
+        assertEquals(0.14, sp.distTo(3));
+        assertEquals(Arrays.asList(2, 3), CollectionUtil.newArrayList(sp.pathTo(3)).stream()
+                .map(e -> e.to()).collect(Collectors.toList()));
+        assertEquals(0.5, sp.distTo(4));
+        assertEquals(Arrays.asList(2, 3, 4), CollectionUtil.newArrayList(sp.pathTo(4)).stream()
+                .map(e -> e.to()).collect(Collectors.toList()));
     }
 }

@@ -22,7 +22,7 @@ public class DijkstraShortestPath {
     private PriorityQueue<DirectedEdge> minHeap;
 
     public DijkstraShortestPath(EdgeWeightedDigraph graph, int source) {
-        minHeap = new PriorityQueue<>(graph.V(), Comparator.comparingDouble(edge -> edge.weight()));
+        minHeap = new PriorityQueue<>(graph.V(), Comparator.comparingDouble(edge -> distTo[edge.from()]));
         distTo = new double[graph.V()];
         edgeTo = new DirectedEdge[graph.V()];
 
@@ -31,7 +31,7 @@ public class DijkstraShortestPath {
         minHeap.add(new DirectedEdge(source, source, 0.0));
 
         while (!minHeap.isEmpty()) {
-            int v = minHeap.poll().from();
+            int v = minHeap.poll().to();// the popped edge is the one whose starting vertex is closest to source
             for (DirectedEdge e : graph.adj(v)) {
                 relax(e);
             }
@@ -46,7 +46,7 @@ public class DijkstraShortestPath {
         int v = e.from(), w = e.to();
         if (distTo[w] > distTo[v] + e.weight()) {
             distTo[w] = distTo[v] + e.weight();
-            edgeTo[w] = e;
+            edgeTo[w] = e;// perhaps no need to update pq for distTo w
             minHeap.add(e);
         }
     }
