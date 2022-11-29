@@ -49,4 +49,20 @@ public class DijkstraShortestPathTest {
         assertEquals(Arrays.asList(2, 3, 4), CollectionUtil.newArrayList(sp.pathTo(4)).stream()
                 .map(e -> e.to()).collect(Collectors.toList()));
     }
+
+    @Test
+    void testWithRandomGraph() {
+        for(int i = 0; i < 100; i++) {
+            princeton.jsl.EdgeWeightedDigraph graph = new princeton.jsl.EdgeWeightedDigraph(100, 8630);
+            EdgeWeightedDigraph graph2 = new EdgeWeightedDigraph(100);
+            for (DirectedEdge e : graph.edges()) graph2.addEdge(
+                    new edu.princeton.cs.algs4.DirectedEdge(e.from(), e.to(), e.weight()));
+            DijkstraShortestPath sp = new DijkstraShortestPath(graph, 2);
+            DijkstraSP sp2 = new DijkstraSP(graph2, 2);
+            for (int j = 0; j < 100; j++) {
+                assertEquals(sp2.hasPathTo(j), sp.hasPathTo(j));
+                assertEquals(sp2.distTo(j), sp.distTo(j));
+            }
+        }
+    }
 }
