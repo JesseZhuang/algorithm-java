@@ -2,7 +2,7 @@ package dp;
 
 /**
  * <p>
- * LeetCode 121. Easy.
+ * LeetCode 121. Easy. Tags: Array, Dynamic Programming.
  * <p>
  * Best Time to Buy and Sell Stock，Easy. Say you have an array for which
  * the ith element is the price of a given stock on day i.
