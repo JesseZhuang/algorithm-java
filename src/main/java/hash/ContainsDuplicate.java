@@ -6,7 +6,7 @@ import java.util.Set;
 
 /**
  * <p>
- * LeetCode 217. Easy.
+ * LeetCode 217. Easy. Tags: array, hash table, sorting.
  * <p>
  * Given an array of integers, find if the array contains any
  * duplicates. Your function should return true if any value appears at least
