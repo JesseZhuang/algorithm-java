@@ -1,5 +1,6 @@
 package util;
 
+import java.util.Arrays;
 import java.util.Random;
 
 @SuppressWarnings("unused")
@@ -124,4 +125,9 @@ public class IntArrayUtil {
         }
         return a;
     }
+
+    public static int maxOfArrayWithStream(int[] nums) {
+        return Arrays.stream(nums).max().getAsInt();
+    }
+
 }
