@@ -89,7 +89,7 @@ public class MaxSubarray {
      * divide and conquer, O(N) time, O(N) space. T(N) = 2T(N/2) + O(1).
      */
     int maxSubarrayDC2Helper(int[] nums, int left, int right, int[] pre, int[] suf) {
-        // note stop a little earlier than DC1 to ensure correctness
+        // note stop a little earlier than DC1 to avoid pre[mid-1] index out of bound when left+1==right
         if (left == right) return nums[left];
         int mid = (left + right) / 2;
         return IntArrayUtil.maxOfArrayWithStream(new int[]{maxSubarrayDC2Helper(nums, left, mid, pre, suf),
