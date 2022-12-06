@@ -1,0 +1,5 @@
+positive, negative, 0
+input: integer array(delimited with comma, empty array is {}) output: the max product
+-2,3,-4 24
+2,3,-2,4 6
+-2,0,-1 0
