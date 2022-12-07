@@ -20,6 +20,7 @@ import struct.ListNode;
  * </ul>
  */
 public class Merge2SortedLists {
+    // 1ms 43.1 MB. merge sort merge step.
     public ListNode mergeTwoListsIter(ListNode l1, ListNode l2) {
         ListNode cur1 = l1, cur2 = l2;
         if (cur1 == null) return l2;
@@ -50,6 +51,7 @@ public class Merge2SortedLists {
         return head;
     }
 
+    // 0ms 41.8Mb.
     public ListNode mergeTwoListsIter2(ListNode l1, ListNode l2) {
         if (l1 == null) return l2;
         if (l2 == null) return l1;
@@ -73,10 +75,10 @@ public class Merge2SortedLists {
         else return b;
     }
 
+    // elegant, 0ms 41.9 Mb.
     public ListNode mergeTwoListsRec(ListNode l1, ListNode l2) {
         if (l1 == null) return l2;
         if (l2 == null) return l1;
-
         if (l1.val < l2.val) {
             l1.next = mergeTwoListsRec(l1.next, l2);
             return l1;
