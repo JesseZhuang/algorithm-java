@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * If duplicates are present, count all possible combinations of the array indexes.
+ * Worst case example, target 0, all array elements are 0. All possibilities are N choose 3.
+ * N * (N-1) * (N-2) / (1 * 2 * 3) which is O(N^3). C(N, 3) = N! / (3! * (N-3)!).
+ */
 public class ThreeSum {
 
     /**
