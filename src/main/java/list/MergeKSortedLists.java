@@ -1,5 +1,10 @@
 package list;
 
+import struct.ListNode;
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 /**
  * LeetCode 23 Hard. Tags: linked list, divide and conquer, heap (priority queue), merge sort.
  * <p>
@@ -39,4 +44,19 @@ package list;
  * The sum of lists[i].length will not exceed 104.
  */
 public class MergeKSortedLists {
+
+    // O(NLgk) time, O(k) space. 14 ms, 47.9 Mb.
+    public ListNode mergeKLists(ListNode[] lists) {
+        PriorityQueue<ListNode> minHeap = new PriorityQueue<>(Comparator.comparingInt(node -> node.val));
+        ListNode dummy = new ListNode(0), current = dummy;
+        for (ListNode node : lists) if (node != null) minHeap.add(node);
+        while (!minHeap.isEmpty()) {
+            ListNode node = minHeap.remove();
+            current.next = node;
+            current = current.next;
+            node = node.next;
+            if (node != null) minHeap.add(node);
+        }
+        return dummy.next;
+    }
 }
