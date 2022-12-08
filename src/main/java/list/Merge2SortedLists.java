@@ -52,7 +52,7 @@ public class Merge2SortedLists {
     }
 
     // 0ms 41.8Mb.
-    public ListNode mergeTwoListsIter2(ListNode l1, ListNode l2) {
+    public static ListNode mergeTwoListsIter2(ListNode l1, ListNode l2) {
         if (l1 == null) return l2;
         if (l2 == null) return l1;
         ListNode head = smallerOne(l1, l2), cur = head;
@@ -68,7 +68,7 @@ public class Merge2SortedLists {
         return head;
     }
 
-    private ListNode smallerOne(ListNode a, ListNode b) {
+    private static ListNode smallerOne(ListNode a, ListNode b) {
         if (a == null) return b;
         if (b == null) return a;
         if (a.val <= b.val) return a;

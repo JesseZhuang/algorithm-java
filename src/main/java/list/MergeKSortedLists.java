@@ -46,7 +46,7 @@ import java.util.PriorityQueue;
 public class MergeKSortedLists {
 
     // O(NLgk) time, O(k) space. 14 ms, 47.9 Mb.
-    public ListNode mergeKLists(ListNode[] lists) {
+    public ListNode mergeKListsHeap(ListNode[] lists) {
         PriorityQueue<ListNode> minHeap = new PriorityQueue<>(Comparator.comparingInt(node -> node.val));
         ListNode dummy = new ListNode(0), current = dummy;
         for (ListNode node : lists) if (node != null) minHeap.add(node);
@@ -59,4 +59,30 @@ public class MergeKSortedLists {
         }
         return dummy.next;
     }
+
+    // O(NLgk) time, O(Lgk) stack space. 3 ms, 47 Mb.
+    public ListNode mergeKListsMergeRecursive(ListNode[] lists) {
+        if (lists.length == 0) return null;
+        return mergeHelper(lists, 0, lists.length - 1); // length >= 1
+    }
+
+    private ListNode mergeHelper(ListNode[] lists, int left, int right) {
+        if (right - left == 0) return lists[left];
+        if (right - left == 1) return Merge2SortedLists.mergeTwoListsRec(lists[left], lists[right]);
+        int mid = left + (right - left) / 2;
+        ListNode l1 = mergeHelper(lists, left, mid), l2 = mergeHelper(lists, mid + 1, right);
+        return Merge2SortedLists.mergeTwoListsRec(l1, l2);
+    }
+
+    // merge bottom up, 5ms, 47.5Mb. O(NLgk) time, O(1) space (modified input).
+    public ListNode mergeKListsMergeBU(ListNode[] lists) {
+        int size = lists.length;
+        for (int interval = 1; interval < lists.length; interval *= 2) {
+            for (int i = 0; i < lists.length - interval; i += 2 * interval) {
+                lists[i] = Merge2SortedLists.mergeTwoListsIter2(lists[i], lists[i + interval]);
+            }
+        }
+        return size > 0 ? lists[0] : null;
+    }
+
 }
