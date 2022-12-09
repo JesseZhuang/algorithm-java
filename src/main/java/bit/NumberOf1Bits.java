@@ -8,8 +8,12 @@ package bit;
  * <p>
  * Note:
  * <p>
- * Note that in some languages, such as Java, there is no unsigned integer type. In this case, the input will be given as a signed integer type. It should not affect your implementation, as the integer's internal binary representation is the same, whether it is signed or unsigned.
- * In Java, the compiler represents the signed integers using 2's complement notation. Therefore, in Example 3, the input represents the signed integer. -3.
+ * Note that in some languages, such as Java, there is no unsigned integer type. In this case, the input will be given
+ * as a signed integer type. It should not affect your implementation, as the integer's internal binary representation
+ * is the same, whether it is signed or unsigned.
+ * <p>
+ * In Java, the compiler represents the signed integers using 2's complement notation.
+ * Therefore, in Example 3, the input represents the signed integer. -3.
  * <p>
  * <p>
  * Example 1:
@@ -68,7 +72,7 @@ public class NumberOf1Bits {
         int weight = 0;
         for (int i = 0; i < 32; i++) {// while (n != 0), 2147483648 -> -2147483648 in java
             // arithmetic right shift
-            if (n >> 1 << 1 != n) weight++; // if ((n&1) == 1)
+            if (n >> 1 << 1 != n) weight++; // weight += (n&1);
             // logical riht shift does not add more 1s
             n = n >>> 1;
         }
