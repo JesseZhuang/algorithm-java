@@ -2,7 +2,7 @@ package bit;
 
 /**
  * <p>
- * LeetCode 371. Easy.
+ * LeetCode 371. Easy. Tags: math, bit.
  * <p>
  * Calculate the sum of two integers a and b, but you are
  * not allowed to use the operator + and -.
@@ -27,7 +27,7 @@ public class SumTwoIntegers {
         if (b == 0) return a;
         while (b != 0) {
             int carry = a & b;
-            a = a ^ b;
+            a = a ^ b; // bit XOR same effect as bit wise adding
             b = carry << 1;
         }
         return a;
