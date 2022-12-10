@@ -9,7 +9,9 @@ import java.util.NoSuchElementException;
  */
 public class QueueSinglyLinked<E> {
     /**
-     * Node struct.
+     * Node struct. This nested class can be non-static. But then the Node has to be instantiated from an object of
+     * the outer class and maintain an 8-byte overhead pointer to that object. It can be handy if the inner class
+     * needs access to parent's fields and methods.
      *
      * @param <E> static inner class cannot infer the generic type for parent class.
      */
@@ -22,7 +24,7 @@ public class QueueSinglyLinked<E> {
     private Node<E> last;
     private int count;
 
-    public QueueSinglyLinked(){
+    public QueueSinglyLinked() {
         count = 0;
     }
 
