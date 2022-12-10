@@ -41,7 +41,7 @@ package bit;
  * Follow up: If this function is called many times, how would you optimize it?
  */
 public class NumberOf1Bits {
-    // 0ms 39.4 Mb. Java standard library.
+    // 0ms 39.4 Mb. Java standard library. O(Lg32) == 5
     public int hammingWeightJava(int n) {
         return Integer.bitCount(n);
     }
@@ -77,5 +77,15 @@ public class NumberOf1Bits {
             n = n >>> 1;
         }
         return weight;
+    }
+
+    // O(M), M: actual number of 1 bits in the number. 0ms 39 Mb.
+    public static int hammingWeightPop(int n) {
+        int count = 0;
+        while (n != 0) {
+            n &= (n - 1);
+            count++;
+        }
+        return count;
     }
 }
