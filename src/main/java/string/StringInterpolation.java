@@ -6,6 +6,7 @@ import java.util.Map;
 
 /**
  * With templated string containing variables and map for look up. Do the string interpolation.
+ * If cannot use regex.
  * Estimations: String length 1000 chars, contains 100 variables, map size is 1000.
  * For example, input: "hello %user%", output: "hello, Harry Potter"
  * <p>
