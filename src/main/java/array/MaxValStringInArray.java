@@ -1,5 +1,7 @@
 package array;
 
+import java.util.stream.Stream;
+
 /**
  * LeetCode 2496. Easy. Tags: array, string.
  * The value of an alphanumeric string can be defined as:
@@ -47,5 +49,11 @@ public class MaxValStringInArray {
             max = Math.max(max, n);
         }
         return max;
+    }
+
+    // 6ms, 42.5Mb.
+    public int maximumValueStream(String[] strs) {
+        return Stream.of(strs).mapToInt(t -> t.matches("\\d+") ? Integer.valueOf(t) : t.length())
+                .max().getAsInt();
     }
 }
