@@ -42,7 +42,7 @@ package bit;
  */
 public class NumberOf1Bits {
     // 0ms 39.4 Mb. Java standard library. O(Lg32) == 5
-    public int hammingWeightJava(int n) {
+    public static int hammingWeightJava(int n) {
         return Integer.bitCount(n);
     }
 
@@ -79,7 +79,7 @@ public class NumberOf1Bits {
         return weight;
     }
 
-    // O(M), M: actual number of 1 bits in the number. 0ms 39 Mb.
+    // O(M), M: actual number of 1 bits in the number. 0ms 39 Mb. Worst case O(32) for 32 bit unsigned int.
     public static int hammingWeightPop(int n) {
         int count = 0;
         while (n != 0) {
