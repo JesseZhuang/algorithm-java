@@ -37,4 +37,24 @@ package bit;
  * Follow up: If this function is called many times, how would you optimize it?
  */
 public class ReverseBits {
+    // 1ms, 42.16 Mb. O(32) time, O(1) space.
+    public int reverseBits(int n) {
+        int result = 0;
+        for (int i = 0; i < 32; i++) {
+            result <<= 1;
+            result += n & 1;
+            n >>>= 1;
+        }
+        return result;
+    }
+
+    // divide and conquer. 1ms, 42.7Mb.
+    public int reverseBits2(int n) {
+        n = (n >>> 16) | ((n << 16) & 0xFFFF0000);
+        n = ((n >>> 8) & 0x00ff00ff) | ((n << 8) & 0xff00ff00);
+        n = ((n >>> 4)) & 0x0f0f0f0f | ((n << 4) & 0xf0f0f0f0);
+        n = ((n >>> 2)) & 0x33333333 | ((n << 2) & 0xcccccccc);
+        n = ((n >>> 1)) & 0x55555555 | ((n << 1) & 0xaaaaaaaa);
+        return n;
+    }
 }
