@@ -53,6 +53,14 @@ public class MissingNumber {
         return sum;
     }
 
+    // http://people.csail.mit.edu/mip/probs.html
+    public int missingNumberSum2(int[] nums) {
+        int len = nums.length;
+        int sum = len * (len + 1);// even overflow, will modulo 2^32
+        for (int i = 0; i < len; i++) sum -= 2 * nums[i];
+        return sum / 2;
+    }
+
     // 11ms, 51 Mb. O(NLgN)time, O(1) space.
     public int missingNumberBinarySearch(int[] nums) {
         Arrays.sort(nums);
