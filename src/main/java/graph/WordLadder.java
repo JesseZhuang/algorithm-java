@@ -1,7 +1,7 @@
 package graph;
 
-import javafx.util.Pair;
 import princeton.jsl.TrieSET;
+import util.Pair;
 
 import java.util.*;
 

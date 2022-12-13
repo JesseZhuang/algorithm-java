@@ -207,7 +207,7 @@ public class WeightedQUHeightHalfPC {
             uf.union(p, q);
             StdOut.println(p + " " + q);
         }
-        StdOut.println(uf.count() + " components");
+        StdOut.println(uf.count() + " components");//ctrl+D to stop StdIn
     }
 }
 

@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
 out/
+bin/
 
 # Log file
 *.log
@@ -35,3 +36,6 @@ largeG.txt
 *.iml
 .idea/
 build/
+
+# vscode
+.vscode/
