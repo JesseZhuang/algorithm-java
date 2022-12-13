@@ -1,5 +1,8 @@
 package dp;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  * LeetCode 332, medium, tags: array, dynamic programming, bfs.
  * You are given an integer array coins representing coins of different denominations and an integer amount
@@ -41,5 +44,36 @@ public class CoinChange {
                 if (dp[i - coin] != Integer.MAX_VALUE) // check on possible overflow problem
                     dp[i] = Math.min(dp[i], dp[i - coin] + 1);
         return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+    //45 ms 54.2 Mb. O(M*N) time O(M) space for visited, average space for queue < M.
+    public static int coinChangeBFS(int[] coins, int amount) {
+        int count = 0;
+        Deque<Integer> queue = new ArrayDeque<>();
+        boolean[] visited = new boolean[amount + 1];
+        queue.add(amount);
+        visited[amount] = true;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size-- > 0) { // O(size)
+                int cur = queue.remove();
+                if (cur == 0) return count;
+                for (int coin : coins) { // O(N)
+                    int next = cur - coin;
+                    if (next >= 0 && !visited[next]) {
+                        queue.add(next);
+                        visited[next] = true;
+                    }
+                }
+            }
+            count++;
+        }
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        // coinChangeBFS(new int[]{1}, 100);
+        // coinChangeBFS(new int[]{1, 2, 5}, 100);
+        System.out.println(coinChangeBFS(new int[]{1, 3, 5, 6, 7, 10, 72}, 100));
     }
 }
