@@ -20,7 +20,14 @@ Open project from existing sources, with IntelliJ 2020, two modules were created
 
 - install extension pack for java for gradle
 - install debugger for java to run/debug
-- 
+- may need to switch java to standard mode when seeing "Run/Debug feature requires Java language server to run in Standard mode. Do you want to switch it to Standard mode now?"
+
+```
+ $ java -version
+openjdk version "1.8.0_352"
+OpenJDK Runtime Environment (Temurin)(build 1.8.0_352-b08)
+OpenJDK 64-Bit Server VM (Temurin)(build 25.352-b08, mixed mode)
+```
 
 ## Run Unit Tests
 
