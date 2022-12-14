@@ -101,11 +101,11 @@ public class LongestIncreasingSubSequence {
     public int lengthOfLISBIT(int[] nums) {
         MaxBIT bit = new MaxBIT(20001);
         int offset = 10001; // -10^4 <= nums[i] <= 10^4
-        for (int num : nums) {
-            int subLongest = bit.getSum(offset + num - 1);
+        for (int num : nums) { // dp
+            int subLongest = bit.get(offset + num - 1);
             bit.update(offset + num, subLongest + 1);
         }
-        return bit.getSum(20001);
+        return bit.get(20001);
     }
 
     /**
@@ -118,7 +118,7 @@ public class LongestIncreasingSubSequence {
             BITree = new int[size + 1];
         }
 
-        int getSum(int index) {
+        int get(int index) {
             int sum = 0;
             while (index > 0) {
                 sum = Math.max(sum, BITree[index]);
