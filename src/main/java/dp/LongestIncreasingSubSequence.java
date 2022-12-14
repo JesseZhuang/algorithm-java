@@ -1,8 +1,10 @@
 package dp;
 
 import struct.ListNode;
+import util.IntArrayUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,6 +38,17 @@ import java.util.List;
  * Reference: https://en.wikipedia.org/wiki/Patience_sorting
  */
 public class LongestIncreasingSubSequence {
+
+    // O(N^2) time, O(N) space. 85ms, 42 Mb.
+    int lengthOfLISDP(int[] nums) {
+        int[] dp = new int[nums.length]; // LIS count with nums[i] as the end element
+        Arrays.fill(dp, 1);
+        for (int i = 0; i < nums.length; ++i)
+            for (int j = 0; j < i; ++j)
+                if (nums[i] > nums[j] && dp[i] < dp[j] + 1) dp[i] = dp[j] + 1;
+        return IntArrayUtil.maxOfArrayWithStream(dp);
+    }
+
     /**
      * O(NLgN) time, O(N) space. 5ms 41.8 Mb.
      * For uniformly random deck, the expected number of piles is
