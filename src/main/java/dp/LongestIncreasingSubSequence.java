@@ -91,4 +91,47 @@ public class LongestIncreasingSubSequence {
         Collections.reverse(result);
         return result;
     }
+
+    /**
+     * Let f[x] be the length of longest increase subsequence, where all number in the subsequence <= x.
+     * This is the max element in indices [1..x] if we build the Binary Indexed Tree (BIT)
+     * <p>
+     * 3ms 42.3 Mb. O(NLgN) time, O(max) space, can reduce to O(N) space by dedupe.
+     */
+    public int lengthOfLISBIT(int[] nums) {
+        MaxBIT bit = new MaxBIT(20001);
+        int offset = 10001; // -10^4 <= nums[i] <= 10^4
+        for (int num : nums) {
+            int subLongest = bit.getSum(offset + num - 1);
+            bit.update(offset + num, subLongest + 1);
+        }
+        return bit.getSum(20001);
+    }
+
+    /**
+     * Combine dp with Fenwick Tree.
+     */
+    class MaxBIT {
+        int BITree[];
+
+        MaxBIT(int size) {
+            BITree = new int[size + 1];
+        }
+
+        int getSum(int index) {
+            int sum = 0;
+            while (index > 0) {
+                sum = Math.max(sum, BITree[index]);
+                index -= index & (-index);
+            }
+            return sum;
+        }
+
+        void update(int index, int val) {
+            while (index < BITree.length) {
+                BITree[index] = Math.max(BITree[index], val);
+                index += index & (-index);
+            }
+        }
+    }
 }
