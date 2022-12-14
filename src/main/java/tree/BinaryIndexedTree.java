@@ -14,6 +14,9 @@ public class BinaryIndexedTree {
     }
 
     /**
+     * get the sum for elements [0..index] in original array.
+     * see BITSum.png in src/main/resources
+     *
      * @param index index to get sum for [0,index]
      * @return
      */
@@ -30,6 +33,7 @@ public class BinaryIndexedTree {
 
     /**
      * update index and all parents
+     * see BITUpdate.png in src/main/resources
      *
      * @param index the index to update
      * @param val   the delta change
