@@ -1,5 +1,11 @@
 package dp;
 
+import struct.TrieNode;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * LeetCode 139, medium, tags: dynamic programming, hash table, string, trie, memoization.
  * <p>
@@ -27,11 +33,47 @@ package dp;
  * <p>
  * Constraints:
  * <p>
- * 1 <= s.length <= 300
- * 1 <= wordDict.length <= 1000
- * 1 <= wordDict[i].length <= 20
+ * 1 <= s.length <= 300, N characters
+ * 1 <= wordDict.length <= 1000, M words
+ * 1 <= wordDict[i].length <= 20, average length K characters
  * s and wordDict[i] consist of only lowercase English letters.
  * All the strings of wordDict are unique.
  */
 public class WordBreak {
+    // 7ms, 42.5 Mb. O(M^2*K) timing, O(max(N,MK)) space.
+    public boolean wordBreakDPSet(String s, List<String> wordDict) {
+        boolean[] dp = new boolean[s.length() + 1];// O(N) space, indicating word in string s ending at this index
+        dp[0] = true;
+        Set<String> wordSet = new HashSet<>(wordDict); // O(M*K) space.
+        for (int i = 1; i <= s.length(); i++) {// O(M)
+            for (int j = 0; j < i; j++) { // O(M)
+                if (dp[j] && wordSet.contains(s.substring(j, i))) { // O(K)
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
+
+
+    // 2ms, 42.4 Mb.
+    public boolean wordBreakTrie(String s, List<String> wordDict) {
+        final int R = 26; // only lower case letters
+        TrieNode root = new TrieNode(R);
+        for (String word : wordDict) root.addWord(word, c1 -> c1 - 'a');
+        boolean[] f = new boolean[s.length() + 1];
+        f[s.length()] = true;
+        for (int i = s.length() - 1; i >= 0; i--) {// check word ending at i
+            TrieNode cur = root;
+            for (int j = i; cur != null && j < s.length(); j++) {
+                cur = cur.next[s.charAt(j) - 'a'];
+                if (f[j + 1] && cur != null && cur.isWord) {
+                    f[i] = true;
+                    break;
+                }
+            }
+        }
+        return f[0];
+    }
 }
