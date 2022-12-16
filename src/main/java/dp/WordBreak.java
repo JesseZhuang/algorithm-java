@@ -57,14 +57,14 @@ public class WordBreak {
     }
 
 
-    // 2ms, 42.4 Mb.
+    // 2ms, 42.4 Mb. O(M^2*K) timing, O(max(N,MK)) space.
     public boolean wordBreakTrie(String s, List<String> wordDict) {
         final int R = 26; // only lower case letters
         TrieNode root = new TrieNode(R);
-        for (String word : wordDict) root.addWord(word, c1 -> c1 - 'a');
-        boolean[] f = new boolean[s.length() + 1];
+        for (String word : wordDict) root.addWord(word, c1 -> c1 - 'a'); // O(M*K) space.
+        boolean[] f = new boolean[s.length() + 1]; // O(N) space
         f[s.length()] = true;
-        for (int i = s.length() - 1; i >= 0; i--) {// check word ending at i
+        for (int i = s.length() - 1; i >= 0; i--) {
             TrieNode cur = root;
             for (int j = i; cur != null && j < s.length(); j++) {
                 cur = cur.next[s.charAt(j) - 'a'];
@@ -75,5 +75,17 @@ public class WordBreak {
             }
         }
         return f[0];
+    }
+
+    public boolean wordBreak1(String s, List<String> wordDict) {
+        return wordBreakRecur(s, new HashSet<>(wordDict), 0);
+    }
+
+    // T(n) = 2T(n - k) + k, O(2^n) time, O(n) space. Time limit exceeded.
+    private boolean wordBreakRecur(String s, Set<String> wordDict, int start) {
+        if (start == s.length()) return true;
+        for (int end = start + 1; end <= s.length(); end++)
+            if (wordDict.contains(s.substring(start, end)) && wordBreakRecur(s, wordDict, end)) return true;
+        return false;
     }
 }
