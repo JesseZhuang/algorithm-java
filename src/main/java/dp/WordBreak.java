@@ -3,7 +3,9 @@ package dp;
 import struct.TrieNode;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -40,13 +42,13 @@ import java.util.Set;
  * All the strings of wordDict are unique.
  */
 public class WordBreak {
-    // 7ms, 42.5 Mb. O(M^2*K) timing, O(max(N,MK)) space.
+    // 7ms, 42.5 Mb. O(N^2*K) timing, O(max(N,MK)) space.
     public boolean wordBreakDPSet(String s, List<String> wordDict) {
         boolean[] dp = new boolean[s.length() + 1];// O(N) space, indicating word in string s ending at this index
         dp[0] = true;
         Set<String> wordSet = new HashSet<>(wordDict); // O(M*K) space.
-        for (int i = 1; i <= s.length(); i++) {// O(M)
-            for (int j = 0; j < i; j++) { // O(M)
+        for (int i = 1; i <= s.length(); i++) {// O(N)
+            for (int j = 0; j < i; j++) { // O(N)
                 if (dp[j] && wordSet.contains(s.substring(j, i))) { // O(K)
                     dp[i] = true;
                     break;
@@ -57,7 +59,7 @@ public class WordBreak {
     }
 
 
-    // 2ms, 42.4 Mb. O(M^2*K) timing, O(max(N,MK)) space.
+    // 2ms, 42.4 Mb. O(N^2*K) timing, O(max(N,MK)) space.
     public boolean wordBreakTrie(String s, List<String> wordDict) {
         final int R = 26; // only lower case letters
         TrieNode root = new TrieNode(R);
@@ -81,11 +83,46 @@ public class WordBreak {
         return wordBreakRecur(s, new HashSet<>(wordDict), 0);
     }
 
-    // T(n) = 2T(n - k) + k, O(2^n) time, O(n) space. Time limit exceeded.
+    // T(n) = 2T(n - k) + k, O(2^n) time, O(max(N,MK)) space.. Time limit exceeded.
     private boolean wordBreakRecur(String s, Set<String> wordDict, int start) {
         if (start == s.length()) return true;
         for (int end = start + 1; end <= s.length(); end++)
             if (wordDict.contains(s.substring(start, end)) && wordBreakRecur(s, wordDict, end)) return true;
+        return false;
+    }
+
+    // 6ms, 42.5 Mb. O(2^n) time, O(max(N,MK)) space.
+    public boolean wordBreak2(String s, List<String> wordDict) {
+        return wordBreakMemo(s, new HashSet<>(wordDict), 0, new Boolean[s.length()]);
+    }
+
+    private boolean wordBreakMemo(String s, Set<String> wordDict, int start, Boolean[] memo) {
+        if (start == s.length()) return true;
+        if (memo[start] != null) return memo[start];
+        for (int end = start + 1; end <= s.length(); end++)
+            if (wordDict.contains(s.substring(start, end)) && wordBreakMemo(s, wordDict, end, memo))
+                return memo[start] = true;
+
+        return memo[start] = false;
+    }
+
+    // 9ms, 42.7Mb. O(max(N,MK)) space. O(V+E), V << E, O(N^2*K) time.
+    public boolean wordBreakBFS(String s, List<String> wordDict) {
+        Set<String> wordDictSet = new HashSet<>(wordDict);
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[s.length()];
+        queue.add(0);
+        while (!queue.isEmpty()) {//O(N)
+            int start = queue.remove();
+            if (visited[start]) continue;
+            for (int end = start + 1; end <= s.length(); end++) {// O(N)
+                if (wordDictSet.contains(s.substring(start, end))) {// O(K)
+                    queue.add(end);
+                    if (end == s.length()) return true;
+                }
+            }
+            visited[start] = true;
+        }
         return false;
     }
 }
