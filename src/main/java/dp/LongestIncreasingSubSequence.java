@@ -109,7 +109,8 @@ public class LongestIncreasingSubSequence {
     }
 
     /**
-     * Combine dp with Fenwick Tree.
+     * Combine dp with Fenwick (Binary Indexed) Tree.
+     * Does not support range max query because max does not have an inverse operation like sum.
      */
     class MaxBIT {
         int BITree[];

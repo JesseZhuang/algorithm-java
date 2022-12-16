@@ -3,6 +3,8 @@ package tree;
 /**
  * Fenwick Tree or binary indexed tree.
  * Compute sum of first i elements and modify the ith element are both O(LogN) time.
+ * Simple solution to calculate sum on the fly is O(N) for getSum and O(1) for update.
+ * @see edu.princeton.cs.algs4.FenwickTree
  */
 public class BinaryIndexedTree {
 

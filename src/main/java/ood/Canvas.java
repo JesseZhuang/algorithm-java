@@ -1,6 +1,7 @@
 package ood;
 
 /**
+ * Rippling.
  * basic app drawing canvas. microsoft paint or adobe photoshop simplified.
  * Operations:
  * <ul>
