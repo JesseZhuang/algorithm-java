@@ -38,4 +38,12 @@ package dp;
  * What limitation we need to add to the question to allow negative numbers?
  */
 public class CombinationSumIV {
+    // O(N*target) time, O(N) space. Time limit exceeded. Repeating computations similar to fibonacci.
+    public int combinationSum4(int[] nums, int target) {
+        if (target == 0) return 1;
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) // O(N)
+            if (target >= nums[i]) res += combinationSum4(nums, target - nums[i]); // O(N*target)
+        return res;
+    }
 }
