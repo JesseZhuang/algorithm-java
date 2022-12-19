@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * LeetCode 303, easy, tags: array, design, prefix sum.
  * Given an integer array nums, find the sum of the elements between indices i
  * and j (i ≤ j), inclusive.
  * <p>
@@ -35,7 +36,7 @@ public class RangeSum {
 
 
     public RangeSum(int[] nums) {
-        this.sums = new int[nums.length + 1];
+        this.sums = new int[nums.length + 1];// prefix sum
         for (int i = 0; i < nums.length; i++) sums[i + 1] = nums[i] + sums[i];
     }
 
