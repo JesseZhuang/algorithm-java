@@ -284,7 +284,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     // delete the key-value pair with the given key rooted at h
 
     /**
-     * <img src="/resources/RedblackBST-delete.left.png />
+     * <img src="/resources/tree.RedblackBST-delete.left.png />
      */
     private Node delete(Node h, Key key) {
         // assert get(h, key) != null;

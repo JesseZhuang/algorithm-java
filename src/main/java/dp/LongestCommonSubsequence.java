@@ -36,6 +36,8 @@ package dp;
  * hint: Try dynamic programming.
  * DP[i][j] represents the longest common subsequence of text1[0 ... i] & text2[0 ... j].
  * DP[i][j] = DP[i - 1][j - 1] + 1 , if text1[i] == text2[j] DP[i][j] = max(DP[i - 1][j], DP[i][j - 1]) , otherwise
+ * <p>
+ * see resources/longest.common.subsequence.png.
  */
 public class LongestCommonSubsequence {
     /**
