@@ -55,7 +55,7 @@ public class SegmentTreeA {
     private int rsq(int ci, int left, int right, int sLeft, int sRight) {
         if (left <= sLeft && right >= sRight) return heap[ci].sum; // query range contains search range
         if (left > sRight || right < sLeft) return 0; // query range is outside
-        int mid = mid(left, right);
+        int mid = mid(sLeft, sRight);
         return rsq(2 * ci + 1, left, right, sLeft, mid) + rsq(2 * ci + 2, left, right, mid + 1, sRight);
     }
 
