@@ -19,10 +19,22 @@ class SegmentTreeATest {
 
     @Test
     void testRangeSumQuery() {
-        assertEquals(15, tbt.rsq(1, 3));
+        assertEquals(15, tbt.rq(1, 3));
         assertEquals(1, tbt2.rsq(0, 0));
         assertEquals(11, tbt2.rsq(5, 5));
         assertEquals(36, tbt2.rsq(0, 5));
+    }
+
+    @Test
+    void testRangeMinQuery() {
+        assertEquals(1, tbt.rMinQ(0, 5));
+        assertEquals(3, tbt.rMinQ(1, 4));
+    }
+
+    @Test
+    void testRangeMaxQuery() {
+        assertEquals(11, tbt.rMaxQ(0, 5));
+        assertEquals(9, tbt.rMaxQ(1, 4));
     }
 
     @Test

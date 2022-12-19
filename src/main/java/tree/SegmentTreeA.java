@@ -11,6 +11,10 @@ public class SegmentTreeA {
         int lazy;
     }
 
+    enum Operation {
+        MIN, MAX, SUM
+    }
+
     private Node[] heap;
     private int n;
 
@@ -40,7 +44,7 @@ public class SegmentTreeA {
             build(nums, 2 * ci + 2, mid + 1, right);
             heap[ci].sum = heap[2 * ci + 1].sum + heap[2 * ci + 2].sum;
             heap[ci].min = Math.min(heap[2 * ci + 1].min, heap[2 * ci + 2].min);
-            heap[ci].max = Math.min(heap[2 * ci + 1].max, heap[2 * ci + 2].max);
+            heap[ci].max = Math.max(heap[2 * ci + 1].max, heap[2 * ci + 2].max);
         }
     }
 
@@ -48,23 +52,54 @@ public class SegmentTreeA {
         return left + (right - left) / 2;
     }
 
-    public int rsq(int left, int right) {
-        return rsq(0, left, right, 0, n - 1);
+    public int rq(int left, int right) {
+        return rq(0, left, right, 0, n - 1, Operation.SUM);
     }
 
-    private int rsq(int ci, int left, int right, int sLeft, int sRight) {
-        if (left <= sLeft && right >= sRight) return heap[ci].sum; // query range contains search range
-        if (left > sRight || right < sLeft) return 0; // query range is outside
+    private int rq(int ci, int left, int right, int sLeft, int sRight, Operation op) {
+        if (left <= sLeft && right >= sRight) {
+            switch (op) {
+                case SUM:
+                    return heap[ci].sum;
+                case MAX:
+                    return heap[ci].max;
+                case MIN:
+                    return heap[ci].min;
+            }
+        }
+        ; // query range contains search range
+        if (left > sRight || right < sLeft) { // query range is outside
+            switch (op) {
+                case SUM:
+                    return 0;
+                case MAX:
+                    return Integer.MIN_VALUE;
+                case MIN:
+                    return Integer.MAX_VALUE;
+            }
+        }
         int mid = mid(sLeft, sRight);
-        return rsq(2 * ci + 1, left, right, sLeft, mid) + rsq(2 * ci + 2, left, right, mid + 1, sRight);
+        switch (op) {
+            case SUM:
+                return rq(2 * ci + 1, left, right, sLeft, mid, op) +
+                        rq(2 * ci + 2, left, right, mid + 1, sRight, op);
+            case MAX:
+                return Math.max(rq(2 * ci + 1, left, right, sLeft, mid, op),
+                        rq(2 * ci + 2, left, right, mid + 1, sRight, op));
+            case MIN:
+                return Math.min(rq(2 * ci + 1, left, right, sLeft, mid, op),
+                        rq(2 * ci + 2, left, right, mid + 1, sRight, op));
+            default:
+                throw new RuntimeException("unsupported op");
+        }
     }
 
     public int rMinQ(int left, int right) {
-        return 0;
+        return rq(0, left, right, 0, n - 1, Operation.MIN);
     }
 
     public int rMaxQ(int left, int right) {
-        return 0;
+        return rq(0, left, right, 0, n - 1, Operation.MAX);
     }
 
     public void update(int left, int right, int delta) {
