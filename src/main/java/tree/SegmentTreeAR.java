@@ -68,6 +68,13 @@ public class SegmentTreeAR {
         return left + (right - left) / 2;
     }
 
+    /**
+     * get range sum in O(LgN) time.
+     *
+     * @param left  left boundary
+     * @param right right boundary
+     * @return the range sum
+     */
     public int rSumQ(int left, int right) {
         return rq(0, left, right, 0, n - 1, Operation.SUM);
     }
@@ -107,6 +114,14 @@ public class SegmentTreeAR {
         return rq(0, left, right, 0, n - 1, Operation.MAX);
     }
 
+    /**
+     * Perform range update. Assume no lazy propagation, k elements to update, O(kLgN) time.
+     * With lazy propagation, O(1) - O(kLgN) time.
+     *
+     * @param left  left boundary
+     * @param right right boundary
+     * @param delta the delta change to all array elements in range
+     */
     public void update(int left, int right, int delta) {
         update(0, left, right, delta, 0, n - 1);
     }
