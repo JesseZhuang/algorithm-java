@@ -11,6 +11,12 @@ public class SegmentTreeA {
         int min;
         int max;
         int lazy;
+        int left;
+        int right;
+
+        int size() {
+            return right - left + 1;
+        }
     }
 
     enum Operation {
@@ -54,22 +60,26 @@ public class SegmentTreeA {
             int mid = mid(left, right);
             build(nums, 2 * ci + 1, left, mid);
             build(nums, 2 * ci + 2, mid + 1, right);
-            heap[ci].sum = heap[2 * ci + 1].sum + heap[2 * ci + 2].sum;
-            heap[ci].min = Math.min(heap[2 * ci + 1].min, heap[2 * ci + 2].min);
-            heap[ci].max = Math.max(heap[2 * ci + 1].max, heap[2 * ci + 2].max);
+            updateCI(ci);
         }
+    }
+
+    private void updateCI(int ci) {
+        heap[ci].sum = heap[2 * ci + 1].sum + heap[2 * ci + 2].sum;
+        heap[ci].min = Math.min(heap[2 * ci + 1].min, heap[2 * ci + 2].min);
+        heap[ci].max = Math.max(heap[2 * ci + 1].max, heap[2 * ci + 2].max);
     }
 
     private int mid(int left, int right) {
         return left + (right - left) / 2;
     }
 
-    public int rq(int left, int right) {
+    public int rsq(int left, int right) {
         return rq(0, left, right, 0, n - 1, Operation.SUM);
     }
 
     private int rq(int ci, int left, int right, int sLeft, int sRight, Operation op) {
-        if (left <= sLeft && right >= sRight) {
+        if (left <= sLeft && right >= sRight) { // query range contains current search range
             switch (op) {
                 case SUM:
                     return heap[ci].sum;
@@ -104,6 +114,60 @@ public class SegmentTreeA {
     }
 
     public void update(int left, int right, int delta) {
+        update(0, left, right, delta, 0, n - 1);
+    }
 
+    private void update(int ci, int left, int right, int delta, int sLeft, int sRight) {
+//        if (heap[ci].lazy != 0) {// propagate pending update before a new update
+//
+//            heap[ci].sum += heap[ci].lazy * (sRight - sLeft + 1);
+//            heap[ci].min += heap[ci].lazy;
+//            heap[ci].max += heap[ci].lazy;
+//            if (sLeft != sRight) {// can postpone updating children, propagate lazy to children
+//                heap[2 * ci + 1].lazy += heap[ci].lazy;
+//                heap[2 * ci + 2].lazy += heap[ci].lazy;
+//            }
+//            heap[ci].lazy = 0;
+//        }
+        if (left > sRight || right < sLeft) return; // update range is out of search range
+        if (left <= sLeft && right >= sRight) { // update range contains search range
+            save(ci, delta, sLeft, sRight);
+//            heap[ci].sum += delta * (sRight - sLeft + 1);
+//            heap[ci].min += delta;
+//            heap[ci].max += delta;
+//            if (sLeft != sRight) {// can postpone updating children
+//                heap[2 * ci + 1].lazy += delta;
+//                heap[2 * ci + 2].lazy += delta;
+//            }
+            return;
+        }
+        // update range intersects with search range
+        propagate(ci, sLeft, sRight);
+        int mid = mid(sLeft, sRight);
+        update(2 * ci + 1, left, right, delta, sLeft, mid);
+        update(2 * ci + 2, left, right, delta, mid + 1, sRight);
+        updateCI(ci);
+    }
+
+    /**
+     * Saving the delta for now, to be propagated later.
+     *
+     * @param delta the delta change to save.
+     * @param left  the left boundary for current heap node, inclusive
+     * @param right the right boundary for the current heap node, inclusive
+     */
+    private void save(int ci, int delta, int left, int right) {
+        heap[ci].sum += delta * (right - left + 1);
+        heap[ci].lazy += delta;
+        heap[ci].min += delta;
+        heap[ci].max += delta;
+    }
+
+    private void propagate(int ci, int left, int right) {
+        if (heap[ci].lazy != 0) {
+            save(2 * ci + 1, heap[ci].lazy, left, right);
+            save(2 * ci + 2, heap[ci].lazy, left, right);
+            heap[ci].lazy = 0;
+        }
     }
 }

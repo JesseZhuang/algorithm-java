@@ -51,7 +51,7 @@ public class MinPQ<Key extends Comparable<Key>> {
         pq[j] = temp;
     }
 
-    void sink(int j) {
+    void sink(int j) {// children are 2*j and 2*j+1
         while (2 * j <= size) {
             int k = 2 * j;
             if (k + 1 <= size && greater(k, k + 1)) {
@@ -65,7 +65,7 @@ public class MinPQ<Key extends Comparable<Key>> {
         }
     }
 
-    void swim(int j) {
+    void swim(int j) {// parent j/2
         while (j / 2 >= 1 && greater(j / 2, j)) {
             swap(j, j / 2);
             j = j / 2;

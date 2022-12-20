@@ -18,8 +18,14 @@ class SegmentTreeATest {
     }
 
     @Test
+    void testRangeUpdate() {
+        tbt.update(0, 5, 5);
+        tbt.update(0, 3, 5);
+    }
+
+    @Test
     void testRangeSumQuery() {
-        assertEquals(15, tbt.rq(1, 3));
+        assertEquals(15, tbt.rsq(1, 3));
         assertEquals(1, tbt2.rsq(0, 0));
         assertEquals(11, tbt2.rsq(5, 5));
         assertEquals(36, tbt2.rsq(0, 5));
