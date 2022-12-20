@@ -3,9 +3,9 @@ package tree;
 import java.util.function.BiFunction;
 
 /**
- * segment tree array version.
+ * segment tree array recursive (AR) version.
  */
-public class SegmentTreeA {
+public class SegmentTreeAR {
     static class Node {
         int sum;
         int min;
@@ -31,7 +31,7 @@ public class SegmentTreeA {
     private int n;
 
     // initialization O(n) time, O(n) space.
-    public SegmentTreeA(int[] nums) {
+    public SegmentTreeAR(int[] nums) {
         n = nums.length;
         // 0 based heap, size is 2 * [2^ceil(Log2(n))] - 1. ceil(Log2(n): height of tree
         // 1 based heap, size is 2 * [2^floor(Log2(n))] + 1, O(n) space

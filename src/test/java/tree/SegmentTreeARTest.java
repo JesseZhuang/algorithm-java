@@ -6,19 +6,19 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class SegmentTreeATest {
+class SegmentTreeARTest {
 
-    private SegmentTreeA tbt;
+    private SegmentTreeAR tbt;
     private SegmentTree tbt2;
 
     @BeforeEach
     void setUp() {
-        tbt = new SegmentTreeA(new int[]{1, 3, 5, 7, 9, 11});
+        tbt = new SegmentTreeAR(new int[]{1, 3, 5, 7, 9, 11});
         tbt2 = new SegmentTree(new int[]{1, 3, 5, 7, 9, 11});
     }
 
     @Test
-    void testRangeUpdateLazyAndQuery() {
+    void testRangeLazyUpdateAndQuery() {
         tbt.update(0, 5, 1);
         tbt.update(0, 5, 2);
         tbt.update(0, 5, 2);
@@ -27,6 +27,14 @@ class SegmentTreeATest {
         assertEquals(24, tbt.rSumQ(0, 2)); // trigger propagation for node[0] only
         tbt.update(0, 3, 5); // propagates nodes: 2,5
         assertEquals(15, tbt.rSumQ(2, 2)); // propagate 1, not 3
+    }
+
+    @Test
+    void testUpdateAndQuery() {
+        SegmentTreeAR tbt = new SegmentTreeAR(new int[]{1, 3, 5});
+        assertEquals(9, tbt.rSumQ(0, 2));
+        tbt.update(1, 1, -1);
+        assertEquals(8, tbt.rSumQ(0, 3));
     }
 
     @Test
