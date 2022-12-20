@@ -18,14 +18,20 @@ class SegmentTreeATest {
     }
 
     @Test
-    void testRangeUpdate() {
-        tbt.update(0, 5, 5);
-        tbt.update(0, 3, 5);
+    void testRangeUpdateLazyAndQuery() {
+        tbt.update(0, 5, 1);
+        tbt.update(0, 5, 2);
+        tbt.update(0, 5, 2);
+        assertEquals(66, tbt.rSumQ(0, 5));
+        // should not trigger propagation for 4 lines above, debugger to check
+        assertEquals(24, tbt.rSumQ(0, 2)); // trigger propagation for node[0] only
+        tbt.update(0, 3, 5); // propagates nodes: 2,5
+        assertEquals(15, tbt.rSumQ(2, 2)); // propagate 1, not 3
     }
 
     @Test
     void testRangeSumQuery() {
-        assertEquals(15, tbt.rsq(1, 3));
+        assertEquals(15, tbt.rSumQ(1, 3));
         assertEquals(1, tbt2.rsq(0, 0));
         assertEquals(11, tbt2.rsq(5, 5));
         assertEquals(36, tbt2.rsq(0, 5));

@@ -11,12 +11,6 @@ public class SegmentTreeA {
         int min;
         int max;
         int lazy;
-        int left;
-        int right;
-
-        int size() {
-            return right - left + 1;
-        }
     }
 
     enum Operation {
@@ -74,7 +68,7 @@ public class SegmentTreeA {
         return left + (right - left) / 2;
     }
 
-    public int rsq(int left, int right) {
+    public int rSumQ(int left, int right) {
         return rq(0, left, right, 0, n - 1, Operation.SUM);
     }
 
@@ -89,7 +83,6 @@ public class SegmentTreeA {
                     return heap[ci].min;
             }
         }
-        ; // query range contains search range
         if (left > sRight || right < sLeft) { // query range is outside
             switch (op) {
                 case SUM:
@@ -101,6 +94,7 @@ public class SegmentTreeA {
             }
         }
         int mid = mid(sLeft, sRight);
+        propagate(ci, sLeft, mid, sRight);
         return op.apply(rq(2 * ci + 1, left, right, sLeft, mid, op),
                 rq(2 * ci + 2, left, right, mid + 1, sRight, op));
     }
@@ -118,32 +112,14 @@ public class SegmentTreeA {
     }
 
     private void update(int ci, int left, int right, int delta, int sLeft, int sRight) {
-//        if (heap[ci].lazy != 0) {// propagate pending update before a new update
-//
-//            heap[ci].sum += heap[ci].lazy * (sRight - sLeft + 1);
-//            heap[ci].min += heap[ci].lazy;
-//            heap[ci].max += heap[ci].lazy;
-//            if (sLeft != sRight) {// can postpone updating children, propagate lazy to children
-//                heap[2 * ci + 1].lazy += heap[ci].lazy;
-//                heap[2 * ci + 2].lazy += heap[ci].lazy;
-//            }
-//            heap[ci].lazy = 0;
-//        }
         if (left > sRight || right < sLeft) return; // update range is out of search range
         if (left <= sLeft && right >= sRight) { // update range contains search range
             save(ci, delta, sLeft, sRight);
-//            heap[ci].sum += delta * (sRight - sLeft + 1);
-//            heap[ci].min += delta;
-//            heap[ci].max += delta;
-//            if (sLeft != sRight) {// can postpone updating children
-//                heap[2 * ci + 1].lazy += delta;
-//                heap[2 * ci + 2].lazy += delta;
-//            }
             return;
         }
         // update range intersects with search range
-        propagate(ci, sLeft, sRight);
         int mid = mid(sLeft, sRight);
+        propagate(ci, sLeft, mid, sRight);
         update(2 * ci + 1, left, right, delta, sLeft, mid);
         update(2 * ci + 2, left, right, delta, mid + 1, sRight);
         updateCI(ci);
@@ -158,15 +134,15 @@ public class SegmentTreeA {
      */
     private void save(int ci, int delta, int left, int right) {
         heap[ci].sum += delta * (right - left + 1);
-        heap[ci].lazy += delta;
         heap[ci].min += delta;
         heap[ci].max += delta;
+        if (left != right) heap[ci].lazy += delta; // set lazy if not at leaf
     }
 
-    private void propagate(int ci, int left, int right) {
+    private void propagate(int ci, int left, int mid, int right) {
         if (heap[ci].lazy != 0) {
-            save(2 * ci + 1, heap[ci].lazy, left, right);
-            save(2 * ci + 2, heap[ci].lazy, left, right);
+            save(2 * ci + 1, heap[ci].lazy, left, mid);
+            save(2 * ci + 2, heap[ci].lazy, mid + 1, right);
             heap[ci].lazy = 0;
         }
     }
