@@ -3,7 +3,7 @@ package tree;
 import java.util.function.BiFunction;
 
 /**
- * segment tree array recursive (AR) version.
+ * segment tree array recursive (AR) version with lazy propagation.
  */
 public class SegmentTreeAR {
     static class Node {
