@@ -1,5 +1,7 @@
 package tree;
 
+import java.util.function.BiFunction;
+
 /**
  * segment tree array version.
  */
@@ -12,7 +14,17 @@ public class SegmentTreeA {
     }
 
     enum Operation {
-        MIN, MAX, SUM
+        MIN(Math::min), MAX(Math::max), SUM(Integer::sum);
+
+        BiFunction<Integer, Integer, Integer> op;
+
+        Operation(BiFunction<Integer, Integer, Integer> op) {
+            this.op = op;
+        }
+
+        private int apply(int a, int b) {
+            return op.apply(a, b);
+        }
     }
 
     private Node[] heap;
@@ -79,19 +91,8 @@ public class SegmentTreeA {
             }
         }
         int mid = mid(sLeft, sRight);
-        switch (op) {
-            case SUM:
-                return rq(2 * ci + 1, left, right, sLeft, mid, op) +
-                        rq(2 * ci + 2, left, right, mid + 1, sRight, op);
-            case MAX:
-                return Math.max(rq(2 * ci + 1, left, right, sLeft, mid, op),
-                        rq(2 * ci + 2, left, right, mid + 1, sRight, op));
-            case MIN:
-                return Math.min(rq(2 * ci + 1, left, right, sLeft, mid, op),
-                        rq(2 * ci + 2, left, right, mid + 1, sRight, op));
-            default:
-                throw new RuntimeException("unsupported op");
-        }
+        return op.apply(rq(2 * ci + 1, left, right, sLeft, mid, op),
+                rq(2 * ci + 2, left, right, mid + 1, sRight, op));
     }
 
     public int rMinQ(int left, int right) {
