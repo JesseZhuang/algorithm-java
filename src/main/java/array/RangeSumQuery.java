@@ -32,4 +32,19 @@ package array;
  * At most 104 calls will be made to sumRange.
  */
 public class RangeSumQuery {
+    private final int[] sums;
+
+    // 7ms, 45.2 Mb. O(1) time for rsq, O(n) time init, O(n) space.
+    public RangeSumQuery(int[] nums) {
+        this.sums = new int[nums.length + 1]; // dummy 0th element
+        for (int i = 0; i < nums.length; i++) {
+            sums[i + 1] = nums[i] + sums[i];
+        }
+    }
+
+    public int sumRange(int i, int j) {
+        // return Arrays.stream(nums, i, j + 1).sum();
+        return sums[j + 1] - sums[i];
+    }
+
 }

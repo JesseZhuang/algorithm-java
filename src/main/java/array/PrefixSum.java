@@ -9,7 +9,7 @@ public class PrefixSum {
      * @param nums original array
      */
     public PrefixSum(int[] nums) {
-        int[] sums = new int[nums.length];
+        sums = new int[nums.length];
         sums[0] = nums[0];
         for (int i = 1; i < nums.length; i++) sums[i] = nums[i] + sums[i - 1];
     }
@@ -22,6 +22,7 @@ public class PrefixSum {
      * @return the range sum between i, j [i,j]
      */
     public int rsq(int i, int j) {
+        if (i == 0) return sums[j];
         return sums[j] - sums[i - 1];
     }
 
