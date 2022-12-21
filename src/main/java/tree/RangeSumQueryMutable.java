@@ -38,18 +38,52 @@ package tree;
  */
 public class RangeSumQueryMutable {
 
+    int[] BITree;// binary indexed tree, 1 based
+    int[] nums;// copy of original array
+
     private SegmentTreeAR segmentTreeAR;
 
     public RangeSumQueryMutable(int[] nums) {
         segmentTreeAR = new SegmentTreeAR(nums);
+        BITree = new int[nums.length + 1];
+        this.nums = nums;
+        for (int i = 0; i < nums.length; i++) updateBIT(i, nums[i]);
     }
 
     public void update(int index, int val) {
         segmentTreeAR.update(index, val);
+        int delta = val - nums[index];
+        nums[index] = val;
+        updateBIT(index, delta);
     }
 
-    public int sumRange(int left, int right) {
+
+    public int sumRangeSegT(int left, int right) {
         return segmentTreeAR.sumRange(left, right);
+    }
+
+
+    private void updateBIT(int index, int delta) {
+        index++;
+        while (index < BITree.length) {
+            BITree[index] += delta;
+            index += index & (-index);
+        }
+    }
+
+    // 83 ms, 71 Mb. O(n) time to build tree. O(LgN) time for update/rangeSum.
+    public int sumRangeBIT(int left, int right) {
+        return getSum(right) - getSum(left - 1);
+    }
+
+    private int getSum(int index) {
+        index++;
+        int sum = 0;
+        while (index > 0) {
+            sum += BITree[index];
+            index -= index & (-index);
+        }
+        return sum;
     }
 
     // 124 ms, 72 Mb without the object overhead. build tree: O(n) time O(n) space. update/sumQ: O(lgn) time.
@@ -165,6 +199,40 @@ public class RangeSumQueryMutable {
                 r /= 2;
             }
             return sum;
+        }
+    }
+
+    // see resources/tree.lc307_RSQ_Sqrt.png
+    // 110 ms, 71.8 Mb. Time: initiation O(n), update O(1), rsq O(sqrt(n)). Space O(sqrt(n)).
+    public static class SquareRoot {
+        int[] sums;
+        int len; // block length
+        int[] nums;
+
+        public SquareRoot(int[] nums) {
+            this.nums = nums;
+            len = (int) Math.ceil(Math.sqrt(nums.length));
+            sums = new int[len];
+            for (int i = 0; i < nums.length; i++) sums[i / len] += nums[i];
+        }
+
+        public int sumRange(int i, int j) {
+            int sum = 0;
+            int startBlock = i / len;
+            int endBlock = j / len;
+            if (startBlock == endBlock) for (int k = i; k <= j; k++) sum += nums[k];
+            else {
+                for (int k = i; k <= (startBlock + 1) * len - 1; k++) sum += nums[k];
+                for (int k = startBlock + 1; k <= endBlock - 1; k++) sum += sums[k];
+                for (int k = endBlock * len; k <= j; k++) sum += nums[k];
+            }
+            return sum;
+        }
+
+        public void update(int i, int val) {
+            int sumsIndex = i / len;
+            sums[sumsIndex] = sums[sumsIndex] - nums[i] + val;
+            nums[i] = val;
         }
     }
 
