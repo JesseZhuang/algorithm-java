@@ -2,6 +2,7 @@ package array;
 
 /**
  * Support range updates in O(1) time. Get back array elements in O(N) time.
+ * Reverse operation with prefix sum.
  *
  * @see <a href="https://wcipeg.com/wiki/Prefix_sum_array_and_difference_array">PEG wiki</a>
  */
