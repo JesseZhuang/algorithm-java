@@ -46,7 +46,7 @@ public class NumberOf1Bits {
         return Integer.bitCount(n);
     }
 
-    // same as java standard library, Hacker's delight book, figure 5-1 and 5-2.
+    // same as java standard library, Hacker's delight book, figure 5-1 and 5-2 (resources/bit.hd.5-1.png).
     public int hammingWeight(int n) {
         n = n - ((n >>> 1) & 0x55555555); // count adjacent 2 bits, store in 2 bit spaces
         n = (n & 0x33333333) + ((n >>> 2) & 0x33333333);// count from previous results, store in 4 bit spaces
