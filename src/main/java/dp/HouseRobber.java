@@ -70,17 +70,19 @@ public class HouseRobber {
         else return didNotRobPreRecord.toArray(new Integer[0]);
     }
 
-    public int rob(int[] nums) {
-        int ifRobbedPrevious = 0, ifDidNotRobPrevious = 0;
-
-        for (int num : nums) {
-            int currRobbed = ifDidNotRobPrevious + num;
-
+    public static int rob(int[] nums, int i, int j) {
+        int robbedPrevious = 0, didNotRobPrevious = 0;
+        for (int k = i; k < j; k++) {
+            int currRobbed = didNotRobPrevious + nums[k];
             // Update values for the next round
-            ifDidNotRobPrevious = Math.max(ifDidNotRobPrevious, ifRobbedPrevious);
-            ifRobbedPrevious = currRobbed;
+            didNotRobPrevious = Math.max(didNotRobPrevious, robbedPrevious);
+            robbedPrevious = currRobbed;
         }
-        return Math.max(ifRobbedPrevious, ifDidNotRobPrevious);
+        return Math.max(robbedPrevious, didNotRobPrevious);
+    }
+
+    public static int rob(int[] nums) {
+        return rob(nums, 0, nums.length);
     }
 
     // thought too complicated
