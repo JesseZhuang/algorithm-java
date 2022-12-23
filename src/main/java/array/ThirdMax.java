@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * <p>
  * LeetCode 414 Easy. Tags: Array, Sorting.
  * Find third (k th) distinct maximum in the array.
  * <p>
