@@ -16,6 +16,8 @@ Delete `.gradle/` folder and run gradle wrapper task again. This will download t
 
 Open project from existing sources, with IntelliJ 2020, two modules were created for `main` and `test`. The `test` module depends on module `algorithm-java.main`.
 
+On Windows in 2022, gradle build fails with some weird slf4j error. Just create a new gradle java project. It used latest gradle wrapper (7.6.1 version).
+
 ## Setup Github Codespace
 
 - install extension pack for java for gradle
