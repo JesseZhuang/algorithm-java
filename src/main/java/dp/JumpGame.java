@@ -25,7 +25,20 @@ package dp;
  * 0 <= nums[i] <= 105
  */
 public class JumpGame {
-    public boolean canJump(int[] nums) {
-        return false;
+    // O(n) time, O(1) space, 2ms, 42.8Mb
+    public boolean canJumpDP1(int[] nums) {
+        int i = 0;
+        for (int reach = 0; i < nums.length && i <= reach; i++) {
+            reach = Math.max(reach, i + nums[i]);
+            if (reach >= nums.length - 1) return true;
+        }
+        return i == nums.length;
+    }
+
+    // O(n) time, O(1) space, 1ms, 43Mb
+    public boolean canJumpDP2(int[] nums) {
+        int smallest = nums.length - 1; // smallest index can reach to the end
+        for (int i = nums.length - 2; i >= 0; i--) if (i + nums[i] >= smallest) smallest = i;
+        return smallest <= 0;
     }
 }
