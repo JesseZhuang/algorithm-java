@@ -1,6 +1,11 @@
 package graph;
 
-import struct.GraphNode;
+import struct.graph.Node;
+
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * LeetCode 133,medium, tags: hash table, breadth-first search, depth-first search, graph.
@@ -58,7 +63,39 @@ import struct.GraphNode;
  * The Graph is connected and all nodes can be visited starting from the given node.
  */
 public class CloneGraph {
-    public GraphNode cloneGraph(GraphNode node) {
-        return null;
+    // O(V+E) time, O(V) space. 25ms, 42.1Mb.
+    public Node cloneGraphDFS(Node node) {
+        Map<Integer, Node> nodes = new HashMap<>();
+        return dfs(node, nodes);
+    }
+
+    private Node dfs(Node x, Map<Integer, Node> nodes) {
+        if (x == null) return null;
+        if (nodes.containsKey(x.val)) return nodes.get(x.val);
+        Node node = new Node(x.val);
+        nodes.put(x.val, node);
+        for (Node neighbour : x.neighbors) node.neighbors.add(dfs(neighbour, nodes));
+        return node;
+    }
+
+    // O(V+E) time, O(V) space. 26ms, 42.1Mb.
+    public Node cloneGraphBFS(Node node) {
+        if (node == null) return null;
+        Map<Integer, Node> nodes = new HashMap<>();
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.add(node);
+        Node copy = new Node(node.val);
+        nodes.put(node.val, copy);
+        while (!queue.isEmpty()) {
+            Node cur = queue.remove();
+            for (Node n : cur.neighbors) {
+                if (!nodes.containsKey(n.val)) {
+                    queue.add(n);
+                    nodes.put(n.val, new Node(n.val));
+                }
+                nodes.get(cur.val).neighbors.add(nodes.get(n.val));
+            }
+        }
+        return copy;
     }
 }

@@ -1,4 +1,4 @@
-package struct;
+package struct.graph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,21 +6,21 @@ import java.util.List;
 /**
  * leetcode graph node definition.
  */
-public class GraphNode {
+public class Node {
     public int val;
-    public List<GraphNode> neighbors;
+    public List<Node> neighbors;
 
-    public GraphNode() {
+    public Node() {
         val = 0;
         neighbors = new ArrayList<>();
     }
 
-    public GraphNode(int _val) {
+    public Node(int _val) {
         val = _val;
         neighbors = new ArrayList<>();
     }
 
-    public GraphNode(int _val, ArrayList<GraphNode> _neighbors) {
+    public Node(int _val, ArrayList<Node> _neighbors) {
         val = _val;
         neighbors = _neighbors;
     }
