@@ -117,6 +117,16 @@ public class IntArrayUtil {
         return result;
     }
 
+    public static int[][] unbox2DIntegerArray(Integer[][] integers) {
+        if (integers == null) return null;
+        if (integers.length == 0) return new int[0][];
+        int[][] result = new int[integers.length][integers[0].length];
+        for (int i = 0; i < integers.length; i++)
+            for (int j = 0; j < integers[0].length; j++)
+                result[i][j] = integers[i][j];
+        return result;
+    }
+
     public static Integer[] generateRandomArray(int length, int bound) {
         Random r = new Random();
         Integer[] a = new Integer[length];

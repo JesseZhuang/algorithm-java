@@ -1,8 +1,9 @@
 package graph;
 
-import princeton.jsl.DirectedCycle;
 import princeton.jsl.Digraph;
+import princeton.jsl.DirectedCycle;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -50,19 +51,20 @@ import static java.util.stream.IntStream.range;
  * </ul>
  */
 public class CourseSchedule {
-    public boolean canFinishCycle(int numCourses, Integer[][] prerequisites) {
+    public boolean canFinishCycle(int numCourses, int[][] prerequisites) {
         Digraph digraph = new Digraph(numCourses);
         range(0, prerequisites.length).forEach(i -> digraph.addEdge(prerequisites[i][0], prerequisites[i][1]));
         DirectedCycle cycle = new DirectedCycle(digraph);
         return !cycle.hasCycle();
     }
 
-    public boolean canFinishBFS(int numCourses, Integer[][] prerequisites) {
+    // 3ms 42.4Mb. O(V+E) linear time and space.
+    public boolean canFinishBFS(int numCourses, int[][] prerequisites) {
         List<Integer>[] adj = new LinkedList[numCourses]; // vertexes going into
         Queue<Integer> queue = new LinkedList<>();
         int[] inDegree = new int[numCourses];
         for (int i = 0; i < numCourses; i++) adj[i] = new LinkedList<>();
-        for (Integer[] pair : prerequisites) {
+        for (int[] pair : prerequisites) {
             adj[pair[1]].add(pair[0]);
             inDegree[pair[0]]++;
         }
@@ -76,5 +78,27 @@ public class CourseSchedule {
                 if (--inDegree[w] == 0) queue.offer(w);
         }
         return count == numCourses;
+    }
+
+    // DFS O(V+E) time and space. 2ms, 42.3Mb.
+    public boolean canFinishDFS(int numCourses, int[][] prerequisites) {
+        List<Integer>[] adj = new ArrayList[numCourses];
+        for (int i = 0; i < numCourses; i++) adj[i] = new ArrayList<>();
+        for (int[] vertex : prerequisites) adj[vertex[1]].add(vertex[0]);
+        boolean[] visited = new boolean[numCourses], onStack = new boolean[numCourses];
+        for (int i = 0; i < numCourses; i++)
+            if (!visited[i] && hasCycle(i, visited, onStack, adj)) return false;
+        return true;
+    }
+
+    private boolean hasCycle(int source, boolean[] visited, boolean[] onStack, List<Integer>[] adj) {
+        visited[source] = true;
+        onStack[source] = true;
+        for (int v : adj[source]) {
+            if (onStack[v]) return true;
+            if (!visited[v] && hasCycle(v, visited, onStack, adj)) return true;
+        }
+        onStack[source] = false;
+        return false;
     }
 }
