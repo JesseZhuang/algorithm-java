@@ -21,7 +21,7 @@ import java.util.PriorityQueue;
  * <p>
  * Example 1:
  * <p>
- * <p>
+ * https://assets.leetcode.com/uploads/2022/11/07/max-star-sum-example1drawio.png
  * Input: vals = [1,2,3,4,10,-10,-20], edges = [[0,1],[1,2],[1,3],[3,4],[3,5],[3,6]], k = 2
  * Output: 16
  * Explanation: The above diagram represents the input graph.
@@ -49,7 +49,7 @@ import java.util.PriorityQueue;
 public class MaxStarSumOfGraph {
     // 199 ms, 167.4 Mb. O(V+E) time, O(V*E) space.
     public int maxStarSum(int[] vals, int[][] edges, int k) {
-        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>(); // vertex -> max heap of neighbors (negated)
         for (int[] edge : edges) {// O(E)
             map.computeIfAbsent(edge[0], t -> new PriorityQueue<>()).offer(-vals[edge[1]]);
             map.computeIfAbsent(edge[1], t -> new PriorityQueue<>()).offer(-vals[edge[0]]);
