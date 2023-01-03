@@ -1,6 +1,6 @@
 package graph;
 
-import princeton.jsl.WeightedQuickUnionPathCompressionUF;
+import princeton.jsl.WeightedQUSizePCUF;
 
 /**
  * LeetCode 765. Hard. Tags: Greedy, Union Find, Graph.
@@ -41,7 +41,7 @@ import princeton.jsl.WeightedQuickUnionPathCompressionUF;
 public class CouplesHoldingHands {
     public int minSwapsCouplesUF(int[] row) {
         int N = row.length / 2;
-        WeightedQuickUnionPathCompressionUF uf = new WeightedQuickUnionPathCompressionUF(N);
+        WeightedQUSizePCUF uf = new WeightedQUSizePCUF(N);
         for (int i = 0; i < N; i++) uf.union(row[2 * i] / 2, row[2 * i + 1] / 2);
         return N - uf.count();
     }

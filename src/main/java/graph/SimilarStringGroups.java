@@ -2,7 +2,7 @@ package graph;
 
 import edu.princeton.cs.algs4.CC;
 import edu.princeton.cs.algs4.Graph;
-import princeton.jsl.WeightedQuickUnionPathCompressionUF;
+import princeton.jsl.WeightedQUSizePCUF;
 
 import java.util.Arrays;
 
@@ -46,7 +46,7 @@ import static java.util.stream.IntStream.range;
  */
 public class SimilarStringGroups {
     public int numSimilarGroupsUF(String[] A) {
-        WeightedQuickUnionPathCompressionUF uf = new WeightedQuickUnionPathCompressionUF(A.length);
+        WeightedQUSizePCUF uf = new WeightedQUSizePCUF(A.length);
         for (int i = 1; i < A.length; i++) {
             for (int j = 0; j < i; j++) {
                 if (isSimilar(A[i], A[j])) uf.union(i, j);
@@ -70,7 +70,7 @@ public class SimilarStringGroups {
     public int wrong(String[] A) {
         int count = A.length;
         for (int i = 1; i < A.length; i++)
-            for(int j = 0; j < i; j++)
+            for (int j = 0; j < i; j++)
                 if (isSimilarWrong(A[i], A[j])) count--;
         return count;
     }
@@ -81,16 +81,15 @@ public class SimilarStringGroups {
         int count = 0; // swaps needed
         int[] map = new int[26]; // 26 lower case letters
         Arrays.fill(map, -1);
-        for(int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {
             int c1 = s1.charAt(i) - 'a', c2 = s2.charAt(i) - 'a';
             if (c1 != c2) {
-                if(map[c1] == -1) {
+                if (map[c1] == -1) {
                     map[c1] = c2;
                     map[c2] = c1;
                     count++;
                     if (count > 1) return false;
-                }
-                else if (map[c1] != c2) return false;
+                } else if (map[c1] != c2) return false;
             }
         }
         return true;

@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.StdOut;
 /**
  * Path compression by setting all leaf nodes to the same root. Uses union by size of the tree.
  */
-public class WeightedQuickUnionPathCompressionUF {
+public class WeightedQUSizePCUF {
     private int[] parent;  // parent[i] = parent of i
     private int[] size;    // size[i] = number of sites in tree rooted at i
     // Note: not necessarily correct if i is not a root node
@@ -17,10 +17,10 @@ public class WeightedQuickUnionPathCompressionUF {
      * {@code 0} through {@code n-1}. Each site is initially in its own
      * component.
      *
-     * @param  n the number of sites
+     * @param n the number of sites
      * @throws IllegalArgumentException if {@code n < 0}
      */
-    public WeightedQuickUnionPathCompressionUF(int n) {
+    public WeightedQUSizePCUF(int n) {
         count = n;
         parent = new int[n];
         size = new int[n];
@@ -43,7 +43,7 @@ public class WeightedQuickUnionPathCompressionUF {
     /**
      * Returns the component identifier for the component containing site {@code p}.
      *
-     * @param  p the integer representing one site
+     * @param p the integer representing one site
      * @return the component identifier for the component containing site {@code p}
      * @throws IllegalArgumentException unless {@code 0 <= p < n}
      */
@@ -61,14 +61,14 @@ public class WeightedQuickUnionPathCompressionUF {
     }
 
     /**
-     * Returns true if the the two sites are in the same component.
+     * Returns true if the two sites are in the same component.
      *
-     * @param  p the integer representing one site
-     * @param  q the integer representing the other site
+     * @param p the integer representing one site
+     * @param q the integer representing the other site
      * @return {@code true} if the two sites {@code p} and {@code q} are in the same component;
-     *         {@code false} otherwise
+     * {@code false} otherwise
      * @throws IllegalArgumentException unless
-     *         both {@code 0 <= p < n} and {@code 0 <= q < n}
+     *                                  both {@code 0 <= p < n} and {@code 0 <= q < n}
      */
     public boolean connected(int p, int q) {
         return find(p) == find(q);
@@ -78,7 +78,7 @@ public class WeightedQuickUnionPathCompressionUF {
     private void validate(int p) {
         int n = parent.length;
         if (p < 0 || p >= n) {
-            throw new IllegalArgumentException("index " + p + " is not between 0 and " + (n-1));
+            throw new IllegalArgumentException("index " + p + " is not between 0 and " + (n - 1));
         }
     }
 
@@ -86,10 +86,10 @@ public class WeightedQuickUnionPathCompressionUF {
      * Merges the component containing site {@code p} with the
      * the component containing site {@code q}.
      *
-     * @param  p the integer representing one site
-     * @param  q the integer representing the other site
+     * @param p the integer representing one site
+     * @param q the integer representing the other site
      * @throws IllegalArgumentException unless
-     *         both {@code 0 <= p < n} and {@code 0 <= q < n}
+     *                                  both {@code 0 <= p < n} and {@code 0 <= q < n}
      */
     public void union(int p, int q) {
         int rootP = find(p);
@@ -100,8 +100,7 @@ public class WeightedQuickUnionPathCompressionUF {
         if (size[rootP] < size[rootQ]) {
             parent[rootP] = rootQ;
             size[rootQ] += size[rootP];
-        }
-        else {
+        } else {
             parent[rootQ] = rootP;
             size[rootP] += size[rootQ];
         }
@@ -118,7 +117,7 @@ public class WeightedQuickUnionPathCompressionUF {
      */
     public static void main(String[] args) {
         int n = StdIn.readInt();
-        WeightedQuickUnionPathCompressionUF uf = new WeightedQuickUnionPathCompressionUF(n);
+        WeightedQUSizePCUF uf = new WeightedQUSizePCUF(n);
         while (!StdIn.isEmpty()) {
             int p = StdIn.readInt();
             int q = StdIn.readInt();

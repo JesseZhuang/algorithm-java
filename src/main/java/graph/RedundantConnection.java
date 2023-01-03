@@ -2,7 +2,7 @@ package graph;
 
 import princeton.jsl.Cycle;
 import princeton.jsl.Graph;
-import princeton.jsl.WeightedQuickUnionPathCompressionUF;
+import princeton.jsl.WeightedQUSizePCUF;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -67,7 +67,7 @@ public class RedundantConnection {
     }
 
     public int[] redundantUF(Integer[][] edges) {
-        WeightedQuickUnionPathCompressionUF uf = new WeightedQuickUnionPathCompressionUF(edges.length + 1);
+        WeightedQUSizePCUF uf = new WeightedQUSizePCUF(edges.length + 1);
         for (Integer[] e : edges) {
             if (uf.connected(e[0], e[1])) return new int[]{e[0], e[1]};
             else uf.union(e[0], e[1]);

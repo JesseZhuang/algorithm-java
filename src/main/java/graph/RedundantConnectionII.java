@@ -1,6 +1,6 @@
 package graph;
 
-import princeton.jsl.WeightedQuickUnionPathCompressionUF;
+import princeton.jsl.WeightedQUSizePCUF;
 
 import java.util.Arrays;
 
@@ -52,7 +52,7 @@ import java.util.Arrays;
  */
 public class RedundantConnectionII {
     public Integer[] redundantUFOnePass(Integer[][] edges) {
-        WeightedQuickUnionPathCompressionUF uf = new WeightedQuickUnionPathCompressionUF(edges.length + 1);
+        WeightedQUSizePCUF uf = new WeightedQUSizePCUF(edges.length + 1);
         int[] edgeToIndex = new int[edges.length + 1]; // array index in edges array for edge leading to vertex i
         Arrays.fill(edgeToIndex, -1); // index can be 0, use -1 as sentinel
         int first = -1, second = -1, last = -1;
@@ -73,22 +73,22 @@ public class RedundantConnectionII {
     }
 
     public int[] redundantUFTwoPass(Integer[][] edges) {
-        WeightedQuickUnionPathCompressionUF uf = new WeightedQuickUnionPathCompressionUF(edges.length + 1);
+        WeightedQUSizePCUF uf = new WeightedQUSizePCUF(edges.length + 1);
         int[] edgeToIndex = new int[edges.length + 1]; // array index in edges array for edge leading to vertex i
-        int[] first = new int[] {-1, -1};
-        int[] second = new int[] {-1, -1};
-        for (Integer[] e: edges) {
+        int[] first = new int[]{-1, -1};
+        int[] second = new int[]{-1, -1};
+        for (Integer[] e : edges) {
             if (edgeToIndex[e[1]] != 0) {
-                second = new int[] {e[0], e[1]};
-                first = new int[] {edgeToIndex[e[1]], e[1]};
+                second = new int[]{e[0], e[1]};
+                first = new int[]{edgeToIndex[e[1]], e[1]};
                 e[1] = 0;
             } else edgeToIndex[e[1]] = e[0];
         }
-        for (Integer[] e: edges) {
+        for (Integer[] e : edges) {
             if (e[1] == 0) continue;
             if (uf.connected(e[0], e[1])) {
-              if (first[1] != -1) return first;
-              else return new int[] {e[0], e[1]};
+                if (first[1] != -1) return first;
+                else return new int[]{e[0], e[1]};
             } else {
                 uf.union(e[0], e[1]);
             }
