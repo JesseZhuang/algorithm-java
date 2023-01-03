@@ -1,8 +1,10 @@
 package graph;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * LeetCode 417, medium, tags: array, dfs, bfs, matrix.
@@ -60,6 +62,7 @@ public class PacificWaterFlow {
     boolean[][] visitedA;
     static int[][] deltas = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
     List<List<Integer>> res;
+    Queue<List<Integer>> q;
 
     // 3ms 44.3 Mb. O(mn) time and space (worst case all cells reachable)
     public List<List<Integer>> pacificAtlanticDFS(int[][] heights) {
@@ -89,5 +92,40 @@ public class PacificWaterFlow {
 
     private boolean inRange(int r, int c, int row, int col) {
         return r >= 0 && r < row && c >= 0 && c < col; // cannot equal to row or col
+    }
+
+    // 10ms, 55.2Mb.
+    public List<List<Integer>> pacificAtlanticBFS(int[][] heights) {
+        int m = heights.length, n = heights[0].length;
+        visitedP = new boolean[m][n];
+        visitedA = new boolean[m][n];
+        res = new ArrayList<>();
+        q = new ArrayDeque<>();
+        for (int i = 0; i < m; i++) {
+            bfs(heights, visitedP, i, 0);
+            bfs(heights, visitedA, i, n - 1);
+        }
+        for (int i = 0; i < n; i++) {
+            bfs(heights, visitedA, m - 1, i);
+            bfs(heights, visitedP, 0, i);
+        }
+        return res;
+    }
+
+    private void bfs(int[][] heights, boolean[][] visited, int r, int c) {
+        int m = heights.length, n = heights[0].length;
+        q.add(Arrays.asList(r, c));
+        while (!q.isEmpty()) {
+            List<Integer> pair = q.remove();
+            int cr = pair.get(0), cc = pair.get(1); // careful bug, should not look at r, c in while loop
+            if (visited[cr][cc]) continue;
+            visited[cr][cc] = true;
+            if (visitedA[cr][cc] && visitedP[cr][cc]) res.add(Arrays.asList(cr, cc));
+            for (int[] delta : deltas) {
+                int nr = cr + delta[0], nc = cc + delta[1];
+                if (inRange(nr, nc, m, n) && heights[nr][nc] >= heights[cr][cc] && !visited[nr][nc])
+                    q.add(Arrays.asList(nr, nc));
+            }
+        }
     }
 }
