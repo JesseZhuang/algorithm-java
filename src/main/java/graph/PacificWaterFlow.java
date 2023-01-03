@@ -1,5 +1,7 @@
 package graph;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -54,7 +56,38 @@ import java.util.List;
  * 0 <= heights[r][c] <= 105
  */
 public class PacificWaterFlow {
-    public List<List<Integer>> pacificAtlantic(int[][] heights) {
-        return null;
+    boolean[][] visitedP;
+    boolean[][] visitedA;
+    static int[][] deltas = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    List<List<Integer>> res;
+
+    // 3ms 44.3 Mb. O(mn) time and space (worst case all cells reachable)
+    public List<List<Integer>> pacificAtlanticDFS(int[][] heights) {
+        int m = heights.length, n = heights[0].length;
+        visitedP = new boolean[m][n];
+        visitedA = new boolean[m][n];
+        res = new ArrayList<>();
+        for (int i = 0; i < m; i++) {
+            dfs(heights, visitedP, i, 0, 0);
+            dfs(heights, visitedA, i, n - 1, 0);
+        }
+        for (int i = 0; i < n; i++) {
+            dfs(heights, visitedA, m - 1, i, 0);
+            dfs(heights, visitedP, 0, i, 0);
+        }
+        return res;
+    }
+
+    private void dfs(int[][] heights, boolean[][] visited, int r, int c, int height) {
+        int m = heights.length, n = heights[0].length;
+        // note test range first, do not forget visited[][]
+        if (!inRange(r, c, m, n) || visited[r][c] || heights[r][c] < height) return;
+        visited[r][c] = true;
+        if (visitedA[r][c] && visitedP[r][c]) res.add(Arrays.asList(r, c));
+        for (int[] delta : deltas) dfs(heights, visited, r + delta[0], c + delta[1], heights[r][c]);
+    }
+
+    private boolean inRange(int r, int c, int row, int col) {
+        return r >= 0 && r < row && c >= 0 && c < col; // cannot equal to row or col
     }
 }
