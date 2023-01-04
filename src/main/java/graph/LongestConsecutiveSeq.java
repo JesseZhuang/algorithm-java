@@ -1,7 +1,10 @@
 package graph;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * LeetCode 128, medium, tags: array, hash table, union find.
@@ -25,6 +28,22 @@ import java.util.Map;
  * -109 <= nums[i] <= 109
  */
 public class LongestConsecutiveSeq {
+    // O(N) time and space. 47ms, 75.9Mb.
+    public int longestConsecutiveSet(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) set.add(num);
+        int max = 0;
+        Iterator<Integer> it = set.iterator();
+        while (it.hasNext()) {
+            int n = it.next();
+            if (set.contains(n - 1)) continue; // avoids O(n^2)
+            int x = n + 1;
+            while (set.contains(x)) x++; // while(set.contains(x++)); increments one past intended
+            max = Math.max(max, x - n);
+        }
+        return max;
+    }
+
     // O(Nlg*N) time, O(N) space. 339 ms, 130.4 Mb.
     public int longestConsecutiveUF(int[] nums) {
         UnionFind uf = new UnionFind(nums);
@@ -37,7 +56,7 @@ public class LongestConsecutiveSeq {
 
     public static void main(String[] args) {
         LongestConsecutiveSeq lcs = new LongestConsecutiveSeq();
-        System.out.println(lcs.longestConsecutiveUF(new int[]{100, 4, 200, 1, 3, 2}));
+        System.out.println(lcs.longestConsecutiveSet(new int[]{100, 4, 200, 1, 3, 2}));
         // [4,0,-4,-2,2,5,2,0,-8,-8,-8,-8,-1,7,4,5,5,-4,6,6,-3], expected 5
     }
 }
