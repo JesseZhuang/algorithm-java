@@ -1,5 +1,8 @@
 package graph;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * LeetCode 128, medium, tags: array, hash table, union find.
  * Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
@@ -22,7 +25,64 @@ package graph;
  * -109 <= nums[i] <= 109
  */
 public class LongestConsecutiveSeq {
-    public int longestConsecutive(int[] nums) {
-        return 0;
+    // O(Nlg*N) time, O(N) space. 339 ms, 130.4 Mb.
+    public int longestConsecutiveUF(int[] nums) {
+        UnionFind uf = new UnionFind(nums);
+        for (int num : nums) {
+            uf.union(num, num + 1);
+            uf.union(num, num - 1);
+        }
+        return uf.maxSize;
+    }
+
+    public static void main(String[] args) {
+        LongestConsecutiveSeq lcs = new LongestConsecutiveSeq();
+        System.out.println(lcs.longestConsecutiveUF(new int[]{100, 4, 200, 1, 3, 2}));
+        // [4,0,-4,-2,2,5,2,0,-8,-8,-8,-8,-1,7,4,5,5,-4,6,6,-3], expected 5
+    }
+}
+
+class UnionFind {
+    Map<Integer, Integer> parent;
+    Map<Integer, Integer> size;
+    int maxSize;
+
+    UnionFind(int[] nums) {
+        if (nums.length == 0) return;
+        parent = new HashMap<>();
+        size = new HashMap<>();
+        for (int num : nums) {
+            parent.put(num, num);
+            size.put(num, 1);
+        }
+        maxSize = 1;
+    }
+
+    Integer find(int p) {
+        int root = p;
+        while (parent.get(root) != root) root = parent.get(root);
+        while (parent.get(p) != root) {
+            int temp = parent.get(p);
+            parent.put(p, root);
+            size.remove(p);
+            p = temp;
+        }
+        return root;
+    }
+
+    void union(int p, int q) {
+        if (!parent.containsKey(p) || !parent.containsKey(q)) return;
+        int rootP = find(p);
+        int rootQ = find(q);
+        if (rootP == rootQ) return;
+        int newSize = size.get(rootP) + size.get(rootQ);
+        if (newSize > maxSize) maxSize = newSize;
+        if (size.get(rootP) < size.get(rootQ)) {
+            parent.put(rootP, rootQ);
+            size.put(rootQ, newSize);
+        } else {
+            parent.put(rootQ, rootP);
+            size.put(rootP, newSize);
+        }
     }
 }
