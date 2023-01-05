@@ -1,7 +1,7 @@
 package graph;
 
 /**
- * LeetCode 269 (premium), lint code 892, hard, tags: bfs, topological sort, graph, string.
+ * LeetCode 269 (premium), hard, GFG, tags: bfs, topological sort, graph, string.
  * Given a sorted dictionary of an alien language having N words and k starting alphabets of standard dictionary.
  * Find the order of characters in the alien language.
  * Note: Many orders may be possible for a particular test case, thus you may return any valid order and output
@@ -46,6 +46,16 @@ package graph;
  * 1 ≤ N ≤ 300
  * 1 ≤ K ≤ 26
  * 1 ≤ Length of words ≤ 50
+ * <p>
+ * lint code 892
+ * There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you.
+ * You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.
+ * <p>
+ * You may assume all letters are in lowercase.
+ * The dictionary is invalid, if string 'a' is prefix of string b and b is appeared before 'a'.
+ * If the order is invalid, return an empty string.
+ * There may be multiple valid order of letters, return the smallest in normal lexicographical order.
+ * The letters in one string are of the same rank by default and are sorted in Human dictionary order.
  */
 public class AlienDict {
     public String findOrder(String[] dict, int N, int K) {
@@ -53,6 +63,7 @@ public class AlienDict {
     }
 
     public String alienOrder(String[] words) {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        return sb.reverse().toString();
     }
 }
