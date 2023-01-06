@@ -3,6 +3,8 @@ package graph;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -84,21 +86,49 @@ public class AlienDict {
         return null;
     }
 
-    public String alienOrder(String[] words) {
-        StringBuilder sb = new StringBuilder();
-        Map<Character, Set<Character>> adj = new HashMap<>();
-        for (int i = 0; i <= words.length - 2; i++) {
-            String cw = words[i];
-            String nw = words[i + 1];
-            for (int j = 0; j < words[i].length(); j++) {
-                if (j >= words[i + 1].length()) return "";
-                if (cw.charAt(j) == nw.charAt(j)) continue;
-                adj.putIfAbsent(cw.charAt(j), new HashSet<>());
-                adj.get(cw.charAt(j)).add(nw.charAt(j));
-            }
-        }
-        return sb.reverse().toString();
+    // O(nlgn) time, O(n) space. 271ms, 21.76 Mb.
+    public String alienOrderBFS(String[] words) {
+        return topologicalSorting(constructGraph(words));
     }
 
+    private Map<Character, Set<Character>> constructGraph(String[] words) {
+        Map<Character, Set<Character>> graph = new HashMap<>();
+        for (String w : words) //create nodes
+            for (char j : w.toCharArray()) graph.putIfAbsent(j, new HashSet<>());
+        for (int i = 0; i < words.length - 1; i++) {
+            int j = 0;
+            while (j < words[i].length() && j < words[i + 1].length() &&
+                    words[i].charAt(j) == words[i + 1].charAt(j)) j++;
+            if (j < words[i].length() && j >= words[i + 1].length()) return null; // exclude {"abc", "ab"}
+            if (j == words[i].length()) continue;
+            graph.get(words[i].charAt(j)).add(words[i + 1].charAt(j));
+        }
+        return graph;
+    }
 
+    private String topologicalSorting(Map<Character, Set<Character>> graph) {
+        if (graph == null) return "";
+        Map<Character, Integer> inDegree = new HashMap<>();
+        for (Character u : graph.keySet()) inDegree.put(u, 0);
+        for (char u : graph.keySet())
+            for (char v : graph.get(u)) inDegree.put(v, inDegree.get(v) + 1);
+        Queue<Character> q = new PriorityQueue<>();
+        for (Map.Entry<Character, Integer> entry : inDegree.entrySet())
+            if (entry.getValue() == 0) q.offer(entry.getKey());
+        StringBuilder ans = new StringBuilder();
+        int count = 0;
+        while (!q.isEmpty()) {
+            char u = q.poll();
+            ans.append(u);
+            count++;
+            Set<Character> dest = graph.get(u);
+            for (char v : dest) {
+                int degree = inDegree.get(v) - 1;
+                if (degree == 0) q.offer(v);
+                inDegree.put(v, degree);
+            }
+        }
+        if (count != graph.size()) return "";
+        return ans.toString();
+    }
 }
