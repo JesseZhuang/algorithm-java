@@ -1,5 +1,10 @@
 package graph;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * LeetCode 269 (premium), hard, GFG, tags: bfs, topological sort, graph, string.
  * Given a sorted dictionary of an alien language having N words and k starting alphabets of standard dictionary.
@@ -33,7 +38,6 @@ package graph;
  * "aaa", therefore 'c' is before 'a' in output.
  * Similarly, we can find other orders.
  * <p>
- * <p>
  * Your Task:
  * You don't need to read or print anything. Your task is to complete the function findOrder() which takes
  * the string array dict[], its size N and the integer K as input parameter and returns a string denoting
@@ -49,13 +53,31 @@ package graph;
  * <p>
  * lint code 892
  * There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you.
- * You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language. Derive the order of letters in this language.
+ * You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules
+ * of this new language. Derive the order of letters in this language.
  * <p>
  * You may assume all letters are in lowercase.
  * The dictionary is invalid, if string 'a' is prefix of string b and b is appeared before 'a'.
  * If the order is invalid, return an empty string.
  * There may be multiple valid order of letters, return the smallest in normal lexicographical order.
  * The letters in one string are of the same rank by default and are sorted in Human dictionary order.
+ * Example 1:
+ * <p>
+ * Input：["wrt","wrf","er","ett","rftt"]
+ * Output："wertf"
+ * Explanation：
+ * from "wrt"and"wrf" ,we can get 't'<'f'
+ * from "wrt"and"er" ,we can get 'w'<'e'
+ * from "er"and"ett" ,we can get 'r'<'t'
+ * from "ett"and"rftt" ,we can get 'e'<'r'
+ * So return "wertf"
+ * Example 2:
+ * <p>
+ * Input：["z","x"]
+ * Output："zx"
+ * Explanation：
+ * from "z" and "x"，we can get 'z' < 'x'
+ * So return "zx"
  */
 public class AlienDict {
     public String findOrder(String[] dict, int N, int K) {
@@ -64,6 +86,19 @@ public class AlienDict {
 
     public String alienOrder(String[] words) {
         StringBuilder sb = new StringBuilder();
+        Map<Character, Set<Character>> adj = new HashMap<>();
+        for (int i = 0; i <= words.length - 2; i++) {
+            String cw = words[i];
+            String nw = words[i + 1];
+            for (int j = 0; j < words[i].length(); j++) {
+                if (j >= words[i + 1].length()) return "";
+                if (cw.charAt(j) == nw.charAt(j)) continue;
+                adj.putIfAbsent(cw.charAt(j), new HashSet<>());
+                adj.get(cw.charAt(j)).add(nw.charAt(j));
+            }
+        }
         return sb.reverse().toString();
     }
+
+
 }
