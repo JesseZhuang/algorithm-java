@@ -36,7 +36,7 @@ public class GraphValidTree {
     public boolean validTree(int n, int[][] edges) {
         if (edges.length != n - 1) return false;
         visited = new boolean[n];
-        buildGraph(n, edges);
+        adj = buildGraph(n, edges);
         for (int i = 0; i < n; i++) if (!visited[i] && !hasCycle) dfs(-1, i);
         return !hasCycle;
     }
@@ -50,13 +50,14 @@ public class GraphValidTree {
         }
     }
 
-    private void buildGraph(int n, int[][] edges) {
-        adj = new ArrayList<>();
+    public static List<List<Integer>> buildGraph(int n, int[][] edges) {
+        List<List<Integer>> adj = new ArrayList<>();
         for (int i = 0; i < n; i++) adj.add(new ArrayList<>());
         for (int[] edge : edges) {
             adj.get(edge[0]).add(edge[1]);
             adj.get(edge[1]).add(edge[0]);
         }
+        return adj;
     }
 
     // BFS, check conditions 1,3. 493ms, 27.76MB.
