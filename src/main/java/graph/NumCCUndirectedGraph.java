@@ -79,4 +79,39 @@ public class NumCCUndirectedGraph {
                 }
         }
     }
+
+    int[] parent;
+    byte[] height;
+    int ufcc; // connected components in union find
+
+    public int ccUF(int n, int[][] edges) {
+        parent = new int[n];
+        height = new byte[n];
+        ufcc = n;
+        for (int i = 0; i < n; i++) parent[i] = i;
+        for (int[] edge : edges)
+            union(edge[0], edge[1]);
+        return ufcc;
+    }
+
+    private void union(int p, int q) {
+        int rootP = find(p);
+        int rootQ = find(q);
+        if (rootP == rootQ) return;
+        ufcc--;
+        if (height[rootP] < height[rootQ]) parent[rootP] = rootQ;
+        else if (height[rootQ] < height[rootP]) parent[rootQ] = rootP;
+        else {
+            parent[rootQ] = rootP;
+            height[rootP]++;
+        }
+    }
+
+    private int find(int p) {
+        while (parent[p] != p) {
+            parent[p] = parent[parent[p]]; // reduce height by half
+            p = parent[p];
+        }
+        return p;
+    }
 }

@@ -23,6 +23,7 @@ class NumCCUndirectedGraphTest {
     void ccDFS(int n, int[][] edges, int expected) {
         assertEquals(expected, tbt.ccDFS(n, edges));
         assertEquals(expected, tbt.ccBFS(n, edges));
+        assertEquals(expected, tbt.ccUF(n, edges));
     }
 
     static Stream<Arguments> testCases() {
