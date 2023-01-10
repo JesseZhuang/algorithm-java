@@ -1,11 +1,13 @@
 package graph;
 
+import struct.graph.Node;
+
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 
 /**
- * LeetCode 323, medium, tags: dfs, union find. Lint code 431.
+ * LeetCode 323, medium, tags: dfs, union find, bfs. Lint code 431.
  * Given n nodes labeled from 0 to n - 1 and a list of undirected edges (each edge is a pair of nodes),
  * write a function to find the number of connected components in an undirected graph.
  * <p>
@@ -30,6 +32,28 @@ import java.util.Queue;
  * Note:
  * You can assume that no duplicate edges will appear in edges. Since all edges are undirected, [0, 1] is the same
  * as [1, 0] and thus will not appear together in edges.
+ * <p>
+ * LintCode 431, medium.
+ * Example 1:
+ * <p>
+ * Input: {1,2,4#2,1,4#3,5#4,1,2#5,3}
+ * Output: [[1,2,4],[3,5]]
+ * Explanation:
+ * <pre>
+ * 1------2  3
+ * \     |  |
+ * \    |  |
+ * \   |  |
+ * \  |  |
+ *  4   5
+ * </pre>
+ * Example 2:
+ * <p>
+ * Input: {1,2#2,1}
+ * Output: [[1,2]]
+ * Explanation:
+ * <p>
+ * 1--2
  */
 public class NumCCUndirectedGraph {
     List<List<Integer>> adj;
@@ -113,5 +137,9 @@ public class NumCCUndirectedGraph {
             p = parent[p];
         }
         return p;
+    }
+
+    public List<List<Integer>> connectedSet(List<Node> nodes) {
+        return null;
     }
 }
