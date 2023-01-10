@@ -1,5 +1,9 @@
 package array;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedList;
+
 /**
  * LeetCode 56, medium, tags: array, sorting.
  * Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals,
@@ -24,7 +28,16 @@ package array;
  * 0 <= starti <= endi <= 104
  */
 public class MergeIntervals {
+    // 10ms, 47 Mb. O(NLgN) time, O(LgN) space for sorting (assuming quick sort in place). Not including result space.
+    // Another idea for identifying connected components and merging. O(N^2) time and space.
     public int[][] merge(int[][] intervals) {
-        return intervals;
+        Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+        LinkedList<int[]> result = new LinkedList<>();
+        result.add(intervals[0]);
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] > result.getLast()[1]) result.add(intervals[i]);
+            else result.getLast()[1] = Math.max(result.getLast()[1], intervals[i][1]);
+        }
+        return result.toArray(new int[result.size()][2]);
     }
 }

@@ -34,7 +34,8 @@ import java.util.List;
  * 0 <= start <= end <= 105
  */
 public class InsertInterval {
-    // 1ms, 44.9Mb. O(N) time and space.
+    // 1ms, 44.9Mb. O(N) time and space. O(1) space not including the result.
+    // another method, binary search to find the position, insert, then merge
     public int[][] insert(int[][] intervals, int[] newInterval) {
         List<int[]> result = new ArrayList<>();
         int i = 0;
@@ -52,7 +53,7 @@ public class InsertInterval {
             result.add(intervals[i]);
             i++;
         }
-        return result.toArray(new int[result.size()][]);
+        return result.toArray(new int[result.size()][2]);
     }
 
 }
