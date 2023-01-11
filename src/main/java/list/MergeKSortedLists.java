@@ -77,13 +77,12 @@ public class MergeKSortedLists {
 
     // best: merge bottom up, 5ms, 47.5Mb. O(NLgk) time, O(1) space (modified input).
     public ListNode mergeKListsMergeBU(ListNode[] lists) {
-        int size = lists.length;
+        if (lists.length == 0) return null;
         for (int interval = 1; interval < lists.length; interval *= 2) {
             for (int i = 0; i < lists.length - interval; i += 2 * interval) {
                 lists[i] = Merge2SortedLists.mergeTwoListsIter2(lists[i], lists[i + interval]);
             }
         }
-        return size > 0 ? lists[0] : null;
+        return lists[0];
     }
-
 }
