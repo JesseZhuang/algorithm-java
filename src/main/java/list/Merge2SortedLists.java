@@ -16,7 +16,7 @@ import struct.ListNode;
  * <b>Summary</b>:
  * <p>
  * <ul>
- * <li>Iterative/Recursive, O(N) time, O(1) space.
+ * <li>O(N) time, Iterative O(1) space, Recursive O(N) stack space, may stack overflow.
  * </ul>
  */
 public class Merge2SortedLists {
@@ -53,26 +53,20 @@ public class Merge2SortedLists {
 
     // 0ms 41.8Mb.
     public static ListNode mergeTwoListsIter2(ListNode l1, ListNode l2) {
-        if (l1 == null) return l2;
-        if (l2 == null) return l1;
-        ListNode head = smallerOne(l1, l2), cur = head;
-        if (head == l1) l1 = l1.next;
-        else l2 = l2.next;
+        ListNode head = new ListNode(0);
+        ListNode cur = head;
         while (l1 != null && l2 != null) {
-            cur.next = smallerOne(l1, l2);
-            if (cur.next == l1) l1 = l1.next;
-            else l2 = l2.next;
+            if (l1.val < l2.val) {
+                cur.next = l1;
+                l1 = l1.next;
+            } else {
+                cur.next = l2;
+                l2 = l2.next;
+            }
             cur = cur.next;
         }
-        cur.next = smallerOne(l1, l2);
-        return head;
-    }
-
-    private static ListNode smallerOne(ListNode a, ListNode b) {
-        if (a == null) return b;
-        if (b == null) return a;
-        if (a.val <= b.val) return a;
-        else return b;
+        cur.next = l1 == null ? l2 : l1;
+        return head.next;
     }
 
     // elegant, 0ms 41.9 Mb.

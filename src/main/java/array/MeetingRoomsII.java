@@ -55,6 +55,7 @@ public class MeetingRoomsII {
         return result;
     }
 
+    // O(NLgN) time, O(N) space.
     public int minMeetingRoomsSort(int[][] intervals) {
         int[] starts = new int[intervals.length], ends = new int[intervals.length];
         for (int i = 0; i < intervals.length; i++) {
@@ -71,10 +72,10 @@ public class MeetingRoomsII {
         return rooms;
     }
 
+    // O(NLgk) time, O(max(LgN,k) space, k is min number of meeting rooms, worst case K == N
     public int minMeetingRoomsHeap(int[][] intervals) {
         Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
         Queue<Integer> heap = new PriorityQueue<>();
-        int active = 1;
         heap.add(intervals[0][1]);
         for (int i = 1; i < intervals.length; i++) {
             if (intervals[i][0] >= heap.peek()) heap.remove(); // meeting in heap ended, take that room

@@ -38,7 +38,8 @@ import java.util.PriorityQueue;
  * <p>
  * k == lists.length
  * 0 <= k <= 104
- * 0 <= lists[i].length <= 500
+ * 0 <= lists[i].length <= 500, n
+ * N = n*k
  * -104 <= lists[i][j] <= 104
  * lists[i] is sorted in ascending order.
  * The sum of lists[i].length will not exceed 104.
@@ -60,7 +61,7 @@ public class MergeKSortedLists {
         return dummy.next;
     }
 
-    // O(NLgk) time, O(Lgk) stack space. 3 ms, 47 Mb.
+    // O(NLgk) time, O(Lgk*N) stack space. 3 ms, 47 Mb.
     public ListNode mergeKListsMergeRecursive(ListNode[] lists) {
         if (lists.length == 0) return null;
         return mergeHelper(lists, 0, lists.length - 1); // length >= 1
