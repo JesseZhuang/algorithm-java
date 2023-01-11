@@ -26,15 +26,15 @@ public class ReverselyApplyFunction {
     }
 
     // recursive, may stack overflow
-    static void reverselyApply(Node head, Consumer consumer) {
+    static void reverselyApplyRecur(Node head, Consumer consumer) {
         if (head == null) return;
-        if (head.next != null) reverselyApply(head.next, consumer);
+        if (head.next != null) reverselyApplyRecur(head.next, consumer);
         consumer.accept(head);
     }
 
     public static void main(String[] args) {
         Node<Integer> head = Node.createFromIntList(Arrays.asList(1, 2, 3, 4, 5));
-        reverselyApply(head, printNode);
+        reverselyApplyRecur(head, printNode);
         System.out.println("---");
         reverselyApplyWithStack(head, printNode);
     }
