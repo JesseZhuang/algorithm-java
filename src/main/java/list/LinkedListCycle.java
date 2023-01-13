@@ -35,6 +35,7 @@ import struct.ListNode;
  * pos is -1 or a valid index in the linked-list.
  * <p>
  * Follow up: Can you solve it using O(1) (i.e. constant) memory?
+ * https://en.wikipedia.org/wiki/Cycle_detection
  */
 public class LinkedListCycle {
     // best: O(N) time, O(1) space, 0ms, 43.6Mb.
