@@ -41,7 +41,20 @@ public class RemoveNthFromEnd {
             count++;
             if (count >= n) nth = nth.next; // n+1 not n
         }
-        nth.next = nth.next.next; // do not forget null check
+        nth.next = nth.next.next; // size >= 1, no need null check, nth.next cannot be null
+        return dummy.next;
+    }
+
+    public ListNode removeNth(ListNode head, int n) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode fast = dummy, slow = dummy;
+        for (int i = 1; i <= n + 1; i++) fast = fast.next; // careful how many positions to move fast
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        slow.next = slow.next.next;
         return dummy.next;
     }
 }
