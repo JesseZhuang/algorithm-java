@@ -28,20 +28,16 @@ package array;
  * to find three more solutions to this problem. Each solution uses two matrix operations.
  */
 public class RotateImage {
-    public void rotate(int[][] matrix) {
-        int n = matrix.length;
-        int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // only the corner elements move like this
-        for (int l = n; l > 1; l -= 2) { // rotation layer's size, O(n/2)
-            int start = (n - l) / 2;
-            for (int i = 0; i < l - 1; i++) { // rotations in each layer, O(l)
-                int temp1 = matrix[start + i][start];
-                for (int j = 0; j < dirs.length; j--) { // j: rotation index, 4 steps needed each rotation
-                    int nr = start + i + dirs[j][0] * (l - 1), nc = start + dirs[j][1] * (l - 1);
-                    int temp2 = matrix[nr][nc];
-                    matrix[nr][nc] = temp1;
-                    temp1 = temp2;
-                }
+    // 0ms, 40.9MB. O(N) O(n^2) time, O(1) space.
+    public void rotate1(int[][] matrix) {
+        int n = matrix.length; // using 5x5 matrix as example,
+        for (int i = 0; i < n / 2; i++) // layers need to do rotation: 5x5, 3x3
+            for (int j = i; j < n - i - 1; j++) { // elements to rotate in this layer {0,0}{0,1}{0,2}{0,3}; {1,1}{1,2}
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[n - j - 1][i]; // [x1][y1] = [x2][y2]. x1 == y2, y1 x2 symmetrical y1 = n-1-x2
+                matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1];
+                matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1];
+                matrix[j][n - i - 1] = temp;
             }
-        }
     }
 }
