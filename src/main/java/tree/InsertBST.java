@@ -3,7 +3,7 @@ package tree;
 import struct.TreeNode;
 
 /**
- * LeetCode 701, medium, tags: tree, bst, binary tree.
+ * LeetCode 701, medium, tags: tree, bst, binary tree. lint code 85.
  * You are given the root node of a binary search tree (BST) and a value to insert into the tree.
  * Return the root node of the BST after the insertion. It is guaranteed that the new value does
  * not exist in the original BST.
@@ -36,11 +36,27 @@ import struct.TreeNode;
  * It's guaranteed that val does not exist in the original BST.
  */
 public class InsertBST {
-    // 0ms, 43 Mb. recursive, O(LgN) time, O(N) stack space worst case.
+    // 0ms, 43 Mb. recursive, O(H) time and tree height stack space, worst case H == N.
     public TreeNode insertIntoBSTR(TreeNode root, int val) {
         if (root == null) return new TreeNode(val);
         if (root.val > val) root.left = insertIntoBSTR(root.left, val);
         else root.right = insertIntoBSTR(root.right, val);
+        return root;
+    }
+
+    // 0ms, 42.8 Mb. Iterative. O(H) time, O(1) space.
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if (root == null) return new TreeNode(val);
+        TreeNode cur = root, parent;
+        int cmp;
+        do {
+            parent = cur;
+            cmp = Integer.compare(val, cur.val); // note not to compare with root!
+            if (cmp < 0) cur = cur.left;
+            else cur = cur.right;
+        } while (cur != null);
+        if (cmp < 0) parent.left = new TreeNode(val);
+        else parent.right = new TreeNode(val);
         return root;
     }
 }
