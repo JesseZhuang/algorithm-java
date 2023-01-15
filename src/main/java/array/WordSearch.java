@@ -26,11 +26,29 @@ package array;
  * m == board.length
  * n = board[i].length
  * 1 <= m, n <= 6
- * 1 <= word.length <= 15
+ * 1 <= word.length <= 15, l
  * board and word consists of only lowercase and uppercase English letters.
  */
 public class WordSearch {
+    // 383ms, 42.5Mb. O(mn 3^l) time, O(mn) space, O(min(l,mn)) recursion space.
+    // Some use bitwise XOR 256 or set char to not letter to save space
     public boolean exist(char[][] board, String word) {
+        boolean[][] visited = new boolean[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++)
+            for (int j = 0; j < board[0].length; j++)
+                if (dfs(board, word, 0, visited, i, j)) return true;
+        return false;
+    }
+
+    private boolean dfs(char[][] board, String word, int index, boolean[][] visited, int i, int j) {
+        if (index == word.length()) return true;
+        if (i >= board.length || i < 0 || j < 0 || j >= board[0].length
+                || visited[i][j] || board[i][j] != word.charAt(index)) return false;
+        visited[i][j] = true;
+        int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+        for (int[] dir : dirs)
+            if (dfs(board, word, index + 1, visited, i + dir[0], j + dir[1])) return true;
+        visited[i][j] = false;
         return false;
     }
 }
