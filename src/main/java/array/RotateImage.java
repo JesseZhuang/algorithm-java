@@ -42,6 +42,9 @@ public class RotateImage {
     }
 
     // 0ms, 40.7Mb. transpose then reflect. O(N) O(n^2) time, O(1) space.
+    // Another method: reverse up down then transpose
+    // for counterclockwise rotate, first reverse left right then transpose
+    // for 180, reflect left right then up down
     public void rotate2(int[][] matrix) {
         int n = matrix.length;
         for (int i = 0; i < n; i++) // transpose
