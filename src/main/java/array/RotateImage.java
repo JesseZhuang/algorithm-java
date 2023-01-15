@@ -40,4 +40,21 @@ public class RotateImage {
                 matrix[j][n - i - 1] = temp;
             }
     }
+
+    // 0ms, 40.7Mb. transpose then reflect. O(N) O(n^2) time, O(1) space.
+    public void rotate2(int[][] matrix) {
+        int n = matrix.length;
+        for (int i = 0; i < n; i++) // transpose
+            for (int j = i + 1; j < n; j++) { // note boundaries
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        for (int i = 0; i < n; i++) // reflect, mirror left and right
+            for (int j = 0; j < n / 2; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[i][n - 1 - j];
+                matrix[i][n - 1 - j] = temp;
+            }
+    }
 }
