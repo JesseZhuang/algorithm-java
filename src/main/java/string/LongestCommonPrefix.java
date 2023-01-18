@@ -18,7 +18,7 @@ import java.util.Arrays;
  * Input: ["dog","racecar","car"]
  * Output: ""
  * </pre>
- * Explanation: There is no common prefix among the input strings.
+ * Explanation: There is no common prefix amongst the input strings.
  * Note: All given inputs are in lowercase letters a-z.
  * <b>Summary:</b>
  * Average string length n. Longest prefix length m. Number of strings in array k.
