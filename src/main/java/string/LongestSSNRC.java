@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * LeetCode 3, medium, tags: hash table, string, sliding window.
+ * LeetCode 3 substring no repeating characters, medium, tags: hash table, string, sliding window.
  * Given a string s, find the length of the longest substring without repeating characters.
  * <p>
  * Example 1:
