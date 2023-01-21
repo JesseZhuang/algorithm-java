@@ -1,9 +1,10 @@
 package string;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
- * LeetCode 271, medium.
+ * LeetCode 271, medium. lint code 659.
  * Design an algorithm to encode a list of strings to a string. The encoded string is then sent over the network and
  * is decoded back to the original list of strings.
  * <p>
@@ -32,7 +33,7 @@ import java.util.List;
  * Implement the encode and decode methods.
  * <p>
  * Note:
- * The string may contain any possible characters out of 256 valid ascii characters. Your algorithm should be
+ * The string may contain any possible characters out of 256 valid extended ascii characters. Your algorithm should be
  * generalized enough to work on any possible characters.
  * Do not use class member/global/static variables to store states. Your encode and decode algorithms
  * should be stateless.
@@ -40,11 +41,15 @@ import java.util.List;
  * encode/decode algorithm.
  */
 public class EncodeDecodeString {
+
+    // 1479ms, 21.5Mb.
+    private static String delimiter = String.valueOf(Character.toChars(257)); // ā
+
     public String encode(List<String> strs) {
-        return null;
+        return String.join(delimiter, strs);
     }
 
-    public List<String> decode(String s) {
-        return null;
+    public List<String> decode(String str) {
+        return Arrays.asList(str.split(delimiter));
     }
 }
