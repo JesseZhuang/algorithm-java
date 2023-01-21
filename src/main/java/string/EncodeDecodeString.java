@@ -43,6 +43,7 @@ import java.util.List;
 public class EncodeDecodeString {
 
     // 1479ms, 21.5Mb.
+    // another idea is to encode with string length and a delimiter, such as '3/aba'
     private static String delimiter = String.valueOf(Character.toChars(257)); // ā
 
     public String encode(List<String> strs) {
