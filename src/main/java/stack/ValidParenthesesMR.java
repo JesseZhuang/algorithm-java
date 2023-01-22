@@ -1,5 +1,8 @@
 package stack;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  * LeetCode 1249, medium, tags: string, stack.
  * Given a string s of '(' , ')' and lowercase English characters.
@@ -39,7 +42,58 @@ package stack;
  * same idea in backward way.
  */
 public class ValidParenthesesMR {
+
+    // two pass, O(N) time, O(1) space. 15ms, 42.9MB.
     public String minRemoveToMakeValid(String s) {
-        return null;
+        int left = 0, right = 0;
+        // need to look ahead to know whether a ( should be included or not
+        for (int i = 0; i < s.length(); i++) if (s.charAt(i) == ')') right++;
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                left++;
+                if (right > 0) { // right-- > 0 incorrect
+                    result.append(s.charAt(i)); // right available, include this (
+                    right--; // mark one ) as used
+                }
+            } else if (s.charAt(i) == ')') {// no need to look ahead, left can indicate include or not
+                if (left > 0) {
+                    left--; // mark one ( as used
+                    result.append(s.charAt(i)); // match found
+                } else right--;
+            } else result.append(s.charAt(i));
+        }
+        return result.toString();
+    }
+
+    // 74 ms, 55.1 Mb. O(N) time, O(N) space. stack.
+    // Another method is to use a set for the open left parentheses to be removed
+    public String minRemoveToMakeValidStack(String s) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        String[] arr = s.split("");
+        for (int i = 0; i < arr.length; i++) {
+            if ("(".equals(arr[i])) stack.push(i);
+            else if (")".equals(arr[i])) {
+                if (!stack.isEmpty()) stack.pop();
+                else arr[i] = "";
+            }
+        }
+        while (!stack.isEmpty()) arr[stack.pop()] = "";
+        return String.join("", arr);
+    }
+
+    // 32ms, 53.7Mb.
+    public String minRemoveToMakeValidStack2(String s) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        StringBuilder res = new StringBuilder(s);
+        for (int i = 0; i < res.length(); i++) {
+            if (res.charAt(i) == '(') stack.push(i);
+            else if (res.charAt(i) == ')') {
+                if (!stack.isEmpty()) stack.pop();
+                else res.setCharAt(i, '#');
+            }
+        }
+        while (!stack.isEmpty()) res.setCharAt(stack.pop(), '#');
+        return res.toString().replaceAll("#", "");
     }
 }
