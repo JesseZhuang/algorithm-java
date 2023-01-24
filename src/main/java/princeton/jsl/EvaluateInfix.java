@@ -52,7 +52,9 @@ public class EvaluateInfix {
                 "( 2 + ( ( 3 + 4 ) * ( 5 * 6 ) ) )", // 212
                 "( ( ( 5 + ( 7 * ( 1 + 1 ) ) ) * 3 ) + ( 2 * ( 1 + 1 ) ) )", // 61
                 "( 1 + ( ( 2 + 3 ) * ( 4 * 5 ) ) )", // 101
-                "( ( 1 + sqrt ( 5 ) ) / 2.0 )" // 1.618033988749895
+                "( ( 1 + sqrt ( 5 ) ) / 2.0 )", // 1.618033988749895,
+                "2 - 1 + 2", // 2.0, should be 3, only work for below with full parentheses
+                "( ( 2 - 1 ) + 2 )"
         };
         for (String test : tests) {
             String[] tokens = test.split(" ");
