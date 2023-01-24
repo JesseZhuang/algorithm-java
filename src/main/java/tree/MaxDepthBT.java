@@ -2,7 +2,10 @@ package tree;
 
 import struct.TreeNode;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -26,11 +29,6 @@ import java.util.Stack;
  * <p>
  * The number of nodes in the tree is in the range [0, 104].
  * -100 <= Node.val <= 100
- * <b>Summary</b>
- * <ul>
- * <li>recursive, max of left and right, O(height) time, O(height) stack space.</li>
- * <li>iterative with a stack, O(height) time, O(height) space.</li>
- * </ul>
  */
 
 public class MaxDepthBT {
@@ -38,6 +36,8 @@ public class MaxDepthBT {
     /**
      * alg1: recursively calculate the height of left and right sub tree.
      * possibly to modify this to be tail recursive.
+     * 0ms, 43.6Mb.
+     * O(n) time and O(height:n) stack space (refer to fibonacci recursive space). Look at each tree node once.
      */
     public int maxDepthRecursive(TreeNode root) {
         if (root == null) return 0;
@@ -48,9 +48,9 @@ public class MaxDepthBT {
      * iterative version, probably not possible without using a stack. recursive
      * version is using the stack implicitly. can use Apache commons LinkedMap
      * to avoid using a stack (fundamentally still a stack).
-     * 3ms, 42.1 Mb.
+     * 3ms, 42.1 Mb. O(n) time and O(height) stack space.
      */
-    public int maxDepthIter(TreeNode root) {
+    public int maxDepthDFS1(TreeNode root) {
         if (root == null)
             return 0;
         int curLevel = 1, maxLevel = 1;
@@ -74,4 +74,52 @@ public class MaxDepthBT {
         return maxLevel;
     }
 
+    // 15ms, 44.3 Mb. O(n) time and O(height) stack space.
+    public int maxDepthDFS2(TreeNode root) {
+        if (root == null) return 0;
+        int curLevel = 0, maxLevel = 0;
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        Map<TreeNode, Integer> visited = new HashMap<>();
+        visited.put(root, 0);
+        while (!stack.isEmpty()) {
+            TreeNode cur = stack.peek();
+            if (visited.get(cur) == 2) {
+                stack.pop();
+                curLevel--;
+            } else if (visited.get(cur) == 0) {
+                curLevel++;
+                if (cur.left != null) {
+                    stack.push(cur.left);
+                    visited.put(cur.left, 0);
+                }
+                visited.put(cur, 1);
+            } else {
+                if (cur.right != null) {
+                    stack.push(cur.right);
+                    visited.put(cur.right, 0);
+                }
+                visited.put(cur, 2);
+            }
+            maxLevel = Math.max(curLevel, maxLevel);
+        }
+        return maxLevel;
+    }
+
+    // 1ms, 42.2Mb. O(n) time and O(max_nodes_one_level:n) space.
+    public int maxDepthBFS1(TreeNode root) {
+        if (root == null) return 0;
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        int level = 0;
+        while (!queue.isEmpty()) {
+            level++;
+            for (int i = 0, n = queue.size(); i < n; i++) { // cannot i < queue.size()
+                TreeNode cur = queue.remove();
+                if (cur.left != null) queue.add(cur.left);
+                if (cur.right != null) queue.add(cur.right);
+            }
+        }
+        return level;
+    }
 }

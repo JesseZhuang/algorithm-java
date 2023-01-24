@@ -19,6 +19,6 @@ public class MaxDepthBTTest {
     @CsvSource(value = "0,1,2,3,#,#,#,4,#,#,#;4", delimiter = ';')
     void testMaxDepth(String tree, int depth) {
         assertEquals(toBeTested.maxDepthRecursive(TreeNode.readFromLevelOrderString(tree)), depth);
-        assertEquals(toBeTested.maxDepthIter(TreeNode.readFromLevelOrderString(tree)), depth);
+        assertEquals(toBeTested.maxDepthDFS1(TreeNode.readFromLevelOrderString(tree)), depth);
     }
 }
