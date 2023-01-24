@@ -1,5 +1,8 @@
 package math;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  * LeetCode 227, medium, tags: math, string, stack.
  * Given a string s which represents an expression, evaluate this expression and return its value.
@@ -34,7 +37,56 @@ package math;
  * The answer is guaranteed to fit in a 32-bit integer.
  */
 public class BasicCalculatorII {
-    public int calculate(String s) {
-        return 0;
+    // 20ms, 44.3Mb. O(n) time and space.
+    public static int calculate(String s) {
+        Deque<Integer> vals = new ArrayDeque<>();
+        char lastOp = '+';
+        for (int i = 0, n = 0; i < s.length(); i++) {
+            if (Character.isDigit(s.charAt(i))) n = n * 10 + s.charAt(i) - '0';
+            if (!Character.isDigit(s.charAt(i)) && ' ' != s.charAt(i) || i == s.length() - 1) {
+                if (lastOp == '+') vals.push(n);
+                else if (lastOp == '-') vals.push(-n);
+                else if (lastOp == '*') vals.push(vals.pop() * n);
+                else if (lastOp == '/') vals.push(vals.pop() / n);
+                lastOp = s.charAt(i);
+                n = 0;
+            }
+        }
+        int val = 0;
+        while (!vals.isEmpty()) val += vals.pop();
+        return val;
+    }
+
+    // O(N) time, O(1) space. 34ms, 46.1Mb.
+    public static int calculate2(String s) {
+        int length = s.length();
+        int curVal = 0, lastVal = 0, result = 0;
+        char operation = '+';
+        for (int i = 0; i < length; i++) {
+            char currentChar = s.charAt(i);
+            if (Character.isDigit(currentChar)) curVal = (curVal * 10) + (currentChar - '0');
+            if (!Character.isDigit(currentChar) && !Character.isWhitespace(currentChar) || i == length - 1) {
+                if (operation == '+' || operation == '-') {
+                    result += lastVal;
+                    lastVal = (operation == '+') ? curVal : -curVal;
+                } else if (operation == '*') {
+                    lastVal = lastVal * curVal;
+                } else if (operation == '/') {
+                    lastVal = lastVal / curVal;
+                }
+                operation = currentChar;
+                curVal = 0;
+            }
+        }
+        result += lastVal;
+        return result;
+    }
+
+    public static void main(String[] args) {
+        String[] tests = {"3+2*2", " 3/2 ", " 3+5 / 2 ", "1-1+1"};
+        int[] expected = {7, 1, 5, 1};
+        for (int i = 0; i < tests.length; i++) {
+            System.out.println(calculate(tests[i]));
+        }
     }
 }
