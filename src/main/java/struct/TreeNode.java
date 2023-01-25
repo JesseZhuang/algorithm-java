@@ -58,7 +58,7 @@ public class TreeNode {
     }
 
     public int depth() {
-       return depth(this);
+        return depth(this);
     }
 
     public static int depth(TreeNode node) {
@@ -141,33 +141,12 @@ public class TreeNode {
      * @return level-order traversal string representation.
      */
     public String toString() {
-        StringBuilder ans = new StringBuilder();
-        Queue<TreeNode> q = new ArrayDeque<>();
-        q.add(this);
-        ans.append(this.val).append(":root\n");
-        // print each level on one line
-        while (!q.isEmpty()) {
-            int numNodes = q.size();
-            while (numNodes > 0) {
-                TreeNode c = q.remove();
-                String left = "#", right = "#";
-                if (c.left != null) {
-                    q.add(c.left);
-                    left = String.valueOf(c.left.val);
-                }
-                if (c.right != null) {
-                    q.add(c.right);
-                    right = String.valueOf(c.right.val);
-                }
-                numNodes--;
-                ans.append(left).append(",").append(right).append(numNodes == 0 ? "" : ",");
-            }
-            ans.append("\n");
-        }
-        return ans.toString();
+        return levelOrderString();
     }
 
     /**
+     * No need to get height first, see {@link tree.BTLevelOrder}.
+     *
      * @return level order string representation of the tree with recursive printing.
      */
     @SuppressWarnings("unused")
