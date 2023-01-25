@@ -37,7 +37,7 @@ public class SameTree {
 
     // 1ms, 42 Mb. BFS, O(N) time and space.
     public static boolean isSameTreeBFS(TreeNode p, TreeNode q) {
-        LinkedList<TreeNode> deqP = new LinkedList<>();
+        LinkedList<TreeNode> deqP = new LinkedList<>(); // ArrayDeque does not allow null
         LinkedList<TreeNode> deqQ = new LinkedList<>();
         deqP.add(p);
         deqQ.add(q);
