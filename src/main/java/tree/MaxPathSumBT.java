@@ -2,15 +2,20 @@ package tree;
 
 import struct.TreeNode;
 
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
 /**
- * LeetCode 124. Hard. Tags: Tree, Depth-first Search.
+ * LeetCode 124. Hard. Tags: Tree, Depth-first Search, dynamic programming, binary tree.
  * <p>
  * Given a non-empty binary tree, find the maximum path sum.
  * <p>
  * For this problem, a path is defined as any sequence of nodes from some starting node to any node in the tree
  * along the parent-child connections. The path must contain at least one node and does not need to go through the root.
  * <p>
- * Example 1:
+ * Example 1: https://assets.leetcode.com/uploads/2020/10/13/exx1.jpg
  * <p>
  * Input: [1,2,3]
  * <pre>
@@ -20,7 +25,7 @@ import struct.TreeNode;
  * </pre>
  * Output: 6
  * <p>
- * Example 2:
+ * Example 2: https://assets.leetcode.com/uploads/2020/10/13/exx2.jpg
  * <p>
  * Input: [-10,9,20,null,null,15,7]
  * <pre>
@@ -31,15 +36,11 @@ import struct.TreeNode;
  *    15   7
  * </pre>
  * Output: 42
- * <p>
- * <b>Summary</b>
- * <ul>
- * <li>recursive, max of left and right, O(height) time, O(height) stack space. 1 ms, 99.73%, 40 Mb, 98.81%.</li>
- * </ul>
  */
 public class MaxPathSumBT {
     int maxValue;
 
+    // 1ms, 48.3 Mb. O(n) time, O(height, worst case n) space.
     public int maxPathSum(TreeNode root) {
         if (root == null) return 0;
         maxValue = Integer.MIN_VALUE;
@@ -54,7 +55,37 @@ public class MaxPathSumBT {
         if (node == null) return 0;
         int left = Math.max(0, maxPathDown(node.left));
         int right = Math.max(0, maxPathDown(node.right));
-        maxValue = Math.max(maxValue, left + right + node.val);
+        maxValue = Math.max(maxValue, left + right + node.val); // sum including node
         return Math.max(left, right) + node.val;
+    }
+
+    // 18ms, 44.9Mb. calculate with post order. O(n) time and space.
+    public int maxPathSumIter(TreeNode root) {
+        int result = Integer.MIN_VALUE;
+        Map<TreeNode, Integer> maxRootPath = new HashMap<>(); // cache
+        maxRootPath.put(null, 0); // for simplicity, handle null nodes
+        for (TreeNode node : topSort(root)) {
+            // as we process nodes in post-order their children are already cached
+            int left = Math.max(maxRootPath.get(node.left), 0);
+            int right = Math.max(maxRootPath.get(node.right), 0);
+            maxRootPath.put(node, Math.max(left, right) + node.val);
+            result = Math.max(left + right + node.val, result);
+        }
+        return result;
+    }
+
+    public Iterable<TreeNode> topSort(TreeNode root) {
+        Deque<TreeNode> result = new LinkedList<>();
+        if (root != null) {
+            Deque<TreeNode> stack = new LinkedList<>();
+            stack.push(root);
+            while (!stack.isEmpty()) {
+                TreeNode curr = stack.pop();
+                result.push(curr);
+                if (curr.right != null) stack.push(curr.right);
+                if (curr.left != null) stack.push(curr.left);
+            }
+        }
+        return result;
     }
 }
