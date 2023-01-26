@@ -51,3 +51,4 @@ check mark button to show/hide passed tests. Click the forbidden symbol to show/
 1. array index boundary check
 1. system invariant check: keep some states in order or updated in dynamic programming
 1. object fields (set to null to avoid loitering)
+1. use short variable names to save time and avoid time, explain in real code will use longer var name for readability
