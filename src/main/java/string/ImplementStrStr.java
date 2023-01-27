@@ -1,5 +1,7 @@
 package string;
 
+import tree.Subtree;
+
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Random;
@@ -260,7 +262,7 @@ public class ImplementStrStr {
   /** 9 ms should be equivalent to wikipedia version */
   public int strStrKMP(String haystack, String needle) {
     // if (needle.length() == 0) return 0; no need this line
-    int[] restart = restartTable(needle);
+    int[] restart = restartTable2(needle);
     int i, j;
     for (i = 0, j = 0; i < haystack.length() && j < needle.length();) {
       if (haystack.charAt(i) == needle.charAt(j)) {
@@ -311,15 +313,7 @@ public class ImplementStrStr {
   /** O(M) time (at most 2M loops), O(M) space */
   @SuppressWarnings("unused")
   private int[] restartTable2(String needle) {
-    int[] restart = new int[needle.length()];
-    for (int i = 1, j = 0; i < needle.length();) {
-      if (needle.charAt(i) == needle.charAt(j)) {
-        restart[i] = ++j;
-        i++;
-      } else if (j == 0) i++;// nowhere to back up
-      else j = restart[j - 1];
-    }
-    return restart;
+    return Subtree.restartTable(needle);
   }
 
   /** O(M) time (at most 2M loops), O(M) space */
