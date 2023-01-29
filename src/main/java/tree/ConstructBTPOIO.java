@@ -97,6 +97,16 @@ public class ConstructBTPOIO {
         return n;
     }
 
+    public TreeNode build2(int[] preorder, int[] inorder, Integer stop) {
+        if (in < inorder.length && !Integer.valueOf(inorder[in]).equals(stop)) {
+            TreeNode n = new TreeNode(preorder[pre++]);
+            n.left = build(preorder, inorder, n.val);
+            in++;
+            n.right = build(preorder, inorder, stop);
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         ConstructBTPOIO tbt = new ConstructBTPOIO();
         System.out.println(tbt.buildTreeR(new int[]{3, 9, 1, 2, 20, 15, 7}, new int[]{1, 9, 2, 3, 15, 20, 7}));
