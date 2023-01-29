@@ -84,7 +84,7 @@ public class ConstructBTPOIO {
         return build(preorder, inorder, null);
     }
 
-    // 1ms, 41.7Mb
+    // 1ms, 41.7Mb, O(n) time and O(height, stack, worst case n) space.
     public TreeNode build(int[] preorder, int[] inorder, Integer stop) {
         if (pre >= preorder.length) return null; // must include equal
         if (Integer.valueOf(inorder[in]).equals(stop)) { // build 3,9,1, inorder[0] == 1, will stop 1.left = null
@@ -93,7 +93,7 @@ public class ConstructBTPOIO {
         }
         TreeNode n = new TreeNode(preorder[pre++]);
         n.left = build(preorder, inorder, n.val);
-        n.right = build(preorder, inorder, stop);
+        n.right = build(preorder, inorder, stop); // e.g., 1.right = build(_,_,9) because 9.left == 1 = build(_,_,9)
         return n;
     }
 
