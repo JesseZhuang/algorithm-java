@@ -11,8 +11,6 @@ package array;
  * Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being
  * shipped within days.
  * <p>
- * <p>
- * <p>
  * Example 1:
  * <p>
  * Input: weights = [1,2,3,4,5,6,7,8,9,10], days = 5
@@ -43,7 +41,6 @@ package array;
  * 2nd day: 2
  * 3rd day: 3
  * 4th day: 1, 1
- * <p>
  * <p>
  * Constraints:
  * <p>
