@@ -29,6 +29,8 @@ import java.util.Deque;
  * <p>
  * Similar to LRU Cache question 146, doubly linked list. O(h) time for insert, O(1, add map?) or O(h) delete,
  * O(k) for searching the kth smallest O(1) if use another arraylist as an copy but insert and delete would be slow.
+ * <p>
+ * If we can modify bst node, keep count, insert/delete/find would all be O(h).
  * Hints:
  * <p>
  * Try to utilize the property of a BST.
@@ -38,7 +40,7 @@ import java.util.Deque;
  */
 public class KSmallBST {
 
-    // 0ms, 42.4 Mb. Iterative. O(h+k) time, O(h) recursion stack space.
+    // 0ms, 42.4 Mb. Iterative. O(h+k) time, O(h) stack space.
     public int kthSmallestI1(TreeNode root, int k) {
         Deque<TreeNode> stack = new ArrayDeque<>();
         while (true) { // condition is important to compile
@@ -50,5 +52,25 @@ public class KSmallBST {
             if (--k == 0) return root.val;
             root = root.right;
         }
+    }
+
+    int number = 0;
+    int count = 0;
+
+    // 0ms, 41.9Mb, recursive. O(h+k) time, O(h) recursion stack space.
+    public int kthSmallest(TreeNode root, int k) {
+        count = k;
+        helper(root);
+        return number;
+    }
+
+    private void helper(TreeNode n) {
+        if (n.left != null) helper(n.left);
+        count--;
+        if (count == 0) {
+            number = n.val;
+            return;
+        }
+        if (n.right != null) helper(n.right);
     }
 }
