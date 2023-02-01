@@ -20,12 +20,12 @@ import java.util.List;
  * Both the left and right subtrees must also be binary search trees.
  * <p>
  * <p>
- * Example 1:
+ * Example 1: https://assets.leetcode.com/uploads/2020/12/01/tree1.jpg
  * <p>
  * <p>
  * Input: root = [2,1,3]
  * Output: true
- * Example 2:
+ * Example 2: https://assets.leetcode.com/uploads/2020/12/01/tree2.jpg
  * <p>
  * <p>
  * Input: root = [5,1,4,null,null,3,6]
