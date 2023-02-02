@@ -78,7 +78,7 @@ public class ImplTrie { // 36ms, 50.6 Mb. iterative.
 class Node {
     private static final int R = 26;
     boolean isWord;
-    Node[] next;
+    Node[] next; // only one null in JVM, space is not linear with number of null links
 
     Node() {
         next = new Node[R];

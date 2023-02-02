@@ -1,5 +1,10 @@
 package tree;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * LeetCode 211, medium, tags: string, dfs, design, trie.
  * <p>
@@ -35,8 +40,9 @@ package tree;
  * <p>
  * Constraints:
  * <p>
- * 1 <= word.length <= 25
- * word in addWord consists of lowercase English letters.
+ * 1 <= word.length <= 25, L
+ * Number of strings in dictionary, N
+ * word in addWord consists of lowercase English letters. radix size R = 26.
  * word in search consist of '.' or lowercase English letters.
  * There will be at most 3 dots in word for search queries.
  * At most 104 calls will be made to addWord and search.
@@ -50,7 +56,7 @@ public class AddSearchWord {
 class WordDictionary { // 452 ms, 96 Mb.
     Node root;
 
-    public WordDictionary() { // N: number of words in trie.
+    public WordDictionary() {
         root = new Node();
     }
 
@@ -64,8 +70,8 @@ class WordDictionary { // 452 ms, 96 Mb.
         cur.isWord = true;
     }
 
-    public boolean search(String word) { // space R*N. time: search hit O(L), search miss: Log_R(L) L: word length
-        return match(word, 0, root);
+    public boolean search(String word) { // space N*L. time: search hit O(L), search miss: O(L) L: word length
+        return match(word, 0, root); // wild card, worst case time search hit or miss O(26^L) e.g., "..g"
     }
 
     private boolean match(String word, int d, Node n) {
@@ -78,5 +84,30 @@ class WordDictionary { // 452 ms, 96 Mb.
                     if (match(word, d + 1, n.next[i])) return true;
         }
         return false;
+    }
+}
+
+class WordDictionaryMap { // 2479 ms, 50.6Mb.
+
+    Map<Integer, List<String>> map = new HashMap<>(); // space O(N*L)
+
+    public void addWord(String word) {
+        int len = word.length();
+        if (!map.containsKey(len)) map.put(len, new ArrayList<>());
+        map.get(len).add(word);
+    }
+
+    public boolean search(String word) {// search hit O(NL) worst case all words same length, search miss O(NL)
+        int len = word.length();
+        if (!map.containsKey(len)) return false; // avoid NPE
+        for (String s : map.get(len))
+            if (isSame(s, word)) return true;
+        return false;
+    }
+
+    boolean isSame(String a, String word) {
+        for (int i = 0; i < a.length(); i++)
+            if (word.charAt(i) != '.' && word.charAt(i) != a.charAt(i)) return false;
+        return true;
     }
 }
