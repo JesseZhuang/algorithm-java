@@ -1,9 +1,9 @@
 package tree;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * LeetCode 211, medium, tags: string, dfs, design, trie.
@@ -87,17 +87,17 @@ class WordDictionary { // 452 ms, 96 Mb.
     }
 }
 
-class WordDictionaryMap { // still Time limit exceeded, only difference with AC version is List vs Set
+class WordDictionaryMap { // 2372ms, 50.5 Mb.
 
-    Map<Integer, Set<String>> map = new HashMap<>(); // space O(NL), better than a naive hashset, group same length
+    Map<Integer, List<String>> map = new HashMap<>(); // space O(NL)
 
     public void addWord(String word) {
         int len = word.length();
-        if (!map.containsKey(len)) map.put(len, new HashSet<>());
+        if (!map.containsKey(len)) map.put(len, new ArrayList<>());
         map.get(len).add(word);
     }
 
-    public boolean search(String word) {// search hit O(L), search miss O(NL), trie search miss can be much less
+    public boolean search(String word) {// search hit O(NL), search miss O(NL), trie search miss can be much less
         int len = word.length();
         if (!map.containsKey(len)) return false; // avoid NPE
         for (String s : map.get(len)) if (isSame(s, word)) return true;
