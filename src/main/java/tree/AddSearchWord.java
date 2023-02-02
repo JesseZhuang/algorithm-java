@@ -1,9 +1,11 @@
 package tree;
 
-import java.util.ArrayList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * LeetCode 211, medium, tags: string, dfs, design, trie.
@@ -87,27 +89,46 @@ class WordDictionary { // 452 ms, 96 Mb.
     }
 }
 
-class WordDictionaryMap { // 2479 ms, 50.6Mb.
+class WordDictionaryMap { // Time limit exceeded. hit miss expensive
 
-    Map<Integer, List<String>> map = new HashMap<>(); // space O(N*L)
+    Map<Integer, Set<String>> map = new HashMap<>(); // space O(NL), better than a naive hashset, group same length
 
     public void addWord(String word) {
         int len = word.length();
-        if (!map.containsKey(len)) map.put(len, new ArrayList<>());
+        if (!map.containsKey(len)) map.put(len, new HashSet<>());
         map.get(len).add(word);
     }
 
-    public boolean search(String word) {// search hit O(NL) worst case all words same length, search miss O(NL)
+    public boolean search(String word) {// search hit O(L), search miss O(L), trie search miss can be much less
         int len = word.length();
         if (!map.containsKey(len)) return false; // avoid NPE
-        for (String s : map.get(len))
-            if (isSame(s, word)) return true;
-        return false;
+        Set<String> lookup = map.get(len);
+        if (!word.contains(".")) return lookup.contains(word);
+        Deque<StringBuilder> words = new ArrayDeque<>();
+        words.add(new StringBuilder());
+        for (int i = 0; i < word.length(); i++) {
+            while (words.peek().length() == i) {
+                StringBuilder sb = words.remove();
+                if (word.charAt(i) != '.') {
+                    sb.append(word.charAt(i));
+                    words.add(sb);
+                } else {
+                    for (int j = 0; j < 26; j++) {
+                        StringBuilder csb = new StringBuilder(sb);
+                        csb.append((char) (j + 'a'));
+                        words.add(csb);
+                    }
+                }
+            }
+        }
+        return words.stream().anyMatch(sb -> lookup.contains(sb.toString()));
     }
 
-    boolean isSame(String a, String word) {
-        for (int i = 0; i < a.length(); i++)
-            if (word.charAt(i) != '.' && word.charAt(i) != a.charAt(i)) return false;
-        return true;
+    public static void main(String[] args) {
+        String[] words = {"bad", "dad", "mad"};
+        String[] searches = {"pad", "bad", ".ad", "b.."};
+        WordDictionaryMap tbt = new WordDictionaryMap();
+        for (String w : words) tbt.addWord(w);
+        for (String s : searches) System.out.println(String.format("%s in dict: %b", s, tbt.search(s)));
     }
 }
