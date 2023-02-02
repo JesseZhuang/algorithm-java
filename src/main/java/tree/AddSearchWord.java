@@ -1,7 +1,5 @@
 package tree;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,7 +87,7 @@ class WordDictionary { // 452 ms, 96 Mb.
     }
 }
 
-class WordDictionaryMap { // Time limit exceeded. hit miss expensive
+class WordDictionaryMap { // still Time limit exceeded, only difference with AC version is List vs Set
 
     Map<Integer, Set<String>> map = new HashMap<>(); // space O(NL), better than a naive hashset, group same length
 
@@ -99,29 +97,17 @@ class WordDictionaryMap { // Time limit exceeded. hit miss expensive
         map.get(len).add(word);
     }
 
-    public boolean search(String word) {// search hit O(L), search miss O(L), trie search miss can be much less
+    public boolean search(String word) {// search hit O(L), search miss O(NL), trie search miss can be much less
         int len = word.length();
         if (!map.containsKey(len)) return false; // avoid NPE
-        Set<String> lookup = map.get(len);
-        if (!word.contains(".")) return lookup.contains(word);
-        Deque<StringBuilder> words = new ArrayDeque<>();
-        words.add(new StringBuilder());
-        for (int i = 0; i < word.length(); i++) {
-            while (words.peek().length() == i) {
-                StringBuilder sb = words.remove();
-                if (word.charAt(i) != '.') {
-                    sb.append(word.charAt(i));
-                    words.add(sb);
-                } else {
-                    for (int j = 0; j < 26; j++) {
-                        StringBuilder csb = new StringBuilder(sb);
-                        csb.append((char) (j + 'a'));
-                        words.add(csb);
-                    }
-                }
-            }
-        }
-        return words.stream().anyMatch(sb -> lookup.contains(sb.toString()));
+        for (String s : map.get(len)) if (isSame(s, word)) return true;
+        return false;
+    }
+
+    private boolean isSame(String s, String word) {
+        for (int i = 0; i < word.length(); i++) // this compare can be less than O(L)
+            if (word.charAt(i) != '.' && word.charAt(i) != s.charAt(i)) return false;
+        return true;
     }
 
     public static void main(String[] args) {
