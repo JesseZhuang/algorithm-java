@@ -2,6 +2,7 @@ package string;
 
 import tree.ImplTrie;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -45,8 +46,49 @@ import java.util.Set;
  * How about a Trie? If you would like to learn how to implement a basic trie, please work on this problem:
  * Implement Trie (Prefix Tree) first.
  */
-public class WordSearchII {// 2668 ms, 45.6 Mb. dfs with trie. O(mnl*4^l) time.
+public class WordSearchII {
 
+    // 153ms, 42.8Mb. dfs with trie node. O(mn*4^L) time.
+    public List<String> findWords(char[][] board, String[] words) {
+        Node root = new Node();
+        for (String w : words) insert(w, root);
+        int m = board.length, n = board[0].length;
+        List<String> res = new ArrayList<>();
+        for (int r = 0; r < m; r++) // O(m)
+            for (int c = 0; c < n; c++) // O(n)
+                dfs(board, r, c, root, res); // O(4^L)
+        return res;
+    }
+
+    private void dfs(char[][] board, int r, int c, Node n, List<String> res) {
+        char c1 = board[r][c];
+        int id = c1 - 'a';
+        if (c == '#' || n.next[id] == null) return;
+        n = n.next[id];
+        if (n.word != null) {
+            res.add(n.word);
+            n.word = null; // dedupe, trick
+        }
+        board[r][c] = '#'; // save boolean[][] visited trick
+        if (r > 0) dfs(board, r - 1, c, n, res);
+        if (c > 0) dfs(board, r, c - 1, n, res);
+        if (r < board.length - 1) dfs(board, r + 1, c, n, res);
+        if (c < board[0].length - 1) dfs(board, r, c + 1, n, res);
+        board[r][c] = c1;
+    }
+
+
+    private void insert(String word, Node root) {
+        Node cur = root;
+        for (int i = 0; i < word.length(); i++) {
+            int id = word.charAt(i) - 'a';
+            if (cur.next[id] == null) cur.next[id] = new Node();
+            cur = cur.next[id];
+        }
+        cur.word = word;
+    }
+
+    // 2668 ms, 45.6 Mb. dfs with trie. O(mnl*4^l) time.
     public List<String> findWords1(char[][] board, String[] words) {
         ImplTrie trie = new ImplTrie();
         for (String w : words) trie.insert(w); // O(NL) time and space.
@@ -55,7 +97,7 @@ public class WordSearchII {// 2668 ms, 45.6 Mb. dfs with trie. O(mnl*4^l) time.
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
                 String s = Character.toString(board[r][c]); // StringBuilder(char) set capacity
-                if (trie.startsWith(s))
+                if (trie.startsWith(s)) // O(L*4^L)
                     findWords1(board, trie, result, r, c, visited, new StringBuilder(s));
             }
         }
@@ -90,5 +132,14 @@ public class WordSearchII {// 2668 ms, 45.6 Mb. dfs with trie. O(mnl*4^l) time.
         board = new char[][]{{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}};
         words = new String[]{"oath", "pea", "eat", "rain", "hklf", "hf"};
         System.out.println(tbt.findWords1(board, words));
+    }
+}
+
+class Node {
+    String word;
+    Node[] next;
+
+    Node() {
+        next = new Node[26];
     }
 }
