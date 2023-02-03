@@ -64,7 +64,7 @@ public class TopKFrequent {
     Map<Integer, Integer> count;
 
     // 9ms. 46.6 Mb, O(N) average case, O(N^2) worse case, O(N) space.
-    public int[] topKFrequent(int[] nums, int k) {
+    public int[] topKFrequentQS(int[] nums, int k) {
         count = new HashMap();
         for (int num : nums) count.put(num, count.getOrDefault(num, 0) + 1);
         int n = count.size();
@@ -137,6 +137,6 @@ public class TopKFrequent {
 
     public static void main(String[] args) {
         TopKFrequent tbt = new TopKFrequent();
-        System.out.println(Arrays.toString(tbt.topKFrequentMap(new int[]{1, 1, 1, 2, 2, 3}, 2))); // [1,2]
+        System.out.println(Arrays.toString(tbt.topKFrequentQS(new int[]{1, 1, 1, 2, 2, 3}, 2))); // [1,2]
     }
 }
