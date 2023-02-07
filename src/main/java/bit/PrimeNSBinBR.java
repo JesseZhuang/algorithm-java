@@ -46,11 +46,27 @@ import java.util.Set;
  */
 public class PrimeNSBinBR {
     // 10ms, 39.4Mb. O(n) time, O(1) space.
+    // another method uses mask 665772 == 0b10100010100010101100 for the primes below
+    // return IntStream.range(L, R+1).map(i -> 665772 >> Integer.bitCount(i) & 1).sum();
     public int countPrimeSetBits(int left, int right) {
         Set<Integer> primes = new HashSet<>(Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19)); // floor(log_2(10^6)) == 19
         int res = 0;
         while (left <= right)
             if (primes.contains(Integer.bitCount(left++))) res++;
         return res;
+    }
+
+    // 4ms, 39.4Mb.
+    public int countPrimeSetBits2(int L, int R) {
+        int ans = 0;
+        for (int x = L; x <= R; ++x)
+            if (isSmallPrime(Integer.bitCount(x)))
+                ans++;
+        return ans;
+    }
+
+    public boolean isSmallPrime(int x) {
+        return (x == 2 || x == 3 || x == 5 || x == 7 ||
+                x == 11 || x == 13 || x == 17 || x == 19);
     }
 }
