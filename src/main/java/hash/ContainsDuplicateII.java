@@ -2,6 +2,8 @@ package hash;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -22,6 +24,12 @@ import java.util.HashSet;
  * Example 3:
  * Input: nums = [1,2,3,1,2,3], k = 2
  * Output: false
+ *
+ * Constraints:
+ *
+ * 1 <= nums.length <= 105
+ * -109 <= nums[i] <= 109
+ * 0 <= k <= 105
  * </pre>
  * <p>
  * <b>Summary</b>:
@@ -33,26 +41,24 @@ import java.util.HashSet;
  */
 public class ContainsDuplicateII {
 
-    public boolean containsNearbyDuplicateSet(int[] numbers, int k) {
-        if(numbers == null) return false;
-        HashSet<Integer> set = new HashSet<>();
-        for (int i = 0; i < numbers.length; i++) {
-            if (i > k) set.remove(numbers[i - k - 1]);
-            if (!set.add(numbers[i])) return true;
+    // 15ms, 51.5 Mb. O(N) time, O(k) space.
+    public boolean containsNearbyDuplicateSet(int[] nums, int k) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (i > k) set.remove(nums[i - k - 1]);
+            if (!set.add(nums[i])) return true;
         }
         return false;
     }
 
     /**
-     * Uses HashMap<ArrayValue, ArrayIndex>
+     * Uses HashMap<ArrayValue, ArrayIndex>. O(N) time and space. 16ms, 55.3 Mb.
      */
     public boolean containsNearbyDuplicateMap(int[] nums, int k) {
-        if (nums != null) {
-            HashMap<Integer, Integer> seen = new HashMap<>();
-            for (int i = 0; i < nums.length; i++) {
-                Integer pre = seen.put(nums[i], i);
-                if (pre != null && i - pre <= k) return true;
-            }
+        Map<Integer, Integer> seen = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            Integer pre = seen.put(nums[i], i);
+            if (pre != null && i - pre <= k) return true;
         }
         return false;
     }
