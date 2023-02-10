@@ -1,5 +1,7 @@
 package array;
 
+import java.util.TreeSet;
+
 /**
  * LeetCode 220, hard, tags: array, sliding window, sorting, bucket sort, ordered set.
  * <p>
@@ -29,13 +31,22 @@ package array;
  * <p>
  * Constraints:
  * <p>
- * 2 <= nums.length <= 105
+ * 2 <= nums.length <= 105, N
  * -109 <= nums[i] <= 109
- * 1 <= indexDiff <= nums.length
+ * 1 <= indexDiff <= nums.length, K
  * 0 <= valueDiff <= 109
  */
 public class ContainsDuplicateIII {
-    public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+    // 50ms, 52.6 Mb. tree set. O(NLgK) time, O(K) space.
+    // Alternatively can get floor(n+t) >= n or ceil(n-t) <= n
+    public static boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+        TreeSet<Integer> mem = new TreeSet<>();
+        mem.add(nums[0]);
+        for (int i = 1; i < nums.length; i++) {
+            if (mem.size() > indexDiff) mem.remove(nums[i - indexDiff - 1]);
+            if (!mem.subSet(nums[i] - valueDiff, nums[i] + valueDiff + 1).isEmpty()) return true;
+            mem.add(nums[i]);
+        }
         return false;
     }
 }
