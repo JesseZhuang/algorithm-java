@@ -1,6 +1,9 @@
 package array;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
+import java.util.stream.IntStream;
 
 /**
  * LeetCode 220, hard, tags: array, sliding window, sorting, bucket sort, ordered set.
@@ -31,14 +34,14 @@ import java.util.TreeSet;
  * <p>
  * Constraints:
  * <p>
- * 2 <= nums.length <= 105, N
- * -109 <= nums[i] <= 109
+ * 2 <= nums.length <= 10^5, N
+ * -10^9 <= nums[i] <= 10^9
  * 1 <= indexDiff <= nums.length, K
- * 0 <= valueDiff <= 109
+ * 0 <= valueDiff <= 10^9
  */
 public class ContainsDuplicateIII {
     // 50ms, 52.6 Mb. tree set. O(NLgK) time, O(K) space.
-    // Alternatively can get floor(n+t) >= n or ceil(n-t) <= n
+    // Alternatively can get floor(n+t) >= n or ceil(n-t) <= n, check null
     public static boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
         TreeSet<Integer> mem = new TreeSet<>();
         mem.add(nums[0]);
@@ -48,5 +51,29 @@ public class ContainsDuplicateIII {
             mem.add(nums[i]);
         }
         return false;
+    }
+
+    private static int getBucketID(int i, int w) {
+        return i < 0 ? (i + 1) / w - 1 : i / w;
+        // for w == 3: [-6,-5,-4]->-2, [-3,-2,-1]->-1, [0,1,2]->0, [3,4,5]->1
+    }
+
+    // 28ms, 53 Mb. O(N) time, O(K) space.
+    public static boolean containsNearbyAlmostDuplicateB(int[] nums, int indexDiff, int valueDiff) {
+        Map<Integer, Integer> d = new HashMap<>();
+        int w = valueDiff + 1; // bucket size
+        for (int i = 0; i < nums.length; ++i) {
+            int m = getBucketID(nums[i], w);
+            if (d.containsKey(m)) return true; // check neighboring buckets below
+            if (d.containsKey(m - 1) && Math.abs(nums[i] - d.get(m - 1)) < w) return true;
+            if (d.containsKey(m + 1) && Math.abs(nums[i] - d.get(m + 1)) < w) return true;
+            d.put(m, nums[i]);
+            if (i >= indexDiff) d.remove(getBucketID(nums[i - indexDiff], w));
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        IntStream.range(-10, 10).forEach(i -> System.out.println(i + ": " + getBucketID(i, 3)));
     }
 }
