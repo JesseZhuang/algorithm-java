@@ -58,8 +58,8 @@ public class DivideInt {
 
     public static void main(String[] args) {
 //        System.out.println(Integer.MAX_VALUE); // 0x7fff_ffff
-//        System.out.println(Integer.MIN_VALUE); // 0x8000_0000 - 2^31, 1<<31
-//        System.out.println(Integer.toHexString(1 << 31)); // 0x8000_0000 - 2^31, 1<<31
+//        System.out.println(Integer.MIN_VALUE); // 0x8000_0000 - 2^31, 1<<31, -
+//        System.out.println(Integer.toHexString(1 << 31)); // 0x8000_0000 - 2^31, 1<<31, -2_147_483_648
 //        System.out.println((Math.abs(1 << 31)));
 //        System.out.println((Math.abs((1 << 31) - 1)));
 //        System.out.println((1 << 31 - 1) == (1 << 30));
