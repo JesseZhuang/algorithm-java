@@ -45,8 +45,7 @@ public class IsomorphicStrings {
         for (int i = 0; i < s.length(); i++) {
             char a = s.charAt(i), b = t.charAt(i);
             if (map1[a] != map2[b]) return false;
-            map1[a] = -i - 1; // avoid overflow
-            map2[b] = -i - 1;
+            map1[a] = map2[b] = -i - 1; // avoid overflow, cannot be 0
         }
         return true;
     }
