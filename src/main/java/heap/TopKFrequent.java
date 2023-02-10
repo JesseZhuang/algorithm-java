@@ -29,8 +29,8 @@ import java.util.TreeMap;
  * <p>
  * Constraints:
  * <p>
- * 1 <= nums.length <= 105, N
- * -104 <= nums[i] <= 104
+ * 1 <= nums.length <= 10^5, N
+ * -10^4 <= nums[i] <= 10^4
  * k is in the range [1, the number of unique elements in the array].
  * It is guaranteed that the answer is unique.
  * <p>

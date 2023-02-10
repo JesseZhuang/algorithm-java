@@ -19,6 +19,13 @@ import java.util.HashMap;
  * </ul>
  * Note: You may assume both s and t have the same length.
  * <p>
+ * Constraints:
+ * <p>
+ * 1 <= s.length <= 5 * 10^4, N
+ * t.length == s.length, N
+ * s and t consist of any valid ascii character.
+ * M: number of unique characters in s and t.
+ * <p>
  * <b>Summary:</b>
  * <p>
  * <ul>
@@ -36,7 +43,8 @@ public class IsomorphicStrings {
                 if (map.get(a) != t.charAt(i)) return false;
             } else {
                 char b = t.charAt(i);
-                if (map.values().contains(b)) return false;// do not forget 2 cannot mapped to the same
+                // line below is O(map size) not O(1)
+                if (map.values().contains(b)) return false;// do not forget 2 cannot be mapped to the same
                 else map.put(a, b);
             }
         }
@@ -69,7 +77,6 @@ public class IsomorphicStrings {
                 map1[a] = (short) b;
                 map2[b] = (short) a;
             } else if (map1[a] != b || map2[b] != a) return false;
-
         }
         return true;
     }
