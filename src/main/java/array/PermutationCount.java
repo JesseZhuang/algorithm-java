@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Input: list of integers of value in [1,9] inclusive. Can assume no invalid numbers in the list.
- * Required output: count of possible permutations.
+ * Expected output: count of possible permutations.
  * Example test cases:
  * <pre>
  * 1,2 -> 2 ([1,2],[2,1])

@@ -31,7 +31,7 @@ import java.util.Map;
  * <li>Two pointer, O(N) time, O(1) space.
  * </ul>
  */
-public class TwoSum2 {
+public class TwoSumII {
     public int[] twoSumBS(int[] numbers, int target) {
         int[] result = new int[2];
         for (int i = 0; i < numbers.length; i++) {
@@ -65,7 +65,7 @@ public class TwoSum2 {
             int sum = numbers[lo] + numbers[hi];
             if (sum > target) hi--;
             else if (sum < target) lo++;
-            else return new int[] {lo + 1, hi + 1};
+            else return new int[]{lo + 1, hi + 1};
         }
         return result;
     }
