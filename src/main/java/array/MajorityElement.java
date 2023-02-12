@@ -21,6 +21,12 @@ import java.util.Random;
  * <p>
  * Input: [2,2,1,1,1,2,2] Output: 2
  * <p>
+ * Constraints:
+ * <p>
+ * n == nums.length
+ * 1 <= n <= 5 * 10^4
+ * -10^9 <= nums[i] <= 10^9
+ * <p>
  * <b>Summary:</b>
  * <p>
  * This is generalization of https://en.wikipedia.org/wiki/Element_distinctness_problem. Decision tree complexity
@@ -47,9 +53,9 @@ public class MajorityElement {
         if (lo == hi) return nums[lo];
 
         // recurse on left and right halves of this slice.
-        int mid = (hi-lo)/2 + lo;
+        int mid = (hi - lo) / 2 + lo;
         int left = majorityElementRec(nums, lo, mid);
-        int right = majorityElementRec(nums, mid+1, hi);
+        int right = majorityElementRec(nums, mid + 1, hi);
 
         // if the two halves agree on the majority element, return it.
         if (left == right) return left;
@@ -62,14 +68,14 @@ public class MajorityElement {
     }
 
     public int majorityElementRecursive(int[] nums) {
-        return majorityElementRec(nums, 0, nums.length-1);
+        return majorityElementRec(nums, 0, nums.length - 1);
     }
 
     private int randRange(Random rand, int min, int max) {
         return rand.nextInt(max - min) + min;
     }
 
-    private int countOccurences(int[] nums, int num) {
+    private int countOccurrence(int[] nums, int num) {
         int count = 0;
         for (int i = 0; i < nums.length; i++) if (nums[i] == num) count++;
         return count;
@@ -77,10 +83,10 @@ public class MajorityElement {
 
     public int majorityElementRandom(int[] nums) {
         Random rand = new Random();
-        int majorityCount = nums.length/2;
+        int majorityCount = nums.length / 2;
         while (true) {
             int candidate = nums[randRange(rand, 0, nums.length)];
-            if (countOccurences(nums, candidate) > majorityCount) return candidate;
+            if (countOccurrence(nums, candidate) > majorityCount) return candidate;
         }
     }
 
@@ -88,7 +94,7 @@ public class MajorityElement {
         Map<Integer, Integer> counts = new HashMap<>();
         for (int num : nums) {
             if (!counts.containsKey(num)) counts.put(num, 1);
-            else counts.put(num, counts.get(num)+1);
+            else counts.put(num, counts.get(num) + 1);
         }
         return counts;
     }
