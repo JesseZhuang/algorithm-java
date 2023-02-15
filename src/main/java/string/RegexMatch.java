@@ -35,8 +35,23 @@ package string;
  */
 public class RegexMatch {
 
+    // dp, O(mn) time and space. 2ms, 40.7MB. backwards, logic same to recursive.
+    public boolean isMatch(String s, String p) {// remember by correlate to recursive 1 method
+        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+        dp[s.length()][p.length()] = true; // both empty string, true
+        for (int i = s.length(); i >= 0; i--) {
+            for (int j = p.length() - 1; j >= 0; j--) { // dp[i<s.length()][p.length()] all false
+                boolean firstMatch = (i < s.length() && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.'));
+                if (j + 1 < p.length() && p.charAt(j + 1) == '*')
+                    dp[i][j] = dp[i][j + 2] || (firstMatch && dp[i + 1][j]);
+                else dp[i][j] = firstMatch && dp[i + 1][j + 1];
+            }
+        }
+        return dp[0][0];
+    }
+
     // https://leetcode.com/problems/regular-expression-matching/discuss/191830/Java-DP-solution-beats-100-with-explanation
-    // 2ms, 41.1 Mb.
+    // 2ms, 41.1 Mb. DP, forward.
     public boolean isMatch2(String s, String p) {
         boolean dp[][] = new boolean[s.length() + 1][p.length() + 1];
         dp[0][0] = true;
@@ -51,21 +66,6 @@ public class RegexMatch {
             }
         }
         return dp[s.length()][p.length()];
-    }
-
-    // dp, O(mn) time and space. 2ms, 40.7MB.
-    public boolean isMatch(String s, String p) {// remember by correlate to recursive 1 method
-        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
-        dp[s.length()][p.length()] = true; // both empty string, true
-        for (int i = s.length(); i >= 0; i--) {
-            for (int j = p.length() - 1; j >= 0; j--) { // dp[i<s.length()][p.length()] all false
-                boolean firstMatch = (i < s.length() && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.'));
-                if (j + 1 < p.length() && p.charAt(j + 1) == '*')
-                    dp[i][j] = dp[i][j + 2] || (firstMatch && dp[i + 1][j]);
-                else dp[i][j] = firstMatch && dp[i + 1][j + 1];
-            }
-        }
-        return dp[0][0];
     }
 
     // O((m+n)2^(m+n/2)) time and space. TLE. T(m,n) = T(m-1,n)+T(m,n-2), recursive.
