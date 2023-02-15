@@ -35,7 +35,7 @@ package dp;
  */
 public class ContainerWithMostWater {
 
-    // 1ms, 52.9Mb. O(N) time, O(1) space.
+    // 1ms, 52.9Mb. O(N) time, O(1) space. 2 Pointer.
     public int maxArea(int[] height) {
         int water = 0;
         int i = 0, j = height.length - 1;
