@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * LeetCode 242, easy, tags: hash table, string, sorting.
+ * LeetCode 242, easy, tags: hash table, string, sorting. LintCode 773.
  * Given two strings s and t, return true if t is an anagram of s, and false otherwise.
  * <p>
  * An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase,
@@ -38,7 +38,7 @@ public class ValidAnagram {
         return true;
     }
 
-    // 16ms, 42.5Mb.
+    // 16ms, 42.5Mb. LintCode follow up if inputs contain unicode characters.
     public boolean isAnagramMap(String s, String t) {
         if (s.length() != t.length()) return false;
         Map<Character, Integer> map = new HashMap<>();

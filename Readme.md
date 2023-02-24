@@ -21,7 +21,7 @@ module depends on module `algorithm-java.main`.
 On Windows in 2022, gradle build fails with some weird slf4j error. Just create a new gradle java project. It used
 latest gradle wrapper (7.6.1 version).
 
-## Setup Github Codespace
+### Setup Github Codespace
 
 - install extension pack for java for gradle
 - install debugger for java to run/debug
@@ -52,3 +52,9 @@ check mark button to show/hide passed tests. Click the forbidden symbol to show/
 1. system invariant check: keep some states in order or updated in dynamic programming
 1. object fields (set to null to avoid loitering)
 1. use short variable names to save time and avoid time, explain in real code will use longer var name for readability
+
+## Knowledge
+
+### DFA vs NFA
+
+https://www.geeksforgeeks.org/difference-between-dfa-and-nfa/
