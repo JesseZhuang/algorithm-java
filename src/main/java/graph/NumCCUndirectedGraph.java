@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * LeetCode 323, medium, tags: dfs, union find, bfs. Lint code 431.
+ * LeetCode 323, medium, tags: dfs, union find, bfs.
  * Given n nodes labeled from 0 to n - 1 and a list of undirected edges (each edge is a pair of nodes),
  * write a function to find the number of connected components in an undirected graph.
  * <p>

@@ -5,7 +5,7 @@ import util.IntArrayUtil;
 import java.util.Arrays;
 
 /**
- * LintCode. Easy.
+ * LintCode 144, medium, tags: two pointers.
  * <p>
  * Given an array with positive and negative integers. Re-range it to
  * interleaving with positive and negative integers.
@@ -110,9 +110,9 @@ public class InterleavePosNeg {
 
     public static void main(String[] args) {
         InterleavePosNeg i = new InterleavePosNeg();
-        int[][] inputs = { { 9, -3, 8, 5, -3, -4, -5, -4 },
-                { -33, -19, 30, 26, 21, -9 }, { 28, 2, -22, -27, 2, 9, -33, -4, -18,
-                26, 25, 34, -35, -17, 2, -2, 32, 35, -8 } };
+        int[][] inputs = {{9, -3, 8, 5, -3, -4, -5, -4},
+                {-33, -19, 30, 26, 21, -9}, {28, 2, -22, -27, 2, 9, -33, -4, -18,
+                26, 25, 34, -35, -17, 2, -2, 32, 35, -8}};
         for (int[] A : inputs) {
             // i.rearrangeQuick(A);
             i.rearrangeTwoPointer(A);

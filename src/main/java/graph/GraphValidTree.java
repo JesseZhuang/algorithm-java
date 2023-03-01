@@ -8,7 +8,7 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
- * LeetCode 261, lint code 178, medium, tags: union find, bfs.
+ * LeetCode 261, LintCode 178, medium, tags: union find, bfs.
  * Given n nodes labeled from 0 to n - 1 and a list of undirected edges (each edge is a pair of nodes),
  * write a function to check whether these edges make up a valid tree.
  * <p>

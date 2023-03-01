@@ -3,7 +3,7 @@ package array;
 import java.util.Arrays;
 
 /**
- * lint code 1889, medium, tags: simulation. company: apple.
+ * LintCode 1889, medium, tags: simulation. company: apple.
  * Now give you two string intervals (in lexicographic order), please judge whether the two intervals can be merged.
  * The string intervals [a, b) includes all strings that begin with a.
  * For example:

@@ -3,7 +3,7 @@ package tree;
 import struct.TreeNode;
 
 /**
- * LeetCode 701, medium, tags: tree, bst, binary tree. lint code 85.
+ * LeetCode 701, medium, tags: tree, bst, binary tree. LintCode 85.
  * You are given the root node of a binary search tree (BST) and a value to insert into the tree.
  * Return the root node of the BST after the insertion. It is guaranteed that the new value does
  * not exist in the original BST.

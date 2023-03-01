@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * LeetCode 271, medium. lint code 659.
+ * LeetCode 271, medium. LintCode 659.
  * Design an algorithm to encode a list of strings to a string. The encoded string is then sent over the network and
  * is decoded back to the original list of strings.
  * <p>

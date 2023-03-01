@@ -53,7 +53,7 @@ import java.util.Set;
  * 1 ≤ K ≤ 26
  * 1 ≤ Length of words ≤ 50
  * <p>
- * lint code 892
+ * LintCode 892.
  * There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you.
  * You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules
  * of this new language. Derive the order of letters in this language.
