@@ -27,13 +27,13 @@ package string;
  * <p>
  * Constraints:
  * <p>
- * 0 <= s.length, p.length <= 2000
+ * 0 <= s.length, p.length <= 2000, S = s.length, P = p.length.
  * s contains only lowercase English letters.
  * p contains only lowercase English letters, '?' or '*'.
  */
 public class WildcardMatch {
 
-    // 3ms, 43 Mb, recursive.
+    // 3ms, 43 Mb, recursive. Maybe O(SP) time (s = "aaaaaabab", p = "*a") and space.
     public boolean isMatchRecur(String s, String p) {
         return dfs(s, p, 0, 0) == 2;
     }
@@ -56,5 +56,26 @@ public class WildcardMatch {
         }
         if (p.charAt(pi) == '?' || s.charAt(si) == p.charAt(pi)) return dfs(s, p, si + 1, pi + 1);
         return 1;
+    }
+
+    // O(SP) time, O(1) space. 2 pointer, worst case "aaaaaa" "*aaaab". 2ms, 42.8Mb.
+    public static boolean isMatch2P1(String s, String p) {
+        int iStar = -1, jStar = -1, j = 0;
+        for (int i = 0; i < s.length(); ++i, ++j) {
+            if (j < p.length() && p.charAt(j) == '*') { // see new *, update backtrack info
+                iStar = i;
+                jStar = j;
+                --i;
+            } else {
+                if (j >= p.length() || p.charAt(j) != s.charAt(i) && p.charAt(j) != '?') { // mismatch
+                    if (iStar >= 0) { // backtrack
+                        i = iStar++;
+                        j = jStar;
+                    } else return false;
+                }
+            }
+        }
+        while (j < p.length() && p.charAt(j) == '*') ++j;
+        return j == p.length();
     }
 }

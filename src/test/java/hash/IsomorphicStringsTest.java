@@ -17,9 +17,9 @@ public class IsomorphicStringsTest {
     @ParameterizedTest(name = "isomorphic strings {0}, {1} = {2}")
     @CsvFileSource(resources = {"/IsomorphicStrings.csv"}, delimiter = ' ', numLinesToSkip = 2)
     void testIsomorphic(String a, String b, boolean result) {
-        assertEquals(toBeTested.isIsomorphic(a, b), result);
-        assertEquals(toBeTested.isIsomorphic2(a, b), result);
-        assertEquals(toBeTested.isIsomorphic3(a, b), result);
+        assertEquals(toBeTested.isIsomorphicMap(a, b), result);
+        assertEquals(toBeTested.isIsomorphicArray(a, b), result);
+        assertEquals(toBeTested.isIsomorphicArray2(a, b), result);
 
     }
 }
