@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
  * <p>
  * The solution set must not contain duplicate subsets. Return the solution in any order.
  * <p>
- * <p>
- * <p>
  * Example 1:
  * <p>
  * Input: nums = [1,2,3]
@@ -22,7 +20,6 @@ import java.util.stream.Collectors;
  * <p>
  * Input: nums = [0]
  * Output: [[],[0]]
- * <p>
  * <p>
  * Constraints:
  * <p>
