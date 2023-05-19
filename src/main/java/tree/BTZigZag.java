@@ -2,9 +2,11 @@ package tree;
 
 import struct.TreeNode;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * LeetCode 103, medium, tags: tree, bfs, binary tree.
@@ -31,8 +33,31 @@ import java.util.List;
  * -100 <= Node.val <= 100
  */
 public class BTZigZag {
-    // 0ms, 41.5Mb. O(N) time and space (result and recursive stack).
+
+    // 1ms, 41.5Mb. BFS. O(N) time and O(maxCount of one level, do not consider res) space.
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        Queue<TreeNode> q = new ArrayDeque<>(5);
+        if (root != null) q.add(root);
+        boolean leftToRight = true;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            LinkedList<Integer> curLevel = new LinkedList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = q.remove();
+                if (leftToRight) curLevel.addLast(cur.val);
+                else curLevel.addFirst(cur.val);
+                if (cur.left != null) q.add(cur.left);
+                if (cur.right != null) q.add(cur.right);
+            }
+            leftToRight = !leftToRight;
+            res.add(curLevel);
+        }
+        return res;
+    }
+
+    // 0ms, 41.5Mb. O(N) time and space (result and recursive stack).
+    public List<List<Integer>> zigzagLevelOrderDfs(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         dfs(root, res, 0);
         return res;
