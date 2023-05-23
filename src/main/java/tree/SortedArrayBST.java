@@ -1,5 +1,7 @@
 package tree;
 
+import struct.TreeNode;
+
 /**
  * LeetCode 108, easy, tags: array, tree, binary search tree, binary tree.
  * <p>
@@ -26,4 +28,18 @@ package tree;
  * nums is sorted in a strictly increasing order.
  */
 public class SortedArrayBST {
+
+    // 0ms, 43.2 Mb. O(n) time, O(n) result space, O(log n) stack space.
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return helper(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode helper(int[] nums, int left, int right) {
+        if (left > right) return null;
+        int mid = left + (right - left) / 2;
+        TreeNode node = new TreeNode(nums[mid]);
+        node.left = helper(nums, left, mid - 1);
+        node.right = helper(nums, mid + 1, right);
+        return node;
+    }
 }
