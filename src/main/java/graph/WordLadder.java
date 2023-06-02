@@ -3,10 +3,21 @@ package graph;
 import princeton.jsl.TrieSET;
 import util.Pair;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
- * LeetCode. Medium. Tags: BFS (Breadth First Search).
+ * LeetCode 127, hard, tags: BFS (Breadth First Search), hash table, string.
+ * A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence
+ * of words beginWord -> s1 -> s2 -> ... -> s_k such that:
+ * <p>
+ * Every adjacent pair of words differs by a single letter.
+ * Every si for 1 <= i <= k is in wordList. Note that beginWord does not need to be in wordList.
+ * s_k == endWord
  * <p>
  * Given two words (beginWord and endWord), and a dictionary's word list, find the length of shortest transformation
  * sequence from beginWord to endWord, such that:
@@ -44,6 +55,15 @@ import java.util.*;
  * <p>
  * Explanation: The endWord "cog" is not in wordList, therefore no possible transformation.
  * <p>
+ * Constraints:
+ * <p>
+ * 1 <= beginWord.length <= 10, M
+ * endWord.length == beginWord.length
+ * 1 <= wordList.length <= 5000, N
+ * wordList[i].length == beginWord.length
+ * beginWord, endWord, and wordList[i] consist of lowercase English letters.
+ * beginWord != endWord
+ * All the words in wordList are unique.
  * <b>Summary:</b>
  * <p>Assume word length is M, number of words is N.
  * <ul>
@@ -84,6 +104,7 @@ public class WordLadder {
     }
 
 
+    // BFS, 52ms, 51.4 Mb. O(MN) time and space.
     public int ladderLengthBFS(String beginWord, String endWord, List<String> wordList) {
         int L = beginWord.length(); // Since all words are of same length.
         // Dictionary of words that can be formed from any given word. By changing one letter at a time.
@@ -92,8 +113,6 @@ public class WordLadder {
         wordList.forEach(
                 word -> {
                     for (int i = 0; i < L; i++) {
-                        // Key is the generic word
-                        // Value is a list of words which have the same intermediate generic word.
                         String wild = word.substring(0, i) + '*' + word.substring(i + 1, L);
                         List<String> transformations =
                                 wildToReal.getOrDefault(wild, new ArrayList<>());
@@ -102,10 +121,10 @@ public class WordLadder {
                     }
                 });
         // Queue for BFS
-        Queue<Pair<String, Integer>> q = new LinkedList<Pair<String, Integer>>();
+        Queue<Pair<String, Integer>> q = new LinkedList<>();
         q.add(new Pair(beginWord, 1));
         // Visited to make sure we don't repeat processing same word.
-        HashMap<String, Boolean> visited = new HashMap<String, Boolean>();
+        HashMap<String, Boolean> visited = new HashMap<>();
         visited.put(beginWord, true);
         while (!q.isEmpty()) {
             Pair<String, Integer> node = q.remove();
@@ -115,12 +134,10 @@ public class WordLadder {
                 // Intermediate words for current word
                 String newWord = word.substring(0, i) + '*' + word.substring(i + 1, L);
                 // Next states are all the words which share the same intermediate state.
-                for (String adjacentWord : wildToReal.getOrDefault(newWord, new ArrayList<String>())) {
+                for (String adjacentWord : wildToReal.getOrDefault(newWord, new ArrayList<>())) {
                     // If at any point if we find what we are looking for
                     // i.e. the end word - we can return with the answer.
-                    if (adjacentWord.equals(endWord)) {
-                        return level + 1;
-                    }
+                    if (adjacentWord.equals(endWord)) return level + 1;
                     // Otherwise, add it to the BFS Queue. Also mark it visited
                     if (!visited.containsKey(adjacentWord)) {
                         visited.put(adjacentWord, true);
