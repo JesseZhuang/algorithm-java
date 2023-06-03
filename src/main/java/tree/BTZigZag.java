@@ -35,7 +35,7 @@ import java.util.Queue;
 public class BTZigZag {
 
     // 1ms, 41.5Mb. BFS. O(N) time and O(maxCount of one level, do not consider res) space.
-    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+    public List<List<Integer>> zigzagLevelOrderBfs(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         Queue<TreeNode> q = new ArrayDeque<>(5);
         if (root != null) q.add(root);
