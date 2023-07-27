@@ -5,11 +5,11 @@ package array;
  * <p>
  * There are n gas stations along a circular route, where the amount of gas at the ith station is gas[i].
  * <p>
- * You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from the ith station to its next (i + 1)th station. You begin the journey with an empty tank at one of the gas stations.
+ * You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from the ith station to its next
+ * (i + 1)th station. You begin the journey with an empty tank at one of the gas stations.
  * <p>
- * Given two integer arrays gas and cost, return the starting gas station's index if you can travel around the circuit once in the clockwise direction, otherwise return -1. If there exists a solution, it is guaranteed to be unique
- * <p>
- * <p>
+ * Given two integer arrays gas and cost, return the starting gas station's index if you can travel around the circuit
+ * once in the clockwise direction, otherwise return -1. If there exists a solution, it is guaranteed to be unique
  * <p>
  * Example 1:
  * <p>
@@ -35,7 +35,6 @@ package array;
  * You cannot travel back to station 2, as it requires 4 unit of gas but you only have 3.
  * Therefore, you can't travel around the circuit once no matter where you start.
  * <p>
- * <p>
  * Constraints:
  * <p>
  * n == gas.length == cost.length
@@ -43,7 +42,23 @@ package array;
  * 0 <= gas[i], cost[i] <= 10^4
  */
 public class GasStation {
+    // one pass O(N) time and O(1) space.
     public int canCompleteCircuit(int[] gas, int[] cost) {
-        return 0;
+        int currGain = 0, totalGain = 0, answer = 0;
+        for (int i = 0; i < gas.length; ++i) {
+            totalGain += gas[i] - cost[i]; // // gain[i] = gas[i] - cost[i]
+            currGain += gas[i] - cost[i];
+            // If we meet a "valley", start over from the next station with 0 initial gas.
+            if (currGain < 0) {
+                answer = i + 1;
+                currGain = 0;
+            }
+        }
+        return totalGain >= 0 ? answer : -1;
+    }
+
+    public static void main(String[] args) {
+        GasStation tbt = new GasStation();
+        System.out.println(tbt.canCompleteCircuit(new int[]{1, 2, 3, 4, 5}, new int[]{3, 4, 5, 1, 2}));
     }
 }
