@@ -42,7 +42,7 @@ package array;
  * 0 <= gas[i], cost[i] <= 10^4
  */
 public class GasStation {
-    // one pass O(N) time and O(1) space.
+    // one pass O(N) time and O(1) space. 2ms, 55.6 Mb.
     public int canCompleteCircuit(int[] gas, int[] cost) {
         int currGain = 0, totalGain = 0, answer = 0;
         for (int i = 0; i < gas.length; ++i) {
