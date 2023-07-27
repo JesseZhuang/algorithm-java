@@ -66,7 +66,7 @@ public class CapacityShipPackages {
                 cur += w;
             }
             if (need > days) max = mid + 1;
-            else sum = mid;
+            else sum = mid; // lc pass: while (max<=sum); sum = mid -1
         }
         return max;
     }
