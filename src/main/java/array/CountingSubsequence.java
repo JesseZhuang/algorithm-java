@@ -57,7 +57,7 @@ import java.util.Map;
  */
 public class CountingSubsequence {
     PrefixSum prefixSum;
-    Map<Integer, List<Integer>> sumCount;
+    Map<Integer, List<Integer>> sumCount; // sum -> index i where the sum of (0,i) inclusive == sum
     int arrayLength;
 
     // O(n) time, O(n) space init.

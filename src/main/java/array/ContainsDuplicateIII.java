@@ -60,7 +60,7 @@ public class ContainsDuplicateIII {
 
     // 28ms, 53 Mb. O(N) time, O(K) space.
     public static boolean containsNearbyAlmostDuplicateB(int[] nums, int indexDiff, int valueDiff) {
-        Map<Integer, Integer> d = new HashMap<>();
+        Map<Integer, Integer> d = new HashMap<>(); // bucket id -> array element value
         int w = valueDiff + 1; // bucket size
         for (int i = 0; i < nums.length; ++i) {
             int m = getBucketID(nums[i], w);
