@@ -15,7 +15,7 @@ public class PrefixSum {
     }
 
     /**
-     * range sum query
+     * range sum query, O(1) time
      *
      * @param i left boundary, inclusive
      * @param j right boundary, inclusive
