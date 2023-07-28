@@ -59,7 +59,7 @@ public class CopyListRandomPointer {
         }
     }
 
-    // two pass, O(n) space and time. 0ms, 43.2 Mb.
+    // two pass, O(n) space and time. 0 ms, 43.2 Mb.
     public Node copyRandomList(Node head) {
         Map<Node, Node> map = new HashMap<>();
         Node node = head;
@@ -74,5 +74,34 @@ public class CopyListRandomPointer {
             node = node.next;
         }
         return map.get(head);
+    }
+
+    // one pass, O(n) time O(1) space, 0 ms, 43.2 Mb.
+    public Node copyRandomList2(Node head) {
+        Node cur = head, next;
+        while (cur != null) { // copy and link side by side
+            next = cur.next;
+            Node copy = new Node(cur.val);
+            cur.next = copy;
+            copy.next = next;
+            cur = next;
+        }
+        cur = head;
+        while (cur != null) { // assign random pointers for copy nodes
+            if (cur.random != null) cur.next.random = cur.random.next;
+            cur = cur.next.next;
+        }
+        cur = head;
+        Node dummy = new Node(0);
+        Node copy, copyCur = dummy;
+        while (cur != null) { // restore original list, extract copy list
+            next = cur.next.next;
+            copy = cur.next;
+            copyCur.next = copy;
+            copyCur = copy; // extract copy
+            cur.next = next; // restore original
+            cur = next;
+        }
+        return dummy.next;
     }
 }
