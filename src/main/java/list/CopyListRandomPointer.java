@@ -1,5 +1,8 @@
 package list;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * LeetCode 138, medium, tags: hash table, linked list.
  * <p>
@@ -56,7 +59,20 @@ public class CopyListRandomPointer {
         }
     }
 
+    // two pass, O(n) space and time. 0ms, 43.2 Mb.
     public Node copyRandomList(Node head) {
-        return null;
+        Map<Node, Node> map = new HashMap<>();
+        Node node = head;
+        while (node != null) { // loop 1. copy all the nodes
+            map.put(node, new Node(node.val));
+            node = node.next;
+        }
+        node = head;
+        while (node != null) { // loop 2. assign next and random pointers
+            map.get(node).next = map.get(node.next);
+            map.get(node).random = map.get(node.random);
+            node = node.next;
+        }
+        return map.get(head);
     }
 }
