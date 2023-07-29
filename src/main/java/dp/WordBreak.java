@@ -42,7 +42,7 @@ import java.util.Set;
  * All the strings of wordDict are unique.
  */
 public class WordBreak {
-    // 7ms, 42.5 Mb. O(N^2*K) timing, O(max(N,MK)) space.
+    // 7ms, 42.5 Mb. O(N^2*K) time, O(max(N,MK)) space.
     public boolean wordBreakDPSet(String s, List<String> wordDict) {
         boolean[] dp = new boolean[s.length() + 1];// O(N) space, indicating word in string s ending at this index
         dp[0] = true;
@@ -59,7 +59,7 @@ public class WordBreak {
     }
 
 
-    // 2ms, 42.4 Mb. O(N^2*K) timing, O(max(N,MK)) space.
+    // 2ms, 42.4 Mb. O(N^2*K) time, O(max(N,MK)) space.
     public boolean wordBreakTrie(String s, List<String> wordDict) {
         final int R = 26; // only lower case letters
         TrieNode root = new TrieNode(R);
@@ -77,6 +77,26 @@ public class WordBreak {
             }
         }
         return f[0];
+    }
+
+    // 9ms, 42.7Mb. O(max(N,MK)) space. O(V+E), V << E, O(N^2*K) time.
+    public boolean wordBreakBFS(String s, List<String> wordDict) {
+        Set<String> wordDictSet = new HashSet<>(wordDict);
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[s.length()];
+        queue.add(0);
+        while (!queue.isEmpty()) {//O(N)
+            int start = queue.remove();
+            if (visited[start]) continue;
+            for (int end = start + 1; end <= s.length(); end++) {// O(N)
+                if (wordDictSet.contains(s.substring(start, end))) {// O(K)
+                    queue.add(end);
+                    if (end == s.length()) return true;
+                }
+            }
+            visited[start] = true;
+        }
+        return false;
     }
 
     public boolean wordBreak1(String s, List<String> wordDict) {
@@ -106,23 +126,4 @@ public class WordBreak {
         return memo[start] = false;
     }
 
-    // 9ms, 42.7Mb. O(max(N,MK)) space. O(V+E), V << E, O(N^2*K) time.
-    public boolean wordBreakBFS(String s, List<String> wordDict) {
-        Set<String> wordDictSet = new HashSet<>(wordDict);
-        Queue<Integer> queue = new LinkedList<>();
-        boolean[] visited = new boolean[s.length()];
-        queue.add(0);
-        while (!queue.isEmpty()) {//O(N)
-            int start = queue.remove();
-            if (visited[start]) continue;
-            for (int end = start + 1; end <= s.length(); end++) {// O(N)
-                if (wordDictSet.contains(s.substring(start, end))) {// O(K)
-                    queue.add(end);
-                    if (end == s.length()) return true;
-                }
-            }
-            visited[start] = true;
-        }
-        return false;
-    }
 }
