@@ -36,12 +36,12 @@ public class InterleavePosNeg {
         int neg = -1, pos = A.length;
         while (true) {
             while (A[++neg] < 0)
-                if (neg == A.length - 1) break;
+                if (neg == A.length - 1) break; // find positive from left
             while (A[--pos] > 0)
-                if (pos == 0) break;
+                if (pos == 0) break; // find negative from right
             if (neg >= pos) break;
             IntArrayUtil.swap(A, neg, pos);
-        }
+        } // after this, array left half is neg, right half is pos
         pos = 1;
         if (neg <= A.length / 2) pos = 0;
         while (neg < A.length && neg > pos) {
