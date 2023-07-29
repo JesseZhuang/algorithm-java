@@ -5,11 +5,11 @@ import java.util.List;
 
 /**
  * LeetCode 57 medium, tags: array.
- * You are given an array of non-overlapping intervals where intervals[i] = [starti, endi]
- * represent the start and the end of the ith interval and intervals is sorted in ascending order by starti.
+ * You are given an array of non-overlapping intervals where intervals[i] = [start_i, end_i]
+ * represent the start and the end of the ith interval and intervals is sorted in ascending order by start_i.
  * You are also given an interval newInterval = [start, end] that represents the start and end of another interval.
  * <p>
- * Insert newInterval into intervals such that intervals is still sorted in ascending order by starti and intervals
+ * Insert newInterval into intervals such that intervals is still sorted in ascending order by start_i and intervals
  * still does not have any overlapping intervals (merge overlapping intervals if necessary).
  * <p>
  * Return intervals after the insertion.
@@ -26,12 +26,12 @@ import java.util.List;
  * <p>
  * Constraints:
  * <p>
- * 0 <= intervals.length <= 104
+ * 0 <= intervals.length <= 10^4
  * intervals[i].length == 2
- * 0 <= starti <= endi <= 105
- * intervals is sorted by starti in ascending order.
+ * 0 <= start_i <= end_i <= 10^5
+ * intervals is sorted by start_i in ascending order.
  * newInterval.length == 2
- * 0 <= start <= end <= 105
+ * 0 <= start <= end <= 10^5
  */
 public class InsertInterval {
     // 1ms, 44.9Mb. O(N) time and space. O(1) space not including the result.
