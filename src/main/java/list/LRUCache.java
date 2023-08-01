@@ -1,10 +1,10 @@
 package list;
 
-import java.util.Hashtable;
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * LeetCode 146. Medium. Tags: Design.
+ * LeetCode 146. Medium. Tags: hash table, linked list, design, doubly-linked list.
  * <p>
  * Design and implement a data structure for Least Recently Used (LRU) cache.
  * It should support the following operations: get and put.
@@ -37,12 +37,11 @@ import java.util.LinkedList;
  * <p>
  * <ul>
  * <li>Cannot use java standard library linked list, remove is O(N). Use hash table and doubly
- * linked list O(1) time, O(N) space.
+ * linked list O(1) time, O(N) space. Note cannot use HashTable at leetcode, not imported maybe. 38ms, 109.8Mb.
  * </ul>
  */
 public class LRUCache {
-    private Hashtable<Integer, DLinkedNode>
-            cache = new Hashtable<Integer, DLinkedNode>();
+    private Map<Integer, DLinkedNode> cache = new HashMap<Integer, DLinkedNode>();
     private int count;
     private int capacity;
     private DLinkedNode head, tail;
