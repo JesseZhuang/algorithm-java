@@ -23,9 +23,9 @@ import java.util.LinkedList;
  * <p>
  * Constraints:
  * <p>
- * 1 <= intervals.length <= 104
+ * 1 <= intervals.length <= 10^4
  * intervals[i].length == 2
- * 0 <= starti <= endi <= 104
+ * 0 <= starti <= endi <= 10^4
  */
 public class MergeIntervals {
     // 10ms, 47 Mb. O(NLgN) time, O(LgN) space for sorting (assuming quick sort in place). Not including result space.
