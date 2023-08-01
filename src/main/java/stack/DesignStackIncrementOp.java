@@ -1,5 +1,7 @@
 package stack;
 
+import java.util.Stack;
+
 /**
  * LeetCode 1381, medium, tags: array, stack, design.
  * <p>
@@ -48,22 +50,39 @@ package stack;
  * 2. This solution run in O(1) per push and pop and O(k) per increment.
  */
 public class DesignStackIncrementOp {
+    // 5ms, 44.3 Mb.
     class CustomStack {
+        int n;
+        int[] inc; // check prefix sum and difference array
+        Stack<Integer> stack;
 
+        // O(N) time and space.
         public CustomStack(int maxSize) {
-
+            n = maxSize;
+            inc = new int[n]; // incremented values for [0,i]
+            stack = new Stack<>();
         }
 
+
+        // O(1) time and space.
         public void push(int x) {
-
+            if (stack.size() < n) stack.push(x);
         }
 
+        //// O(1) time and space.
         public int pop() {
-            return 0;
+            int i = stack.size() - 1;
+            if (i < 0) return -1;
+            if (i > 0) inc[i - 1] += inc[i];
+            int res = stack.pop() + inc[i];
+            inc[i] = 0;
+            return res;
         }
 
+        // // O(1) time and space.
         public void increment(int k, int val) {
-
+            int i = Math.min(k, stack.size()) - 1;
+            if (i >= 0) inc[i] += val;
         }
     }
 }
