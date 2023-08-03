@@ -31,8 +31,8 @@ import java.util.stream.Stream;
  * <p>
  * Constraints:
  * <p>
- * 1 <= strs.length <= 100
- * 1 <= strs[i].length <= 9
+ * 1 <= strs.length <= 100, N
+ * 1 <= strs[i].length <= 9, M
  * strs[i] consists of only lowercase English letters and digits.
  */
 public class MaxValStringInArray {
