@@ -50,7 +50,7 @@ import java.util.Stack;
  * 2. This solution run in O(1) per push and pop and O(k) per increment.
  */
 public class DesignStackIncrementOp {
-    // 5ms, 44.3 Mb.
+    // 5ms, 44.3 Mb. lazy increment
     class CustomStack {
         int n;
         int[] inc; // check prefix sum and difference array
