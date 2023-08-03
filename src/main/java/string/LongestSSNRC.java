@@ -26,11 +26,11 @@ import java.util.Map;
  * <p>
  * Constraints:
  * <p>
- * 0 <= s.length <= 5 * 104, m
- * s consists of English letters, digits, symbols and spaces.
+ * 0 <= s.length <= 5 * 10^4, n, m: number of unique characters
+ * s consists of English letters, digits, symbols and spaces. so m < 128, ascii
  */
 public class LongestSSNRC {
-    // 2ms, 42.3Mb. Use Integer[] instead of map.
+    // 2ms, 42.3Mb. Use Integer[] instead of map. O(n) time, O(128) space.
     public static int lengthOfLongestSubstring(String s) {
         Integer[] charIndex = new Integer[128];
         int left = 0, right = 0;
@@ -46,15 +46,15 @@ public class LongestSSNRC {
         return res;
     }
 
-    // 5ms, 42.8 Mb. O(n) time, O(min(m,n)) space.
-    public static int lengthOfLongestSubstringMap(String s) {
+    // 5ms, 42.8 Mb. O(n) time, O(m) space. m: number of unique characters
+    public static int lengthOfLongestSubstringMap(String s) { // abcabcbb
         int n = s.length(), ans = 0;
         Map<Character, Integer> lastSeen = new HashMap<>(); // current index of character
         for (int j = 0, i = 0; j < n; j++) { // i,j left,right of current substring
-            if (lastSeen.containsKey(s.charAt(j)))
-                i = Math.max(lastSeen.get(s.charAt(j)), i);
-            ans = Math.max(ans, j - i + 1);
-            lastSeen.put(s.charAt(j), j + 1);
+            if (lastSeen.containsKey(s.charAt(j))) // j 0-2, false; 3 (seen a),4-7 true
+                i = Math.max(lastSeen.get(s.charAt(j)), i); // j:3-7 i:1,2,3,5,7
+            ans = Math.max(ans, j - i + 1); // 1,2,3,3,3,3(3>2),3(3>1) max including char j
+            lastSeen.put(s.charAt(j), j + 1); // {a:1,b:2,c:3} -> {a:4,b:2,c:3}, ... {a:4,b:5,c:6}, ... {a:4,b:8,c:6}
         }
         return ans;
     }
