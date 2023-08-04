@@ -43,6 +43,14 @@ import static java.util.stream.IntStream.range;
  * Read more about how a graph is represented.
  * You may assume that there are no duplicate edges in the input prerequisites.
  * <p>
+ * Constraints:
+ * <p>
+ * 1 <= numCourses <= 2000, V
+ * 0 <= prerequisites.length <= 5000, E
+ * prerequisites[i].length == 2
+ * 0 <= ai, bi < numCourses
+ * All the pairs prerequisites[i] are unique.
+ * <p>
  * <b>Summary</b>:
  * <p>
  * <ul>
@@ -69,7 +77,7 @@ public class CourseSchedule {
             inDegree[pair[0]]++;
         }
         for (int i = 0; i < inDegree.length; i++)
-            if (inDegree[i] == 0) queue.offer(i);
+            if (inDegree[i] == 0) queue.offer(i); // add to queue when inDegree becomes 0
         int count = 0;
         while (!queue.isEmpty()) {
             int course = queue.poll();
@@ -84,7 +92,7 @@ public class CourseSchedule {
     public boolean canFinishDFS(int numCourses, int[][] prerequisites) {
         List<Integer>[] adj = new ArrayList[numCourses];
         for (int i = 0; i < numCourses; i++) adj[i] = new ArrayList<>();
-        for (int[] vertex : prerequisites) adj[vertex[1]].add(vertex[0]);
+        for (int[] vertex : prerequisites) adj[vertex[1]].add(vertex[0]); // [0,1] 1->0 1 is prerequisite of 0
         boolean[] visited = new boolean[numCourses], onStack = new boolean[numCourses];
         for (int i = 0; i < numCourses; i++)
             if (!visited[i] && hasCycle(i, visited, onStack, adj)) return false;

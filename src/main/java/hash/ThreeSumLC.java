@@ -44,8 +44,19 @@ import java.util.Set;
  * Constraints:
  * <pre>
  * 3 <= nums.length <= 3000
- * -105 <= nums[i] <= 105
+ * -10^5 <= nums[i] <= 10^5
  * </pre>
+ * Hints
+ * <p>
+ * So, we essentially need to find three numbers x, y, and z such that they add up to the given value.
+ * If we fix one of the numbers say x, we are left with the two-sum problem at hand!
+ * <p>
+ * For the two-sum problem, if we fix one of the numbers, say x, we have to scan the entire array to find the next
+ * number y, which is value - x where value is the input parameter. Can we change our array somehow so that this
+ * search becomes faster?
+ * <p>
+ * The second train of thought for two-sum is, without changing the array, can we use additional space somehow?
+ * Like maybe a hash map to speed up the search?
  */
 public class ThreeSumLC {
 
