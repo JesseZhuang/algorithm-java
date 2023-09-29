@@ -1,5 +1,7 @@
 package stack;
 
+import java.util.ArrayDeque;
+
 /**
  * LeetCode 150, medium, tags: array, math, stack.
  * <p>
@@ -46,7 +48,32 @@ package stack;
  * tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200].
  */
 public class ReversePolishNotation {
+    // 5ms, 41.3 Mb. O(n) time and space.
     public int evalRPN(String[] tokens) {
-        return 0;
+        ArrayDeque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i < tokens.length; i++) {
+            int val1, val2;
+            switch (tokens[i]) {
+                case "+":
+                    stack.push(stack.pop() + stack.pop());
+                    break;
+                case "-":
+                    val2 = stack.pop();
+                    val1 = stack.pop();
+                    stack.push(val1 - val2);
+                    break;
+                case "/":
+                    val2 = stack.pop();
+                    val1 = stack.pop();
+                    stack.push(val1 / val2);
+                    break;
+                case "*":
+                    stack.push(stack.pop() * stack.pop());
+                    break;
+                default:
+                    stack.push(Integer.parseInt(tokens[i]));
+            }
+        }
+        return stack.pop();
     }
 }
