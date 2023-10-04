@@ -27,7 +27,7 @@ package dp;
  * 0 <= prices[i] <= 1000
  */
 public class BuySellCoolDown {
-    // O(n) tiem and space, 1ms, 40.1 Mb.
+    // O(n) time and space, 1ms, 40.1 Mb.
     public int maxProfitDP1(int[] prices) {
         int len = prices.length;
         if (len < 2) return 0;
