@@ -36,12 +36,15 @@ public class BuySellCoolDown {
         int[] buy = new int[len]; // max profit ending with a buy
 
         buy[0] = -prices[0]; // bought at 0
+        sell[0] = 0; // sell at 0 not possible, so profit is 0
         buy[1] = -Math.min(prices[0], prices[1]); // bought at 0 or 1
         sell[1] = Math.max(0, buy[0] + prices[1]); // did nothing or buy at 0 sell at 1
 
         for (int i = 2; i < len; i++) {
-            buy[i] = Math.max(buy[i - 1], sell[i - 2] - prices[i]); // hold at i or sell at/before i-2 buy at i
-            sell[i] = Math.max(sell[i - 1], buy[i - 1] + prices[i]); // sold at i-1 or bought at/before i-1, sell at i
+            buy[i] = Math.max(buy[i - 1], sell[i - 2] - prices[i]);
+            // do nothing at i (so stay with buy[i-1]) or sell at/before i-2 buy at i
+            sell[i] = Math.max(sell[i - 1], buy[i - 1] + prices[i]);
+            // do nothing at i (so stay with sell[i-1]) or bought at/before i-1, sell at i
         }
         return sell[len - 1];
     }
@@ -49,7 +52,7 @@ public class BuySellCoolDown {
     // 0ms 40.5 Mb. O(n) time O(1) space.
     public int maxProfitDP2(int[] prices) {
         if (prices.length <= 1) return 0;
-        int b0 = -prices[0], b1 = b0; // b2, b1, b0 represent buy[i - 2], buy[i - 1], buy[i]
+        int b0 = -prices[0], b1 = b0; // b1, b0 represent buy[i - 1], buy[i]
         int s0 = 0, s1 = 0, s2 = 0;  // s2, s1, s0 represent sell[i - 2], sell[i - 1], sell[i]
         for (int i = 1; i < prices.length; i++) {
             b0 = Math.max(b1, s2 - prices[i]);
