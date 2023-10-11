@@ -26,16 +26,26 @@ import static util.IntArrayUtil.boxIntArray;
  * <p>
  * <ul>
  * <li><b>HashMap, O(N) time, O(N) space.</b>
- * <li>QuickSort then Binary Search(NlgN)/Two Pointer Search(N), O(NlgN) time, O(1) space.
- * <li>MergeSort then Binary Search(NlgN)/Two Pointer Search(N), O(NlgN) time, O(1) space.
+ * <li>QuickSort then Binary Search(NlgN)/Two Pointer Search(N), O(NlgN) time, O(N) space.
+ * <li>MergeSort then Binary Search(NlgN)/Two Pointer Search(N), O(NlgN) time, O(N) space.
  * <li>Radix array, O(R) space, O(n) time very fast, Subset Sum, wikipedia,
+ * <p>
+ * Constraints:
+ * <p>
+ * 2 <= nums.length <= 104
+ * -10^9 <= nums[i] <= 10^9
+ * -10^9 <= target <= 10^9
+ * Only one valid answer exists.
+ * <p>
+ * <p>
+ * Follow-up: Can you come up with an algorithm that is less than O(n2) time complexity?
  */
 public class TwoSum {
 
     /**
      * Two sum return indexes.
      *
-     * @param nums array, e.g. [0, 1, -3, 20, 10]
+     * @param nums   array, e.g. [0, 1, -3, 20, 10]
      * @param target sum to look for, e.g. 10.
      * @return the two indexes.
      */
@@ -67,12 +77,13 @@ public class TwoSum {
             // if found valid X1 and corresponding element of indices array is still -1
             // then mark its pair X2 = target - X1 in indices array
             if (arr[nums[i] + offset] == -1) arr[target - nums[i] + offset] = i;
-            // e.g. arr[13]=0, arr[12]=1, arr[16]=2
+                // e.g. arr[13]=0, arr[12]=1, arr[16]=2
             else return new int[]{arr[nums[i] + offset], i};//e.g. arr[13]==0 != -1, return [0, 4]
         }
         return new int[]{0, 0};
     }
 
+    // 1ms, 433.6Mb. O(N) time and space.
     public int[] twoSumMap(int[] nums, int target) {
         int[] result = new int[2];
         HashMap<Integer, Integer> map = new HashMap<>();
@@ -84,6 +95,7 @@ public class TwoSum {
         return result;
     }
 
+    // O(N) space also needed for the copy of the array. No advantage to the hash map solution.
     public int[] twoSumJavaQuickSort(int[] nums, int target) {
         int i = 0, j = 0;
         int[] copy = new int[nums.length];
