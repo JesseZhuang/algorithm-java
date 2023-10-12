@@ -47,8 +47,8 @@ public class FractionString {
         if (numerator == 0) return "0";
         StringBuilder res = new StringBuilder();
         if ((numerator > 0) ^ (denominator > 0)) res.append("-");
-        long num = Math.abs((long) numerator);
-        long den = Math.abs((long) denominator);
+        long num = Math.abs((long) numerator); // dividend
+        long den = Math.abs((long) denominator);  // divisor
         // integral part
         res.append(num / den);
         num %= den;
@@ -59,8 +59,8 @@ public class FractionString {
         while (num != 0) {
             map.put(num, res.length());
             num *= 10;
-            res.append(num / den);
-            num %= den;
+            res.append(num / den); // quotient
+            num %= den; // remainder
             if (map.containsKey(num)) {
                 int index = map.get(num);
                 res.insert(index, "(");
