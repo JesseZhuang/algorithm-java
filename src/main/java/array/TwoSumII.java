@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * LeetCode 167. Easy.
+ * LeetCode 167, medium, tags: array, two pointers, binary search.
  * <p>
  * Given an array of integers that is already sorted in ascending order, find two numbers such that they add up t
  * o a specific target number.
@@ -23,6 +23,18 @@ import java.util.Map;
  * <p>
  * Explanation: The sum of 2 and 7 is 9. Therefore index1 = 1, index2 = 2.
  * <p>
+ * Example 2:
+ * <p>
+ * Input: numbers = [2,3,4], target = 6
+ * Output: [1,3]
+ * Explanation: The sum of 2 and 4 is 6. Therefore index1 = 1, index2 = 3. We return [1, 3].
+ * <p>
+ * Example 3:
+ * <p>
+ * Input: numbers = [-1,0], target = -1
+ * Output: [1,2]
+ * Explanation: The sum of -1 and 0 is -1. Therefore index1 = 1, index2 = 2. We return [1, 2].
+ * <p>
  * <b>Summary:</b>
  * <p>
  * <ul>
@@ -30,6 +42,14 @@ import java.util.Map;
  * <li>Binary search, O(NlgN) time, O(1) space.
  * <li>Two pointer, O(N) time, O(1) space.
  * </ul>
+ * <p>
+ * Constraints:
+ * <p>
+ * 2 <= numbers.length <= 3 * 10^4
+ * -1000 <= numbers[i] <= 1000
+ * numbers is sorted in non-decreasing order.
+ * -1000 <= target <= 1000
+ * The tests are generated such that there is exactly one solution.
  */
 public class TwoSumII {
     public int[] twoSumBS(int[] numbers, int target) {
@@ -48,6 +68,7 @@ public class TwoSumII {
         return result;
     }
 
+    // O(N) time and space. 6ms, 44.9Mb.
     public int[] twoSumMap(int[] numbers, int target) {
         int[] result = new int[2];
         Map<Integer, Integer> numIndex = new HashMap<>();
@@ -58,6 +79,7 @@ public class TwoSumII {
         return result;
     }
 
+    // O(N) time O(1) space. 1ms, 46.1 Mb.
     public int[] twoSum2P(int[] numbers, int target) {
         int[] result = new int[2];
         int lo = 0, hi = numbers.length - 1;
