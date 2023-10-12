@@ -9,7 +9,7 @@ import java.util.HashMap;
 import static util.IntArrayUtil.boxIntArray;
 
 /**
- * LeetCode 1. Easy.
+ * LeetCode 1. Easy. Tags: array, hash table.
  * <p>
  * Given an array of integers, return indices of the two numbers such that they add up to a specific target.
  * <p>
@@ -39,6 +39,18 @@ import static util.IntArrayUtil.boxIntArray;
  * <p>
  * <p>
  * Follow-up: Can you come up with an algorithm that is less than O(n2) time complexity?
+ * <p>
+ * Hints:
+ * <p>
+ * A really brute force way would be to search for all possible pairs of numbers but that would be too slow.
+ * Again, it's best to try out brute force solutions for just for completeness.
+ * It is from these brute force solutions that you can come up with optimizations.
+ * <p>
+ * So, if we fix one of the numbers, say x, we have to scan the entire array to find the next number y which is
+ * value - x where value is the input parameter. Can we change our array somehow so that this search becomes faster?
+ * <p>
+ * The second train of thought is, without changing the array, can we use additional space somehow?
+ * Like maybe a hash map to speed up the search?
  */
 public class TwoSum {
 
