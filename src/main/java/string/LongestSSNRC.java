@@ -50,11 +50,11 @@ public class LongestSSNRC {
     public static int lengthOfLongestSubstringMap(String s) { // abcabcbb
         int n = s.length(), ans = 0;
         Map<Character, Integer> lastSeen = new HashMap<>(); // current index of character
-        for (int j = 0, i = 0; j < n; j++) { // i,j left,right of current substring
-            if (lastSeen.containsKey(s.charAt(j))) // j 0-2, false; 3 (seen a),4-7 true
-                i = Math.max(lastSeen.get(s.charAt(j)), i); // j:3-7 i:1,2,3,5,7
-            ans = Math.max(ans, j - i + 1); // 1,2,3,3,3,3(3>2),3(3>1) max including char j
-            lastSeen.put(s.charAt(j), j + 1); // {a:1,b:2,c:3} -> {a:4,b:2,c:3}, ... {a:4,b:5,c:6}, ... {a:4,b:8,c:6}
+        for (int r = 0, l = 0; r < n; r++) { // l,r left,right of current substring
+            if (lastSeen.containsKey(s.charAt(r))) // r 0-2, false; 3 (seen a),4-7 true
+                l = Math.max(lastSeen.get(s.charAt(r)) + 1, l); // r:3-7 l:1,2,3,5,7
+            ans = Math.max(ans, r - l + 1); // 1,2,3,3,3,3(3>2),3(3>1) max including char at r
+            lastSeen.put(s.charAt(r), r); // {a:0,b:1,c:2} -> {a:3,b:1,c:2}, ... {a:3,b:4,c:5}, ... {a:3,b:7,c:5}
         }
         return ans;
     }
