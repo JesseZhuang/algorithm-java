@@ -38,6 +38,11 @@ import java.util.Set;
  * </ul>
  * <li>maybe create BST O(NlgN) time, O(N) space.
  * </ul>
+ * <p>
+ * Constraints:
+ * <p>
+ * 1 <= nums.length <= 10^5
+ * -10^9 <= nums[i] <= 10^9
  */
 public class ContainsDuplicate {
 
@@ -64,6 +69,7 @@ public class ContainsDuplicate {
         return Arrays.stream(numbers).anyMatch(num -> !seen.add(num));
     }
 
+    // 10 ms, 54.8MB. O(n) time and space.
     public boolean containsDuplicate4(int[] numbers) {
         // [] empty array considered false!
         if (numbers != null) {
@@ -76,7 +82,7 @@ public class ContainsDuplicate {
         return false;
     }
 
-    // time limit exceeded, n lgn time, 0 space
+    // pre-2023 time limit exceeded, 2023 19ms, 57.3MB. n lgn time, 0 space
     public boolean containsDuplicate(int[] numbers) {
         if (numbers == null || numbers.length == 0) return false;
         if (numbers.length > 1) {
