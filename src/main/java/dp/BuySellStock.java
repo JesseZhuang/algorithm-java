@@ -25,23 +25,30 @@ package dp;
  * <li>one scan maintain two variables, O(n) time, O(1) space.
  * <li>Kadane's algorithm, wikipedia maximum sub-array problem, O(n) time, O(1) space.
  * </ul>
+ * <p>
+ * Constraints:
+ * <p>
+ * 1 <= prices.length <= 10^5
+ * 0 <= prices[i] <= 10^4
  */
 public class BuySellStock {
-    /** 2ms 46% */
+    /**
+     * 2ms 46%. O(n) time and space.
+     */
     public int maxProfitPeakArray(int[] prices) {
         // peak (max) for prices array in range [i, end]
-        int[] maxOf = new int[prices.length];
+        int[] maxSoFar = new int[prices.length];
         int max = Integer.MIN_VALUE;
         for (int i = prices.length - 1; i > 0; i--)
-            max = maxOf[i] = Math.max(max, prices[i]);
+            max = maxSoFar[i] = Math.max(max, prices[i]);
         int profit = 0;
         for (int i = 0; i < prices.length - 1; i++)
-            profit = Math.max(profit, maxOf[i + 1] - prices[i]);
+            profit = Math.max(profit, maxSoFar[i + 1] - prices[i]);
         // max profit if purchased on day i
         return profit;
     }
 
-    /** 3 ms 12.7% */
+    // 2 ms 60.9 MB. O(n) time and O(1) space.
     public int maxProfitMinPrice(int[] prices) {
         int maxPro = 0;
         int minPrice = Integer.MAX_VALUE;
@@ -53,14 +60,15 @@ public class BuySellStock {
         return maxPro;
     }
 
-    public int maxProfitKadane(int[] prices) {
-        int maxCur = 0, maxSoFar = 0;
-        for(int i = 1; i < prices.length; i++) {
-            // max profit if sold at current index
-            maxCur = Math.max(0, maxCur + (prices[i] - prices[i - 1]));
-            maxSoFar = Math.max(maxCur, maxSoFar);
+    // 3ms, 61 Mb. O(n) time O(1) space.
+    public int maxProfitKadane(int[] prices) { // 7 1 5 3 6 4
+        int maxSellHere = 0, maxSoFar = 0;
+        for (int i = 1; i < prices.length; i++) {
+            // max profit if sold at current index, important first item 0
+            maxSellHere = Math.max(0, maxSellHere + (prices[i] - prices[i - 1])); // 0 4 2 5 3
+            maxSoFar = Math.max(maxSellHere, maxSoFar); // 0 4 4 5 5
         }
-        return maxSoFar;
+        return maxSoFar; // 5
     }
 
     @Deprecated
