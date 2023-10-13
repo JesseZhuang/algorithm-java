@@ -38,6 +38,12 @@ package array;
  * <li> O(N) time, O(1) space, using result array.
  * <li> O(N) time, O(N) space, extra arrays to store intermediate calculations.
  * </ul>
+ * <p>
+ * Constraints:
+ * <p>
+ * 2 <= nums.length <= 10^5
+ * -30 <= nums[i] <= 30
+ * The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
  */
 public class ProductExceptSelf {
     // 4 ms, 57.8 Mb
@@ -45,28 +51,31 @@ public class ProductExceptSelf {
         int[] leftOf = new int[nums.length]; // product for elements on the left
         int[] rightOf = new int[nums.length]; // product for elements on the right
         int[] result = new int[nums.length];
-        for(int i = 0; i < nums.length; i++) {
-            leftOf[i] = i > 0? leftOf[i - 1] * nums[i - 1] : 1;
+        for (int i = 0; i < nums.length; i++) {
+            leftOf[i] = i > 0 ? leftOf[i - 1] * nums[i - 1] : 1;
         }
         // leftOf [1,1,2,6]
-        for(int i = nums.length - 1; i >=0 ; i--) {
-            rightOf[i] = i == nums.length - 1? 1 : rightOf[i + 1] * nums[i + 1];
+        for (int i = nums.length - 1; i >= 0; i--) {
+            rightOf[i] = i == nums.length - 1 ? 1 : rightOf[i + 1] * nums[i + 1];
             result[i] = rightOf[i] * leftOf[i];
         }
         // rightOf [24,12,4,1], result [24,12,8,6]
         return result;
     }
 
-    // 4ms, 58.5 Mb
+    // 2ms, 52 Mb. O(n) time O(1) space.
     public int[] productExceptSelf2(int[] nums) { // [1,2,3,4]
-        int[] result = new int[nums.length];
-        // use result as leftOf first
-        for(int i = 0; i < nums.length; i++) result[i] = i > 0? result[i - 1] * nums[i - 1] : 1;
-        int right = 1;
-        for(int i = nums.length - 1; i >=0 ; i--) {
-            if (i != nums.length - 1) right *= nums[i + 1];
-            result[i] *= right;
+        int[] res = new int[nums.length];
+        // use result as leftOf first, 1,1,2,6
+        res[0] = 1;
+        for (int i = 1; i < nums.length; i++) {
+            res[i] = res[i - 1] * nums[i - 1];
         }
-        return result;
+        int right = 1;
+        for (int i = nums.length - 2; i >= 0; i--) {
+            right *= nums[i + 1];
+            res[i] *= right;
+        }
+        return res;
     }
 }
