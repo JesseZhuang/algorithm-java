@@ -38,11 +38,11 @@ public class MaxSubarray {
      * 2ms, memory 73.2 Mb. Kadane's algorithm.
      * O(N) time, O(1) space. If use array to track status, O(N) space.
      */
-    int maxSubarrayDP(int[] nums) { //5,4,-1,7,8
+    int maxSubarrayDP(int[] nums) { //-2,1,-3,4,-1,2,1,-5,4
         int maxEndingHere = 0, maxSofar = Integer.MIN_VALUE;
         for (int num : nums) {
-            maxEndingHere = Math.max(num, maxEndingHere + num); // 5,9,8,15,23
-            maxSofar = Math.max(maxSofar, maxEndingHere); // 5,9,9,15,23
+            maxEndingHere = Math.max(num, maxEndingHere + num); // -2,1,-2,4,3,5,6,1,4
+            maxSofar = Math.max(maxSofar, maxEndingHere);       // -2,1, 1,4,4,5,6,6,6
         }
         return maxSofar;
     }

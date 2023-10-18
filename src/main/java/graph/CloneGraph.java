@@ -32,7 +32,7 @@ import java.util.Queue;
  * The given node will always be the first node with val = 1. You must return the copy of the given node as a
  * reference to the cloned graph.
  * <p>
- * Example 1:
+ * Example 1: https://assets.leetcode.com/uploads/2019/11/04/133_clone_graph_question.png
  * <p>
  * Input: adjList = [[2,4],[1,3],[2,4],[1,3]]
  * Output: [[2,4],[1,3],[2,4],[1,3]]
@@ -41,7 +41,7 @@ import java.util.Queue;
  * 2nd node (val = 2)'s neighbors are 1st node (val = 1) and 3rd node (val = 3).
  * 3rd node (val = 3)'s neighbors are 2nd node (val = 2) and 4th node (val = 4).
  * 4th node (val = 4)'s neighbors are 1st node (val = 1) and 3rd node (val = 3).
- * Example 2:
+ * Example 2: https://assets.leetcode.com/uploads/2020/01/07/graph.png
  * <p>
  * <p>
  * Input: adjList = [[]]

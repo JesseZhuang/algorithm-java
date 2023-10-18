@@ -29,7 +29,7 @@ package array;
  * </pre>
  * The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
  */
-public class MaxProductSubarry {
+public class MaxProductSubarray {
     /**
      * Kadane's algorithm. DP. O(N) time, O(1) space. 7ms, 45.3 Mb.
      */
