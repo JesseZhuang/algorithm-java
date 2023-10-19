@@ -3,12 +3,32 @@ package math;
 import java.math.BigInteger;
 
 /**
- * LeetCode 172. Easy.
+ * LeetCode 172, easy, tags: math.
  * <p>
  * Given an integer n, return the number of trailing zeroes in n!.
  * <p>
  * Note: Your solution should be in logarithmic time complexity.
  * <p>
+ * Note that n! = n * (n - 1) * (n - 2) * ... * 3 * 2 * 1.
+ * <p>
+ * Example 1:
+ * <p>
+ * Input: n = 3
+ * Output: 0
+ * Explanation: 3! = 6, no trailing zero.
+ * Example 2:
+ * <p>
+ * Input: n = 5
+ * Output: 1
+ * Explanation: 5! = 120, one trailing zero.
+ * Example 3:
+ * <p>
+ * Input: n = 0
+ * Output: 0
+ * <p>
+ * Constraints:
+ * <p>
+ * 0 <= n <= 10^4
  * <b>Summary</b>:
  * <p>
  * <ul>
@@ -16,22 +36,20 @@ import java.math.BigInteger;
  * </ul>
  */
 public class FactorialTrailingZeroes {
-    /** O log5_n, not tail recursive */
-    public int trailingZeroes(int n) {
-        /*
-         * wrong, thought only 2,5,10 will produce trailing zeroes. 25! has 6
-         * trailing 0s (not 5), because 25*4 = 100;
-         */
-        // return n / 5;
-
+    /**
+     * O(log5_n) time and space. normal recursive, 0ms, 39.59 Mb.
+     */
+    public int trailingZeroesR(int n) {
         // may not be accurate
         // return n / 5 + (int) (Math.log(n) / Math.log(5)) - 1;
 
-        return n <= 0 ? 0 : n / 5 + trailingZeroes(n / 5);
+        return n <= 0 ? 0 : n / 5 + trailingZeroesR(n / 5);
     }
 
-    /** tail recursive */
-    public int trailingZeroesRecursive(int n) {
+    /**
+     * O(log5_n) time and space. tail recursive, 0ms, 39.19 Mb.
+     */
+    public int trailingZeroesTR(int n) {
         return helper(n, 0);
     }
 
@@ -40,7 +58,10 @@ public class FactorialTrailingZeroes {
             return acc;
         return helper(n / 5, acc + n / 5);
     }
-    /** iterative */
+
+    /**
+     * O(log5_n) time and O(1) space. iterative, 0ms, 39.73Mb.
+     */
     public int trailingZeroesIterative(int n) {
         int acc = 0;
         while (n > 0) {
@@ -52,21 +73,16 @@ public class FactorialTrailingZeroes {
 
     public int trailingZeroesIterative2(int n) {
         int count = 0;
-        for (int i = 5; n / i >= 1; i *= 5) count += n/i;
+        for (int i = 5; n / i >= 1; i *= 5) count += n / i;
         return count;
     }
 
     public static void main(String[] args) {
-        int n = 126;
+        int n = 126; // show factorials 1 -> 126
         for (int i = 1; i < n; i++) {
             System.out.print(i + " ");
             BigInteger f = BigInteger.valueOf(1);
             for (int j = 1; j <= i; j++) f = f.multiply(BigInteger.valueOf(j));
-            /*
-             * results after 20! seem to be wrong with BigInteger(String val,
-             * int radix) and converting the long variable to hex or binary
-             * string.
-             */
             System.out.println(f);
         }
     }

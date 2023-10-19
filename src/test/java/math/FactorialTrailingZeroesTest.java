@@ -17,9 +17,9 @@ class FactorialTrailingZeroesTest {
     @ParameterizedTest(name = "trailing zeroes for {0}!: {1}")
     @CsvFileSource(resources = {"/FactorialTrailingZeroes.csv"}, delimiter = ' ', numLinesToSkip = 2)
     void testTrailingZeroes(int n, int trailingZeroes) {
-        assertEquals(factorialTrailingZeroes.trailingZeroes(n), trailingZeroes);
+        assertEquals(factorialTrailingZeroes.trailingZeroesR(n), trailingZeroes);
         assertEquals(factorialTrailingZeroes.trailingZeroesIterative(n), trailingZeroes);
-        assertEquals(factorialTrailingZeroes.trailingZeroesRecursive(n), trailingZeroes);
+        assertEquals(factorialTrailingZeroes.trailingZeroesTR(n), trailingZeroes);
         assertEquals(factorialTrailingZeroes.trailingZeroesIterative2(n), trailingZeroes);
     }
 }

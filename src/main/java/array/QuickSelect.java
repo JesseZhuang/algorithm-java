@@ -2,10 +2,13 @@ package array;
 
 import util.IntArrayUtil;
 
+import java.util.Arrays;
+
 import static util.IntArrayUtil.swap;
 
 /**
  * O(N) because only need to recurse to one side. Worst case O(N^2).
+ * Find kth largest or smallest counting duplicated values, so does not work to find kth distinct.
  */
 public class QuickSelect {
     /**
@@ -46,8 +49,7 @@ public class QuickSelect {
      * finds the kth position (of the sorted array)
      * in a given unsorted array i.e this function
      * can be used to find both kth largest and
-     * kth smallest element in the array.
-     * ASSUMPTION: all elements in arr[] are distinct
+     * the kth smallest element in the array.
      */
     public static int kthSmallest(int[] arr, int low, int high, int k) {
         int partition = partition(arr, low, high);
@@ -66,16 +68,18 @@ public class QuickSelect {
 
     public static void main(String[] args) {
         int[] array = new int[]{10, 4, 5, 8, 6, 11, 26}; // 3rd smallest 6, 3rd largest 10
-        int[] arraycopy = new int[]{10, 4, 5, 8, 6, 11, 26};
+        int[] arraycopy = new int[]{10, 4, 5, 8, 6, 11, 26, 4}; // 3rd smallest 5, 3rd largest 10
         int kPosition = 3;
-        int length = array.length;
+        int length = arraycopy.length;
         if (kPosition > length) {
             System.out.println("Index out of bound");
         } else {
             IntArrayUtil.FYShuffle(arraycopy);
+            System.out.println("shuffled: " + Arrays.toString(arraycopy));
             System.out.println("K-th smallest element in array : "
                     + kthSmallest(arraycopy, 0, length - 1, kPosition));
             IntArrayUtil.FYShuffle(arraycopy);
+            System.out.println("shuffled: " + Arrays.toString(arraycopy));
             System.out.println("K-th largest element in array : "
                     + kthLargest(arraycopy, 0, length - 1, kPosition));
         }
