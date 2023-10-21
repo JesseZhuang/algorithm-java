@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.TreeMap;
 
 /**
@@ -54,7 +55,7 @@ import java.util.TreeMap;
  */
 public class Skyline {
     // treemap O(nLgn) time O(n) space. 18ms, 46.14 Mb.
-    public static List<List<Integer>> getSkyline(int[][] buildings) {
+    public static List<List<Integer>> getSkylineMap(int[][] buildings) {
         List<List<Integer>> res = new ArrayList<>();
         List<int[]> lines = new ArrayList<>();
         for (int[] b : buildings) {
@@ -82,8 +83,35 @@ public class Skyline {
         return res;
     }
 
+    // PQ, 8ms, 46.34 Mb. O(n) space. O(nLgn) time. harder to understand than the map method.
+    public static List<List<Integer>> getSkylinePQ(int[][] buildings) {
+        List<List<Integer>> res = new ArrayList<>();
+        // height, right_i. sort by height opposite then right_i opposite
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] == b[2] ? b[1] - a[1] : b[2] - a[2]);
+        int i = 0, curX = 0, curH = 0;
+        while (i < buildings.length || !pq.isEmpty()) {
+            curX = pq.isEmpty() ? buildings[i][0] : pq.peek()[1]; // next right_i to process
+            if (i >= buildings.length || buildings[i][0] > curX) {
+                // if the current tallest building will end before curX
+                // pop processed buildings: those have height no larger than curH and end before the top one
+                while (!pq.isEmpty() && pq.peek()[1] <= curX) pq.poll();
+            } else {
+                // if the next new building starts before the top one ends, process the new building
+                curX = buildings[i][0];
+                // // go through all the new buildings that starts at the same point
+                while (i < buildings.length && curX == buildings[i][0]) pq.offer(buildings[i++]);
+            }
+            curH = pq.isEmpty() ? 0 : pq.peek()[2]; // tallest height
+            if (res.isEmpty() || res.get(res.size() - 1).get(1) != curH) {
+                res.add(Arrays.asList(curX, curH));
+            }
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         int[][] buildings = {{2, 9, 10}, {3, 7, 15}, {5, 12, 12}, {15, 20, 10}, {19, 24, 8}};
-        System.out.println(getSkyline(buildings));
+//        buildings = new int[][]{{1, 7, 10}, {2, 3, 5}, {4, 5, 6}};
+        System.out.println(getSkylinePQ(buildings));
     }
 }
