@@ -67,7 +67,7 @@ public class KthLargest {
         return lt;
     }
 
-    // 11ms, 56.59Mb. O(n) time, O(1) space. Quick select.
+    // 11ms, 56.59Mb. O(n) time, O(1) space. Quick select. With shuffle: 11ms, 56.42Mb.
     static int partitionNormal(int[] nums, int lo, int hi) {
         // a lot of caveats, gt why hi+1, why ++ -- in the while loop (no infinite loop for duplicates)
         int pivot = nums[lo], lt = lo, gt = hi + 1;
