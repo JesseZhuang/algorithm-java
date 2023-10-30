@@ -89,11 +89,11 @@ public class Skyline {
         // height, right_i. sort by height opposite then right_i opposite
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] == b[2] ? b[1] - a[1] : b[2] - a[2]);
         int i = 0, curX = 0, curH = 0;
-        while (i < buildings.length || !pq.isEmpty()) {
+        while (i < buildings.length || !pq.isEmpty()) { // do not forget !
             // tallest right_i or cur building left_i: next curX to process
             curX = pq.isEmpty() ? buildings[i][0] : pq.peek()[1];
             // if curX < cur building left_i or buildings are all processed
-            if (i >= buildings.length || buildings[i][0] > curX) {
+            if (i >= buildings.length || buildings[i][0] > curX) { // >= important
                 // pop processed buildings: those have height no larger than curH and end before the top one
                 while (!pq.isEmpty() && pq.peek()[1] <= curX) pq.poll();
             } else {
@@ -102,7 +102,7 @@ public class Skyline {
                 // add all the buildings that starts at the same point to pq
                 while (i < buildings.length && curX == buildings[i][0]) pq.offer(buildings[i++]);
             }
-            curH = pq.isEmpty() ? 0 : pq.peek()[2]; // tallest height
+            curH = pq.isEmpty() ? 0 : pq.peek()[2]; // tallest height, do not forget empty check
             if (res.isEmpty() || res.get(res.size() - 1).get(1) != curH) {
                 res.add(Arrays.asList(curX, curH));
             }
