@@ -36,6 +36,7 @@ public class MaxProductSubarray {
     public int maxProduct(int[] nums) { // [2,3,-2,4]
         int maxEndingHere = 1, minEndingHere = 1, maxSoFar = Integer.MIN_VALUE;
         for (int i = 0; i < nums.length; i++) {
+            // important, must not update maxEndingHere yet, calculate two products first
             int prod1 = maxEndingHere * nums[i], prod2 = minEndingHere * nums[i];
             maxEndingHere = Math.max(nums[i], Math.max(prod1, prod2));
             // (2,(2,2)) -> 2, (3,(6,6)) -> 6, (-2,(-12,-6)) -> -2, (4, (-8,-48)) -> 4

@@ -50,7 +50,7 @@ public class KthLargest {
     }
 
     static int quickSelect(int[] nums, int k, int lo, int hi) {
-        int p = partitionNormal(nums, lo, hi);
+        int p = partition2P(nums, lo, hi);
         if (p == nums.length - k) return nums[p];
         else if (p > nums.length - k) return quickSelect(nums, k, lo, p - 1);
         else return quickSelect(nums, k, p + 1, hi);
@@ -68,7 +68,7 @@ public class KthLargest {
     }
 
     // 11ms, 56.59Mb. O(n) time, O(1) space. Quick select. With shuffle: 11ms, 56.42Mb.
-    static int partitionNormal(int[] nums, int lo, int hi) {
+    static int partition2P(int[] nums, int lo, int hi) {
         // a lot of caveats, gt why hi+1, why ++ -- in the while loop (no infinite loop for duplicates)
         int pivot = nums[lo], lt = lo, gt = hi + 1;
         while (true) {
