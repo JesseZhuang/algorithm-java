@@ -43,31 +43,41 @@ import java.util.Map;
 public class FractionString {
 
     // 1ms, 39.7 Mb. O(m) time and O(m) space. m: repeating digits in result
-    public String fractionToDecimal(int numerator, int denominator) {
+    public static String fractionToDecimal(int numerator, int denominator) {
         if (numerator == 0) return "0";
         StringBuilder res = new StringBuilder();
         if ((numerator > 0) ^ (denominator > 0)) res.append("-");
         long num = Math.abs((long) numerator); // dividend
         long den = Math.abs((long) denominator);  // divisor
-        // integral part
+        // integral part, must convert to long before doing division
         res.append(num / den);
         num %= den;
         if (num == 0) return res.toString();
         // fractional part
         res.append(".");
-        Map<Long, Integer> map = new HashMap<>();
+        Map<Long, Integer> numIndex = new HashMap<>();
         while (num != 0) {
-            map.put(num, res.length());
+            numIndex.put(num, res.length());
             num *= 10;
             res.append(num / den); // quotient
             num %= den; // remainder
-            if (map.containsKey(num)) {
-                int index = map.get(num);
-                res.insert(index, "(");
-                res.append(")");
+            if (numIndex.containsKey(num)) {
+                StringBuilder temp = new StringBuilder();
+                int index = numIndex.get(num);
+                temp.append(res.substring(0, index));
+                temp.append("(");
+                temp.append(res.substring(index));
+                temp.append(")");
+                res = temp;
                 break;
             }
         }
         return res.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(fractionToDecimal(-1, -2147483648));
+        System.out.println(Integer.MIN_VALUE / -1); //-2147483648
+        System.out.println(fractionToDecimal(Integer.MIN_VALUE, -1)); // 2147483648, over flow int
     }
 }
