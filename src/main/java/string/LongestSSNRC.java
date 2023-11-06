@@ -32,16 +32,14 @@ import java.util.Map;
 public class LongestSSNRC {
     // 2ms, 42.3Mb. Use Integer[] instead of map. O(n) time, O(128) space.
     public static int lengthOfLongestSubstring(String s) {
-        Integer[] charIndex = new Integer[128];
-        int left = 0, right = 0;
         int res = 0;
-        while (right < s.length()) {
-            char c = s.charAt(right);
-            Integer index = charIndex[c];
-            if (index != null && index >= left && index < right) left = index + 1;
-            res = Math.max(res, right - left + 1);
-            charIndex[c] = right;
-            right++;
+        Integer[] charIndex = new Integer[128];
+        for (int l = 0, r = 0; r < s.length(); r++) {
+            if (charIndex[s.charAt(r)] != null) {
+                l = Math.max(charIndex[s.charAt(r)] + 1, l);
+            }
+            charIndex[s.charAt(r)] = r;
+            res = Math.max(res, r - l + 1);
         }
         return res;
     }
