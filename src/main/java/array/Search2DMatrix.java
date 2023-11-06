@@ -68,4 +68,31 @@ public class Search2DMatrix {
         } else return true;
     }
 
+    /**
+     * search target in a specified area. 17ms, 49.2 Mb.
+     *
+     * @param matrix
+     * @param r1
+     * @param c1     r1, c1 index for top left corner of search area
+     * @param r2
+     * @param c2     r2, c2 index for bottom right corner of search area
+     * @param target
+     * @return weather target is found in search area.
+     */
+    private boolean searchMatrix2(int[][] matrix, int r1, int c1, int r2, int c2, int target) {
+        if (r2 < r1 || c2 < c1 || r1 >= matrix.length || c1 >= matrix[0].length) return false;
+        int rMid = (r1 + r2) / 2; // no concern of overflow because of range 10^9
+        int cMid = (c1 + c2) / 2;
+        int v = matrix[rMid][cMid];
+        if (v < target) {
+            return searchMatrix2(matrix, r1, cMid + 1, rMid, c2, target) // top right
+                    || searchMatrix2(matrix, rMid + 1, c1, r2, cMid, target) // bottom left
+                    || searchMatrix2(matrix, rMid + 1, cMid + 1, r2, c2, target); // bottom right
+        } else if (v > target) {
+            return searchMatrix2(matrix, r1, c1, rMid, cMid - 1, target) // top left
+                    || searchMatrix2(matrix, r1, cMid, rMid - 1, c2, target) // top right
+                    || searchMatrix2(matrix, rMid + 1, c1, r2, cMid - 1, target); // bottom left
+        } else return true;
+    }
+
 }

@@ -52,6 +52,7 @@ import java.util.Map;
  * The tests are generated such that there is exactly one solution.
  */
 public class TwoSumII {
+    // binary search O(nLgn) time, O(1) space, 0ms, 38.39Mb
     public int[] twoSumBS(int[] numbers, int target) {
         int[] result = new int[2];
         for (int i = 0; i < numbers.length; i++) {
