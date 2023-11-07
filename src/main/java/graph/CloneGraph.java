@@ -63,37 +63,37 @@ import java.util.Queue;
  * The Graph is connected and all nodes can be visited starting from the given node.
  */
 public class CloneGraph {
-    // O(V+E) time, O(V) space. 25ms, 42.1Mb.
+    // solution 1, O(V+E) time, O(V) space. 25ms, 42.1Mb.
     public Node cloneGraphDFS(Node node) {
-        Map<Integer, Node> nodes = new HashMap<>();
-        return dfs(node, nodes);
+        Map<Integer, Node> valNode = new HashMap<>();
+        return dfs(node, valNode); // note different from alg 4, do not check marked or not
     }
 
-    private Node dfs(Node x, Map<Integer, Node> nodes) {
-        if (x == null) return null;
-        if (nodes.containsKey(x.val)) return nodes.get(x.val);
-        Node node = new Node(x.val);
-        nodes.put(x.val, node);
-        for (Node neighbour : x.neighbors) node.neighbors.add(dfs(neighbour, nodes));
-        return node;
+    private Node dfs(Node node, Map<Integer, Node> nodes) {
+        if (node == null) return null;
+        if (nodes.containsKey(node.val)) return nodes.get(node.val);
+        Node res = new Node(node.val);
+        nodes.put(node.val, res);
+        for (Node n : node.neighbors) res.neighbors.add(dfs(n, nodes));
+        return res;
     }
 
-    // O(V+E) time, O(V) space. 26ms, 42.1Mb.
+    // solution 2, O(V+E) time, O(V) space. 26ms, 42.1Mb.
     public Node cloneGraphBFS(Node node) {
         if (node == null) return null;
-        Map<Integer, Node> nodes = new HashMap<>();
-        Queue<Node> queue = new ArrayDeque<>();
+        Map<Integer, Node> valNode = new HashMap<>();
+        Queue<Node> queue = new ArrayDeque<>(); // nodes from original graph
         queue.add(node);
         Node copy = new Node(node.val);
-        nodes.put(node.val, copy);
+        valNode.put(node.val, copy);
         while (!queue.isEmpty()) {
             Node cur = queue.remove();
             for (Node n : cur.neighbors) {
-                if (!nodes.containsKey(n.val)) {
+                if (!valNode.containsKey(n.val)) {
                     queue.add(n);
-                    nodes.put(n.val, new Node(n.val));
+                    valNode.put(n.val, new Node(n.val));
                 }
-                nodes.get(cur.val).neighbors.add(nodes.get(n.val));
+                valNode.get(cur.val).neighbors.add(valNode.get(n.val)); // note not cur.neighbors.add
             }
         }
         return copy;

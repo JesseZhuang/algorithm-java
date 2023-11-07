@@ -27,7 +27,26 @@ package dp;
  * 0 <= prices[i] <= 1000
  */
 public class BuySellCoolDown {
-    // O(n) time and space, 1ms, 40.1 Mb.
+    // solution 1, 0ms 40.5 Mb. O(n) time O(1) space.
+    public int maxProfitDP2(int[] prices) {
+        int n = prices.length;
+        if (n < 2) return 0;
+        // initializing assuming index at 2, b1, b0 represent buy[i - 1], buy[i]
+        int b2 = -prices[0], b1 = Math.max(-prices[0], -prices[1]), b0;
+        // s2, s1, s0 represent sell[i - 2], sell[i - 1], sell[i]
+        int s2 = 0, s1 = Math.max(s2, b2 + prices[1]), s0 = Integer.MIN_VALUE;
+        if (n == 2) return s1; // edge case
+        for (int i = 2; i < prices.length; i++) {
+            b0 = Math.max(b1, s2 - prices[i]);
+            s0 = Math.max(s1, b1 + prices[i]);
+            b1 = b0; // i++, b1 -> b0
+            s2 = s1;
+            s1 = s0;
+        }
+        return s0;
+    }
+
+    // solution 2, O(n) time and space, 1ms, 40.1 Mb.
     public int maxProfitDP1(int[] prices) {
         int len = prices.length;
         if (len < 2) return 0;
@@ -49,22 +68,4 @@ public class BuySellCoolDown {
         return sell[len - 1];
     }
 
-    // 0ms 40.5 Mb. O(n) time O(1) space.
-    public int maxProfitDP2(int[] prices) {
-        int n = prices.length;
-        if (n < 2) return 0;
-        // initializing assuming index at 2, b1, b0 represent buy[i - 1], buy[i]
-        int b2 = -prices[0], b1 = Math.max(-prices[0], -prices[1]), b0;
-        // s2, s1, s0 represent sell[i - 2], sell[i - 1], sell[i]
-        int s2 = 0, s1 = Math.max(s2, b2 + prices[1]), s0 = Integer.MIN_VALUE;
-        if (n == 2) return s1; // edge case
-        for (int i = 2; i < prices.length; i++) {
-            b0 = Math.max(b1, s2 - prices[i]);
-            s0 = Math.max(s1, b1 + prices[i]);
-            b1 = b0; // i++, b1 -> b0
-            s2 = s1;
-            s1 = s0;
-        }
-        return s0;
-    }
 }

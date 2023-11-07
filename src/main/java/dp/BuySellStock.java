@@ -32,7 +32,7 @@ package dp;
  * 0 <= prices[i] <= 10^4
  */
 public class BuySellStock {
-    // 2 ms 60.9 MB. O(n) time and O(1) space.
+    // solution 1, 2 ms 60.9 MB. O(n) time and O(1) space.
     public int maxProfitMinPrice(int[] prices) {
         int maxPro = 0;
         int minSoFar = Integer.MAX_VALUE;
@@ -44,7 +44,7 @@ public class BuySellStock {
         return maxPro;
     }
 
-    // 3ms, 61 Mb. O(n) time O(1) space.
+    // solution 2, 3ms, 61 Mb. O(n) time O(1) space.
     public int maxProfitKadane(int[] prices) { // 7 1 5 3 6 4
         int maxSellHere = 0, res = 0;
         for (int i = 1; i < prices.length; i++) {

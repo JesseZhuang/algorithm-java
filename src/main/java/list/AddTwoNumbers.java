@@ -52,7 +52,6 @@ public class AddTwoNumbers {
             carry = sum / 10;
             current = current.next;
         }
-//        if (carry != 0) current.next = new ListNode(carry);
         return head.next;
     }
 }

@@ -54,6 +54,18 @@ import static util.IntArrayUtil.boxIntArray;
  */
 public class TwoSum {
 
+    // solution 1, 1ms, 433.6Mb. O(N) time and space.
+    public int[] twoSumMap(int[] nums, int target) {
+        int[] result = new int[2];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (!map.containsKey(target - nums[i])) {
+                if (!map.containsKey(nums[i])) map.put(nums[i], i);
+            } else return new int[]{map.get(target - nums[i]), i};
+        }
+        return result;
+    }
+
     /**
      * Two sum return indexes.
      *
@@ -93,18 +105,6 @@ public class TwoSum {
             else return new int[]{arr[nums[i] + offset], i};//e.g. arr[13]==0 != -1, return [0, 4]
         }
         return new int[]{0, 0};
-    }
-
-    // 1ms, 433.6Mb. O(N) time and space.
-    public int[] twoSumMap(int[] nums, int target) {
-        int[] result = new int[2];
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (!map.containsKey(target - nums[i])) {
-                if (!map.containsKey(nums[i])) map.put(nums[i], i);
-            } else return new int[]{map.get(target - nums[i]), i};
-        }
-        return result;
     }
 
     // O(N) space also needed for the copy of the array. No advantage to the hash map solution.

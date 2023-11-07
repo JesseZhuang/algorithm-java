@@ -42,7 +42,7 @@ public class SlidingWindowMax {
         int n = nums.length;
         int[] res = new int[n - k + 1];
         int cur = 0;
-        Deque<Integer> q = new ArrayDeque<>();
+        Deque<Integer> q = new ArrayDeque<>(); // hold up to k elements value decreasing, FIFO
         for (int i = 0; i < nums.length; i++) {
             // keep elements in [i-(k-1), i], size k
             while (!q.isEmpty() && q.peek() < i - k + 1) q.removeFirst();
