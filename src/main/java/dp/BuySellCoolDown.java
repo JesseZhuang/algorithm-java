@@ -53,11 +53,11 @@ public class BuySellCoolDown {
     public int maxProfitDP2(int[] prices) {
         int n = prices.length;
         if (n < 2) return 0;
-        if (n == 2) return Math.max(0, -prices[0] + prices[1]);
         // initializing assuming index at 2, b1, b0 represent buy[i - 1], buy[i]
         int b2 = -prices[0], b1 = Math.max(-prices[0], -prices[1]), b0;
         // s2, s1, s0 represent sell[i - 2], sell[i - 1], sell[i]
         int s2 = 0, s1 = Math.max(s2, b2 + prices[1]), s0 = Integer.MIN_VALUE;
+        if (n == 2) return s1; // edge case
         for (int i = 2; i < prices.length; i++) {
             b0 = Math.max(b1, s2 - prices[i]);
             s0 = Math.max(s1, b1 + prices[i]);

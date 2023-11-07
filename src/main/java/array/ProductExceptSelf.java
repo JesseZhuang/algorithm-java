@@ -69,11 +69,11 @@ public class ProductExceptSelf {
         // use result as leftOf first, 1,1,2,6
         res[0] = 1;
         for (int i = 1; i < nums.length; i++) {
-            res[i] = res[i - 1] * nums[i - 1];
+            res[i] = res[i - 1] * nums[i - 1]; // accumulate product left of i in res[i]
         }
         int right = 1;
         for (int i = nums.length - 2; i >= 0; i--) {
-            right *= nums[i + 1];
+            right *= nums[i + 1]; // accumulate product right of i in right
             res[i] *= right;
         }
         return res;
