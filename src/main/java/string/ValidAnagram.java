@@ -43,6 +43,7 @@ public class ValidAnagram {
         if (s.length() != t.length()) return false;
         Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {
+            // map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
             map.compute(s.charAt(i), (k, v) -> v == null ? 1 : v + 1);
             map.compute(t.charAt(i), (k, v) -> v == null ? -1 : v - 1);
         }

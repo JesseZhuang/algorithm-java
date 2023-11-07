@@ -1,5 +1,6 @@
 package graph;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,9 +48,52 @@ import java.util.List;
  * All the integers in initial are unique.
  */
 public class MinimizeMalSpread {
-    // connected components V+E time and V space, find the min id vertex in the largest component
+    int[] id;
+    int[] size; // component size
+    boolean[] marked;
+    int count; // num of components
+    Graph g;
+
+    void init(int[][] graph, int[] initial) {
+        int V = graph.length;
+        id = new int[V];
+        size = new int[V];
+        marked = new boolean[V];
+        g = new Graph(graph);
+    }
+
+    // connected components V+E time and space, 10ms, 58.6Mb. O(n^2) time and O(n) space.
     public int minMalwareSpread(int[][] graph, int[] initial) {
-        return 0;
+        int V = graph.length;
+        init(graph, initial);
+        for (int v : initial) {
+            if (!marked[v]) dfs(v);
+            count++;
+        }
+        int[] sourceCount = new int[V];
+        for (int v : initial) sourceCount[id[v]]++;
+        int res = Integer.MAX_VALUE;
+        for (int v : initial) {
+            if (sourceCount[id[v]] == 1) { // this component contains only 1 source vertex
+                if (res == Integer.MAX_VALUE // first seen
+                        || size[id[v]] > size[id[res]] // v in a larger size component
+                        || size[id[v]] == size[id[res]] && v < res) // same size component, pick smaller v
+                    res = v;
+            }
+        }
+        if (res == Integer.MAX_VALUE) {// no components source count == 1, just pick the min v
+            for (int v : initial) if (v < res) res = v;
+        }
+        return res;
+    }
+
+    private void dfs(int v) {
+        marked[v] = true;
+        id[v] = count;
+        size[count]++;
+        for (int w : g.adj.get(v)) {
+            if (!marked[w]) dfs(w);
+        }
     }
 }
 
@@ -59,8 +103,10 @@ class Graph {
     List<List<Integer>> adj;
 
     // adj matrix -> adj list O(n^2) time and space (graph object, worst case densely connected)
-    Graph(int V, int[][] matrix) {
-        this.V = V;
+    Graph(int[][] matrix) {
+        this.V = matrix.length;
+        adj = new ArrayList<>(V);
+        for (int v = 0; v < V; v++) adj.add(new ArrayList<>());
         for (int v = 0; v < matrix.length; v++)
             for (int w = v + 1; w < matrix.length; w++)
                 if (matrix[v][w] == 1) addEdge(v, w);
