@@ -35,10 +35,11 @@ public class LongestSSNRC {
         int res = 0;
         Integer[] charIndex = new Integer[128];
         for (int l = 0, r = 0; r < s.length(); r++) {
-            if (charIndex[s.charAt(r)] != null) {
-                l = Math.max(charIndex[s.charAt(r)] + 1, l);
+            char c = s.charAt(r);
+            if (charIndex[c] != null) {
+                l = Math.max(charIndex[c] + 1, l);
             }
-            charIndex[s.charAt(r)] = r;
+            charIndex[c] = r;
             res = Math.max(res, r - l + 1);
         }
         return res;
@@ -49,10 +50,11 @@ public class LongestSSNRC {
         int n = s.length(), ans = 0;
         Map<Character, Integer> lastSeen = new HashMap<>(); // current index of character
         for (int r = 0, l = 0; r < n; r++) { // l,r left,right of current substring
-            if (lastSeen.containsKey(s.charAt(r))) // r 0-2, false; 3 (seen a),4-7 true
-                l = Math.max(lastSeen.get(s.charAt(r)) + 1, l); // r:3-7 l:1,2,3,5,7
+            char c = s.charAt(r);
+            if (lastSeen.containsKey(c)) // r 0-2, false; 3 (seen a),4-7 true
+                l = Math.max(lastSeen.get(c) + 1, l); // r:3-7 l:1,2,3,5,7
             ans = Math.max(ans, r - l + 1); // 1,2,3,3,3,3(3>2),3(3>1) max including char at r
-            lastSeen.put(s.charAt(r), r); // {a:0,b:1,c:2} -> {a:3,b:1,c:2}, ... {a:3,b:4,c:5}, ... {a:3,b:7,c:5}
+            lastSeen.put(c, r); // {a:0,b:1,c:2} -> {a:3,b:1,c:2}, ... {a:3,b:4,c:5}, ... {a:3,b:7,c:5}
         }
         return ans;
     }
