@@ -38,7 +38,7 @@ public class ValidAnagram {
         return true;
     }
 
-    // 16ms, 42.5Mb. LintCode follow up if inputs contain unicode characters.
+    // 16ms, 42.5Mb. LintCode follow up if inputs contain unicode characters. O(n) time and space.
     public boolean isAnagramMap(String s, String t) {
         if (s.length() != t.length()) return false;
         Map<Character, Integer> map = new HashMap<>();
