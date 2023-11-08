@@ -8,7 +8,8 @@ import java.util.Queue;
 import java.util.TreeMap;
 
 /**
- * LeetCode 253, medium.
+ * LeetCode 253, medium, LintCode 919, tags: treemap, heap.
+ * <p>
  * Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei),
  * find the minimum number of conference rooms required.
  * <p>
@@ -38,9 +39,27 @@ import java.util.TreeMap;
  * get free the earliest out of all the other rooms currently occupied.
  * If the room we extracted from the top of the min heap isn't free,
  * then no other room is. So, we can save time here and simply allocate a new room.
+ * <p>
+ * Constraints:
+ * <p>
+ * 1 <= intervals.length <= 10^4
+ * 0 <= start_i < end_i <= 10^6
  */
 public class MeetingRoomsII {
-    // O(NLgN) time, O(N) space.
+    // solution 1, lint code 266ms, 20.37Mb.
+    // O(NLgN) time, O(max(LgN,k) space, k is min number of meeting rooms, worst case K == N
+    public int minMeetingRoomsHeap(int[][] intervals) {
+        Arrays.sort(intervals, Comparator.comparingInt(i -> i[0])); // do not forget intervals
+        Queue<Integer> heap = new PriorityQueue<>();
+        heap.add(intervals[0][1]);
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] >= heap.peek()) heap.remove(); // meeting in heap ended, note >=
+            heap.add(intervals[i][1]);
+        }
+        return heap.size();
+    }
+
+    // solution 2, O(NLgN) time, O(N) space. lint code, 325ms, 20.21Mb.
     public int minMeetingRoomsTreeMap(int[][] intervals) {
         Map<Integer, Integer> map = new TreeMap<>(); // store start and end times and counts
         for (int[] interval : intervals) {
@@ -55,7 +74,7 @@ public class MeetingRoomsII {
         return result;
     }
 
-    // O(NLgN) time, O(N) space.
+    // solution 3, O(NLgN) time, O(N) space. lint code, 363ms, 20.32Mb.
     public int minMeetingRoomsSort(int[][] intervals) {
         int[] starts = new int[intervals.length], ends = new int[intervals.length];
         for (int i = 0; i < intervals.length; i++) {
@@ -72,15 +91,4 @@ public class MeetingRoomsII {
         return rooms;
     }
 
-    // O(NLgk) time, O(max(LgN,k) space, k is min number of meeting rooms, worst case K == N
-    public int minMeetingRoomsHeap(int[][] intervals) {
-        Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
-        Queue<Integer> heap = new PriorityQueue<>();
-        heap.add(intervals[0][1]);
-        for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] >= heap.peek()) heap.remove(); // meeting in heap ended, take that room
-            heap.add(intervals[i][1]);
-        }
-        return heap.size();
-    }
 }

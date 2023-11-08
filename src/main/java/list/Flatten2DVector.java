@@ -45,6 +45,7 @@ import java.util.NoSuchElementException;
  */
 public class Flatten2DVector {
     // solution 1, lint code no need null check, 4466ms, 52.15Mb. O(n, worst case n empty list) time and O(1) space.
+    // another thought is to leverage the iterator of the input list, highly unlikely what the interviewer wants
     class Vec2DList implements Iterator<Integer> {
         private int l, i; // which list, index on current list
         private List<List<Integer>> list;
