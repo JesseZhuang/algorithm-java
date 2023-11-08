@@ -31,11 +31,11 @@ package array;
  */
 public class MaxProductSubarray {
     /**
-     * Kadane's algorithm. DP. O(N) time, O(1) space. 7ms, 45.3 Mb.
+     * solution 1, Kadane's algorithm. DP. O(N) time, O(1) space. 7ms, 45.3 Mb.
      */
     public int maxProduct(int[] nums) { // [2,3,-2,4]
-        int maxEndingHere = 1, minEndingHere = 1, maxSoFar = Integer.MIN_VALUE;
-        for (int i = 0; i < nums.length; i++) {
+        int maxEndingHere = 1, minEndingHere = 1, maxSoFar = Integer.MIN_VALUE, n = nums.length;
+        for (int i = 0; i < n; i++) {
             // important, must not update maxEndingHere yet, calculate two products first
             int prod1 = maxEndingHere * nums[i], prod2 = minEndingHere * nums[i];
             maxEndingHere = Math.max(nums[i], Math.max(prod1, prod2));

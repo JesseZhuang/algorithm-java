@@ -28,7 +28,22 @@ import java.util.Random;
  * -10^4 <= nums[i] <= 10^4
  */
 public class KthLargest {
-    // O(NlgK) time, O(K) space, 56ms, 56.97 Mb.
+
+    // solution 1, 11ms, 56.59Mb. O(n) time, O(1) space. Quick select. With shuffle: 11ms, 56.42Mb.
+    static int partition2P(int[] nums, int lo, int hi) {
+        // a lot of caveats, gt why hi+1, why ++ -- in the while loop (no infinite loop for duplicates)
+        int pivot = nums[lo], lt = lo, gt = hi + 1; // note boundaries
+        while (true) {
+            while (++lt < hi && nums[lt] < pivot) ; // note increment first
+            while (--gt > lo && nums[gt] > pivot) ;
+            if (lt >= gt) break; // note >=
+            swap(nums, lt, gt);
+        }
+        swap(nums, lo, gt); // do not forget
+        return gt;
+    }
+
+    // solution 2, O(NlgK) time, O(K) space, 56ms, 56.97 Mb.
     public int findKthLargestPQ(int[] nums, int k) {
         PriorityQueue<Integer> q = new PriorityQueue();
         for (int n : nums) {
@@ -52,7 +67,7 @@ public class KthLargest {
     static int quickSelect(int[] nums, int k, int lo, int hi) {
         int p = partition2P(nums, lo, hi);
         if (p == nums.length - k) return nums[p];
-        else if (p > nums.length - k) return quickSelect(nums, k, lo, p - 1);
+        else if (p > nums.length - k) return quickSelect(nums, k, lo, p - 1); // note direction of recurse
         else return quickSelect(nums, k, p + 1, hi);
     }
 
@@ -67,24 +82,10 @@ public class KthLargest {
         return lt;
     }
 
-    // 11ms, 56.59Mb. O(n) time, O(1) space. Quick select. With shuffle: 11ms, 56.42Mb.
-    static int partition2P(int[] nums, int lo, int hi) {
-        // a lot of caveats, gt why hi+1, why ++ -- in the while loop (no infinite loop for duplicates)
-        int pivot = nums[lo], lt = lo, gt = hi + 1;
-        while (true) {
-            while (++lt < hi && nums[lt] < pivot) ;
-            while (--gt > lo && nums[gt] > pivot) ;
-            if (lt >= gt) break;
-            swap(nums, lt, gt);
-        }
-        swap(nums, lo, gt);
-        return gt;
-    }
-
     static void shuffle(int[] nums) {
         Random r = new Random();
         for (int i = 1; i < nums.length; i++) {
-            int j = r.nextInt(i + 1);
+            int j = r.nextInt(i + 1); // note bound
             swap(nums, i, j);
         }
     }

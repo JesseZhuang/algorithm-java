@@ -37,17 +37,19 @@ import java.math.BigInteger;
  */
 public class FactorialTrailingZeroes {
     /**
-     * O(log5_n) time and space. normal recursive, 0ms, 39.59 Mb.
+     * solution 1, O(log5_n) time and O(1) space. iterative, 0ms, 39.73Mb.
      */
-    public int trailingZeroesR(int n) {
-        // may not be accurate
-        // return n / 5 + (int) (Math.log(n) / Math.log(5)) - 1;
-
-        return n <= 0 ? 0 : n / 5 + trailingZeroesR(n / 5);
+    public int trailingZeroesIterative(int n) {
+        int acc = 0;
+        while (n > 0) {
+            acc += n / 5;
+            n /= 5;
+        }
+        return acc;
     }
 
     /**
-     * O(log5_n) time and space. tail recursive, 0ms, 39.19 Mb.
+     * solution 2: O(log5_n) time and space. tail recursive, 0ms, 39.19 Mb.
      */
     public int trailingZeroesTR(int n) {
         return helper(n, 0);
@@ -60,15 +62,12 @@ public class FactorialTrailingZeroes {
     }
 
     /**
-     * O(log5_n) time and O(1) space. iterative, 0ms, 39.73Mb.
+     * O(log5_n) time and space. normal recursive, 0ms, 39.59 Mb.
      */
-    public int trailingZeroesIterative(int n) {
-        int acc = 0;
-        while (n > 0) {
-            acc += n / 5;
-            n /= 5;
-        }
-        return acc;
+    public int trailingZeroesR(int n) {
+        // may not be accurate
+        // return n / 5 + (int) (Math.log(n) / Math.log(5)) - 1;
+        return n <= 0 ? 0 : n / 5 + trailingZeroesR(n / 5);
     }
 
     public int trailingZeroesIterative2(int n) {

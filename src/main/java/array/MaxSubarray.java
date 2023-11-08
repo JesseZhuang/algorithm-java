@@ -35,14 +35,14 @@ import java.util.Arrays;
  */
 public class MaxSubarray {
     /**
-     * 2ms, memory 73.2 Mb. Kadane's algorithm.
+     * solution 1, 2ms, memory 73.2 Mb. Kadane's algorithm.
      * O(N) time, O(1) space. If use array to track status, O(N) space.
      */
     int maxSubarrayDP(int[] nums) { //-2,1,-3,4,-1,2,1,-5,4
-        int maxEndingHere = 0, maxSofar = Integer.MIN_VALUE;
+        int maxEndHere = 0, maxSofar = Integer.MIN_VALUE;
         for (int num : nums) {
-            maxEndingHere = Math.max(num, maxEndingHere + num); // -2,1,-2,4,3,5,6,1,4
-            maxSofar = Math.max(maxSofar, maxEndingHere);       // -2,1, 1,4,4,5,6,6,6
+            maxEndHere = Math.max(num, maxEndHere + num); // -2,1,-2,4,3,5,6,1,4; note first item is num, not 0
+            maxSofar = Math.max(maxSofar, maxEndHere);       // -2,1, 1,4,4,5,6,6,6
         }
         return maxSofar;
     }
