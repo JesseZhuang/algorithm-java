@@ -33,7 +33,7 @@ package array;
  * -10^9 <= target <= 10^9
  */
 public class Search2DMatrix {
-    // search from top right, O(m+n) time, O(1) space. 4ms, 49.36 MB.
+    // solution 1, search from top right, O(m+n) time, O(1) space. 4ms, 49.36 MB.
     public boolean searchMatrix1(int[][] matrix, int target) {
         int r = 0, c = matrix[0].length - 1;
         while (c >= 0 && r < matrix.length) {
@@ -44,28 +44,10 @@ public class Search2DMatrix {
         return false;
     }
 
+    // solution 2, O(mn ^ log_4 3) time, O (log_4 mn) stack space. 28 ms, 50 MB.
     public boolean searchMatrix(int[][] matrix, int target) {
         int r = matrix.length, c = matrix[0].length;
-        return searchMatrix(matrix, new int[]{0, 0}, new int[]{r - 1, c - 1}, target);
-    }
-
-    // O(mn ^ log_4 3) time, O (log_4 mn) stack space. 28 ms, 50 MB.
-    private boolean searchMatrix(int[][] matrix, int[] ul, int[] lr, int target) {
-        if (ul[0] > lr[0] || ul[1] > lr[1]
-                || lr[0] >= matrix.length || lr[1] >= matrix[0].length) return false;
-        if (lr[0] - ul[0] == 0 && lr[1] - ul[1] == 0)
-            return matrix[ul[0]][ul[1]] == target;
-        int rMid = (ul[0] + lr[0]) / 2;
-        int cMid = (ul[1] + lr[1]) / 2;
-        if (matrix[rMid][cMid] > target) {
-            return searchMatrix(matrix, ul, new int[]{rMid, cMid}, target)
-                    || searchMatrix(matrix, new int[]{ul[0], cMid + 1}, new int[]{rMid, lr[1]}, target)
-                    || searchMatrix(matrix, new int[]{rMid + 1, ul[1]}, new int[]{lr[0], cMid}, target);
-        } else if (matrix[rMid][cMid] < target) {
-            return searchMatrix(matrix, new int[]{ul[0], cMid + 1}, new int[]{rMid, lr[1]}, target)
-                    || searchMatrix(matrix, new int[]{rMid + 1, ul[1]}, new int[]{lr[0], cMid}, target)
-                    || searchMatrix(matrix, new int[]{rMid + 1, cMid + 1}, lr, target);
-        } else return true;
+        return searchMatrix(matrix, 0, 0, r - 1, c - 1, target);
     }
 
     /**
@@ -79,19 +61,19 @@ public class Search2DMatrix {
      * @param target
      * @return weather target is found in search area.
      */
-    private boolean searchMatrix2(int[][] matrix, int r1, int c1, int r2, int c2, int target) {
+    private boolean searchMatrix(int[][] matrix, int r1, int c1, int r2, int c2, int target) {
         if (r2 < r1 || c2 < c1 || r1 >= matrix.length || c1 >= matrix[0].length) return false;
         int rMid = (r1 + r2) / 2; // no concern of overflow because of range 10^9
         int cMid = (c1 + c2) / 2;
         int v = matrix[rMid][cMid];
         if (v < target) {
-            return searchMatrix2(matrix, r1, cMid + 1, rMid, c2, target) // top right
-                    || searchMatrix2(matrix, rMid + 1, c1, r2, cMid, target) // bottom left
-                    || searchMatrix2(matrix, rMid + 1, cMid + 1, r2, c2, target); // bottom right
+            return searchMatrix(matrix, r1, cMid + 1, rMid, c2, target) // top right
+                    || searchMatrix(matrix, rMid + 1, c1, r2, cMid, target) // bottom left
+                    || searchMatrix(matrix, rMid + 1, cMid + 1, r2, c2, target); // bottom right
         } else if (v > target) {
-            return searchMatrix2(matrix, r1, c1, rMid, cMid - 1, target) // top left
-                    || searchMatrix2(matrix, r1, cMid, rMid - 1, c2, target) // top right
-                    || searchMatrix2(matrix, rMid + 1, c1, r2, cMid - 1, target); // bottom left
+            return searchMatrix(matrix, r1, c1, rMid, cMid - 1, target) // top left
+                    || searchMatrix(matrix, r1, cMid, rMid - 1, c2, target) // top right
+                    || searchMatrix(matrix, rMid + 1, c1, r2, cMid - 1, target); // bottom left
         } else return true;
     }
 
