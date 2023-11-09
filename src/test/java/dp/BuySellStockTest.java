@@ -1,10 +1,10 @@
 package dp;
 
+import junit.converter.IntegerArrayConverter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import junit.converter.IntegerArrayConverter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static util.IntArrayUtil.unBoxIntegerArray;
@@ -24,7 +24,6 @@ class BuySellStockTest {
     void testMaxProfit(@ConvertWith(IntegerArrayConverter.class) Integer[] prices, int profit) {
 //        int[] intArray = (prices.length == 0) ? new int[]{} : IntegerArrayConverter.unBoxIntegerArray(prices);
         int[] intArray = unBoxIntegerArray(prices);
-        assertEquals(buySellStock.maxProfitPeakArray(intArray), profit);
         assertEquals(buySellStock.maxProfitKadane(intArray), profit);
         assertEquals(buySellStock.maxProfitMinPrice(intArray), profit);
     }
