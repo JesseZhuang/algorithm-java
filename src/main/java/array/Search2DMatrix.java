@@ -37,9 +37,10 @@ public class Search2DMatrix {
     public boolean searchMatrix1(int[][] matrix, int target) {
         int r = 0, c = matrix[0].length - 1;
         while (c >= 0 && r < matrix.length) {
-            if (target == matrix[r][c]) return true;
-            else if (target < matrix[r][c]) c--;
-            else if (target > matrix[r][c]) r++;
+            int v = matrix[r][c];
+            if (target == v) return true;
+            else if (target < v) c--;
+            else r++;
         }
         return false;
     }

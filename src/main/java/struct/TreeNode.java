@@ -8,7 +8,7 @@ import java.util.Queue;
  * Confused what "{1,#,2,3}" means? > read more on how binary tree is serialized
  * on OJ (LeetCode online judge).
  * <p>
- * OJ's Binary Tree Serialization: The serialization of a binary tree follows a
+ * OJ's Binary (search) Tree Serialization: The serialization of a binary tree follows a
  * level order traversal, where '#' signifies a path terminator where no node
  * exists below.
  * <p>
