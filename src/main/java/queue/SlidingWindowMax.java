@@ -1,7 +1,6 @@
 package queue;
 
 import java.util.ArrayDeque;
-import java.util.Deque;
 
 /**
  * LeetCode 239, hard, tags: array, queue, sliding window, heap, monotonic queue.
@@ -41,14 +40,14 @@ public class SlidingWindowMax {
     public int[] maxSlidingWindow(int[] nums, int k) {
         int n = nums.length;
         int[] res = new int[n - k + 1];
-        int cur = 0;
-        Deque<Integer> q = new ArrayDeque<>(); // hold up to k elements value decreasing, FIFO
-        for (int i = 0; i < nums.length; i++) {
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+        // note just use ArrayDeque directly, may offer more methods than the Deque interface
+        for (int i = 0, cur = 0; i < nums.length; i++) {
             // keep elements in [i-(k-1), i], size k
-            while (!q.isEmpty() && q.peek() < i - k + 1) q.removeFirst();
+            if (!q.isEmpty() && q.peek() <= i - k) q.removeFirst();
             // remove smaller numbers in k range as they are useless
-            while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) q.removeLast();
-            q.add(i);
+            while (!q.isEmpty() && nums[q.peekLast()] <= nums[i]) q.removeLast();
+            q.add(i); // otherwise need to add, they might be the next max
             if (i >= k - 1) res[cur++] = nums[q.peek()];
         }
         return res;

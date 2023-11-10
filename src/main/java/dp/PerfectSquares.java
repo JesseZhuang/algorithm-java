@@ -52,7 +52,7 @@ public class PerfectSquares {
         // dp [0, 1, 2, 3, 1, 2, 3, 4, 2, 1, 2, 3, 3] for 12
         while (dp.size() <= n) {
             int m = dp.size(), squares = Integer.MAX_VALUE;
-            // sum of dp[m-i*i} and a perfect square number i*i
+            // sum of dp[m-i*i] and a perfect square number i*i
             for (int i = 1; i * i <= m; i++) squares = Math.min(squares, dp.get(m - i * i) + 1);
             dp.add(squares);
         }
