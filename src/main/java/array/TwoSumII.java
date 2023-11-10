@@ -52,6 +52,19 @@ import java.util.Map;
  * The tests are generated such that there is exactly one solution.
  */
 public class TwoSumII {
+    // solution 1, 2p, O(N) time O(1) space. 1ms, 46.1 Mb.
+    public int[] twoSum2P(int[] numbers, int target) {
+        int[] result = new int[2];
+        int lo = 0, hi = numbers.length - 1;
+        while (lo < hi) {
+            int sum = numbers[lo] + numbers[hi];
+            if (sum > target) hi--;
+            else if (sum < target) lo++;
+            else return new int[]{lo + 1, hi + 1};
+        }
+        return result;
+    }
+
     // binary search O(nLgn) time, O(1) space, 0ms, 38.39Mb
     public int[] twoSumBS(int[] numbers, int target) {
         int[] result = new int[2];
@@ -76,19 +89,6 @@ public class TwoSumII {
         for (int i = 0; i < numbers.length; i++) {
             if (numIndex.containsKey(target - numbers[i])) return new int[]{numIndex.get(target - numbers[i]), i + 1};
             numIndex.put(numbers[i], i + 1);
-        }
-        return result;
-    }
-
-    // O(N) time O(1) space. 1ms, 46.1 Mb.
-    public int[] twoSum2P(int[] numbers, int target) {
-        int[] result = new int[2];
-        int lo = 0, hi = numbers.length - 1;
-        while (lo < hi) {
-            int sum = numbers[lo] + numbers[hi];
-            if (sum > target) hi--;
-            else if (sum < target) lo++;
-            else return new int[]{lo + 1, hi + 1};
         }
         return result;
     }

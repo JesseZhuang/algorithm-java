@@ -62,13 +62,9 @@ public class FractionString {
             res.append(num / den); // quotient
             num %= den; // remainder
             if (numIndex.containsKey(num)) {
-                StringBuilder temp = new StringBuilder();
                 int index = numIndex.get(num);
-                temp.append(res.substring(0, index));
-                temp.append("(");
-                temp.append(res.substring(index));
-                temp.append(")");
-                res = temp;
+                res.insert(index, "(");
+                res.append(")");
                 break;
             }
         }
