@@ -3,7 +3,7 @@ package stack;
 import java.util.Stack;
 
 /**
- * LeetCode 20, easy, tags: string, stack.
+ * LeetCode 20, LintCode 423, easy, tags: string, stack.
  * Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the
  * input string is valid.
  * <p>
@@ -30,6 +30,11 @@ import java.util.Stack;
  * When you encounter an opening bracket, push it to the top of the stack.
  * When you encounter a closing bracket, check if the top of the stack was the opening for it.
  * If yes, pop it from the stack. Otherwise, return false.
+ * <p>
+ * Constraints:
+ * <p>
+ * 1 <= s.length <= 10^4
+ * s consists of parentheses only '()[]{}'.
  */
 public class ValidParentheses {
     // 1ms, 40.5Mb. O(n) time and space.

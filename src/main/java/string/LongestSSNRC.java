@@ -30,7 +30,21 @@ import java.util.Map;
  * s consists of English letters, digits, symbols and spaces. so m < 128, ascii
  */
 public class LongestSSNRC {
-    // 2ms, 42.3Mb. Use Integer[] instead of map. O(n) time, O(128) space.
+    // solution 1, 5ms, 42.8 Mb. O(n) time, O(m) space. m: number of unique characters
+    public static int lengthOfLongestSubstringMap(String s) { // abcabcbb
+        int n = s.length(), ans = 0;
+        Map<Character, Integer> lastSeen = new HashMap<>(); // current index of character
+        for (int r = 0, l = 0; r < n; r++) { // l,r left,right of current substring
+            char c = s.charAt(r);
+            if (lastSeen.containsKey(c)) // r 0-2, false; 3 (seen a),4-7 true
+                l = Math.max(lastSeen.get(c) + 1, l); // r:3-7 l:1,2,3,5,7
+            ans = Math.max(ans, r - l + 1); // 1,2,3,3,3,3(3>2),3(3>1) max including char at r
+            lastSeen.put(c, r); // {a:0,b:1,c:2} -> {a:3,b:1,c:2}, ... {a:3,b:4,c:5}, ... {a:3,b:7,c:5}
+        }
+        return ans;
+    }
+
+    // solution 2, 2ms, 42.3Mb. Use Integer[] instead of map. O(n) time, O(128) space.
     public static int lengthOfLongestSubstring(String s) {
         int res = 0;
         Integer[] charIndex = new Integer[128];
@@ -43,20 +57,6 @@ public class LongestSSNRC {
             res = Math.max(res, r - l + 1);
         }
         return res;
-    }
-
-    // 5ms, 42.8 Mb. O(n) time, O(m) space. m: number of unique characters
-    public static int lengthOfLongestSubstringMap(String s) { // abcabcbb
-        int n = s.length(), ans = 0;
-        Map<Character, Integer> lastSeen = new HashMap<>(); // current index of character
-        for (int r = 0, l = 0; r < n; r++) { // l,r left,right of current substring
-            char c = s.charAt(r);
-            if (lastSeen.containsKey(c)) // r 0-2, false; 3 (seen a),4-7 true
-                l = Math.max(lastSeen.get(c) + 1, l); // r:3-7 l:1,2,3,5,7
-            ans = Math.max(ans, r - l + 1); // 1,2,3,3,3,3(3>2),3(3>1) max including char at r
-            lastSeen.put(c, r); // {a:0,b:1,c:2} -> {a:3,b:1,c:2}, ... {a:3,b:4,c:5}, ... {a:3,b:7,c:5}
-        }
-        return ans;
     }
 
 }
