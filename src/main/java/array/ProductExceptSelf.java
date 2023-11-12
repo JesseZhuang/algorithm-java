@@ -46,7 +46,22 @@ package array;
  * The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
  */
 public class ProductExceptSelf {
-    // 4 ms, 57.8 Mb
+    // solution 1, 2ms, 52 Mb. O(n) time O(1) space.
+    public int[] productExceptSelf2(int[] nums) { // [1,2,3,4]
+        int[] res = new int[nums.length];
+        res[0] = 1;
+        for (int i = 1; i < nums.length; i++) {
+            res[i] = res[i - 1] * nums[i - 1]; // use result as leftOf 1,1,2,6
+        }
+        int right = 1;
+        for (int i = nums.length - 2; i >= 0; i--) {
+            right *= nums[i + 1]; // accumulate product right of i in right
+            res[i] *= right;
+        }
+        return res;
+    }
+
+    // solution 2,  O(n) time and space. 4 ms, 57.8 Mb
     public int[] productExceptSelf1(int[] nums) { // [1,2,3,4]
         int[] leftOf = new int[nums.length]; // product for elements on the left
         int[] rightOf = new int[nums.length]; // product for elements on the right
@@ -61,21 +76,5 @@ public class ProductExceptSelf {
         }
         // rightOf [24,12,4,1], result [24,12,8,6]
         return result;
-    }
-
-    // 2ms, 52 Mb. O(n) time O(1) space.
-    public int[] productExceptSelf2(int[] nums) { // [1,2,3,4]
-        int[] res = new int[nums.length];
-        // use result as leftOf first, 1,1,2,6
-        res[0] = 1;
-        for (int i = 1; i < nums.length; i++) {
-            res[i] = res[i - 1] * nums[i - 1]; // accumulate product left of i in res[i]
-        }
-        int right = 1;
-        for (int i = nums.length - 2; i >= 0; i--) {
-            right *= nums[i + 1]; // accumulate product right of i in right
-            res[i] *= right;
-        }
-        return res;
     }
 }

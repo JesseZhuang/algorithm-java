@@ -85,8 +85,9 @@ public class EulerianCycle {
         // initialize stack with any non-isolated vertex
         int s = nonIsolatedVertex(G);
 
-         // dfsStack(s, adj);
-         dfsRecursive(s, adj);
+        cycle = new Stack<>();
+        // dfsStack(s, adj); // or recursive version dfs
+        dfsRecursive(s, adj);
 
         // check if all edges are used
         if (cycle.size() != G.E() + 1)
@@ -100,7 +101,6 @@ public class EulerianCycle {
         stack.push(s);
 
         // greedily search through edges in iterative DFS style
-        cycle = new Stack<>();
         while (!stack.isEmpty()) {
             int v = stack.pop();
             while (!simplifiedAdj.get(v).isEmpty()) {
@@ -116,8 +116,7 @@ public class EulerianCycle {
     }
 
     private void dfsRecursive(int s, List<Queue<Edge>> simplifiedAdj) {
-        cycle = new Stack<>();
-        for(Edge e: simplifiedAdj.get(s)) {
+        for (Edge e : simplifiedAdj.get(s)) {
             if (e.isUsed) continue;
             e.isUsed = true;
             int w = e.other(s);
@@ -224,11 +223,10 @@ public class EulerianCycle {
         StdOut.print("Eulerian cycle: ");
         if (euler.hasEulerianCycle()) {
             for (int v : euler.cycle()) {
-                StdOut.print(v + " ");
+                StdOut.print(v + "->");
             }
             StdOut.println();
-        }
-        else {
+        } else {
             StdOut.println("none");
         }
         StdOut.println();
@@ -236,8 +234,8 @@ public class EulerianCycle {
 
     private static Graph convertGraph(edu.princeton.cs.algs4.Graph graph) {
         Graph g = new Graph(graph.V());
-        for(int v = 0; v < graph.V(); v++) {
-            for (int w: graph.adj(v)) g.addEdge(v, w);
+        for (int v = 0; v < graph.V(); v++) {
+            for (int w : graph.adj(v)) g.addEdge(v, w);
         }
         return g;
     }
@@ -265,8 +263,8 @@ public class EulerianCycle {
         unitTest(convertGraph(G4), "single self loop");
 
         // union of two disjoint cycles
-        edu.princeton.cs.algs4.Graph H1 = GraphGenerator.eulerianCycle(V/2, E/2);
-        edu.princeton.cs.algs4.Graph H2 = GraphGenerator.eulerianCycle(V - V/2, E - E/2);
+        edu.princeton.cs.algs4.Graph H1 = GraphGenerator.eulerianCycle(V / 2, E / 2);
+        edu.princeton.cs.algs4.Graph H2 = GraphGenerator.eulerianCycle(V - V / 2, E - E / 2);
         int[] perm = new int[V];
         for (int i = 0; i < V; i++)
             perm[i] = i;
@@ -277,7 +275,7 @@ public class EulerianCycle {
                 G5.addEdge(perm[v], perm[w]);
         for (int v = 0; v < H2.V(); v++)
             for (int w : H2.adj(v))
-                G5.addEdge(perm[V/2 + v], perm[V/2 + w]);
+                G5.addEdge(perm[V / 2 + v], perm[V / 2 + w]);
         unitTest(convertGraph(G5), "Union of two disjoint cycles");
 
         // random digraph

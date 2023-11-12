@@ -179,12 +179,12 @@ public class ProjectEuler8 {
         int[] result = findMaxProduct4Naive(number);
         // [5832, 615] 9989 for 4 consecutive
         System.out.println(Arrays.toString(result) + " " + number.substring(result[1], result[1] + 4));
-        System.out.println(Arrays.toString(findMaxProduct("763", 2)));
-        System.out.println(Arrays.toString(findMaxProduct("763", 4)));
-        System.out.println(Arrays.toString(findMaxProduct(number, 4)));
-        // max is 40824 for 5 consecutive
+        System.out.println(Arrays.toString(findMaxProduct("763", 2))); // 7,6 [42, 0]
+        System.out.println(Arrays.toString(findMaxProduct("763", 4))); // [-1, -1]
+        System.out.println(Arrays.toString(findMaxProduct(number, 4))); // [5832, 615]
+        // max is 40824 for 5 consecutive, 9 9 8 7 9
         System.out.println(Arrays.toString(findMaxProduct(number, 5)));
-        // max is 23514624000 for 13 > INT_MAX overflow
+        // max is 23514624000 for 13 > INT_MAX overflow, 5 5 7 6 6 8 9 6 6 4 8 9 5
         System.out.println(Arrays.toString(findMaxProductLong(number, 13)));
     }
 }

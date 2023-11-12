@@ -27,7 +27,7 @@ import java.util.Arrays;
  * Constraints:
  * <p>
  * 1 <= nums.length <= 10^5
- * -104 <= nums[i] <= 10^4
+ * -10^4 <= nums[i] <= 10^4
  * <p>
  * <p>
  * Follow up: If you have figured out the O(n) solution, try coding another solution using the divide and conquer

@@ -33,10 +33,10 @@ import struct.ListNode;
 @SuppressWarnings("WeakerAccess")
 public class AddTwoNumbers {
 
-    // 1ms 43.1 Mb. O(n) time, O(1) space.
+    // solution 1, iterative, 1ms 43.1 Mb. O(n) time, O(1) space.
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode head = new ListNode(-1);
-        ListNode current = head;
+        ListNode cur = head;
         int carry = 0;
         while (l1 != null || l2 != null || carry != 0) {
             int sum = carry;
@@ -48,9 +48,9 @@ public class AddTwoNumbers {
                 sum += l2.val;
                 l2 = l2.next;
             }
-            current.next = new ListNode(sum % 10);
+            cur.next = new ListNode(sum % 10);
             carry = sum / 10;
-            current = current.next;
+            cur = cur.next;
         }
         return head.next;
     }

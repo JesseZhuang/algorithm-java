@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.function.Consumer;
 
 /**
+ * Fire bolt, medium.
+ * <p>
  * Reversely apply a function to Singly linked list node from last to first without modifying the original list.
  */
 public class ReverselyApplyFunction {

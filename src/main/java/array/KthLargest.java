@@ -64,11 +64,15 @@ public class KthLargest {
         return quickSelect(nums, k, 0, nums.length - 1);
     }
 
+    // iterative space O(1), recursive space O(lgn)
     static int quickSelect(int[] nums, int k, int lo, int hi) {
-        int p = partition2P(nums, lo, hi);
-        if (p == nums.length - k) return nums[p];
-        else if (p > nums.length - k) return quickSelect(nums, k, lo, p - 1); // note direction of recurse
-        else return quickSelect(nums, k, p + 1, hi);
+        while (lo < hi) {
+            int p = partition2P(nums, lo, hi);
+            if (p == nums.length - k) break;
+            else if (p > nums.length - k) hi = p - 1;
+            else lo = p + 1;
+        }
+        return nums[nums.length - k];
     }
 
     // time limit exceeded for a large array with duplicates
