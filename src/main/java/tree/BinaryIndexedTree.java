@@ -43,10 +43,10 @@ public class BinaryIndexedTree {
      * @param val   the delta change
      */
     public void update(int index, int val) {
-        index = index + 1;
+        index = index + 1; // important, don't force +1 on client of this class
         while (index < BITree.length) {
             BITree[index] += val;
-            index += index & -index;
+            index += index & -index; // no parenthesis needed
             // adds decimal value related to last 1 bit, 10(0b1010)->12(0b1100), 7(0b0111)->8(0b1000)
         }
     }

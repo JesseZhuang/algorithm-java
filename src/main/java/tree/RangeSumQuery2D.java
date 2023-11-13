@@ -74,7 +74,7 @@ public class RangeSumQuery2D {
         int res = 0;
         for (int r = row1; r <= row2; r++) {
             BinaryIndexedTree tree = trees[r];
-            res += tree.getSum(col2) - tree.getSum(col1 - 1);
+            res += tree.getSum(col2) - tree.getSum(col1 - 1); // sum include col1, so - getSum(col1-1)
         }
         return res;
     }
