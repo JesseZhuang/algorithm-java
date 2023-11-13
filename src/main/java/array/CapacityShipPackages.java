@@ -1,7 +1,7 @@
 package array;
 
 /**
- * LeetCode 1011, medium, tags: array, binary search.
+ * LeetCode 1011, medium, tags: array, binary search, apple.
  * A conveyor belt has packages that must be shipped from one port to another within days.
  * <p>
  * The ith package on the conveyor belt has a weight of weights[i]. Each day, we load the ship with packages on the
@@ -44,20 +44,21 @@ package array;
  * <p>
  * Constraints:
  * <p>
- * 1 <= days <= weights.length <= 5 * 104
- * 1 <= weights[i] <= 500
+ * 1 <= days <= weights.length <= 5 * 10^4, n
+ * 1 <= weights[i] <= 500, w
  */
 public class CapacityShipPackages {
 
-    // 9ms, 45.8 Mb.
-    public int shipWithinDays2(int[] weights, int days) {
+    // solution 1, 9ms, 45.8 Mb. O(nLgw) time, O(1) space.
+    public static int shipWithinDays2(int[] weights, int days) {
         int max = 0, sum = 0;
         for (int weight : weights) {
             if (weight > max) max = weight;
             sum += weight;
         }
-        while (max < sum) {
-            int mid = max + (sum - max) / 2, need = 1, cur = 0;
+        int l = max, r = sum;
+        while (l < r) { // not <= because if l incremented to r from r-1, r-1 does not work, r must work
+            int mid = l + (r - l) / 2, need = 1, cur = 0;
             for (int w : weights) {
                 if (cur + w > mid) {
                     need += 1;
@@ -65,38 +66,13 @@ public class CapacityShipPackages {
                 }
                 cur += w;
             }
-            if (need > days) max = mid + 1;
-            else sum = mid; // lc pass: while (max<=sum); sum = mid -1
+            if (need > days) l = mid + 1;
+            else r = mid; // need <= days, test [l, mid] because mid is a possible working solution
         }
-        return max;
+        return l; // capacity should make sure need <= days
     }
 
-    // O(nLgn) time, O(1) space. 10ms, 45.7Mb.
-    public int shipWithinDays(int[] weights, int days) { // ask for constraints, whether days can >= length
-        int max = 0, sum = 0; // no need min, max should be minimum
-        for (int weight : weights) {
-            if (weight > max) max = weight;
-            sum += weight;
-        }
-        while (max < sum) { // can stop when left == right
-            int mid = max + (sum - max) / 2;
-            if (canMove(weights, days, mid)) sum = mid;
-            else max = mid + 1;
-        }
-        return max;
+    public static void main(String[] args) {
+        shipWithinDays2(new int[]{3, 2, 2, 4, 1, 4}, 3);
     }
-
-    private boolean canMove(int[] weights, int days, int capacity) {
-        int count = 0, cWeight = 0;
-        for (int i = 0; i < weights.length; ) {
-            while (i < weights.length && weights[i] + cWeight <= capacity) {
-                cWeight += weights[i];
-                i++;
-            }
-            cWeight = 0;
-            count++;
-        }
-        return count <= days;
-    }
-
 }
