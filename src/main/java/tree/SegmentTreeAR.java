@@ -40,7 +40,7 @@ public class SegmentTreeAR {
     }
 
     /**
-     * recursive helper to build the segment tree. O(n) time build tree.
+     * recursive helper to build the segment tree. O(n) time build tree because merge operation is constant time.
      *
      * @param nums  original array
      * @param ci    index of current node in segment tree
