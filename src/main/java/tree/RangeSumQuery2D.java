@@ -50,4 +50,32 @@ package tree;
  * At most 5000 calls will be made to sumRegion and update.
  */
 public class RangeSumQuery2D {
+    BinaryIndexedTree[] trees;
+    int m, n;
+
+    // solution 1, BIT. O(mn lgn) init, O(lgn) update, O(m lgn) sumRegion. O(mn) space. lint code 3566ms, 35.90Mb.
+    public RangeSumQuery2D(int[][] matrix) {
+        m = matrix.length;
+        n = matrix[0].length;
+        trees = new BinaryIndexedTree[m];
+        for (int r = 0; r < m; r++) {
+            BinaryIndexedTree tree = new BinaryIndexedTree(matrix[r]);
+            trees[r] = tree;
+        }
+    }
+
+    public void update(int row, int col, int val) {
+        BinaryIndexedTree tree = trees[row];
+        int prev = tree.getSum(col) - tree.getSum(col - 1);
+        tree.update(col, val - prev);
+    }
+
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        int res = 0;
+        for (int r = row1; r <= row2; r++) {
+            BinaryIndexedTree tree = trees[r];
+            res += tree.getSum(col2) - tree.getSum(col1 - 1);
+        }
+        return res;
+    }
 }
