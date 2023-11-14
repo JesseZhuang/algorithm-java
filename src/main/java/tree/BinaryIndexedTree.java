@@ -15,14 +15,14 @@ public class BinaryIndexedTree {
 
 
     public BinaryIndexedTree(int arr[]) {
-        int l = arr.length + 1;
+        int l = arr.length + 1; // important, used as boundary in for loops below, bug: l=nums.length
         BITree = new int[l]; // 0th element is dummy
 //        for (int i = 0; i < arr.length; i++) update(i, arr[i]); // O(nlgn) initialization time.
         // O(n) init time
         for (int i = 1; i < l; i++) BITree[i] = arr[i - 1];
         for (int i = 1; i < l; i++) {
-            int j = i + (i & -i); // parenthesis important
-            if (j < l) BITree[j] += BITree[i];
+            int p = i + (i & -i); // parenthesis important
+            if (p < l) BITree[p] += BITree[i];
         }
     }
 

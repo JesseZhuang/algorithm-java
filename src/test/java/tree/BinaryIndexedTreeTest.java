@@ -25,4 +25,10 @@ public class BinaryIndexedTreeTest {
         tbt.update(3, -3);
         assertEquals(7, tbt.getSum(3));
     }
+
+    @Test
+    void testRangeQuery() {
+        assertEquals(3, tbt.rsq(0, 1));
+        assertEquals(4, tbt.rsq(1, 3));
+    }
 }
