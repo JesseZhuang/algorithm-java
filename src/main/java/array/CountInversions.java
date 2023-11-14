@@ -56,9 +56,10 @@ class Inversions {
     public static void merge(int[] nums, int[] aux, int[] index, int[] count, int lo, int mid, int hi) {
         for (int k = lo; k <= hi; k++) aux[k] = index[k];
         int i = lo, j = mid + 1;
-        for (int k = lo; k <= hi; k++) { // in reverse order to avoid quadratic time, iterate to largest element first
+        for (int k = lo; k <= hi; k++) {
             if (i > mid) index[k] = aux[j++];
             else if (j > hi) index[k] = aux[i++];
+                // reverse order to avoid quadratic time, merge 3,4 1,2 (quadratic) vs 4,3 2,1 (linear)
                 // must compare with the array not being worked on
                 // 1,2,7,8,5; 7,2,1,8,5 index (2,1,0,3,4); compare 7,8 take 8 -> (3,1,0,3,4)
             else if (nums[aux[i]] <= nums[aux[j]]) index[k] = aux[j++]; // ignore duplicates
@@ -82,11 +83,12 @@ class Inversions {
         int[][] tests = {
                 {5, 2, 6, 1}, // 2,1,1,0
                 {-1, -1}, // 0,0
-                {1, 2, 7, 8, 5} // 0,0,1,1,0
+                {1, 2, 7, 8, 5}, // 0,0,1,1,0
+                {3, 4, 1, 2}, // 2,2,0,0
         };
         for (int[] n : tests) {
             System.out.println(Arrays.toString(smallerCounts(n)));
-            System.out.println(edu.princeton.cs.algs4.Inversions.count(n)); // total of above, 4, 0, 2
+            System.out.println(edu.princeton.cs.algs4.Inversions.count(n)); // total of above, 4, 0, 2, 4
         }
     }
 }
