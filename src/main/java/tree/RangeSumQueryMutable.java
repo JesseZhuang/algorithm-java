@@ -161,8 +161,8 @@ public class RangeSumQueryMutable {
         }
 
         private void buildTree(int[] nums) {
-            for (int i = n, j = 0; i < 2 * n; i++, j++) tree[i] = nums[j]; // leaf nodes
-            for (int i = n - 1; i > 0; --i) tree[i] = tree[i * 2] + tree[i * 2 + 1]; // parent nodes
+            for (int i = n, j = 0; i < 2 * n; i++, j++) tree[i] = nums[j]; // leaf nodes [n,2n)
+            for (int i = n - 1; i > 0; --i) tree[i] = tree[i * 2] + tree[i * 2 + 1]; // parent nodes (0,n-1]
         }
 
         void update(int pos, int val) {

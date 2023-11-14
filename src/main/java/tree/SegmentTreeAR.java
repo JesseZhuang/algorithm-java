@@ -35,6 +35,7 @@ public class SegmentTreeAR {
         n = nums.length;
         // 0 based heap, size is 2 * [2^ceil(Log2(n))] - 1. ceil(Log2(n): height of tree
         // 1 based heap, size is 2 * [2^floor(Log2(n))] + 1, O(n) space
+        // or just use 2*n+2 space
         heap = new Node[2 * (int) (Math.pow(2.0, Math.ceil(Math.log(nums.length) / Math.log(2.0)))) - 1];
         build(nums, 0, 0, n - 1);
     }
