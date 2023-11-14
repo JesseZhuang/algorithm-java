@@ -11,7 +11,7 @@ public class MinPQ<Key extends Comparable<Key>> {
     int size;
 
     public MinPQ(int N) {
-        pq = (Key[]) new Object[N + 1];
+        pq = (Key[]) new Object[N + 1]; // 0 dummy, 1 based heap
         size = 0;
     }
 

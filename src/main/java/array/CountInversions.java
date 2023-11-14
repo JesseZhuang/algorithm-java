@@ -36,15 +36,16 @@ import java.util.stream.Collectors;
  * -10^4 <= nums[i] <= 10^4, r for range, in this case , 2*10^4 about 1/5 of n
  */
 public class CountInversions {
-    // solution 1, fenwick tree/segment tree, nlgr time, r space. 32 ms, 55.77 Mb.
+    static final int MAX = 10_000; // 10^4
+
+    // solution 1, fenwick tree, nlgr time, r space. 32 ms, 55.77 Mb.
     // do not mention balanced bst, avl or red black non-trivial to implement, need to tolerate duplicate
-    public static List<Integer> countSmaller2(int[] nums) {
+    public static List<Integer> countSmallerBIT(int[] nums) {
         int l = nums.length;
         int[] res = new int[l];
-        int max = 10_000; // -10^4 - 10^4
         int[] n = new int[l];
-        for (int i = 0; i < l; i++) n[i] = nums[i] + max; // convert to [0, 2*max]
-        BIT tree = new BIT(2 * max);
+        for (int i = 0; i < l; i++) n[i] = nums[i] + MAX; // convert to [0, 2*max]
+        BIT tree = new BIT(2 * MAX + 1);
         for (int i = l - 1; i >= 0; i--) {
             tree.update(n[i], 1);
             res[i] = tree.getSum(n[i] - 1);
@@ -52,8 +53,22 @@ public class CountInversions {
         return Arrays.stream(res).boxed().collect(Collectors.toList());
     }
 
+    // solution 3, segment tree, nlgr time, r space. 136ms, 59.43Mb.
+    public static List<Integer> countSmallerST(int[] nums) {
+        int l = nums.length;
+        int[] res = new int[l];
+        int[] n = new int[l];
+        for (int i = 0; i < l; i++) n[i] = nums[i] + MAX; // convert to [0, 2*max]
+        SegmentTree tree = new SegmentTree(2 * MAX + 1); // +1 important, see test class edge case
+        for (int i = l - 1; i >= 0; i--) {
+            tree.update(n[i]);
+            res[i] = tree.getSum(n[i] - 1);
+        }
+        return Arrays.stream(res).boxed().collect(Collectors.toList());
+    }
+
     // solution 2, merge sort, nlgn time, n space, 55ms, 64.43MB.
-    public List<Integer> countSmaller1(int[] nums) {
+    public static List<Integer> countSmallerMS(int[] nums) {
         return Arrays.stream(Inversions.smallerCounts(nums)).boxed().collect(Collectors.toList());
     }
 
@@ -64,23 +79,41 @@ class SegmentTree {
     int n;
 
     SegmentTree(int n) {
-        tree = new int[2 * n];
+        tree = new int[4 * n];
         this.n = n;
     }
 
-    void update(int i, int count, int lo, int hi) {
+    void update(int num) {
+        update(num, 1, 1, 0, n - 1);
+//        update(num, 1, 0, 0, n - 1);
+    }
+
+    void update(int num, int count, int i, int lo, int hi) { // update range [num,num]
         if (lo == hi) tree[i] += count;
-        else {
+        else { // else important
             int mid = lo + (hi - lo) / 2;
-            if (i <= mid) update(i, 2 * i, lo, mid);
-            else update(i, 2 * i + 1, mid + 1, hi);
+            if (num <= mid) update(num, count, 2 * i, lo, mid); // 1 based
+            else update(num, count, 2 * i + 1, mid + 1, hi);
             tree[i] = tree[2 * i] + tree[2 * i + 1];
+
+//            if (num <= mid) update(num, count, 2 * i + 1, lo, mid); // 0 based
+//            else update(num, count, 2 * i + 2, mid + 1, hi);
+//            tree[i] = tree[2 * i + 1] + tree[2 * i + 2];
         }
     }
 
-    int rsq(int left, int right) {
-        if (left > right) return 0;
+    // total count for n[0, num]
+    int getSum(int num) {
+        return rsq(1, 0, num, 0, n - 1);
+//        return rsq(0, 0, num, 0, n - 1);
+    }
 
+    int rsq(int i, int left, int right, int lo, int hi) {
+        if (left > hi || right < lo) return 0;
+        if (left <= lo && right >= hi) return tree[i];
+        int mid = lo + (hi - lo) / 2;
+        return rsq(2 * i, left, right, lo, mid) + rsq(2 * i + 1, left, right, mid + 1, hi);
+//        return rsq(2 * i + 1, left, right, lo, mid) + rsq(2 * i + 2, left, right, mid + 1, hi);
     }
 }
 
@@ -148,17 +181,4 @@ class Inversions {
         // nums[] 5,2,6,1 after merge sort, index[] 2,0,1,3 nums[index[]] is 6,5,2,1 sort in reverse order
     }
 
-    public static void main(String[] args) {
-        int[][] tests = {
-                {5, 2, 6, 1}, // 2,1,1,0
-                {-1, -1}, // 0,0
-                {1, 2, 7, 8, 5}, // 0,0,1,1,0
-                {3, 4, 1, 2}, // 2,2,0,0
-        };
-        for (int[] n : tests) {
-            System.out.println(Arrays.toString(smallerCounts(n)));
-            System.out.println(CountInversions.countSmaller2(n));
-            System.out.println(edu.princeton.cs.algs4.Inversions.count(n)); // total of above, 4, 0, 2, 4
-        }
-    }
 }

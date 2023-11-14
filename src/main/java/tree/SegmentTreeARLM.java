@@ -3,9 +3,9 @@ package tree;
 import java.util.function.BiFunction;
 
 /**
- * segment tree array recursive (AR) version with lazy propagation.
+ * segment tree array recursive (AR) version with lazy propagation, supports min and max queries.
  */
-public class SegmentTreeAR {
+public class SegmentTreeARLM {
     static class Node {
         int sum;
         int min;
@@ -31,11 +31,11 @@ public class SegmentTreeAR {
     private int n;
 
     // initialization O(n) time, O(n) space.
-    public SegmentTreeAR(int[] nums) {
+    public SegmentTreeARLM(int[] nums) {
         n = nums.length;
-        // 0 based heap, size is 2 * [2^ceil(Log2(n))] - 1. ceil(Log2(n): height of tree
-        // 1 based heap, size is 2 * [2^floor(Log2(n))] + 1, O(n) space
-        // or just use 2*n+2 space
+        // 0 based heap, size is 2 * [2^ceil(Log2(n))] - 1. ceil(Log2(n)): height of tree
+        // 1 based heap, size is 2 * [2^floor(Log2(n))] + 1, O(n) space, may not work
+        // 4*n for estimation
         heap = new Node[2 * (int) (Math.pow(2.0, Math.ceil(Math.log(nums.length) / Math.log(2.0)))) - 1];
         build(nums, 0, 0, n - 1);
     }
@@ -119,8 +119,8 @@ public class SegmentTreeAR {
      * Perform range update. Assume no lazy propagation, k elements to update, O(kLgN) time.
      * With lazy propagation, O(1) - O(kLgN) time.
      *
-     * @param left  left boundary
-     * @param right right boundary
+     * @param left  left boundary, inclusive
+     * @param right right boundary, inclusive
      * @param delta the delta change to all array elements in range
      */
     public void update(int left, int right, int delta) {

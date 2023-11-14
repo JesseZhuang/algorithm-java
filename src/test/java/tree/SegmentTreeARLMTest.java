@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class SegmentTreeARTest {
+class SegmentTreeARLMTest {
 
-    private SegmentTreeAR tbt;
+    private SegmentTreeARLM tbt;
     private SegmentTree tbt2;
 
     @BeforeEach
     void setUp() {
-        tbt = new SegmentTreeAR(new int[]{1, 3, 5, 7, 9, 11});
+        tbt = new SegmentTreeARLM(new int[]{1, 3, 5, 7, 9, 11});
         tbt2 = new SegmentTree(new int[]{1, 3, 5, 7, 9, 11});
     }
 
@@ -31,7 +31,7 @@ class SegmentTreeARTest {
 
     @Test
     void testUpdateAndQuery() {
-        SegmentTreeAR tbt = new SegmentTreeAR(new int[]{1, 3, 5});
+        SegmentTreeARLM tbt = new SegmentTreeARLM(new int[]{1, 3, 5});
         assertEquals(9, tbt.rSumQ(0, 2));
         tbt.update(1, 1, -1);
         assertEquals(8, tbt.rSumQ(0, 3));
