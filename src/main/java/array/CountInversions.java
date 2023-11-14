@@ -54,19 +54,19 @@ class Inversions {
     }
 
     public static void merge(int[] nums, int[] aux, int[] index, int[] count, int lo, int mid, int hi) {
+        for (int k = lo; k <= hi; k++) aux[k] = index[k];
         int i = lo, j = mid + 1;
         for (int k = lo; k <= hi; k++) { // in reverse order to avoid quadratic time, iterate to largest element first
-            if (i > mid) aux[k] = index[j++];
-            else if (j > hi) aux[k] = index[i++];
+            if (i > mid) index[k] = aux[j++];
+            else if (j > hi) index[k] = aux[i++];
                 // must compare with the array not being worked on
                 // 1,2,7,8,5; 7,2,1,8,5 index (2,1,0,3,4); compare 7,8 take 8 -> (3,1,0,3,4)
-            else if (nums[index[i]] <= nums[index[j]]) aux[k] = index[j++]; // ignore duplicates
+            else if (nums[aux[i]] <= nums[aux[j]]) index[k] = aux[j++]; // ignore duplicates
             else {
-                aux[k] = index[i++]; // taking from left
-                count[aux[k]] += hi - j + 1; // count += count of right half
+                index[k] = aux[i++]; // taking from left
+                count[index[k]] += hi - j + 1; // count += count of right half, use the working aux array
             }
         }
-        for (int k = lo; k <= hi; k++) index[k] = aux[k];
     }
 
     public static void sort(int[] nums, int[] aux, int[] index, int[] count, int lo, int hi) {
