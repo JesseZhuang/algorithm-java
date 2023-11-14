@@ -6,7 +6,7 @@ package tree;
  * @see resources/tree.lc307_RSQ_Sqrt.png
  */
 public class SquareRootTree {
-    int[] sums;
+    int[] block;
     int len; // block length
     int[] nums;
 
@@ -18,8 +18,8 @@ public class SquareRootTree {
     public SquareRootTree(int[] nums) {
         this.nums = nums;
         len = (int) Math.ceil(Math.sqrt(nums.length));
-        sums = new int[len];
-        for (int i = 0; i < nums.length; i++) sums[i / len] += nums[i];
+        block = new int[len]; // init fields important
+        for (int i = 0; i < nums.length; i++) block[i / len] += nums[i];
     }
 
     /**
@@ -30,16 +30,16 @@ public class SquareRootTree {
      * @return the sum
      */
     public int sumRange(int i, int j) {
-        int sum = 0;
-        int startBlock = i / len;
-        int endBlock = j / len;
-        if (startBlock == endBlock) for (int k = i; k <= j; k++) sum += nums[k];
+        int res = 0;
+        int start = i / len;
+        int end = j / len;
+        if (start == end) for (int k = i; k <= j; k++) res += nums[k];
         else {
-            for (int k = i; k <= (startBlock + 1) * len - 1; k++) sum += nums[k];
-            for (int k = startBlock + 1; k <= endBlock - 1; k++) sum += sums[k]; // use block for middle section
-            for (int k = endBlock * len; k <= j; k++) sum += nums[k];
+            for (int k = i; k < (start + 1) * len; k++) res += nums[k];
+            for (int k = start + 1; k < end; k++) res += block[k]; // use block for middle section
+            for (int k = end * len; k <= j; k++) res += nums[k];
         }
-        return sum;
+        return res;
     }
 
     /**
@@ -49,8 +49,8 @@ public class SquareRootTree {
      * @param val the value
      */
     public void update(int i, int val) {
-        int sumsIndex = i / len;
-        sums[sumsIndex] = sums[sumsIndex] - nums[i] + val;
+        int bInd = i / len; // block index
+        block[bInd] = block[bInd] - nums[i] + val;
         nums[i] = val;
     }
 }

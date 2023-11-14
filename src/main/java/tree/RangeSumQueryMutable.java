@@ -40,9 +40,9 @@ public class RangeSumQueryMutable {
 
     // solution 1, BIT, 70ms, 71Mb. init O(n) time, O(n) space. update/sumQ: O(lgn) time.
 
-    // solution 3 (AR), 124 ms, 72 Mb. build tree: O(n) time O(n) space. update/sumQ: O(lgn) time.
+    // solution 3 (AI), 71 ms, 74.4 Mb. build tree: O(n) time O(n) space. update/sumQ: O(lgn) time.
 
-    // solution 2, 110 ms, 71.8 Mb. Time: initiation O(n), update O(1), rsq O(sqrt(n)). Space O(n+sqrt(n)).
+    // solution 2, 91 ms, 72.24Mb. Time: initiation O(n), update O(1), rsq O(sqrt(n)). Space O(n+sqrt(n)).
 
 }
 

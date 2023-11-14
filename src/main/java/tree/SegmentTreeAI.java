@@ -6,7 +6,7 @@ package tree;
  */
 public class SegmentTreeAI {
     int[] tree;
-    int n;
+    int l;
 
     /**
      * construction O(n) time, O(2n) space.
@@ -15,15 +15,11 @@ public class SegmentTreeAI {
      */
     public SegmentTreeAI(int[] nums) {
         if (nums.length > 0) {
-            n = nums.length;
-            tree = new int[n * 2];
-            buildTree(nums);
+            l = nums.length;
+            tree = new int[l * 2];
+            for (int i = l; i < 2 * l; i++) tree[i] = nums[i - l]; // leaf nodes [n,2n)
+            for (int i = l - 1; i > 0; --i) tree[i] = tree[i * 2] + tree[i * 2 + 1]; // parent nodes (0,n-1], 1 based
         }
-    }
-
-    private void buildTree(int[] nums) {
-        for (int i = n, j = 0; i < 2 * n; i++, j++) tree[i] = nums[j]; // leaf nodes [n,2n)
-        for (int i = n - 1; i > 0; --i) tree[i] = tree[i * 2] + tree[i * 2 + 1]; // parent nodes (0,n-1], 1 based
     }
 
     /**
@@ -33,7 +29,7 @@ public class SegmentTreeAI {
      * @param val, value
      */
     void update(int pos, int val) {
-        pos += n;
+        pos += l;
         tree[pos] = val;
         while (pos > 1) {
             pos >>= 1;
@@ -43,18 +39,17 @@ public class SegmentTreeAI {
 
     /**
      * range sum query, inclusive, O(lgn) time.
+     * comparing to binary indexed tree, easier for range sum
      *
      * @param l left bound, inclusive
      * @param r right bound, inclusive
      * @return the sum
      */
     public int sumRange(int l, int r) {
-        l += n; // get leaf with value 'l'
-        r += n; // get leaf with value 'r'
         int sum = 0;
-        for (l += n, r += n; l <= r; l >>= 1, r >>= 1) {
-            if ((l & 1) == 1) sum += tree[l++];
-            if ((r & 1) == 0) sum += tree[r--];
+        for (l += this.l, r += this.l; l <= r; l >>= 1, r >>= 1) {
+            if ((l & 1) == 1) sum += tree[l++]; // if on right branch, add and increment
+            if ((r & 1) == 0) sum += tree[r--]; // if on left branch, add and increment
         }
         return sum;
     }
