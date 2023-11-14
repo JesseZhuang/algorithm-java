@@ -51,16 +51,13 @@ package tree;
  */
 public class RangeSumQuery2D {
     BinaryIndexedTree[] trees;
-    int m, n;
 
     // solution 1, BIT. O(mn lgn) init, O(lgn) update, O(m lgn) sumRegion. O(mn) space. lint code 3566ms, 35.90Mb.
     public RangeSumQuery2D(int[][] matrix) {
-        m = matrix.length;
-        n = matrix[0].length;
-        trees = new BinaryIndexedTree[m];
+        int m = matrix.length;
+        trees = new BinaryIndexedTree[m]; // important
         for (int r = 0; r < m; r++) {
-            BinaryIndexedTree tree = new BinaryIndexedTree(matrix[r]);
-            trees[r] = tree;
+            trees[r] = new BinaryIndexedTree(matrix[r]);
         }
     }
 

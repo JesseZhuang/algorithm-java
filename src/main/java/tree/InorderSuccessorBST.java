@@ -15,6 +15,12 @@ import struct.TreeNode;
  * Input: root = [2,1,3], p = 1
  * Output: 2
  * Explanation: 1's in-order successor node is 2. Note that both p and the return value is of TreeNode type.
+ * Explanation:
+ * <pre>
+ *     2
+ *    / \
+ *   1   3
+ * </pre>
  * <p>
  * Example 2:
  * <p>
@@ -53,7 +59,7 @@ public class InorderSuccessorBST {
         if (root.val <= p.val) return inorderSuccessor2(root.right, p);
         else {
             TreeNode left = inorderSuccessor2(root.left, p);
-            return left == null ? root : left;
+            return left == null ? root : left; // remember root, search in left
         }
     }
 }
