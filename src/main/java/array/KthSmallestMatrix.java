@@ -90,7 +90,7 @@ public class KthSmallestMatrix {
     // solution 3, max heap, mnlgk time, k space. 16ms, 45.95Mb.
     public int kthSmallest3(int[][] matrix, int k) {
         int m = matrix.length, n = matrix[0].length;
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((o1, o2) -> Integer.compare(o2, o1));
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
         for (int r = 0; r < m; ++r) {
             for (int c = 0; c < n; ++c) {
                 maxHeap.offer(matrix[r][c]);

@@ -38,38 +38,48 @@ import java.util.PriorityQueue;
  * <p>
  * -10^5 <= num <= 10^5
  * There will be at least one element in the data structure before calling findMedian.
- * At most 5 * 104 calls will be made to addNum and findMedian.
+ * At most 5 * 10^4 calls will be made to addNum and findMedian.
  * <p>
  * Follow up:
  * <p>
  * If all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
+ * <p>
+ * We can maintain an integer array of length 100 to store the count of each number along with a total count.
+ * Then, we can iterate over the array to find the middle value to get our median.
+ * Time and space complexity would be O(100) = O(1).
+ * <p>
  * If 99% of all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
+ * <p>
+ * but couldn't we just keep a count of how many numbers are above 100 and how many numbers are below 0,
+ * since these numbers could never get to be the median and are therefore not important to keep?
  */
 public class MedianFinder {
 
-    PriorityQueue<Long> left; // peek max
-    PriorityQueue<Long> right; // peek min
-    boolean even;
+    PriorityQueue<Integer> left; // peek max heap
+    PriorityQueue<Integer> right; // peek min heap, size difference 0 or 1
+    boolean odd;
 
     // 144ms, 71.7Mb. two heaps. O(N) space.
     public MedianFinder() {
-        left = new PriorityQueue<>(Comparator.reverseOrder()); // Comparator.<Integer>natualOrder().reversed()
+        // Comparator.<Integer>natualOrder().reversed(), do not forget left is max heap
+        left = new PriorityQueue<>(Comparator.reverseOrder());
         right = new PriorityQueue<>();
-        even = true;
     }
 
+    // does not matter add to left or right first, just need to shift after add
     public void addNum(int num) {// O(LgN) time
-        if (even) {
-            right.add((long) num);
+        if (odd) {
+            right.add(num);
             left.add(right.remove());
         } else {
-            left.add((long) num);
+            left.add(num);
             right.add(left.remove());
         }
-        even = !even;
+        odd = !odd;
     }
 
+    // need to consider when odd, which q has more elements
     public double findMedian() { // O(1) time
-        return even ? (left.peek() + right.peek()) / 2.0 : left.peek();
+        return odd ? (right.peek() + right.peek()) / 2.0 : left.peek();
     }
 }

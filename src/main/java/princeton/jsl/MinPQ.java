@@ -3,7 +3,9 @@ package princeton.jsl;
 import java.util.Comparator;
 
 /**
- * @param <Key> the generic type for key.
+ * Java PriorityQueue can auto grow, but did not see shrink function.
+ *
+ * @param <Key> the generic type for key. However, this version allow duplicates.
  */
 public class MinPQ<Key extends Comparable<Key>> {
     Key[] pq;
