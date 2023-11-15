@@ -5,6 +5,8 @@ import edu.princeton.cs.algs4.Queue;
 import java.util.Arrays;
 
 /**
+ * https://www.xarg.org/puzzle/project-euler/problem-8/
+ * <p>
  * The four adjacent digits in the 1000-digit number that have the greatest product are 9 × 9 × 8 × 9 = 5832.
  * <pre>
  * 73167176531330624919225119674426574742355349194934

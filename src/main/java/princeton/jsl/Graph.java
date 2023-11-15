@@ -80,13 +80,13 @@ public class Graph {
      *
      * @param G the graph to copy
      */
-    public Graph(Graph G) {
+    public Graph(edu.princeton.cs.algs4.Graph G) {
         this(G.V());
         this.E = G.E();
         for (int v = 0; v < G.V(); v++) {
             // reverse so that adjacency list is in same order as original
             Stack<Integer> reverse = new Stack<>();
-            for (int w : G.adj.get(v)) {
+            for (int w : G.adj(v)) {
                 reverse.push(w);
             }
             for (int w : reverse) {
