@@ -1,13 +1,12 @@
 package array;
 
 import princeton.jsl.BinarySearch;
-import util.IntArrayUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * F. Easy.
+ * Facebook. Easy. See LeetCode 350 intersect two arrays.
  * <p>
  * Find duplicated elements in two sorted lists. For example,
  * <pre>
@@ -18,6 +17,8 @@ import java.util.List;
  * </pre>
  */
 public class FindDuplicateSortedLists {
+
+    // optimization on top of solution 1 below
     public List<Integer> commonElementsBinarySearch(int[] array1, int[] array2) {
         List<Integer> commonElements = new ArrayList<Integer>();
         if (array1 == null || array2 == null) {
@@ -30,7 +31,7 @@ public class FindDuplicateSortedLists {
         }
         int length1 = array1.length;
         int length2 = array2.length;
-        for (int i = 0, j = 0; i < length1 && j < length2;) {
+        for (int i = 0, j = 0; i < length1 && j < length2; ) {
             if (array1[i] == array2[j]) {
                 commonElements.add(array1[i]);
                 i++;
@@ -45,6 +46,7 @@ public class FindDuplicateSortedLists {
         return commonElements;
     }
 
+    // solution 1, m+n time, 1 space.
     public List<Integer> commonElementsLinearSearch(int[] array1, int[] array2) {
         List<Integer> commonElements = new ArrayList<Integer>();
         if (array1 == null || array2 == null) {
@@ -52,7 +54,7 @@ public class FindDuplicateSortedLists {
         }
         int length1 = array1.length;
         int length2 = array2.length;
-        for (int i = 0, j = 0; i < length1 && j < length2;) {
+        for (int i = 0, j = 0; i < length1 && j < length2; ) {
             if (array1[i] == array2[j]) {
                 commonElements.add(array1[i]);
                 i++;
