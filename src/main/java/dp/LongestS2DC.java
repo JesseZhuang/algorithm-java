@@ -2,7 +2,7 @@ package dp;
 
 
 /**
- * LeetCode 159, medium, tags: hash table, two pointers, string, sliding window.
+ * LeetCode 159, LintCode 928, medium, tags: hash table, two pointers, string, sliding window.
  * <p>
  * Given a string s, return the length of the longest substring that contains at most two distinct characters.
  * <p>

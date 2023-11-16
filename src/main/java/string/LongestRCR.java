@@ -31,17 +31,14 @@ public class LongestRCR {
     // solution 1, sliding window with 2 pointer, 4ms, 41.8Mb, O(n) time, O(26) space. easier to read
     public int characterReplacementSW2(String s, int k) {
         int len = s.length();
-        int[] count = new int[26];
-        int l = 0, maxCount = 0, maxLength = 0;
-        for (int r = 0; r < len; r++) {
-            maxCount = Math.max(maxCount, ++count[s.charAt(r) - 'A']);
-            while (r - l + 1 - maxCount > k) {
-                count[s.charAt(l) - 'A']--;
-                l++;
-            }
-            maxLength = Math.max(maxLength, r - l + 1);
+        int count[] = new int[26], maxCnt = 0, res = 0;
+        for (int l = 0, r = 0; r < len; r++) {
+            maxCnt = Math.max(maxCnt, ++count[s.charAt(r) - 'A']);
+            if (r - l + 1 - maxCnt > k) // no =
+                count[s.charAt(l++) - 'A']--;
+            res = Math.max(res, r - l + 1);
         }
-        return maxLength;
+        return res;
     }
 
     // solution 2, 15ms, 41.5Mb. Binary Search, O(nLgn) time, O(26) space.
@@ -61,32 +58,26 @@ public class LongestRCR {
      * satisfies the condition of a valid string, then we return true
      */
     private Boolean canMakeValidSubstring(String s, int substringLength, int k) {
-        int[] freqMap = new int[26];
-        int maxFrequency = 0;
-        int start = 0;
-        for (int end = 0; end < s.length(); end++) {// O(n)
-            int ci = s.charAt(end) - 'A';
-            freqMap[ci]++;
-            if (end + 1 - start > substringLength) {// increment start of the sliding window
-                freqMap[s.charAt(start) - 'A']--; // update freq for original start
-                start++;
-            }
-            maxFrequency = Math.max(maxFrequency, freqMap[ci]);
-            if (substringLength - maxFrequency <= k) return true;
+        int count[] = new int[26], maxCnt = 0;
+        for (int l = 0, r = 0; r < s.length(); r++) {// O(n)
+            if (r + 1 - l > substringLength)// increment start of the sliding window
+                count[s.charAt(l++) - 'A']--; // update freq for original start
+            maxCnt = Math.max(maxCnt, ++count[s.charAt(r) - 'A']);
+            if (substringLength - maxCnt <= k) return true;
         }
         return false;
     }
 
     // solution 1b, sliding window, 6ms, 42.1Mb. O(n) time, O(26) space.
     public int characterReplacementSW1(String s, int k) {
-        int res = 0, maxCount = 0, count[] = new int[26];
+        int res = 0, maxCnt = 0, count[] = new int[26];
         // AABABBA, k=1
         // count A1    A2    B1    A3    B2    B3    A2
         // maxC  1     2     2     3     3     3     3
         // res   1     2     3     4     A3->2 A2->1 B3->2
         for (int i = 0; i < s.length(); ++i) {
-            maxCount = Math.max(maxCount, ++count[s.charAt(i) - 'A']);
-            if (res - maxCount < k) res++;
+            maxCnt = Math.max(maxCnt, ++count[s.charAt(i) - 'A']);
+            if (res - maxCnt < k) res++; // no =
             else count[s.charAt(i - res) - 'A']--; // shift sliding window right, keep counts for index (i-res,i]
         }
         return res;
