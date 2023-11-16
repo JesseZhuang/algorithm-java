@@ -31,15 +31,15 @@ import java.util.Map;
  * 0 <= k <= 50
  */
 public class LongestSSKDC {
-
-    // solution 2, sliding window LinkedHashMap, lint code 683ms, 27.70Mb. n time, k space.
+    // solution 1, sliding window LinkedHashMap, lint code 683ms, 27.70Mb. n time, 1 space.
     public int lengthOfLongestSubstringKDistinct2(String s, int k) {
         int res = 0, n = s.length();
         Map<Character, Integer> lastSeen = new LinkedHashMap<>();
         for (int l = 0, r = 0; r < n; r++) {
             char c = s.charAt(r);
             // important, key position in linked list, eqgkcwGFvjjmxutystqdfhuMblWbylgjxsxgnoh, k=16
-            if (lastSeen.containsKey(c)) lastSeen.remove(c);
+            // https://stackoverflow.com/questions/29377949/deletion-in-linkedhashmap-vs-hashmap
+            if (lastSeen.containsKey(c)) lastSeen.remove(c); // O(1) time
             lastSeen.put(c, r);
             if (lastSeen.size() <= k) res = Math.max(res, r - l + 1);
             else {
@@ -51,7 +51,11 @@ public class LongestSSKDC {
         return res;
     }
 
-    // solution 1, sliding window 2p, lint code 651ms, 27.13MB. n time, k space.
+    // solution 2, sliding window 2p, lint code 651ms, 27.13MB. n time, k(character set) space.
+    // if all are english letters, 52 space. probably still considered O(1) space.
+    // imagine 1_000_000 a followed by unique characters (each), map size will be > k
+    // unicode 0(hex) to 10FFFF(hex) 1,114,112 code points, java use 21 bit of int to represent
+    // see Character javadoc, java Character can represent 16-bit 65536 characters
     public int lengthOfLongestSubstringKDistinct1(String s, int k) {
         int res = 0, n = s.length();
         Map<Character, Integer> count = new HashMap<>(); // use map instead of array, need size()
