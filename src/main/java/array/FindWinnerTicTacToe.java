@@ -36,14 +36,14 @@ package array;
  * <p>
  * Constraints:
  * <p>
- * 1 <= moves.length <= 9
+ * 1 <= moves.length <= 9, n
  * moves[i].length == 2
  * 0 <= rowi, coli <= 2
  * There are no repeated elements on moves.
  * moves follow the rules of tic-tac-toe.
  */
 public class FindWinnerTicTacToe {
-    // 0ms, 40.2Mb. O(n) time and space.
+    // solution 1, 0ms, 40.2Mb. O(n) time and space.
     // Applies to a larger board as well assuming rule is similar.
     public String tictactoe(int[][] moves) {
         int n = 3; // make generic for larger board size
@@ -64,12 +64,12 @@ public class FindWinnerTicTacToe {
         return moves.length < n * n ? "Pending" : "Draw";
     }
 
-    // 0ms, 40.2Mb.
+    // solution 2 0ms, 40.2Mb. O(n) time and space.
     public String tictactoe2(int[][] moves) {
         int[][] rows = new int[2][3], cols = new int[2][3];
         int[] diag1 = new int[2], diag2 = new int[2];
         for (int i = 0; i < moves.length; i++) {
-            int cr = moves[i][0], cc = moves[i][1], id = i % 2;
+            int cr = moves[i][0], cc = moves[i][1], id = i % 2; // cur row, cur col, player id
             if (++rows[id][cr] == 3 || ++cols[id][cc] == 3
                     || (cr == cc && ++diag1[id] == 3) || (cr + cc == 2 && ++diag2[id] == 3))
                 return id == 0 ? "A" : "B";
