@@ -63,16 +63,16 @@ public class ThreeSum {
             valueToIndex.putIfAbsent(a[i], new RedBlackBST<>());
             valueToIndex.get(a[i]).put(i, 0);
         }
-        List<List<Integer>> possbilities = new ArrayList<>();
+        List<List<Integer>> possibilities = new ArrayList<>();
         for (int i = 0; i < a.length; i++) {// O(N^2)
             for (int j = i + 1; j < a.length; j++) {
                 int toFind = sum - a[i] - a[j];
                 if (valueToIndex.containsKey(toFind)) {
                     RedBlackBST<Integer, Integer> found = valueToIndex.get(toFind);
                     if (!found.isEmpty() && found.max() > j) { // O(lgN), N size of tree
-                        possbilities.add(new ArrayList<>());
+                        possibilities.add(new ArrayList<>());
                         for (int index : found.keys(j + 1, found.max())) {
-                            possbilities.get(possbilities.size() - 1).addAll(Arrays.asList(i, j, index));
+                            possibilities.get(possibilities.size() - 1).addAll(Arrays.asList(i, j, index));
                             count++;
                         }
                     }

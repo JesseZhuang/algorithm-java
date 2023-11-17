@@ -1,5 +1,8 @@
 package hash;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * LeetCode 454, medium, tags: array, hash table.
  * <p>
@@ -34,7 +37,16 @@ package hash;
  * -2^28 <= nums1[i], nums2[i], nums3[i], nums4[i] <= 2^28
  */
 public class FourSumII {
+    // solution 1, n^2 time and space. 102ms, 43.96Mb.
     public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
-        return 0;
+        Map<Integer, Integer> sumCount = new HashMap<>();
+        for (int i : nums1)
+            for (int j : nums2)
+                sumCount.put(i + j, sumCount.getOrDefault(i + j, 0) + 1);
+        int res = 0;
+        for (int i : nums3)
+            for (int j : nums4)
+                res += sumCount.getOrDefault(-(i + j), 0);
+        return res;
     }
 }
