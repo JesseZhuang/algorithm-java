@@ -30,4 +30,18 @@ class TopologicalTests {
         tbt2 = new TopologicalX(dg);
         assertIterableEquals(Arrays.asList(0, 1, 3, 2), tbt2.order());
     }
+
+    /**
+     * 1->0 2->3
+     */
+    @Test
+    void testDisconnected() {
+        Digraph dg = new Digraph(4);
+        dg.addEdge(1, 0);
+        dg.addEdge(2, 3);
+        Topological tbt = new Topological(dg); // dfs
+        assertIterableEquals(Arrays.asList(2, 3, 1, 0), tbt.order()); // 2->3 not necessarily before 1->0
+        TopologicalX tbt2 = new TopologicalX(dg); // bfs
+        assertIterableEquals(Arrays.asList(1, 2, 0, 3), tbt2.order()); // 2 not necessarily between 1->0
+    }
 }

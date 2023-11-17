@@ -11,11 +11,12 @@ import java.util.Queue;
 public class TopologicalX {
 
     private Queue<Integer> order;     // vertices in topological order
-    private int[] ranks;              // ranks[v] = order where vertex v appers in order
+    private int[] ranks;              // ranks[v] = order where vertex v appears in order
 
     /**
      * Determines whether the digraph {@code G} has a topological order and, if so,
      * finds such a topological order.
+     *
      * @param G the digraph
      */
     public TopologicalX(Digraph G) {
@@ -57,6 +58,7 @@ public class TopologicalX {
     /**
      * Determines whether the edge-weighted digraph {@code G} has a
      * topological order and, if so, finds such a topological order.
+     *
      * @param G the digraph
      */
     public TopologicalX(EdgeWeightedDigraph G) {
@@ -99,9 +101,10 @@ public class TopologicalX {
     /**
      * Returns a topological order if the digraph has a topologial order,
      * and {@code null} otherwise.
+     *
      * @return a topological order of the vertices (as an interable) if the
-     *    digraph has a topological order (or equivalently, if the digraph is a DAG),
-     *    and {@code null} otherwise
+     * digraph has a topological order (or equivalently, if the digraph is a DAG),
+     * and {@code null} otherwise
      */
     public Iterable<Integer> order() {
         return order;
@@ -109,8 +112,9 @@ public class TopologicalX {
 
     /**
      * Does the digraph have a topological order?
+     *
      * @return {@code true} if the digraph has a topological order (or equivalently,
-     *    if the digraph is a DAG), and {@code false} otherwise
+     * if the digraph is a DAG), and {@code false} otherwise
      */
     public boolean hasOrder() {
         return order != null;
@@ -122,13 +126,13 @@ public class TopologicalX {
      *
      * @param v vertex
      * @return the position of vertex {@code v} in a topological order
-     *    of the digraph; -1 if the digraph is not a DAG
+     * of the digraph; -1 if the digraph is not a DAG
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
     public int rank(int v) {
         validateVertex(v);
         if (hasOrder()) return ranks[v];
-        else            return -1;
+        else return -1;
     }
 
     // certify that digraph is acyclic
@@ -222,6 +226,6 @@ public class TopologicalX {
     private void validateVertex(int v) {
         int V = ranks.length;
         if (v < 0 || v >= V)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
+            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V - 1));
     }
 }
