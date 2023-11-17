@@ -1,7 +1,11 @@
 package hash;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+
 /**
- * LeetCode 380, tags: array, hash table, math, design, randomized.
+ * LeetCode 380, medium, tags: array, hash table, math, design, randomized.
  * <p>
  * Implement the RandomizedSet class:
  * <p>
@@ -42,4 +46,40 @@ package hash;
  * There will be at least one element in the data structure when getRandom is called.
  */
 public class InsertDelRandom {
+    // solution 1, 23ms, 89.29Mb.
+    class RandomizedSet {
+        ArrayList<Integer> nums;
+        HashMap<Integer, Integer> valIndex;
+        Random rand;
+
+        public RandomizedSet() {
+            nums = new ArrayList<>();
+            valIndex = new HashMap<>();
+            rand = new Random();
+        }
+
+        public boolean insert(int val) {
+            if (valIndex.containsKey(val)) return false;
+            valIndex.put(val, nums.size());
+            nums.add(val);
+            return true;
+        }
+
+        public boolean remove(int val) {
+            if (!valIndex.containsKey(val)) return false;
+            int i = valIndex.get(val);
+            if (i < nums.size() - 1) { // not the last one than swap the last one with this val
+                int last = nums.get(nums.size() - 1);
+                nums.set(i, last);
+                valIndex.put(last, i);
+            }
+            valIndex.remove(val);
+            nums.remove(nums.size() - 1);
+            return true;
+        }
+
+        public int getRandom() {
+            return nums.get(rand.nextInt(nums.size()));
+        }
+    }
 }
