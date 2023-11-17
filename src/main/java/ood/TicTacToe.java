@@ -1,7 +1,9 @@
 package ood;
 
+import array.FindWinnerTicTacToe;
+
 /**
- * LeetCode 348, medium, tags: array, simulation, matrix, design, hash table.
+ * LeetCode 348, LintCode 746, medium, tags: array, simulation, matrix, design, hash table.
  * <p>
  * Assume the following rules are for the tic-tac-toe game on an n x n board between two players:
  * <p>
@@ -71,10 +73,52 @@ package ood;
  * player is 1 or 2.
  * 0 <= row, col < n
  * (row, col) are unique for each different call to move.
- * At most n2 calls will be made to move.
+ * At most n^2 calls will be made to move.
  * <p>
  * <p>
- * Follow-up: Could you do better than O(n^22) per move() operation?
+ * Follow-up: Could you do better than O(n^2) per move() operation?
  */
 public class TicTacToe {
+
+    private FindWinnerTicTacToe fw;
+    boolean gameEnded;
+
+    TicTacToe(int n) {
+        fw = new FindWinnerTicTacToe(n);
+    }
+
+    int move(int row, int col, int player) {
+        if (gameEnded) throw new RuntimeException("game ended");
+        String res = fw.tictactoe(row, col, player);
+        switch (res) {
+            case "A":
+                return 1;
+            case "B":
+                return 2;
+            case "Draw":
+                gameEnded = true; // fall through to return 0
+            default: // Pending
+                return 0;
+        }
+    }
 }
+
+/**
+ * LintCode 746, hard.
+ * <p>
+ * Design Tic-Tac-Toe game.
+ * <p>
+ * board has fixed size of 3
+ * X always take the first move
+ * If a place already got taken, and one player want to take that place,
+ * an AlreadyTakenException will be thrown
+ * <p>
+ * If one player wins, and somebody try to make another move, a GameEndException will be thrown.
+ * If all the places got taken,you should print "it's a draw"
+ * If the winner shows up, return True
+ * If tie or if there is no winner yet, return False
+ * <p>
+ * public TicTacToe() {}
+ * <p>
+ * public boolean move(int row, int col) throws AlreadyTakenException, GameEndException {}
+ */

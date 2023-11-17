@@ -43,13 +43,21 @@ package array;
  * moves follow the rules of tic-tac-toe.
  */
 public class FindWinnerTicTacToe {
+    int n; // board size
+    int[] rows, cols;
+    int diag1 = 0;
+    int diag2 = 0;
+    int moves;
+
+    public FindWinnerTicTacToe(int n) {
+        this.n = n;
+        rows = new int[n];
+        cols = new int[n];
+    }
+
     // solution 1, 0ms, 40.2Mb. O(n) time and space.
     // Applies to a larger board as well assuming rule is similar.
     public String tictactoe(int[][] moves) {
-        int n = 3; // make generic for larger board size
-        int[] rows = new int[n], cols = new int[n];
-        int diag1 = 0;
-        int diag2 = 0;
         int curPlayer = 1; // A:1, B:-1
         for (int[] move : moves) {
             rows[move[0]] += curPlayer;
@@ -62,6 +70,19 @@ public class FindWinnerTicTacToe {
             curPlayer *= -1;
         }
         return moves.length < n * n ? "Pending" : "Draw";
+    }
+
+    public String tictactoe(int row, int col, int player) {
+        int curPlayer = player == 1 ? 1 : -1; // A:1, B:-1
+        rows[row] += curPlayer;
+        cols[col] += curPlayer;
+        if (row == col) diag1 += curPlayer;
+        if (row + col == n - 1) diag2 += curPlayer;
+        if (Math.abs(rows[row]) == n || Math.abs(cols[col]) == n
+                || Math.abs(diag1) == n || Math.abs(diag2) == n)
+            return curPlayer == 1 ? "A" : "B";
+        moves++;
+        return moves < n * n ? "Pending" : "Draw";
     }
 
     // solution 2 0ms, 40.2Mb. O(n) time and space.
