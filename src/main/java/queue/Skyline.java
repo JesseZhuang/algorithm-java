@@ -65,7 +65,7 @@ public class Skyline {
         // order by x then by height opposite, note collections.sort not arrays.sort
         Collections.sort(vLines, (l1, l2) -> l1[0] == l2[0] ? l2[1] - l1[1] : l1[0] - l2[0]);
         TreeMap<Integer, Integer> hECount = new TreeMap<>(); // height -> count
-        hECount.put(0, 1); // dummy 0 height building count 1
+        hECount.put(0, 1); // floor: 0 height building count 1
         int prev = 0; // previous height
         for (int[] l : vLines) {
             if (l[1] > 0) hECount.put(l[1], hECount.getOrDefault(l[1], 0) + 1);

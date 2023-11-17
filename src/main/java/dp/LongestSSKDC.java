@@ -37,9 +37,9 @@ public class LongestSSKDC {
         Map<Character, Integer> lastSeen = new LinkedHashMap<>();
         for (int l = 0, r = 0; r < n; r++) {
             char c = s.charAt(r);
-            // important, key position in linked list, eqgkcwGFvjjmxutystqdfhuMblWbylgjxsxgnoh, k=16
-            // https://stackoverflow.com/questions/29377949/deletion-in-linkedhashmap-vs-hashmap
-            if (lastSeen.containsKey(c)) lastSeen.remove(c); // O(1) time
+            // important, key position in linked list, bug: eqgkcwGFvjjmxutystqdfhuMblWbylgjxsxgnoh, k=16
+            // https://stackoverflow.com/questions/29377949/deletion-in-linkedhashmap-vs-hashmap, O(1) time
+            if (lastSeen.containsKey(c)) lastSeen.remove(c);
             lastSeen.put(c, r);
             if (lastSeen.size() <= k) res = Math.max(res, r - l + 1);
             else {

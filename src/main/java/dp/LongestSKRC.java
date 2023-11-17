@@ -1,5 +1,10 @@
 package dp;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * LeetCode 395, medium, tags: hash table, string, divide and conquer, sliding window.
  * <p>
@@ -24,9 +29,76 @@ package dp;
  * <p>
  * Constraints:
  * <p>
- * 1 <= s.length <= 10^4
+ * 1 <= s.length <= 10^4, n
  * s consists of only lowercase English letters.
+ * let u == number of unique letters in the string.
  * 1 <= k <= 10^5
  */
 public class LongestSKRC {
+    // solution 1, sliding window, n(un) time, 1(26) space. 7ms, 41.03Mb.
+    // other solutions: brute force n^2 time 1 space, divide and conquer n^2 time, n stack space
+    public static int longestSubstring1(String s, int k) {
+        int count[] = new int[26], u = countUnique(s), res = 0;
+        for (int curUniqCnt = 1; curUniqCnt <= u; curUniqCnt++) {// note <= not <
+            Arrays.fill(count, 0);
+            for (int l = 0, r = 0, uC = 0, cAtLeastK = 0; r < s.length(); ) {
+                if (uC <= curUniqCnt) {// expand the sliding window
+                    int idx = s.charAt(r++) - 'a';
+                    if (count[idx]++ == 0) uC++;
+                    if (count[idx] == k) cAtLeastK++;
+                } else {// shrink the sliding window
+                    int idx = s.charAt(l++) - 'a';
+                    if (count[idx]-- == k) cAtLeastK--;
+                    if (count[idx] == 0) uC--;
+                }
+                if (uC == curUniqCnt && uC == cAtLeastK)
+                    res = Math.max(r - l, res);
+            }
+        }
+        return res;
+    }
+
+    // solution 2, to optimize space 26->unique , time improved too but still O(n).
+    public static int longestSubstring2(String s, int k) {
+        LinkedHashMap<Character, int[]> seenCnt = new LinkedHashMap<>();
+        int u = countUnique(s), res = 0;
+        for (int curUniqCnt = 1; curUniqCnt <= u; curUniqCnt++) {
+            seenCnt.clear();
+            for (int l = 0, r = 0, cAtLeastK = 0; r < s.length(); r++) {
+                char c = s.charAt(r);
+                int count = 0;
+                if (seenCnt.containsKey(c)) {
+                    count = seenCnt.get(c)[1];
+                    seenCnt.remove(c);
+                }
+                seenCnt.put(c, new int[]{r, ++count});
+                if (count == k) cAtLeastK++;
+                if (seenCnt.size() == curUniqCnt && seenCnt.size() == cAtLeastK)
+                    res = Math.max(r - l + 1, res);
+                else if (seenCnt.size() > curUniqCnt) {
+                    Iterator<Map.Entry<Character, int[]>> it = seenCnt.entrySet().iterator();
+                    int[] v = it.next().getValue();
+                    l = v[0] + 1;
+                    if (v[1] >= k) cAtLeastK--;
+                    it.remove();
+                }
+            }
+        }
+        return res;
+    }
+
+    // get the number of unique letters in the string s
+    static int countUnique(String s) {
+        boolean seen[] = new boolean[26];
+        int res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int ci = s.charAt(i) - 'a';
+            if (!seen[ci]) {
+                res++;
+                seen[ci] = true;
+            }
+        }
+        return res;
+    }
+
 }
