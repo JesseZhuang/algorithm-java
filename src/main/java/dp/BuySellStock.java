@@ -34,23 +34,21 @@ package dp;
 public class BuySellStock {
     // solution 1, 2 ms 60.9 MB. O(n) time and O(1) space.
     public int maxProfitMinPrice(int[] prices) {
-        int maxPro = 0;
-        int minSoFar = Integer.MAX_VALUE;
+        int res = 0, minSoFar = Integer.MAX_VALUE;
         for (int price : prices) {
             minSoFar = Math.min(minSoFar, price);
-            // max profit if sold at current index
-            maxPro = Math.max(maxPro, price - minSoFar);
+            res = Math.max(res, price - minSoFar); // max profit if sold at current index
         }
-        return maxPro;
+        return res;
     }
 
     // solution 2, 3ms, 61 Mb. O(n) time O(1) space.
     public int maxProfitKadane(int[] prices) { // 7 1 5 3 6 4
-        int maxSellHere = 0, res = 0;
+        int maxHere = 0, res = 0;
         for (int i = 1; i < prices.length; i++) {
             // max profit if sold at current index, important first item 0
-            maxSellHere = Math.max(0, maxSellHere + (prices[i] - prices[i - 1])); // 0 4 2 5 3
-            res = Math.max(maxSellHere, res); // 0 4 4 5 5
+            maxHere = Math.max(0, maxHere + (prices[i] - prices[i - 1])); // 0 4 2 5 3
+            res = Math.max(maxHere, res); // 0 4 4 5 5
         }
         return res; // 5
     }
