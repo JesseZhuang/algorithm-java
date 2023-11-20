@@ -42,9 +42,8 @@ package array;
  * </pre>
  */
 public class FindMinRotatedSortedArray {
-    /**
-     * O(lgN) time, O(1) space. 0ms, 42.8 Mb.
-     */
+
+    // solution 1, O(lgN) time, O(1) space. 0ms, 42.8 Mb.
     public int findMin(int[] nums) {
         int left = 0, right = nums.length - 1;
         while (left < right) {

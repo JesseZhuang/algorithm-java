@@ -57,7 +57,7 @@ public class ContainsDuplicateII {
     public boolean containsNearbyDuplicateMap(int[] nums, int k) {
         Map<Integer, Integer> seen = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            Integer pre = seen.put(nums[i], i);
+            Integer pre = seen.put(nums[i], i); // compare previous index with new index
             if (pre != null && i - pre <= k) return true;
         }
         return false;

@@ -1,10 +1,12 @@
 package graph;
 
 import edu.princeton.cs.algs4.DijkstraSP;
-import edu.princeton.cs.algs4.EdgeWeightedDigraph;
-import edu.princeton.cs.algs4.In;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import princeton.jsl.DijkstraShortestPath;
+import princeton.jsl.DirectedEdge;
+import princeton.jsl.EdgeWeightedDigraph;
+import princeton.jsl.In;
 import util.CollectionUtil;
 
 import java.util.Arrays;
@@ -13,19 +15,19 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DijkstraShortestPathTest {
-    private In in1;
+    private edu.princeton.cs.algs4.In in1;
     private In in2;
 
     @BeforeEach
     void setup() {
-        in1 = new In("/graph/1000EWD.txt");
+        in1 = new edu.princeton.cs.algs4.In("/graph/1000EWD.txt");
         in2 = new In("/graph/1000EWD.txt");
     }
 
     @Test
     void testPrincetonSameToPQVersion() {
-        DijkstraSP sp1 = new DijkstraSP(new EdgeWeightedDigraph(in1), 0);
-        DijkstraShortestPath sp2 = new DijkstraShortestPath(new princeton.jsl.EdgeWeightedDigraph(in2), 0);
+        DijkstraSP sp1 = new DijkstraSP(new edu.princeton.cs.algs4.EdgeWeightedDigraph(in1), 0);
+        DijkstraShortestPath sp2 = new DijkstraShortestPath(new EdgeWeightedDigraph(in2), 0);
         for (int v = 0; v < 1000; v++) assertEquals(sp1.hasPathTo(v), sp2.hasPathTo(v));
     }
 
@@ -52,11 +54,11 @@ public class DijkstraShortestPathTest {
 
     @Test
     void testWithRandomGraph() {
-        for(int i = 0; i < 100; i++) {
-            princeton.jsl.EdgeWeightedDigraph graph = new princeton.jsl.EdgeWeightedDigraph(100, 8630);
-            EdgeWeightedDigraph graph2 = new EdgeWeightedDigraph(100);
-            for (DirectedEdge e : graph.edges()) graph2.addEdge(
-                    new edu.princeton.cs.algs4.DirectedEdge(e.from(), e.to(), e.weight()));
+        for (int i = 0; i < 100; i++) {
+            EdgeWeightedDigraph graph = new princeton.jsl.EdgeWeightedDigraph(100, 8630);
+            edu.princeton.cs.algs4.EdgeWeightedDigraph graph2 = new edu.princeton.cs.algs4.EdgeWeightedDigraph(100);
+            for (DirectedEdge e : graph.edges())
+                graph2.addEdge(new edu.princeton.cs.algs4.DirectedEdge(e.from(), e.to(), e.weight()));
             DijkstraShortestPath sp = new DijkstraShortestPath(graph, 2);
             DijkstraSP sp2 = new DijkstraSP(graph2, 2);
             for (int j = 0; j < 100; j++) {

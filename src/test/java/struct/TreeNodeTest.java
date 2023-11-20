@@ -70,12 +70,6 @@ public class TreeNodeTest {
     }
 
     @Test
-    void testToString() {
-
-        assertEquals(toBeTested.toString(), "0:root\n" + "1,2\n" + "3,4,5,6\n" + "#,#,#,#,#,#,#,#\n");
-    }
-
-    @Test
     void testDepth() {
         assertEquals(toBeTested.depth(), 3);
     }

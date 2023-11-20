@@ -1,7 +1,5 @@
 package princeton.jsl;
 
-import graph.DirectedEdge;
-
 import java.util.ArrayDeque;
 import java.util.Queue;
 

@@ -63,15 +63,21 @@ public class IndexMinPQ<K extends Comparable<K>> {
         return keys[minIndex()];
     }
 
-    public K delMin() {
+    /**
+     * Removes a minimum key and returns its associated index.
+     *
+     * @return an index associated with a minimum key
+     * @throws NoSuchElementException if this priority queue is empty
+     */
+    public int delMin() {
         if (isEmpty()) throw new NoSuchElementException("pq is empty");
-        int temp = pq[1];
+        int min = pq[1];
         exch(1, size--);
         sink(1);
-        qp[temp] = -1;
-        K res = keys[pq[size + 1]];
-        keys[pq[size + 1]] = null;
-        return res;
+        qp[min] = -1;        // delete
+        keys[min] = null;    // to help with garbage collection
+        pq[size + 1] = -1;        // not needed
+        return min;
     }
 
     public K keyOf(int i) {

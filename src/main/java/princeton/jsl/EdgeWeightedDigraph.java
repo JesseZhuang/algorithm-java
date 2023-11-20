@@ -1,8 +1,6 @@
 package princeton.jsl;
 
-import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdRandom;
-import graph.DirectedEdge;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,5 @@
 package princeton.jsl;
 
-import graph.DirectedEdge;
-
 import java.util.Stack;
 
 /**
@@ -16,12 +14,13 @@ public class EdgeWeightedDirectedCycle {
     /**
      * Determines whether the edge-weighted digraph {@code G} has a directed cycle and,
      * if so, finds such a cycle.
+     *
      * @param G the edge-weighted digraph
      */
     public EdgeWeightedDirectedCycle(EdgeWeightedDigraph G) {
-        marked  = new boolean[G.V()];
+        marked = new boolean[G.V()];
         onStack = new boolean[G.V()];
-        edgeTo  = new DirectedEdge[G.V()];
+        edgeTo = new DirectedEdge[G.V()];
         for (int v = 0; v < G.V(); v++)
             if (!marked[v]) dfs(G, v);
 
@@ -65,6 +64,7 @@ public class EdgeWeightedDirectedCycle {
 
     /**
      * Does the edge-weighted digraph have a directed cycle?
+     *
      * @return {@code true} if the edge-weighted digraph has a directed cycle,
      * {@code false} otherwise
      */
@@ -75,8 +75,9 @@ public class EdgeWeightedDirectedCycle {
     /**
      * Returns a directed cycle if the edge-weighted digraph has a directed cycle,
      * and {@code null} otherwise.
+     *
      * @return a directed cycle (as an iterable) if the edge-weighted digraph
-     *    has a directed cycle, and {@code null} otherwise
+     * has a directed cycle, and {@code null} otherwise
      */
     public Iterable<DirectedEdge> cycle() {
         return cycle;

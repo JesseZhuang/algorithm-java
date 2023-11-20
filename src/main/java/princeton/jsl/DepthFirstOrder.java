@@ -1,7 +1,6 @@
 package princeton.jsl;
 
 import edu.princeton.cs.algs4.StdOut;
-import graph.DirectedEdge;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -20,14 +19,15 @@ public class DepthFirstOrder {
 
     /**
      * Determines a depth-first order for the digraph {@code G}.
+     *
      * @param G the digraph
      */
     public DepthFirstOrder(Digraph G) {
-        pre    = new int[G.V()];
-        post   = new int[G.V()];
+        pre = new int[G.V()];
+        post = new int[G.V()];
         postorder = new ArrayDeque<>();
-        preorder  = new ArrayDeque<>();
-        marked    = new boolean[G.V()];
+        preorder = new ArrayDeque<>();
+        marked = new boolean[G.V()];
         for (int v = 0; v < G.V(); v++)
             if (!marked[v]) dfs(G, v);
 
@@ -36,14 +36,15 @@ public class DepthFirstOrder {
 
     /**
      * Determines a depth-first order for the edge-weighted digraph {@code G}.
+     *
      * @param G the edge-weighted digraph
      */
     public DepthFirstOrder(EdgeWeightedDigraph G) {
-        pre    = new int[G.V()];
-        post   = new int[G.V()];
+        pre = new int[G.V()];
+        post = new int[G.V()];
         postorder = new ArrayDeque<>();
-        preorder  = new ArrayDeque<>();
-        marked    = new boolean[G.V()];
+        preorder = new ArrayDeque<>();
+        marked = new boolean[G.V()];
         for (int v = 0; v < G.V(); v++)
             if (!marked[v]) dfs(G, v);
     }
@@ -79,7 +80,8 @@ public class DepthFirstOrder {
 
     /**
      * Returns the preorder number of vertex {@code v}.
-     * @param  v the vertex
+     *
+     * @param v the vertex
      * @return the preorder number of vertex {@code v}
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
@@ -90,7 +92,8 @@ public class DepthFirstOrder {
 
     /**
      * Returns the postorder number of vertex {@code v}.
-     * @param  v the vertex
+     *
+     * @param v the vertex
      * @return the postorder number of vertex {@code v}
      * @throws IllegalArgumentException unless {@code 0 <= v < V}
      */
@@ -101,6 +104,7 @@ public class DepthFirstOrder {
 
     /**
      * Returns the vertices in postorder.
+     *
      * @return the vertices in postorder, as an iterable of vertices
      */
     public Iterable<Integer> post() {
@@ -109,6 +113,7 @@ public class DepthFirstOrder {
 
     /**
      * Returns the vertices in preorder.
+     *
      * @return the vertices in preorder, as an iterable of vertices
      */
     public Iterable<Integer> pre() {
@@ -117,6 +122,7 @@ public class DepthFirstOrder {
 
     /**
      * Returns the vertices in reverse postorder.
+     *
      * @return the vertices in reverse postorder, as an iterable of vertices
      */
     public Iterable<Integer> reversePost() {
@@ -157,6 +163,6 @@ public class DepthFirstOrder {
     private void validateVertex(int v) {
         int V = marked.length;
         if (v < 0 || v >= V)
-            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V-1));
+            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V - 1));
     }
 }

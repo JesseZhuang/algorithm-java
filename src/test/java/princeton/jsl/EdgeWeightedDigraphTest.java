@@ -1,6 +1,5 @@
 package princeton.jsl;
 
-import edu.princeton.cs.algs4.In;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,8 +22,8 @@ public class EdgeWeightedDigraphTest {
     }
 
     @Test
-    void testPrinceton4Digraph() {
-        edu.princeton.cs.algs4.EdgeWeightedDigraph graph = new edu.princeton.cs.algs4.EdgeWeightedDigraph(in);
+    void testPrincetonDigraph() {
+        EdgeWeightedDigraph graph = new EdgeWeightedDigraph(in);
         assertEquals(16866, graph.E());
         assertEquals(1000, graph.V());
     }

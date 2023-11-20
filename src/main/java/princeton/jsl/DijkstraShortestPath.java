@@ -1,6 +1,4 @@
-package graph;
-
-import princeton.jsl.EdgeWeightedDigraph;
+package princeton.jsl;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
