@@ -6,7 +6,7 @@ package tree;
  */
 public class SegmentTreeAI {
     int[] tree;
-    int l;
+    int len;
 
     /**
      * construction O(n) time, O(2n) space.
@@ -15,25 +15,25 @@ public class SegmentTreeAI {
      */
     public SegmentTreeAI(int[] nums) {
         if (nums.length > 0) {
-            l = nums.length;
-            tree = new int[l * 2];
-            for (int i = l; i < 2 * l; i++) tree[i] = nums[i - l]; // leaf nodes [n,2n)
-            for (int i = l - 1; i > 0; --i) tree[i] = tree[i * 2] + tree[i * 2 + 1]; // parent nodes (0,n-1], 1 based
+            len = nums.length;
+            tree = new int[len * 2];
+            for (int i = len; i < 2 * len; i++) tree[i] = nums[i - len]; // leaf nodes [n,2n)
+            for (int i = len - 1; i > 0; --i) tree[i] = tree[i * 2] + tree[i * 2 + 1]; // parent nodes (0,n-1], 1 based
         }
     }
 
     /**
      * update/change a value of one array element, O(lgn) time.
      *
-     * @param pos, index
+     * @param i,   index
      * @param val, value
      */
-    void update(int pos, int val) {
-        pos += l;
-        tree[pos] = val;
-        while (pos > 1) {
-            pos >>= 1;
-            tree[pos] = tree[2 * pos] + tree[2 * pos + 1]; // update parent
+    void update(int i, int val) {
+        i += len;
+        tree[i] = val;
+        while (i > 1) {
+            i >>= 1;
+            tree[i] = tree[2 * i] + tree[2 * i + 1]; // update parent
         }
     }
 
@@ -46,11 +46,11 @@ public class SegmentTreeAI {
      * @return the sum
      */
     public int sumRange(int l, int r) {
-        int sum = 0;
-        for (l += this.l, r += this.l; l <= r; l >>= 1, r >>= 1) {
-            if ((l & 1) == 1) sum += tree[l++]; // if on right branch, add and increment
-            if ((r & 1) == 0) sum += tree[r--]; // if on left branch, add and increment
+        int res = 0;
+        for (l += this.len, r += this.len; l <= r; l >>= 1, r >>= 1) {
+            if ((l & 1) == 1) res += tree[l++]; // if on right branch, add and increment
+            if ((r & 1) == 0) res += tree[r--]; // if on left branch, add and increment
         }
-        return sum;
+        return res;
     }
 }

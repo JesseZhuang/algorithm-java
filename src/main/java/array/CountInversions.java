@@ -1,6 +1,7 @@
 package array;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,15 +43,15 @@ public class CountInversions {
     // do not mention balanced bst, avl or red black non-trivial to implement, need to tolerate duplicate
     public static List<Integer> countSmallerBIT(int[] nums) {
         int l = nums.length;
-        int[] res = new int[l];
         int[] n = new int[l];
         for (int i = 0; i < l; i++) n[i] = nums[i] + MAX; // convert to [0, 2*max]
         BIT tree = new BIT(2 * MAX + 1);
+        LinkedList<Integer> res = new LinkedList<>();
         for (int i = l - 1; i >= 0; i--) {
             tree.update(n[i], 1);
-            res[i] = tree.getSum(n[i] - 1);
+            res.addFirst(tree.getSum(n[i] - 1));
         }
-        return Arrays.stream(res).boxed().collect(Collectors.toList());
+        return res;
     }
 
     // solution 3, segment tree, nlgr time, r space. 136ms, 59.43Mb.
@@ -164,16 +165,16 @@ class Inversions {
                 // reverse order to avoid quadratic time, merge 3,4 1,2 (quadratic) vs 4,3 2,1 (linear)
                 // must compare with the array not being worked on
                 // 1,2,7,8,5; 7,2,1,8,5 index (2,1,0,3,4); compare 7,8 take 8 -> (3,1,0,3,4)
-            else if (nums[aux[i]] <= nums[aux[j]]) index[k] = aux[j++]; // ignore duplicates
+            else if (nums[aux[i]] <= nums[aux[j]]) index[k] = aux[j++]; // <= ignore duplicates
             else {
                 index[k] = aux[i++]; // taking from left
-                count[index[k]] += hi - j + 1; // count += count of right half, use the working aux array
+                count[index[k]] += hi - j + 1; // count += (not =) count of right half, use the working array
             }
         }
     }
 
     public static void sort(int[] nums, int[] aux, int[] index, int[] count, int lo, int hi) {
-        if (hi <= lo) return;
+        if (hi <= lo) return; // do not forget
         int mid = lo + (hi - lo) / 2;
         sort(nums, aux, index, count, lo, mid);
         sort(nums, aux, index, count, mid + 1, hi);

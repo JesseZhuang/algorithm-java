@@ -45,12 +45,12 @@ public class FindMinRotatedSortedArray {
 
     // solution 1, O(lgN) time, O(1) space. 0ms, 42.8 Mb.
     public int findMin(int[] nums) {
-        int left = 0, right = nums.length - 1;
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] > nums[right]) left = mid + 1; // min must be on the right half
-            else right = mid; // min must be on left half including mid
+        int lo = 0, hi = nums.length - 1;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (nums[mid] > nums[hi]) lo = mid + 1; // min must be on the right half
+            else hi = mid; // min must be on left half including mid
         }
-        return nums[left];
+        return nums[lo]; // return nums[hi] also passed lc oj
     }
 }

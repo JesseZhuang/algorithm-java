@@ -20,7 +20,7 @@ public class FindDuplicateSortedLists {
 
     // optimization on top of solution 1 below
     public List<Integer> commonElementsBinarySearch(int[] array1, int[] array2) {
-        List<Integer> commonElements = new ArrayList<Integer>();
+        List<Integer> commonElements = new ArrayList<>();
         if (array1 == null || array2 == null) {
             return commonElements;
         }
