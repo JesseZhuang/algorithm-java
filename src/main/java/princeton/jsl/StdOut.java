@@ -55,6 +55,7 @@ import java.util.Locale;
  */
 public final class StdOut {
 
+    // https://stackoverflow.com/questions/28567208/how-can-i-change-the-standard-out-to-utf-8-in-java
     // force Unicode UTF-8 encoding; otherwise it's system dependent
     private static final String CHARSET_NAME = "UTF-8";
 
