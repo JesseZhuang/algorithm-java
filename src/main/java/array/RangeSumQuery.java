@@ -38,8 +38,9 @@ public class RangeSumQuery {
 
     // solution 1, prefix sum, 7ms, 45.2 Mb. O(1) time for rsq, O(n) time init, O(n) space.
     public RangeSumQuery(int[] nums) { // [-2, 0, 3, -5, 2, -1]
-        this.sums = new int[nums.length + 1]; // dummy 0th element
-        for (int i = 0; i < nums.length; i++) {
+        int l = nums.length;
+        sums = new int[l + 1]; // dummy 0th element
+        for (int i = 0; i < l; i++) {
             sums[i + 1] = nums[i] + sums[i]; // [0, -2, -2, 1, -4, -2, -3]
         }
     }
