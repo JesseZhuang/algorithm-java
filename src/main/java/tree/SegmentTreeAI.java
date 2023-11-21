@@ -16,7 +16,7 @@ public class SegmentTreeAI {
     public SegmentTreeAI(int[] nums) {
         if (nums.length > 0) {
             len = nums.length;
-            tree = new int[len * 2];
+            tree = new int[len * 2]; // [1,2n) index will be in use
             for (int i = len; i < 2 * len; i++) tree[i] = nums[i - len]; // leaf nodes [n,2n)
             for (int i = len - 1; i > 0; --i) tree[i] = tree[i * 2] + tree[i * 2 + 1]; // parent nodes (0,n-1], 1 based
         }
@@ -31,7 +31,7 @@ public class SegmentTreeAI {
     void update(int i, int val) {
         i += len;
         tree[i] = val;
-        while (i > 1) {
+        while (i > 1) { // stop at 1
             i >>= 1;
             tree[i] = tree[2 * i] + tree[2 * i + 1]; // update parent
         }

@@ -54,15 +54,13 @@ import java.util.Map;
 public class TwoSumII {
     // solution 1, 2p, O(N) time O(1) space. 1ms, 46.1 Mb.
     public int[] twoSum2P(int[] numbers, int target) {
-        int[] result = new int[2];
-        int lo = 0, hi = numbers.length - 1;
-        while (lo < hi) {
-            int sum = numbers[lo] + numbers[hi];
-            if (sum > target) hi--;
-            else if (sum < target) lo++;
-            else return new int[]{lo + 1, hi + 1};
+        for (int l = 0, r = numbers.length - 1; l < r; ) {
+            int v = numbers[l] + numbers[r];
+            if (v < target) l++;
+            else if (v == target) return new int[]{l + 1, r + 1};
+            else r--;
         }
-        return result;
+        throw new RuntimeException("not found");
     }
 
     // binary search O(nLgn) time, O(1) space, 0ms, 38.39Mb
