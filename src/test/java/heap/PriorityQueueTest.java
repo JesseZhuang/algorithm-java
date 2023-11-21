@@ -31,12 +31,12 @@ public class PriorityQueueTest {
     /**
      * add() is a wrapper of offer(), no difference. both returns boolean.
      * <p>
-     * in the Queue interface, add() can throw IllegalStateException, which offer() cannot.
+     * in the Queue interface, add() can throw IllegalStateException and offer() cannot.
      */
     @Test
     void pollVsRemove() {
         assertEquals(1, tbt.poll()); // returns min element
-        assertEquals(1, tbt.remove()); // just a wrapper if not empty, from AbstractQueue
+        assertEquals(1, tbt.remove()); // just a wrapper of poll(), from AbstractQueue
         assertEquals(2, tbt.poll());
         assertEquals(null, tbt.poll()); // returns null if empty
         assertThrowsExactly(NoSuchElementException.class, () -> tbt.remove()); // throws exception if empty
