@@ -46,10 +46,9 @@ public class FractionString {
     public static String fractionToDecimal(int numerator, int denominator) {
         if (numerator == 0) return "0";
         StringBuilder res = new StringBuilder();
-        if ((numerator > 0) ^ (denominator > 0)) res.append("-");
-        long num = Math.abs((long) numerator); // dividend
-        long den = Math.abs((long) denominator);  // divisor
-        // integral part, must convert to long before doing division
+        if ((numerator > 0) ^ (denominator > 0)) res.append("-"); // do not forget
+        long num = Math.abs((long) numerator); // cast before abs, important for int_min
+        long den = Math.abs((long) denominator);
         res.append(num / den);
         num %= den;
         if (num == 0) return res.toString();
@@ -72,6 +71,8 @@ public class FractionString {
     }
 
     public static void main(String[] args) {
+        // "0.000000000-4-6-5-6-6-1-2-8-7-30-7-7-3-9-2-5-7-8-1-2-5" instead of 0.0000000004656612873077392578125 if
+        // not convert to long before casting, abs(int_min) is still int_min
         System.out.println(fractionToDecimal(-1, -2147483648));
         System.out.println(Integer.MIN_VALUE / -1); //-2147483648
         System.out.println(fractionToDecimal(Integer.MIN_VALUE, -1)); // 2147483648, over flow int

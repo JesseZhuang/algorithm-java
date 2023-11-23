@@ -42,13 +42,13 @@ public class SlidingWindowMax {
         int[] res = new int[n - k + 1];
         ArrayDeque<Integer> q = new ArrayDeque<>();
         // note just use ArrayDeque directly, may offer more methods than the Deque interface
-        for (int i = 0, cur = 0; i < nums.length; i++) {
+        for (int i = 0; i < nums.length; i++) {
             // keep elements in [i-(k-1), i], size k
-            if (!q.isEmpty() && q.peek() <= i - k) q.removeFirst();
+            if (!q.isEmpty() && q.peek() < i - (k - 1)) q.removeFirst(); // do not forget empty check
             // remove smaller numbers in k range as they are useless
             while (!q.isEmpty() && nums[q.peekLast()] <= nums[i]) q.removeLast();
             q.add(i); // otherwise need to add, they might be the next max
-            if (i >= k - 1) res[cur++] = nums[q.peek()];
+            if (i >= k - 1) res[i - (k - 1)] = nums[q.peek()];
         }
         return res;
     }

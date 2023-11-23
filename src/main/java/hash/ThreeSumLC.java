@@ -2,11 +2,9 @@ package hash;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -61,69 +59,72 @@ import java.util.Set;
 public class ThreeSumLC {
 
     /**
-     * O(N^2) time. 1413 ms, 119.2 Mb. With hash set for dedupe.
+     * solution 1, O(N^2) time. 29 ms, 58.7 Mb. 2 pointer.
+     */
+    public List<List<Integer>> threeSum2P(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> result = new ArrayList<>();
+        int l = nums.length;
+        for (int i = 0; i < l - 2; i++) { // O(N)
+            if (i > 0 && nums[i] == nums[i - 1]) continue; // dedupe i
+            int lo = i + 1, hi = l - 1;
+            while (lo < hi) {
+                int sum = nums[i] + nums[lo] + nums[hi];
+                if (sum == 0) { // O(N)
+                    result.add(Arrays.asList(nums[i], nums[lo], nums[hi]));
+                    int lastLo = nums[lo], lastHi = nums[hi];
+                    while (lo < hi && nums[lo] == lastLo) lo++;
+                    while (lo < hi && nums[hi] == lastHi) hi--;
+                } else if (sum < 0) lo++;
+                else hi--;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * solution 2, O(N^2) time. 1413 ms, 119.2 Mb. With hash set for dedupe. Extra space for set.
      * For all methods, space is O(N) because worst case, all values from the array are in the result list.
      */
-    public List<List<Integer>> threeSumSet(int[] nums) {
+    public static List<List<Integer>> threeSumSet(int[] nums) {
+        int l = nums.length;
         Set<List<Integer>> result = new HashSet<>();
-        if (nums.length < 0) return Collections.emptyList();
         Arrays.sort(nums);
-        for (int i = 0; i < nums.length - 2; i++) {// O(N)
-            int j = i + 1;
-            int k = nums.length - 1;
-            while (j < k) {// O(N)
-                int sum = nums[i] + nums[j] + nums[k];
-                if (sum == 0) result.add(Arrays.asList(nums[i], nums[j++], nums[k--]));
-                else if (sum > 0) k--;
-                else if (sum < 0) j++;
+        for (int i = 0; i < l - 2; i++) {// O(N)
+            int lo = i + 1, hi = l - 1; // cannot be in line above, lo will not be reset when i increment
+            while (lo < hi) {// O(N)
+                int sum = nums[i] + nums[lo] + nums[hi];
+                if (sum == 0) result.add(Arrays.asList(nums[i], nums[lo++], nums[hi--]));
+                else if (sum > 0) hi--;
+                else lo++;
             }
         }
         return new ArrayList<>(result);
     }
 
-    /**
-     * O(N^2) time. 29 ms, 58.7 Mb. 2 pointer.
-     */
-    public List<List<Integer>> threeSum2P(int[] nums) {
-        Arrays.sort(nums);
-        List<List<Integer>> result = new ArrayList<>();
-        for (int i = 0; i < nums.length - 2; i++) { // O(N)
-            if (i == 0 || (i > 0 && nums[i] != nums[i - 1])) {
-                int lo = i + 1, hi = nums.length - 1, sum = 0 - nums[i];
-                while (lo < hi) {
-                    if (nums[lo] + nums[hi] == sum) { // O(N)
-                        result.add(Arrays.asList(nums[i], nums[lo], nums[hi]));
-                        while (lo < hi && nums[lo] == nums[lo + 1]) lo++;
-                        while (lo < hi && nums[hi] == nums[hi - 1]) hi--;
-                        lo++;
-                        hi--;
-                    } else if (nums[lo] + nums[hi] < sum) lo++;
-                    else hi--;
-                }
-            }
-        }
-        return result;
-    }
 
     /**
-     * 162 ms, 46.4 Mb. Hashmap to dedupe.
+     * solution 3, O(N^2) time. 162 ms, 46.4 Mb. Hashmap to dedupe. Extra space for map.
      */
-    public List<List<Integer>> threeSumMap(int[] nums) {
+    public static List<List<Integer>> threeSumMap(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(nums);
-        if (nums.length < 3 || nums[0] > 0) return Collections.emptyList();
-        Map<Integer, Integer> valueToIndex = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) valueToIndex.put(nums[i], i); // duplicates will keep the rightest index
-        List<List<Integer>> result = new ArrayList<>();
-        for (int i = 0; i < nums.length - 2; i++) { // O(N)
+        if (nums[0] > 0) return res;
+        int l = nums.length;
+        HashMap<Integer, Integer> lastSeen = new HashMap<>();
+        for (int i = 0; i < l; i++) lastSeen.put(nums[i], i);
+        for (int i = 0; i < l - 2; i = lastSeen.get(nums[i]) + 1) {
             if (nums[i] > 0) break;
-            for (int j = i + 1; j < nums.length - 1; j++) { // O(N)
-                int required = 0 - nums[i] - nums[j];
-                if (valueToIndex.containsKey(required) && valueToIndex.get(required) > j)
-                    result.add(Arrays.asList(nums[i], nums[j], required));
-                j = valueToIndex.get(nums[j]);
+            for (int j = i + 1; j < l - 1; j = lastSeen.get(nums[j]) + 1) {
+                int target = 0 - nums[i] - nums[j];
+                if (lastSeen.containsKey(target) && lastSeen.get(target) > j)
+                    res.add(Arrays.asList(nums[i], nums[j], target));
             }
-            i = valueToIndex.get(nums[i]);
         }
-        return result;
+        return res;
+    }
+
+    public static void main(String[] args) {
+        threeSumSet(new int[]{-1, 0, 1, 2, -1, -4});
     }
 }

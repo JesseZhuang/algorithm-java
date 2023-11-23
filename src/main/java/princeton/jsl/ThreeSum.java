@@ -37,8 +37,8 @@ public class ThreeSum {
      */
     public int count(int[] a, int sum) {
         int count = 0;
-        Arrays.sort(a);
-        for (int i = 0; i < a.length; i++) {
+        Arrays.sort(a); // lgn
+        for (int i = 0; i < a.length; i++) { // n^2
             for (int j = i + 1; j < a.length - 1; j++) {
                 // int k = Arrays.binarySearch(a, sum - a[i] - a[j]); // this cannot have duplicate
                 int k = BinarySearch.indexOf(a, sum - a[i] - a[j], j + 1, a.length - 1);
@@ -53,14 +53,14 @@ public class ThreeSum {
     }
 
     /**
-     * O(N^2 lgN) solution with hash map. Handle duplicates. Without duplicates, O(N^2).
+     * O(N^2 lgN) solution with hash map. Handle duplicates.
      */
     public int countWithMap(int[] a, int sum) {
         int count = 0;
         // Arrays.sort(a);
         Map<Integer, RedBlackBST<Integer, Integer>> valueToIndex = new HashMap<>();
         for (int i = 0; i < a.length; i++) {// O(N)
-            valueToIndex.putIfAbsent(a[i], new RedBlackBST<>());
+            valueToIndex.putIfAbsent(a[i], new RedBlackBST<>()); // can use jsl TreeSet
             valueToIndex.get(a[i]).put(i, 0);
         }
         List<List<Integer>> possibilities = new ArrayList<>();

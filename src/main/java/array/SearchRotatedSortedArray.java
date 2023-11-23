@@ -33,14 +33,31 @@ package array;
  * Constraints:
  * <pre>
  * 1 <= nums.length <= 5000
- * -104 <= nums[i] <= 104
+ * -10^4 <= nums[i] <= 10^4
  * All values of nums are unique.
  * nums is an ascending array that is possibly rotated.
- * -104 <= target <= 104
+ * -10^4 <= target <= 10^4
  * </pre>
  */
 public class SearchRotatedSortedArray {
-    // 2 pass, find min and use modulus. 1 ms, 42.6 Mb.
+
+    // solution 1, 1 ms, 43 Mb. No infinity trick. lgn time, 1 space.
+    public static int search2(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            //target and mid are on the same side
+            if (nums[mid] < nums[0] == target < nums[0]) {
+                if (nums[mid] < target) left = mid + 1; // search right of mid
+                else if (nums[mid] > target) right = mid - 1;
+                else return mid;
+            } else if (target < nums[0]) left = mid + 1; // target<nums[0]&&nums[mid]>=nums[0], search right of mid
+            else right = mid - 1; // target>=nums[0]&&nums[mid]<nums[0], search left of mid
+        }
+        return -1;
+    }
+
+    // solution 2, 2 pass, find min and use modulus. 1 ms, 42.6 Mb. lgn time, 1 space.
     public static int search(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
         while (left < right) {
@@ -61,7 +78,7 @@ public class SearchRotatedSortedArray {
         return -1;
     }
 
-    // Infinity trick, 1ms, 43.2 Mb.
+    // Infinity trick, 1ms, 43.2 Mb. Essentially same as solution 1.
     public static int searchInf(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
         while (left <= right) {
@@ -69,9 +86,9 @@ public class SearchRotatedSortedArray {
             double num;
             // target and element examining are in the same section, does not matter rotated or not
             if (nums[mid] < nums[0] == target < nums[0]) num = nums[mid];
-                // target on right section, mid on left
+                // target in right section, mid in left
             else if (target < nums[0]) num = Double.NEGATIVE_INFINITY; // not Double.MIN
-                // target no left section, mid on right
+                // target in left section, mid in right
             else num = Double.POSITIVE_INFINITY; // not Double.Max
             if (num < target) left = mid + 1;
             else if (num > target) right = mid - 1;
@@ -80,21 +97,6 @@ public class SearchRotatedSortedArray {
         return -1;
     }
 
-    // 1 ms, 43 Mb. No infinity trick.
-    public static int search2(int[] nums, int target) {
-        int left = 0, right = nums.length - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            //target and mid are on the same side
-            if (nums[mid] < nums[0] == target < nums[0]) {
-                if (nums[mid] < target) left = mid + 1;
-                else if (nums[mid] > target) right = mid - 1;
-                else return mid;
-            } else if (target < nums[0]) left = mid + 1; // target on right side
-            else right = mid - 1;
-        }
-        return -1;
-    }
 
     public static void main(String[] args) {
         System.out.println(search2(new int[]{4, 5, 6, 7, 0, 1, 2}, 0));
