@@ -30,33 +30,40 @@ package dp;
  * Constraints:
  * <p>
  * n == height.length
- * 2 <= n <= 105
- * 0 <= height[i] <= 104
+ * 2 <= n <= 10^5
+ * 0 <= height[i] <= 10^4
+ * <p>
+ * Hint 1
+ * If you simulate the problem, it will be O(n^2) which is not efficient.
+ * Hint 2
+ * Try to use two-pointers. Set one pointer to the left and one to the right of the array.
+ * Always move the pointer that points to the lower line.
+ * Hint 3
+ * How can you calculate the amount of water at each step?
  */
 public class ContainerWithMostWater {
 
-    // 1ms, 52.9Mb. O(N) time, O(1) space. 2 Pointer.
+    // solution 1, 1ms, 52.9Mb. O(N) time, O(1) space. 2 Pointer.
     public int maxArea(int[] height) {
-        int water = 0;
-        int i = 0, j = height.length - 1;
-        while (i < j) {
-            int h = Math.min(height[i], height[j]);
-            water = Math.max(water, (j - i) * h);
-            while (height[i] <= h && i < j) i++; // move the lower height edge line
-            while (height[j] <= h && i < j) j--;
+        int res = 0, l = 0, r = height.length - 1;
+        while (l < r) {
+            int h = Math.min(height[l], height[r]);
+            res = Math.max(res, (r - l) * h);
+            while (height[l] <= h && l < r) l++; // move the lower height edge line
+            while (height[r] <= h && l < r) r--;
         }
-        return water;
+        return res;
     }
 
-    // 24 ms, 81.5 Mb. Only move one pointer, a little less greedy.
+    // solution 2, 24 ms, 81.5 Mb. Only move one pointer, a little less greedy.
     public int maxArea2(int[] height) {
-        int water = 0;
-        int i = 0, j = height.length - 1;
-        while (i < j) {
-            water = Math.max(water, (j - i) * Math.min(height[i], height[j]));
-            if (height[i] < height[j]) i++;
-            else j--;
+        int res = 0;
+        int l = 0, r = height.length - 1;
+        while (l < r) {
+            res = Math.max(res, (r - l) * Math.min(height[l], height[r]));
+            if (height[l] < height[r]) l++;
+            else r--;
         }
-        return water;
+        return res;
     }
 }
