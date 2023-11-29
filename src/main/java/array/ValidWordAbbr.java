@@ -1,7 +1,7 @@
 package array;
 
 /**
- * LeetCode 408, LintCode 637, easy, tags: array, string.
+ * LeetCode 408, LintCode 637, easy, tags: array, two pointers, math, string.
  * <p>
  * Given a non-empty string s and an abbreviation abbr, return whether the string matches with the given abbreviation.
  * <p>
