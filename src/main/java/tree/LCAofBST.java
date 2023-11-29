@@ -13,6 +13,15 @@ import struct.TreeNode;
  * <p>
  * Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
  * Output: 6
+ * <pre>
+ *        _______6______
+ *       /              \
+ *   ___2__          ___8__
+ *  /      \        /      \
+ *  0      4       7       9
+ *        / \
+ *       3  5
+ * </pre>
  * Explanation: The LCA of nodes 2 and 8 is 6.
  * Example 2: https://assets.leetcode.com/uploads/2018/12/14/binarysearchtree_improved.png
  * <p>
@@ -27,14 +36,15 @@ import struct.TreeNode;
  * <p>
  * Constraints:
  * <p>
- * The number of nodes in the tree is in the range [2, 105].
- * -109 <= Node.val <= 109
+ * The number of nodes in the tree is in the range [2, 10^5].
+ * -10^9 <= Node.val <= 10^9
  * All Node.val are unique.
  * p != q
  * p and q will exist in the BST.
  */
 public class LCAofBST {
-    // 4ms, 43.3Mb. O(h, worst case n) time, O(1) space.
+
+    // solution 1, 4ms, 43.3Mb. essentially same as solution 2.
     public TreeNode lowestCommonAncestorI(TreeNode root, TreeNode p, TreeNode q) {
         TreeNode cur = root;
         while (true) {
@@ -45,15 +55,15 @@ public class LCAofBST {
         return cur;
     }
 
-    // 5ms, 42.9Mb.
+    // solution 2, 5ms, 42.9Mb. O(h, worst case n) time, O(1) space.
     public TreeNode lowestCommonAncestorI2(TreeNode root, TreeNode p, TreeNode q) {
         TreeNode cur = root;
-        while ((cur.val - (long) p.val) * (cur.val - (long) q.val) > 0)
+        while ((cur.val - (long) p.val) * (cur.val - (long) q.val) > 0) // note value ranges, overflow
             cur = p.val < cur.val ? cur.left : cur.right;
         return cur;
     }
 
-    // 5ms, 43.1Mb. O(h) time and space.
+    // 5ms, 43.1Mb. O(h) time and space. recursive.
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (p.val < root.val && q.val < root.val) return lowestCommonAncestor(root.left, p, q);
         else if (p.val > root.val && q.val > root.val) return lowestCommonAncestor(root.right, p, q);
