@@ -33,7 +33,7 @@ import java.util.Deque;
  * <p>
  * Constraints:
  * <p>
- * 1 <= s.length <= 105
+ * 1 <= s.length <= 10^5
  * s[i] is either'(' , ')', or lowercase English letter.
  * Hints:
  * Each prefix of a balanced parentheses has a number of open parentheses greater or equal than closed parentheses,
@@ -43,42 +43,40 @@ import java.util.Deque;
  */
 public class ValidParenthesesMR {
 
-    // two pass, O(N) time, O(1) space. 15ms, 42.9MB.
+    // solution 1, counts, two pass, O(N) time, O(1) space. 15ms, 42.9MB.
     public String minRemoveToMakeValid(String s) {
-        int left = 0, right = 0;
+        int left = 0, right = 0, l = s.length();
         // need to look ahead to know whether a ( should be included or not
-        for (int i = 0; i < s.length(); i++) if (s.charAt(i) == ')') right++;
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
+        for (int i = 0; i < l; i++) if (s.charAt(i) == ')') right++;
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < l; i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                if (left == right) continue; // invalid (, skip
                 left++;
-                if (right > 0) { // right-- > 0 incorrect
-                    result.append(s.charAt(i)); // right available, include this (
-                    right--; // mark one ) as used
-                }
-            } else if (s.charAt(i) == ')') {// no need to look ahead, left can indicate include or not
-                if (left > 0) {
-                    left--; // mark one ( as used
-                    result.append(s.charAt(i)); // match found
-                } else right--;
-            } else result.append(s.charAt(i));
+            } else if (c == ')') {
+                right--;
+                if (left == 0) continue; // invalid ), skip
+                left--;
+            }
+            res.append(c);
         }
-        return result.toString();
+        return res.toString();
     }
 
-    // 74 ms, 55.1 Mb. O(N) time, O(N) space. stack.
+    // solution 2, 74 ms, 55.1 Mb. O(N) time, O(N) space. stack.
     // Another method is to use a set for the open left parentheses to be removed
     public String minRemoveToMakeValidStack(String s) {
         Deque<Integer> stack = new ArrayDeque<>();
         String[] arr = s.split("");
         for (int i = 0; i < arr.length; i++) {
-            if ("(".equals(arr[i])) stack.push(i);
+            if ("(".equals(arr[i])) stack.push(i); // remember index
             else if (")".equals(arr[i])) {
-                if (!stack.isEmpty()) stack.pop();
-                else arr[i] = "";
+                if (!stack.isEmpty()) stack.pop(); // valid )
+                else arr[i] = ""; // invalid )
             }
         }
-        while (!stack.isEmpty()) arr[stack.pop()] = "";
+        while (!stack.isEmpty()) arr[stack.pop()] = ""; // extra (: invalid
         return String.join("", arr);
     }
 
