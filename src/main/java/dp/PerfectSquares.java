@@ -54,7 +54,7 @@ public class PerfectSquares {
             int m = dp.size(), squares = Integer.MAX_VALUE;
             // sum of dp[m-i*i] and a perfect square number i*i
             for (int i = 1; i * i <= m; i++) squares = Math.min(squares, dp.get(m - i * i) + 1);
-            dp.add(squares);
+            dp.add(squares); // do not forget, otherwise infinite loop
         }
         return dp.get(n);
     }

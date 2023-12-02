@@ -29,7 +29,7 @@ public class SumTwoIntegers {
         while (b != 0) {
             int carry = a & b;
             a ^= b; // store sum without carry in a
-            b = carry << 1;
+            b = carry << 1; // store carry in b
         }
         return a;
     }

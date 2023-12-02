@@ -28,7 +28,7 @@ package array;
  * Any other string is not a valid abbreviation of word.
  */
 public class ValidWordAbbr {
-    // solution 1, lint code 324ms, 22.25Mb. n time, 1 space.
+    // solution 1, two pointers, lint code 324ms, 22.25Mb. n time, 1 space.
     public boolean validWordAbbreviation(String word, String abbr) {
         int i = 0, j = 0;
         while (i < word.length() && j < abbr.length()) {

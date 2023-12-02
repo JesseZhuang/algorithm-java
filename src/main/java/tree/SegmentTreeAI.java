@@ -28,7 +28,7 @@ public class SegmentTreeAI {
      * @param i,   index
      * @param val, value
      */
-    void update(int i, int val) {
+    public void update(int i, int val) {
         i += len;
         tree[i] = val;
         while (i > 1) { // stop at 1
