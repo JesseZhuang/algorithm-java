@@ -3,7 +3,7 @@ package tree;
 import struct.BTNode;
 
 /**
- * LeetCode 1650, LintCode 578, medium, tags: binary tree, hash table.
+ * LeetCode 1650, LintCode 474, medium, tags: binary tree, hash table.
  * <p>
  * Given two nodes of a binary tree p and q, return their lowest common ancestor (LCA).
  * <p>
@@ -53,7 +53,7 @@ import struct.BTNode;
  * p and q exist in the tree.
  */
 public class LowestCommonAncestorBT {
-    // solution 1, two pointer, O(h) time, O(1) space. h:tree height, worst case O(n).
+    // solution 1, two pointer, O(h) time, O(1) space. h:tree height, worst case O(n). LintCode 2550ms, 21.95Mb.
     public BTNode lowestCommonAncestor(BTNode p, BTNode q) {
         BTNode a = p, b = q;
         while (a != b) {
