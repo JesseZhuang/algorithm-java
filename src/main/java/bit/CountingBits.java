@@ -45,6 +45,13 @@ package bit;
  * Or does the odd/even status of the number help you in calculating the number of 1s?
  */
 public class CountingBits {
+    // solution 1, 2ms, 48.5 Mb. No repeating calculations. O(n) time, O(1) space.
+    public int[] countBits2(int n) {
+        int[] res = new int[n + 1];
+        for (int i = 0; i <= n; i++) res[i] = res[i / 2] + i % 2; // i&1
+        return res;
+    }
+
     // O(nLgn) time, O(1) space. 18ms, 48.4 Mb. Repeating calculations.
     public int[] countBits(int n) {
         int[] result = new int[n + 1];
@@ -64,13 +71,6 @@ public class CountingBits {
     public int[] countBits1(int n) {
         int[] result = new int[n + 1];
         for (int i = 0; i <= n; i++) result[i] = Integer.bitCount(i);
-        return result;
-    }
-
-    // 2ms, 48.5 Mb. No repeating calculations.
-    public int[] countBits2(int n) {
-        int[] result = new int[n + 1];
-        for (int i = 0; i <= n; i++) result[i] = result[i / 2] + i % 2; // i&1
         return result;
     }
 
