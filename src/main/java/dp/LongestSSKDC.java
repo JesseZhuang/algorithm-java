@@ -34,7 +34,7 @@ public class LongestSSKDC {
     // solution 1, sliding window LinkedHashMap, lint code 683ms, 27.70Mb. n time, 1 space.
     public int lengthOfLongestSubstringKDistinct2(String s, int k) {
         int res = 0, n = s.length();
-        Map<Character, Integer> lastSeen = new LinkedHashMap<>();
+        Map<Character, Integer> lastSeen = new LinkedHashMap<>(); // char -> index where it was last seen
         for (int l = 0, r = 0; r < n; r++) {
             char c = s.charAt(r);
             // important, key position in linked list, bug: eqgkcwGFvjjmxutystqdfhuMblWbylgjxsxgnoh, k=16
