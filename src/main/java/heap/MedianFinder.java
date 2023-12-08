@@ -80,6 +80,6 @@ public class MedianFinder {
 
     // need to consider when odd, which q has more elements
     public double findMedian() { // O(1) time
-        return odd ? (right.peek() + right.peek()) / 2.0 : left.peek();
+        return odd ? right.peek() : (left.peek() + right.peek()) / 2.0;
     }
 }

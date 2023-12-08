@@ -30,7 +30,7 @@ import java.util.Arrays;
  * Constraints:
  * <p>
  * n == nums.length
- * 1 <= n <= 104
+ * 1 <= n <= 10^4
  * 0 <= nums[i] <= n
  * All the numbers of nums are unique.
  * <p>
@@ -38,25 +38,25 @@ import java.util.Arrays;
  * Follow up: Could you implement a solution using only O(1) extra space complexity and O(n) runtime complexity?
  */
 public class MissingNumber {
-    // 1ms, 51.1 Mb. O(N) time, O(1) space.
+    // solution 1, bit xor, 0ms, 44.57 Mb. O(N) time, O(1) space.
     public int missingNumberXor(int[] nums) {
         int res = nums.length;
-        for (int i = 0; i < nums.length; i++) res = res ^ i ^ nums[i]; // a^b^b = a
+        for (int i = 0; i < nums.length; i++) res = res ^ i ^ nums[i]; // a^b^b = a, note cannot use i<res
         return res;
     }
 
-    // 1ms, 51.2 Mb. O(N) time, O(1) space.
+    // solution 2, sum, 0ms, 44.39 Mb. O(N) time, O(1) space.
     public int missingNumberSum(int[] nums) {
-        int len = nums.length;
-        int sum = (0 + len) * (len + 1) / 2;
-        for (int i = 0; i < len; i++) sum -= nums[i];
+        int n = nums.length;
+        int sum = (0 + n) * (n + 1) / 2; // sum of [0,len]
+        for (int i = 0; i < n; i++) sum -= nums[i];
         return sum;
     }
 
     // http://people.csail.mit.edu/mip/probs.html
     public int missingNumberSum2(int[] nums) {
         int len = nums.length;
-        int sum = len * (len + 1);// even overflow, will modulo 2^32
+        int sum = len * (len + 1); // even overflow, will modulo 2^32
         for (int i = 0; i < len; i++) sum -= 2 * nums[i];
         return sum / 2;
     }
