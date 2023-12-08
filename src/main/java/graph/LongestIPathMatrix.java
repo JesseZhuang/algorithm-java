@@ -37,31 +37,26 @@ import java.util.Queue;
 public class LongestIPathMatrix {
     public static final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // 4 directions
 
-    // 8ms, 44.18Mb. dfs+dp, O(mn) time and space.
+    // solution1, dfs, 8ms, 44.18Mb. dfs+dp, O(mn) time and space.
     public int longestIncreasingPathDFS(int[][] matrix) {
         int m = matrix.length, n = matrix[0].length;
-        int[][] cache = new int[m][n];
-        int max = 1;
-        for (int r = 0; r < m; r++) {
-            for (int c = 0; c < n; c++) {
-                int len = dfs(matrix, r, c, m, n, cache);
-                max = Math.max(max, len);
-            }
-        }
-        return max;
+        int res = 1, cache[][] = new int[m][n];
+        for (int r = 0; r < m; r++)
+            for (int c = 0; c < n; c++)
+                res = Math.max(res, dfs(matrix, r, c, m, n, cache));
+        return res;
     }
 
-    int dfs(int[][] matrix, int i, int j, int m, int n, int[][] cache) {
-        if (cache[i][j] != 0) return cache[i][j];
-        int max = 1;
+    int dfs(int[][] matrix, int r, int c, int m, int n, int[][] cache) {
+        if (cache[r][c] != 0) return cache[r][c];
+        int res = 1;
         for (int[] dir : dirs) {
-            int nr = i + dir[0], nc = j + dir[1];
-            if (nr < 0 || nr >= m || nc < 0 || nc >= n || matrix[nr][nc] <= matrix[i][j]) continue;
-            int len = 1 + dfs(matrix, nr, nc, m, n, cache);
-            max = Math.max(max, len);
+            int nr = r + dir[0], nc = c + dir[1];
+            if (nr < 0 || nr >= m || nc < 0 || nc >= n || matrix[nr][nc] <= matrix[r][c]) continue;
+            res = Math.max(res, 1 + dfs(matrix, nr, nc, m, n, cache)); // 1+ important
         }
-        cache[i][j] = max;
-        return max;
+        cache[r][c] = res;
+        return res;
     }
 
     // solution 2, 15ms, 44.2Mb. bfs, mn time and space.

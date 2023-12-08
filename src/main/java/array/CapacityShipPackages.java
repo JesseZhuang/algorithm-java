@@ -58,15 +58,16 @@ public class CapacityShipPackages {
         }
         int l = max, r = sum;
         while (l < r) { // not <= because if l incremented to r from r-1, r-1 does not work, r must work
-            int mid = l + (r - l) / 2, need = 1, cur = 0;
+            int mid = l + (r - l) / 2, count = 1, cur = 0; // note count starts with 1
             for (int w : weights) {
-                if (cur + w > mid) {
-                    need += 1;
+                if (cur + w > mid) { // not >=
+                    count += 1;
+                    if (count > days) break;
                     cur = 0;
                 }
                 cur += w;
             }
-            if (need > days) l = mid + 1;
+            if (count > days) l = mid + 1;
             else r = mid; // need <= days, test [l, mid] because mid is a possible working solution
         }
         return l; // capacity should make sure need <= days
