@@ -34,7 +34,7 @@ import java.util.Stack;
 public class MaxDepthBT {
 
     /**
-     * alg1: recursively calculate the height of left and right sub tree.
+     * alg1: recursively calculate the height of left and right subtree.
      * possibly to modify this to be tail recursive.
      * 0ms, 43.6Mb.
      * O(n) time and O(height:n) stack space (refer to fibonacci recursive space). Look at each tree node once.

@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.Queue;
 
 /**
+ * LeetCode binary tree.
+ * <p>
  * Confused what "{1,#,2,3}" means? > read more on how binary tree is serialized
  * on OJ (LeetCode online judge).
  * <p>

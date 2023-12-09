@@ -48,17 +48,17 @@ public class TwoDSprial {
     public int[][] spiralIterative(int n) {
         if (n < 1) throw new IllegalArgumentException("Input number cannot be less than 1.");
         int[][] result = new int[n][n];
-        int val = 0, limit = n * n, curDirection = 0, row = 0, column = 0;
+        int val = 0, limit = n * n, curDir = 0, row = 0, column = 0;
         while (val++ < limit) {
             result[row][column] = val;
-            row += directions[curDirection][0];
-            column += directions[curDirection][1];
+            row += directions[curDir][0];
+            column += directions[curDir][1];
             if (!inBound(row, column, result)) {
-                row -= directions[curDirection][0];
-                column -= directions[curDirection][1];
-                curDirection = (curDirection + 1) % 4;
-                row += directions[curDirection][0];
-                column += directions[curDirection][1];
+                row -= directions[curDir][0];
+                column -= directions[curDir][1];
+                curDir = (curDir + 1) % 4;
+                row += directions[curDir][0];
+                column += directions[curDir][1];
             }
         }
         return result;

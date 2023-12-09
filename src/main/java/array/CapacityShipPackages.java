@@ -1,7 +1,7 @@
 package array;
 
 /**
- * LeetCode 1011, medium, tags: array, binary search, apple.
+ * LeetCode 1011, medium, tags: array, binary search, companies: apple.
  * A conveyor belt has packages that must be shipped from one port to another within days.
  * <p>
  * The ith package on the conveyor belt has a weight of weights[i]. Each day, we load the ship with packages on the

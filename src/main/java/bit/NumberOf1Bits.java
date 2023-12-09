@@ -41,35 +41,9 @@ package bit;
  * Follow up: If this function is called many times, how would you optimize it?
  * Answer: Since the input is bound to 32 bits, one way to do is by having a hashmap of <value: numbits> for all the
  * combinations for say 4 bits. Then you'd reduce the execution time by 75%. In an actual interview it'd
- * be good to ask to clarify the question.
+ * be good to ask to clarify the question. Also see reverse bits (lc 190).
  */
 public class NumberOf1Bits {
-    // 0ms 39.4 Mb. Java standard library. O(Lg32) == 5
-    public static int hammingWeightJava(int n) {
-        return Integer.bitCount(n);
-    }
-
-    // same as java standard library, Hacker's delight book, figure 5-1 and 5-2 (resources/bit.hd.5-1.png).
-    public int hammingWeight(int n) {
-        n = n - ((n >>> 1) & 0x55555555); // count adjacent 2 bits, store in 2 bit spaces
-        n = (n & 0x33333333) + ((n >>> 2) & 0x33333333);// count from previous results, store in 4 bit spaces
-        n = (n + (n >>> 4)) & 0x0f0f0f0f;
-        n = n + (n >>> 8);
-        n = n + (n >>> 16);
-        return n & 0x3f;
-    }
-
-    // solution 2, divide and conquer, O(lg32==5) O(1) time and space. 0ms, 39.62Mb.
-    public int hackerDelight(int n) {
-        // n & 0xAAAAAAAA >>> 1 is more natural, but generating two large constants in register, cost an instruction
-        // if the machine lacks the and not instruction, evolves to a way to use one fewer instruction
-        n = (n & 0x55555555) + ((n >>> 1) & 0x55555555);
-        n = (n & 0x33333333) + ((n >>> 2) & 0x33333333);
-        n = (n & 0x0f0f0f0f) + ((n >>> 4) & 0x0f0f0f0f); // masking can be omitted if no danger sum to carry over
-        n = (n & 0x00ff00ff) + ((n >>> 8) & 0x00ff00ff);
-        n = (n & 0x0000ffff) + ((n >>> 16) & 0x0000ffff);
-        return n;
-    }
 
     // solution 1, O(M), M: actual number of one bit in the number. 0ms 39 Mb. Worst case O(32) for 32 bit unsigned int.
     public static int hammingWeightPop(int n) {
@@ -79,6 +53,18 @@ public class NumberOf1Bits {
             res++;
         }
         return res;
+    }
+
+    // solution 2, divide and conquer, O(lg32==5) time O(1) space. 0ms, 39.62Mb.
+    public int hackerDelight(int n) {
+        // n & 0xAAAAAAAA >>> 1 is more natural, but generating two large constants in register, cost an instruction
+        // if the machine lacks the and not instruction, evolves to a way to use one fewer instruction
+        n = (n & 0x55555555) + ((n >>> 1) & 0x55555555); // 0101, count every 2 bits
+        n = (n & 0x33333333) + ((n >>> 2) & 0x33333333); // 0011, count every 4 bits
+        n = (n & 0x0f0f0f0f) + ((n >>> 4) & 0x0f0f0f0f); // 1111, count every 8 bits
+        n = (n & 0x00ff00ff) + ((n >>> 8) & 0x00ff00ff); // 1111 1111
+        n = (n & 0x0000ffff) + ((n >>> 16) & 0x0000ffff); // 1111 1111 1111 1111
+        return n;
     }
 
     // solution 3, 1ms 42.3Mb. O(32), 32 bit integer.
@@ -92,4 +78,18 @@ public class NumberOf1Bits {
         return res;
     }
 
+    // 0ms 39.4 Mb. Java standard library. O(Lg32) == 5
+    public static int hammingWeightJava(int n) {
+        return Integer.bitCount(n);
+    }
+
+    // same as java standard library, Hacker's delight book, figure 5-1 and 5-2 (resources/bit.hd.5-1.png).
+    public int hammingWeight(int n) {
+        n = n - ((n >>> 1) & 0x55555555); // count adjacent 2 bits, store in 2 bit spaces
+        n = (n & 0x33333333) + ((n >>> 2) & 0x33333333);// count from previous results, store in 4 bit spaces
+        n = (n + (n >>> 4)) & 0x0f0f0f0f;
+        n = n + (n >>> 8); // masking can be omitted if no danger sum to carry over
+        n = n + (n >>> 16);
+        return n & 0x3f;
+    }
 }
