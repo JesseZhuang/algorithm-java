@@ -29,13 +29,14 @@ import java.util.Map;
  * Constraints:
  * <p>
  * 1 <= n <= 45
+ * Hint: To reach nth step, what could have been your previous steps? (Think about the step sizes)
  */
 public class ClimbingStairs {
-    // 0ms, 40.9 Mb. O(N) time, O(1) space.
+    // solution 1, iterative, 0ms, 40.9 Mb. O(N) time, O(1) space.
     public int climbStairsIterative(int n) {
         if (n <= 2) return n;
         int a = 1, res = 2;
-        for (int i = 2; i < n; i++) {
+        for (int i = 3; i <= n; i++) {
             res += a;
             a = res - a;
         }
@@ -44,7 +45,8 @@ public class ClimbingStairs {
 
     Map<Integer, Integer> dp = new HashMap();
 
-    // O(2^N) or O(1.618^N) time, O(N) space. https://stackoverflow.com/a/360938/3951955. 0ms, 39.1 Mb.
+    // solution 2, recursive, O(2^N) or O(1.618^N) time, O(N) space.
+    // https://stackoverflow.com/a/360938/3951955. 0ms, 39.1 Mb.
     public int climbStairsMemo(int n) {
         if (n <= 2) return n;
         if (dp.containsKey(n)) return dp.get(n);
