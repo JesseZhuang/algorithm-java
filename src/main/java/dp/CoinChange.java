@@ -30,43 +30,43 @@ import java.util.Deque;
  * <p>
  * Constraints:
  * <p>
- * 1 <= coins.length <= 12
+ * 1 <= coins.length <= 12, N
  * 1 <= coins[i] <= 2^31 - 1
- * 0 <= amount <= 10^4
+ * 0 <= amount <= 10^4, M
  */
 public class CoinChange {
-    // 24 ms 45.2 Mb. O(N*M) time, O(M) space. coins length is N, amount is M.
+    // solution 1, 10 ms 44.57 Mb. O(N*M) time, O(M) space. coins length is N, amount is M.
     public int coinChangeDP1(int[] coins, int amount) {
         int[] dp = new int[amount + 1];// min coins consist number i
-        for (int i = 1; i < dp.length; i++) dp[i] = Integer.MAX_VALUE;
+        for (int i = 1; i < dp.length; i++) dp[i] = Integer.MAX_VALUE; // dp[0]=0
         for (int coin : coins)
             for (int i = coin; i <= amount; i++)
-                if (dp[i - coin] != Integer.MAX_VALUE) // check on possible overflow problem
+                if (dp[i - coin] != Integer.MAX_VALUE) // visited previously
                     dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-        return dp[amount] > amount ? -1 : dp[amount];
+        return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
     }
 
-    //45 ms 54.2 Mb. O(M*N) time O(M) space for visited, average space for queue < M.
+    //solution 2, 22 ms 44.69 Mb. O(M*N) time O(M) space for visited, average space for queue < M.
     public static int coinChangeBFS(int[] coins, int amount) {
         int count = 0;
-        Deque<Integer> queue = new ArrayDeque<>();
+        Deque<Integer> q = new ArrayDeque<>();
         boolean[] visited = new boolean[amount + 1];
-        queue.add(amount);
+        q.add(amount);
         visited[amount] = true;
-        while (!queue.isEmpty()) {
-            int size = queue.size();
+        while (!q.isEmpty()) {
+            int size = q.size();
             while (size-- > 0) { // O(size)
-                int cur = queue.remove();
+                int cur = q.remove();
                 if (cur == 0) return count;
                 for (int coin : coins) { // O(N)
                     int next = cur - coin;
-                    if (next >= 0 && !visited[next]) {
-                        queue.add(next);
+                    if (next >= 0 && !visited[next]) { //next >= 0 check first to avoid index out of bound
+                        q.add(next);
                         visited[next] = true;
                     }
                 }
             }
-            count++;
+            count++; //important, ++ after explored all coins with all in the q
         }
         return -1;
     }
