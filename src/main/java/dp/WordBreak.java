@@ -42,12 +42,12 @@ import java.util.Set;
  * All the strings of wordDict are unique.
  */
 public class WordBreak {
-    // 7ms, 42.5 Mb. O(N^2*K) time, O(max(N,MK)) space.
+    // solution 1, dp, 7ms, 42.5 Mb. O(N^2*K) time, O(max(N,MK)) space.
     public boolean wordBreakDPSet(String s, List<String> wordDict) {
         boolean[] dp = new boolean[s.length() + 1];// O(N) space, indicating word in string s ending at this index
         dp[0] = true;
         Set<String> wordSet = new HashSet<>(wordDict); // O(M*K) space.
-        for (int i = 1; i <= s.length(); i++) {// O(N)
+        for (int i = 1; i <= s.length(); i++) {// O(N), i, substring right bound
             for (int j = 0; j < i; j++) { // O(N)
                 if (dp[j] && wordSet.contains(s.substring(j, i))) { // O(K)
                     dp[i] = true;
@@ -58,28 +58,7 @@ public class WordBreak {
         return dp[s.length()];
     }
 
-
-    // 2ms, 42.4 Mb. O(N^2*K) time, O(max(N,MK)) space.
-    public boolean wordBreakTrie(String s, List<String> wordDict) {
-        final int R = 26; // only lower case letters
-        TrieNode root = new TrieNode(R);
-        for (String word : wordDict) root.addWord(word, c1 -> c1 - 'a'); // O(M*K) space.
-        boolean[] f = new boolean[s.length() + 1]; // O(N) space
-        f[s.length()] = true;
-        for (int i = s.length() - 1; i >= 0; i--) {
-            TrieNode cur = root;
-            for (int j = i; cur != null && j < s.length(); j++) {
-                cur = cur.next[s.charAt(j) - 'a'];
-                if (f[j + 1] && cur != null && cur.isWord) {
-                    f[i] = true;
-                    break;
-                }
-            }
-        }
-        return f[0];
-    }
-
-    // 9ms, 42.7Mb. O(max(N,MK)) space. O(V+E), V << E, O(N^2*K) time.
+    // solution 2, 9ms, 42.7Mb. O(max(N,MK)) space. O(V+E), V << E, O(N^2*K) time.
     public boolean wordBreakBFS(String s, List<String> wordDict) {
         Set<String> wordDictSet = new HashSet<>(wordDict);
         Queue<Integer> queue = new LinkedList<>();
@@ -97,6 +76,26 @@ public class WordBreak {
             visited[start] = true;
         }
         return false;
+    }
+
+    // solution 3, trie, 2ms, 42.4 Mb. O(N^2*K) time, O(max(N,MK)) space.
+    public boolean wordBreakTrie(String s, List<String> wordDict) {
+        final int R = 26; // only lower case letters
+        TrieNode root = new TrieNode(R);
+        for (String word : wordDict) root.addWord(word, c1 -> c1 - 'a'); // O(M*K) space.
+        boolean[] f = new boolean[s.length() + 1]; // O(N) space
+        f[s.length()] = true;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            TrieNode cur = root;
+            for (int j = i; cur != null && j < s.length(); j++) {
+                cur = cur.next[s.charAt(j) - 'a'];
+                if (f[j + 1] && cur != null && cur.isWord) {
+                    f[i] = true;
+                    break;
+                }
+            }
+        }
+        return f[0];
     }
 
     public boolean wordBreak1(String s, List<String> wordDict) {

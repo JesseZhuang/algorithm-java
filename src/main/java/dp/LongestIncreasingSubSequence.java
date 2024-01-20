@@ -91,13 +91,13 @@ public class LongestIncreasingSubSequence {
      * 3ms 42.3 Mb. O(NLgN) time, O(max) space, can reduce to O(N) space by dedupe.
      */
     public int lengthOfLISBIT(int[] nums) {
-        MaxBIT bit = new MaxBIT(20001);
-        int offset = 10001; // -10^4 <= nums[i] <= 10^4
+        MaxBIT bit = new MaxBIT(20001); //-10^4 <= nums[i] <= 10^4 total 20001 numbers
+        int offset = 10000; // shift to [0, 20000]
         for (int num : nums) { // dp
             int subLongest = bit.get(offset + num - 1);
             bit.update(offset + num, subLongest + 1);
         }
-        return bit.get(20001);
+        return bit.get(20000);
     }
 
     /**
@@ -105,24 +105,26 @@ public class LongestIncreasingSubSequence {
      * Does not support range max query because max does not have an inverse operation like sum.
      */
     class MaxBIT {
-        int BITree[];
+        int tree[];
 
         MaxBIT(int size) {
-            BITree = new int[size + 1];
+            tree = new int[size + 1]; // leave tree[0] unused
         }
 
         int get(int index) {
-            int sum = 0;
+            index += 1;
+            int res = 0;
             while (index > 0) {
-                sum = Math.max(sum, BITree[index]);
+                res = Math.max(res, tree[index]);
                 index -= index & (-index);
             }
-            return sum;
+            return res;
         }
 
         void update(int index, int val) {
-            while (index < BITree.length) {
-                BITree[index] = Math.max(BITree[index], val);
+            index += 1;
+            while (index < tree.length) {
+                tree[index] = Math.max(tree[index], val);
                 index += index & (-index);
             }
         }

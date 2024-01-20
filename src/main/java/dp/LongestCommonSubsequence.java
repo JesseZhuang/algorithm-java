@@ -40,6 +40,21 @@ package dp;
  * see resources/longest.common.subsequence.png.
  */
 public class LongestCommonSubsequence {
+    // solution 1, dp, 11ms, 39.8 Mb. O(M*N) time, O(min(M,N)) space.
+    public int longestCommonSubsequenceDP2(String text1, String text2) {
+        int m = text1.length(), n = text2.length();
+        if (m < n) return longestCommonSubsequenceDP2(text2, text1);
+        int[] dp = new int[n + 1];
+        for (int i = 0; i < text1.length(); ++i) {
+            for (int j = 0, prevRow = 0, prevRowPrevCol = 0; j < text2.length(); ++j) {
+                prevRowPrevCol = prevRow;
+                prevRow = dp[j + 1];
+                dp[j + 1] = text1.charAt(i) == text2.charAt(j) ? prevRowPrevCol + 1 : Math.max(dp[j], prevRow);
+            }
+        }
+        return dp[n];
+    }
+
     /**
      * See longest.common.subsequence.png in resources.
      * 13 ms, 46.3 Mb. O(M*N) time, O(M*N) space.
@@ -49,7 +64,7 @@ public class LongestCommonSubsequence {
         for (int i = 0; i < text1.length(); ++i)
             for (int j = 0; j < text2.length(); ++j)
                 if (text1.charAt(i) == text2.charAt(j)) dp[i + 1][j + 1] = 1 + dp[i][j];
-                else dp[i + 1][j + 1] = Math.max(dp[i][j + 1], dp[i + 1][j]);
+                else dp[i + 1][j + 1] = Math.max(dp[i][j + 1], dp[i + 1][j]); // max(prevRow, prevCol)
         return dp[text1.length()][text2.length()];
     }
 
@@ -68,18 +83,4 @@ public class LongestCommonSubsequence {
         );
     }
 
-    // 11ms, 39.8 Mb. O(M*N) time, O(min(M,N)) space.
-    public int longestCommonSubsequenceDP2(String text1, String text2) {
-        int m = text1.length(), n = text2.length();
-        if (m < n) return longestCommonSubsequenceDP2(text2, text1);
-        int[] dp = new int[n + 1];
-        for (int i = 0; i < text1.length(); ++i) {
-            for (int j = 0, prevRow = 0, prevRowPrevCol = 0; j < text2.length(); ++j) {
-                prevRowPrevCol = prevRow;
-                prevRow = dp[j + 1];
-                dp[j + 1] = text1.charAt(i) == text2.charAt(j) ? prevRowPrevCol + 1 : Math.max(dp[j], prevRow);
-            }
-        }
-        return dp[n];
-    }
 }
