@@ -44,10 +44,11 @@ import java.util.Set;
 public class WordBreak {
     // solution 1, dp, 7ms, 42.5 Mb. O(N^2*K) time, O(max(N,MK)) space.
     public boolean wordBreakDPSet(String s, List<String> wordDict) {
-        boolean[] dp = new boolean[s.length() + 1];// O(N) space, indicating word in string s ending at this index
+        int l = s.length();
+        boolean[] dp = new boolean[l + 1];// O(N) space, indicating word in string s ending at this index
         dp[0] = true;
         Set<String> wordSet = new HashSet<>(wordDict); // O(M*K) space.
-        for (int i = 1; i <= s.length(); i++) {// O(N), i, substring right bound
+        for (int i = 1; i <= l; i++) {// O(N), i, substring right bound
             for (int j = 0; j < i; j++) { // O(N)
                 if (dp[j] && wordSet.contains(s.substring(j, i))) { // O(K)
                     dp[i] = true;
@@ -55,22 +56,23 @@ public class WordBreak {
                 }
             }
         }
-        return dp[s.length()];
+        return dp[l];
     }
 
     // solution 2, 9ms, 42.7Mb. O(max(N,MK)) space. O(V+E), V << E, O(N^2*K) time.
     public boolean wordBreakBFS(String s, List<String> wordDict) {
+        int l = s.length();
         Set<String> wordDictSet = new HashSet<>(wordDict);
         Queue<Integer> queue = new LinkedList<>();
-        boolean[] visited = new boolean[s.length()];
+        boolean[] visited = new boolean[l]; // whether explored this index as starting point
         queue.add(0);
         while (!queue.isEmpty()) {//O(N)
             int start = queue.remove();
             if (visited[start]) continue;
-            for (int end = start + 1; end <= s.length(); end++) {// O(N)
+            for (int end = start + 1; end <= l; end++) {// O(N)
                 if (wordDictSet.contains(s.substring(start, end))) {// O(K)
+                    if (end == l) return true;
                     queue.add(end);
-                    if (end == s.length()) return true;
                 }
             }
             visited[start] = true;

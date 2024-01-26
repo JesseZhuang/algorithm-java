@@ -38,18 +38,27 @@ import java.util.Arrays;
  * <p>
  * Follow up: What if negative numbers are allowed in the given array? How does it change the problem?
  * What limitation we need to add to the question to allow negative numbers?
+ * <p>
+ * If negative numbers are included in the array then repetition will lead to infinity, thus giving infinite answers.
+ * For example: given array: [-2,2] and target=0 then possible solutions will go as {-2,2} {-2,-2,2,2}
+ * {-2,-2,-2,2,2,2}...
+ * So in that case the question could add some limitations such as that each element can only be taken once.
  */
 public class CombinationSumIV {
-    // O(N*target) time, O(target) space. Time limit exceeded. Repeating computations similar to fibonacci.
-    public int combinationSum4(int[] nums, int target) {
-        if (target == 0) return 1;
-        int res = 0;
-        for (int i = 0; i < nums.length; i++) // O(N)
-            if (target >= nums[i]) res += combinationSum4(nums, target - nums[i]); // O(target)
-        return res;
+
+    // solution 1, O(N*target) time, O(target) space. 1ms, 40.96 Mb.
+    public int combinationSum4I(int[] nums, int target) {
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
+        for (int i = 1; i <= target; i++) // O(target)
+            for (int j = 0; j < nums.length; j++) // O(N)
+                if (i >= nums[j]) {
+                    dp[i] += dp[i - nums[j]];
+                }
+        return dp[target];
     }
 
-    // O(N*target) time, O(N+target) space. 1ms, 41.5Mb.
+    // solution 2, O(N*target) time, O(N+target) space. 1ms, 41.5Mb.
     public int combinationSum4Cache(int[] nums, int target) {
         int[] dp = new int[target + 1];
         Arrays.fill(dp, -1);
@@ -66,15 +75,12 @@ public class CombinationSumIV {
         return dp[target];
     }
 
-    // O(N*target) time, O(target) space. 8ms, 14.6 Mb.
-    public int combinationSum4I(int[] nums, int target) {
-        int[] dp = new int[target + 1];
-        dp[0] = 1;
-        for (int i = 1; i <= target; i++) // O(target)
-            for (int j = 0; j < nums.length; j++) // O(N)
-                if (i >= nums[j]) {
-                    dp[i] += dp[i - nums[j]];
-                }
-        return dp[target];
+    // O(N*target) time, O(target) space. Time limit exceeded. Repeating computations similar to fibonacci.
+    public int combinationSum4(int[] nums, int target) {
+        if (target == 0) return 1;
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) // O(N)
+            if (target >= nums[i]) res += combinationSum4(nums, target - nums[i]); // O(target)
+        return res;
     }
 }
