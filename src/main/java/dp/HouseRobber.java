@@ -1,8 +1,5 @@
 package dp;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-
 /**
  * LeetCode 198, medium. Tags: array, dynamic programming.
  * <p>
@@ -37,80 +34,21 @@ import java.util.Arrays;
  * </ul>
  */
 public class HouseRobber {
-    public Integer[] housesRobbed(int[] nums) {
-        int robbedPrevious = 0, didNotRobPrevious = 0;
 
-        // use these two queues to track which houses were robbed
-        ArrayDeque<Integer> robbedPreRecord = new ArrayDeque<>();
-        ArrayDeque<Integer> didNotRobPreRecord = new ArrayDeque<>();
-
-        for (int i = 0; i < nums.length; i++) {
-            // If we rob current house, previous house cannot be robbed.
-            int currRobbed = didNotRobPrevious + nums[i];
-            ArrayDeque<Integer> robbedCur = didNotRobPreRecord.clone();
-            robbedCur.add(i);
-
-            // If we don't rob current house, get max of the previous house robbed and not robbed
-            int currNotRobbed = Math.max(didNotRobPrevious, robbedPrevious);
-            ArrayDeque<Integer> didNotRobCur;
-            if (currNotRobbed == didNotRobPrevious) didNotRobCur = didNotRobPreRecord;
-            else didNotRobCur = robbedPreRecord;
-
-            // Update values for the next round
-            didNotRobPrevious = currNotRobbed;
-            robbedPrevious = currRobbed;
-            robbedPreRecord = robbedCur;
-            didNotRobPreRecord = didNotRobCur;
-
-            System.out.format("if robbed %dth house, stash = %d, robbed %s; if not, stash = %d, robbed %s.\n",
-                    i, robbedPrevious, robbedPreRecord, didNotRobPrevious, didNotRobPreRecord);
-
-        }
-        if (robbedPrevious > didNotRobPrevious) return robbedPreRecord.toArray(new Integer[0]);
-        else return didNotRobPreRecord.toArray(new Integer[0]);
-    }
-
+    // solution 1 dp, n time, 1 space, 0ms, 41.25MB.
     public static int rob(int[] nums, int i, int j) {
-        int robbedPrevious = 0, didNotRobPrevious = 0;
+        int robPrev = 0, nRobPrev = 0;
         for (int k = i; k < j; k++) {
-            int currRobbed = didNotRobPrevious + nums[k];
+            int currRobbed = nRobPrev + nums[k];
             // Update values for the next round
-            didNotRobPrevious = Math.max(didNotRobPrevious, robbedPrevious);
-            robbedPrevious = currRobbed;
+            nRobPrev = Math.max(nRobPrev, robPrev); // nRobPrev = robPrev incorrect
+            robPrev = currRobbed;
         }
-        return Math.max(robbedPrevious, didNotRobPrevious);
+        return Math.max(robPrev, nRobPrev);
     }
 
     public static int rob(int[] nums) {
         return rob(nums, 0, nums.length);
     }
 
-    // thought too complicated
-    @SuppressWarnings("ConstantConditions")
-    @Deprecated
-    public int rob4(int[] nums) {
-        int stash = 0, i = 0, diff = 0, offset;
-        // used to record which houses were robbed for logging
-        ArrayDeque<Integer> robbed = new ArrayDeque<>();
-        // indicating last robbed house index even or odd
-        boolean robbedOdd = false;
-        while (i < nums.length) {
-            offset = nums[i] - nums[i + 1];
-            if (offset > diff) {
-                if (robbedOdd) {
-                    stash -= robbed.poll();
-                }
-                robbed.push(i);
-                stash += nums[i++];
-                diff += offset;
-                if (i % 2 != 0) robbedOdd = true;
-            }
-        }
-        return stash;
-    }
-
-    public static void main(String[] args) {
-        HouseRobber hr = new HouseRobber();
-        System.out.println(Arrays.toString(hr.housesRobbed(new int[]{1, 2, 3, 1})));
-    }
 }

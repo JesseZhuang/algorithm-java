@@ -42,30 +42,30 @@ package dp;
  */
 public class DecodeWays {
 
-    // dp backwards O(n) time, O(1) space. 1ms, 40.7Mb.
+    // solution 1, dp backwards O(n) time, O(1) space. 1ms, 40.7Mb.
     public int numDecodingDp1(String s) {
-        int soFar = 1, bSoFar = 0; // ways so far, ways at one char ago
+        int cur = 1, prev = 0; // ways so far, ways at one char ago
         for (int i = s.length() - 1; i >= 0; i--) {
             char c = s.charAt(i);
-            int ways = c == '0' ? 0 : soFar;
-            if (i < s.length() - 1 && (c == '1' || (c == '2' && s.charAt(i + 1) < '7'))) ways += bSoFar;
-            bSoFar = soFar;
-            soFar = ways;
+            int ways = c == '0' ? 0 : cur;
+            if (i < s.length() - 1 && (c == '1' || (c == '2' && s.charAt(i + 1) < '7'))) ways += prev;
+            prev = cur;
+            cur = ways;
         }
-        return soFar;
+        return cur;
     }
 
     // dp forward, bSoFar init 0, 0ms, 40.7Mb
     public int numDecodingDp2(String s) {
         if (s.charAt(0) == '0') return 0;
-        int soFar = 1, bSoFar = 0; // ways so far, ways at one char ago
+        int cur = 1, prev = 0; // ways so far, ways at one char ago
         for (int i = 1; i < s.length(); i++) {
             char c = s.charAt(i), p = s.charAt(i - 1);
-            int ways = (c == '0') ? 0 : soFar;
-            if (p == '1' || (p == '2' && c < '7')) ways += i >= 2 ? bSoFar : 1;
-            bSoFar = soFar;
-            soFar = ways;
+            int ways = (c == '0') ? 0 : cur;
+            if (p == '1' || (p == '2' && c < '7')) ways += i >= 2 ? prev : 1;
+            prev = cur;
+            cur = ways;
         }
-        return soFar;
+        return cur;
     }
 }
