@@ -38,7 +38,7 @@ import static util.IntArrayUtil.boxIntArray;
  * Only one valid answer exists.
  * <p>
  * <p>
- * Follow-up: Can you come up with an algorithm that is less than O(n2) time complexity?
+ * Follow-up: Can you come up with an algorithm that is less than O(n^2) time complexity?
  * <p>
  * Hints:
  * <p>
@@ -56,14 +56,13 @@ public class TwoSum {
 
     // solution 1, 1ms, 433.6Mb. O(N) time and space.
     public int[] twoSumMap(int[] nums, int target) {
-        int[] result = new int[2];
-        HashMap<Integer, Integer> map = new HashMap<>();
+        HashMap<Integer, Integer> valIndex = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            if (!map.containsKey(target - nums[i])) {
-                if (!map.containsKey(nums[i])) map.put(nums[i], i);
-            } else return new int[]{map.get(target - nums[i]), i};
+            int v = target - nums[i];
+            if (valIndex.containsKey(v)) return new int[]{valIndex.get(v), i};
+            else valIndex.put(nums[i], i);
         }
-        return result;
+        throw new RuntimeException();
     }
 
     /**

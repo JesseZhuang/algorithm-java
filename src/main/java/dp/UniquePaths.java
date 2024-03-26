@@ -28,25 +28,25 @@ package dp;
  * 1 <= m, n <= 100
  */
 public class UniquePaths {
-    // O(mn) time, O(min(m,n)) space, 0ms, 38.9 Mb.
+    // solution 1, O(mn) time, O(min(m,n)) space, 0ms, 38.9 Mb.
     public int uniquePathsDP(int m, int n) {
         if (m > n) return uniquePathsDP(n, m);
-        int[] dp = new int[m + 1];
-        dp[1] = 1;
+        int[] dp = new int[m + 1]; // dp[0] dummy
+        dp[1] = 1; // dummy 0, so initialize dp[1]
         for (int i = 0; i < n; i++)
-            for (int j = 1; j <= m; j++)
-                dp[j] += dp[j - 1];
+            for (int j = 1; j <= m; j++) // [1,m] because of dummy
+                dp[j] += dp[j - 1]; // reach here from left(dp[j) or top (dp[j-1])
         return dp[m];
     }
 
     /**
-     * m-1 steps down and n-1 steps to the right. So (m+n-2) steps, pick m-1 to be down.
+     * solution 2, m-1 steps down and n-1 steps to the right. So (m+n-2) steps, pick m-1 to be down.
      * Latex \binom{m+n-2}{m-1} == (m+n-2)!/(m-1)!(n-1)! == (m+n-2)*...*(n)/(m-1)!
      * O(min(m,n)) time, O(1) space. 0ms, 39.3 Mb.
      */
     public int uniquePathsCombination(int m, int n) {
         if (m > n) return uniquePathsCombination(n, m);
-        long res = 1;
+        long res = 1; // important, overflow
         for (int i = m + n - 2, j = 1; i >= n; i--, j++) res = res * i / j;
         return (int) res;
     }

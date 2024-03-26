@@ -48,13 +48,11 @@ public class ContainsDuplicate {
 
     // solution 1, 10 ms, 54.8MB. O(n) time and space.
     public boolean containsDuplicate4(int[] numbers) {
-        // [] empty array considered false!
-        if (numbers != null) {
-            HashSet<Integer> set = new HashSet<>();
-            for (int num : numbers) {
-                if (set.contains(num)) return true;
-                else set.add(num);
-            }
+        // previously [] empty array considered false!
+        HashSet<Integer> set = new HashSet<>();
+        for (int num : numbers) {
+            if (set.contains(num)) return true;
+            else set.add(num);
         }
         return false;
     }
@@ -62,11 +60,9 @@ public class ContainsDuplicate {
     // solution 2, pre-2023 time limit exceeded, 2023 19ms, 57.3MB. O(nLgn) time, O(1) space
     public boolean containsDuplicate(int[] numbers) {
         if (numbers == null || numbers.length == 0) return false;
-        if (numbers.length > 1) {
-            Arrays.sort(numbers);
-            for (int i = 0; i < numbers.length - 1; i++) {
-                if (numbers[i] == numbers[i + 1]) return true;
-            }
+        Arrays.sort(numbers);
+        for (int i = 0; i < numbers.length - 1; i++) {
+            if (numbers[i] == numbers[i + 1]) return true;
         }
         return false;
     }
