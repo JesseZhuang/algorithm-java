@@ -63,7 +63,7 @@ import java.util.Queue;
  * The Graph is connected and all nodes can be visited starting from the given node.
  */
 public class CloneGraph {
-    // solution 1, O(V+E) time, O(V) space. 25ms, 42.1Mb.
+    // solution 1, O(V+E, E<n^2) time, O(V) space. 25ms, 42.1Mb.
     public Node cloneGraphDFS(Node node) {
         Map<Integer, Node> valNode = new HashMap<>();
         return dfs(node, valNode); // note different from alg 4, do not check marked or not

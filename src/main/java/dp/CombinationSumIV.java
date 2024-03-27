@@ -49,7 +49,7 @@ public class CombinationSumIV {
     // solution 1, O(N*target) time, O(target) space. 1ms, 40.96 Mb.
     public int combinationSum4I(int[] nums, int target) {
         int[] dp = new int[target + 1];
-        dp[0] = 1;
+        dp[0] = 1; // init dp[0] not dp[1]
         for (int i = 1; i <= target; i++) // O(target)
             for (int j = 0; j < nums.length; j++) // O(N)
                 if (i >= nums[j]) {

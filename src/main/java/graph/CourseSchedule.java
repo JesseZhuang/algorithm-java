@@ -3,8 +3,8 @@ package graph;
 import princeton.jsl.Digraph;
 import princeton.jsl.DirectedCycle;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -59,40 +59,12 @@ import static java.util.stream.IntStream.range;
  * </ul>
  */
 public class CourseSchedule {
-    public boolean canFinishCycle(int numCourses, int[][] prerequisites) {
-        Digraph digraph = new Digraph(numCourses);
-        range(0, prerequisites.length).forEach(i -> digraph.addEdge(prerequisites[i][0], prerequisites[i][1]));
-        DirectedCycle cycle = new DirectedCycle(digraph);
-        return !cycle.hasCycle();
-    }
 
-    // 3ms 42.4Mb. O(V+E) linear time and space.
-    public boolean canFinishBFS(int numCourses, int[][] prerequisites) {
-        List<Integer>[] adj = new LinkedList[numCourses]; // vertexes going into
-        Queue<Integer> queue = new LinkedList<>();
-        int[] inDegree = new int[numCourses];
-        for (int i = 0; i < numCourses; i++) adj[i] = new LinkedList<>();
-        for (int[] pair : prerequisites) {
-            adj[pair[1]].add(pair[0]);
-            inDegree[pair[0]]++;
-        }
-        for (int i = 0; i < inDegree.length; i++)
-            if (inDegree[i] == 0) queue.offer(i); // add to queue when inDegree becomes 0
-        int count = 0;
-        while (!queue.isEmpty()) {
-            int course = queue.poll();
-            count++;
-            for (int w : adj[course])
-                if (--inDegree[w] == 0) queue.offer(w);
-        }
-        return count == numCourses;
-    }
-
-    // DFS O(V+E) time and space. 2ms, 42.3Mb.
+    // solution 1, DFS O(V+E) time and space. 2ms, 42.3Mb.
     public boolean canFinishDFS(int numCourses, int[][] prerequisites) {
         List<Integer>[] adj = new ArrayList[numCourses];
         for (int i = 0; i < numCourses; i++) adj[i] = new ArrayList<>();
-        for (int[] vertex : prerequisites) adj[vertex[1]].add(vertex[0]); // [0,1] 1->0 1 is prerequisite of 0
+        for (int[] edge : prerequisites) adj[edge[1]].add(edge[0]); // [0,1] 1->0 1 is prerequisite of 0
         boolean[] visited = new boolean[numCourses], onStack = new boolean[numCourses];
         for (int i = 0; i < numCourses; i++)
             if (!visited[i] && hasCycle(i, visited, onStack, adj)) return false;
@@ -109,4 +81,34 @@ public class CourseSchedule {
         onStack[source] = false;
         return false;
     }
+
+    // solution 2, bfs, 3ms 42.4Mb. O(V+E) linear time and space.
+    public boolean canFinishBFS(int numCourses, int[][] prerequisites) {
+        List<Integer>[] adj = new ArrayList[numCourses]; // adjacency list
+        Queue<Integer> queue = new ArrayDeque<>();
+        int[] inDegree = new int[numCourses];
+        for (int i = 0; i < numCourses; i++) adj[i] = new ArrayList<>();
+        for (int[] edge : prerequisites) { // e: edge[1]->edge[0]
+            adj[edge[1]].add(edge[0]);
+            inDegree[edge[0]]++;
+        }
+        for (int i = 0; i < inDegree.length; i++)
+            if (inDegree[i] == 0) queue.offer(i); // add to queue when inDegree becomes 0
+        int count = 0;
+        while (!queue.isEmpty()) {
+            int course = queue.poll();
+            count++;
+            for (int w : adj[course])
+                if (--inDegree[w] == 0) queue.offer(w);
+        }
+        return count == numCourses;
+    }
+
+    public boolean canFinishCycle(int numCourses, int[][] prerequisites) {
+        Digraph digraph = new Digraph(numCourses);
+        range(0, prerequisites.length).forEach(i -> digraph.addEdge(prerequisites[i][0], prerequisites[i][1]));
+        DirectedCycle cycle = new DirectedCycle(digraph);
+        return !cycle.hasCycle();
+    }
+
 }
