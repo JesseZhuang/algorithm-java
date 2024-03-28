@@ -80,7 +80,7 @@ public class CloneGraph {
 
     // solution 2, O(V+E) time, O(V) space. 26ms, 42.1Mb.
     public Node cloneGraphBFS(Node node) {
-        if (node == null) return null;
+        if (node == null) return null; // empty graph [] is null Node
         Map<Integer, Node> valNode = new HashMap<>();
         Queue<Node> queue = new ArrayDeque<>(); // nodes from original graph
         queue.add(node);

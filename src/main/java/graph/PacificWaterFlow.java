@@ -58,62 +58,67 @@ import java.util.Queue;
  * 0 <= heights[r][c] <= 105
  */
 public class PacificWaterFlow {
-    boolean[][] visitedP;
-    boolean[][] visitedA;
-    static int[][] deltas = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    boolean[][] visitedP; // visited from pacific
+    boolean[][] visitedA; // visited from atlantic
+    static int[][] deltas = new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}; // 4 directions to explore
     List<List<Integer>> res;
-    Queue<List<Integer>> q;
+    Queue<List<Integer>> q; // bfs queue
+    int m, n; // number of rows(m), columns(n)
+    int[][] heights;
 
-    // 3ms 44.3 Mb. O(mn) time and space (worst case all cells reachable)
+    // dfs, 3ms 44.3 Mb. O(mn) time and space (worst case all cells reachable)
+    // v+e time and space. v:mn, e:4mn, i.e.,O(mn)
     public List<List<Integer>> pacificAtlanticDFS(int[][] heights) {
-        int m = heights.length, n = heights[0].length;
+        this.heights = heights;
+        m = heights.length;
+        n = heights[0].length;
         visitedP = new boolean[m][n];
         visitedA = new boolean[m][n];
         res = new ArrayList<>();
         for (int i = 0; i < m; i++) {
-            dfs(heights, visitedP, i, 0, 0);
-            dfs(heights, visitedA, i, n - 1, 0);
+            dfs(visitedP, i, 0, 0); // dfs from left edge: pacific
+            dfs(visitedA, i, n - 1, 0); // dfs from right edge: atlantic
         }
         for (int i = 0; i < n; i++) {
-            dfs(heights, visitedA, m - 1, i, 0);
-            dfs(heights, visitedP, 0, i, 0);
+            dfs(visitedA, m - 1, i, 0); // dfs from bottom edge: atlantic
+            dfs(visitedP, 0, i, 0); // dfs from top edge: pacific
         }
         return res;
     }
 
-    private void dfs(int[][] heights, boolean[][] visited, int r, int c, int height) {
-        int m = heights.length, n = heights[0].length;
+    private void dfs(boolean[][] visited, int r, int c, int height) {
         // note test range first, do not forget visited[][]
-        if (!inRange(r, c, m, n) || visited[r][c] || heights[r][c] < height) return;
+        if (!inRange(r, c) || visited[r][c] || heights[r][c] < height) return; // < not <=
         visited[r][c] = true;
         if (visitedA[r][c] && visitedP[r][c]) res.add(Arrays.asList(r, c));
-        for (int[] delta : deltas) dfs(heights, visited, r + delta[0], c + delta[1], heights[r][c]);
+        for (int[] delta : deltas) dfs(visited, r + delta[0], c + delta[1], heights[r][c]);
     }
 
-    private boolean inRange(int r, int c, int row, int col) {
-        return r >= 0 && r < row && c >= 0 && c < col; // cannot equal to row or col
+    private boolean inRange(int r, int c) {
+        return r >= 0 && r < m && c >= 0 && c < n; // cannot equal to row or col
     }
 
-    // 10ms, 55.2Mb.
+    // bfs, same complexity to dfs, 5ms, 45.55Mb.
     public List<List<Integer>> pacificAtlanticBFS(int[][] heights) {
-        int m = heights.length, n = heights[0].length;
+        this.heights = heights;
+        m = heights.length;
+        n = heights[0].length;
         visitedP = new boolean[m][n];
         visitedA = new boolean[m][n];
         res = new ArrayList<>();
         q = new ArrayDeque<>();
         for (int i = 0; i < m; i++) {
-            bfs(heights, visitedP, i, 0);
-            bfs(heights, visitedA, i, n - 1);
+            bfs(visitedP, i, 0);
+            bfs(visitedA, i, n - 1);
         }
         for (int i = 0; i < n; i++) {
-            bfs(heights, visitedA, m - 1, i);
-            bfs(heights, visitedP, 0, i);
+            bfs(visitedA, m - 1, i);
+            bfs(visitedP, 0, i);
         }
         return res;
     }
 
-    private void bfs(int[][] heights, boolean[][] visited, int r, int c) {
-        int m = heights.length, n = heights[0].length;
+    private void bfs(boolean[][] visited, int r, int c) {
         q.add(Arrays.asList(r, c));
         while (!q.isEmpty()) {
             List<Integer> pair = q.remove();
@@ -123,7 +128,7 @@ public class PacificWaterFlow {
             if (visitedA[cr][cc] && visitedP[cr][cc]) res.add(Arrays.asList(cr, cc));
             for (int[] delta : deltas) {
                 int nr = cr + delta[0], nc = cc + delta[1];
-                if (inRange(nr, nc, m, n) && heights[nr][nc] >= heights[cr][cc] && !visited[nr][nc])
+                if (inRange(nr, nc) && heights[nr][nc] >= heights[cr][cc] && !visited[nr][nc])
                     q.add(Arrays.asList(nr, nc));
             }
         }

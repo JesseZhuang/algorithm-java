@@ -60,23 +60,28 @@ import static java.util.stream.IntStream.range;
  */
 public class CourseSchedule {
 
+    List<Integer>[] adj;
+    boolean[] visited;
+    boolean[] onStack;
+
     // solution 1, DFS O(V+E) time and space. 2ms, 42.3Mb.
     public boolean canFinishDFS(int numCourses, int[][] prerequisites) {
-        List<Integer>[] adj = new ArrayList[numCourses];
+        adj = new ArrayList[numCourses];
         for (int i = 0; i < numCourses; i++) adj[i] = new ArrayList<>();
         for (int[] edge : prerequisites) adj[edge[1]].add(edge[0]); // [0,1] 1->0 1 is prerequisite of 0
-        boolean[] visited = new boolean[numCourses], onStack = new boolean[numCourses];
+        visited = new boolean[numCourses];
+        onStack = new boolean[numCourses];
         for (int i = 0; i < numCourses; i++)
-            if (!visited[i] && hasCycle(i, visited, onStack, adj)) return false;
+            if (!visited[i] && hasCycle(i)) return false;
         return true;
     }
 
-    private boolean hasCycle(int source, boolean[] visited, boolean[] onStack, List<Integer>[] adj) {
+    private boolean hasCycle(int source) {
         visited[source] = true;
         onStack[source] = true;
         for (int v : adj[source]) {
             if (onStack[v]) return true;
-            if (!visited[v] && hasCycle(v, visited, onStack, adj)) return true;
+            if (!visited[v] && hasCycle(v)) return true;
         }
         onStack[source] = false;
         return false;
