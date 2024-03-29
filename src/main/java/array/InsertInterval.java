@@ -1,6 +1,7 @@
 package array;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,9 +35,9 @@ import java.util.List;
  * 0 <= start <= end <= 10^5
  */
 public class InsertInterval {
-    // 1ms, 44.9Mb. O(N) time and space. O(1) space not including the result.
+    // solution 1, 1ms, 44.9Mb. O(N) time and space. O(1) space not including the result.
     // another method, binary search to find the position, insert, then merge
-    public int[][] insert(int[][] intervals, int[] newInterval) {
+    public static int[][] insert(int[][] intervals, int[] newInterval) {
         List<int[]> result = new ArrayList<>();
         int i = 0;
         while (i < intervals.length && intervals[i][1] < newInterval[0]) {
@@ -53,7 +54,13 @@ public class InsertInterval {
             result.add(intervals[i]);
             i++;
         }
-        return result.toArray(new int[result.size()][2]);
+//        return result.toArray(new int[result.size()][2]);
+        return result.toArray(new int[0][0]);
     }
 
+    public static void main(String[] args) {
+        System.out.println(Arrays.deepToString(InsertInterval.insert(
+                new int[][]{{1, 2}, {3, 5}, {6, 7}, {8, 10}, {12, 16}}, new int[]{4, 8})));
+        // {{1,2},{3,10},{12,16}}
+    }
 }

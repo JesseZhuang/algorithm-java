@@ -8,7 +8,7 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
- * LeetCode 269 (premium), hard, GFG, tags: bfs, topological sort, graph, string.
+ * LeetCode 269 (premium), LintCode 892, hard, GFG, tags: bfs, topological sort, graph, string.
  * Given a sorted dictionary of an alien language having N words and k starting alphabets of standard dictionary.
  * Find the order of characters in the alien language.
  * Note: Many orders may be possible for a particular test case, thus you may return any valid order and output
@@ -80,55 +80,67 @@ import java.util.Set;
  * Explanation：
  * from "z" and "x"，we can get 'z' < 'x'
  * So return "zx"
+ * <p>
+ * Constraints:
+ * <p>
+ * You may assume all letters are in lowercase.
+ * The dictionary is invalid, if string a is prefix of string b and b is appear before a.
+ * If the order is invalid, return an empty string.
+ * There may be multiple valid order of letters, return the smallest in normal lexicographical order.
+ * The letters in one string are of the same rank by default and are sorted in Human dictionary order.
  */
 public class AlienDict {
-    public String findOrder(String[] dict, int N, int K) {
-        return null;
-    }
 
-    // O(nlgn) time, O(n) space. 271ms, 21.76 Mb.
+    // solution 1, O(nlgn) time, O(n) space. lint code, 271ms, 21.76 Mb.
     public String alienOrderBFS(String[] words) {
-        return topologicalSorting(constructGraph(words));
+        return topological(buildGraph(words));
     }
 
-    private Map<Character, Set<Character>> constructGraph(String[] words) {
-        Map<Character, Set<Character>> graph = new HashMap<>();
-        for (String w : words) //create nodes
-            for (char j : w.toCharArray()) graph.putIfAbsent(j, new HashSet<>());
-        for (int i = 0; i < words.length - 1; i++) {
+    // O(n) time and space.
+    private Map<Character, Set<Character>> buildGraph(String[] words) {
+        Map<Character, Set<Character>> res = new HashMap<>();
+        for (String w : words) // create nodes
+            for (char j : w.toCharArray()) res.putIfAbsent(j, new HashSet<>());
+        for (int i = 1; i < words.length; i++) {
             int j = 0;
-            while (j < words[i].length() && j < words[i + 1].length() &&
-                    words[i].charAt(j) == words[i + 1].charAt(j)) j++;
-            if (j < words[i].length() && j >= words[i + 1].length()) return null; // exclude {"abc", "ab"}
-            if (j == words[i].length()) continue;
-            graph.get(words[i].charAt(j)).add(words[i + 1].charAt(j));
+            String a = words[i - 1], b = words[i];
+            while (j < a.length() && j < b.length() && a.charAt(j) == b.charAt(j)) j++;
+            if (j == a.length()) continue; // ab, abc
+            if (j >= b.length()) return null; // exclude {"abc", "ab"}: prefix constraint
+            res.get(a.charAt(j)).add(b.charAt(j));
         }
-        return graph;
+        return res;
     }
 
-    private String topologicalSorting(Map<Character, Set<Character>> graph) {
+    // nlgn time because of priority queue, smallest lexicographical if multiple
+    private String topological(Map<Character, Set<Character>> graph) {
         if (graph == null) return "";
         Map<Character, Integer> inDegree = new HashMap<>();
-        for (Character u : graph.keySet()) inDegree.put(u, 0);
-        for (char u : graph.keySet())
-            for (char v : graph.get(u)) inDegree.put(v, inDegree.get(v) + 1);
+        for (char c : graph.keySet()) inDegree.put(c, 0);
+        for (char v : graph.keySet())
+            for (char w : graph.get(v)) inDegree.put(w, inDegree.get(w) + 1);
         Queue<Character> q = new PriorityQueue<>();
         for (Map.Entry<Character, Integer> entry : inDegree.entrySet())
-            if (entry.getValue() == 0) q.offer(entry.getKey());
-        StringBuilder ans = new StringBuilder();
+            if (entry.getValue() == 0) q.add(entry.getKey());
+        StringBuilder res = new StringBuilder();
         int count = 0;
         while (!q.isEmpty()) {
-            char u = q.poll();
-            ans.append(u);
+            char v = q.remove();
+            res.append(v);
             count++;
-            Set<Character> dest = graph.get(u);
-            for (char v : dest) {
-                int degree = inDegree.get(v) - 1;
-                if (degree == 0) q.offer(v);
-                inDegree.put(v, degree);
+            for (char w : graph.get(v)) {
+                int degree = inDegree.get(w) - 1;
+                if (degree == 0) q.add(w);
+                inDegree.put(w, degree);
             }
         }
         if (count != graph.size()) return "";
-        return ans.toString();
+        return res.toString();
+    }
+
+    public static void main(String[] args) {
+        AlienDict t = new AlienDict();
+        System.out.println(t.alienOrderBFS(new String[]{"wrt", "wrf", "er", "ett", "rftt"})); // expected wertf
+        System.out.println(t.alienOrderBFS(new String[]{"z", "x"})); // expected zx
     }
 }

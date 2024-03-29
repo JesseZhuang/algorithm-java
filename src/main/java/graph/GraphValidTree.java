@@ -30,7 +30,7 @@ public class GraphValidTree {
     boolean[] visited;
     List<List<Integer>> adj;
 
-    // O(N) time, O(N) space. 479ms, 25.26Mb. DFS.
+    // solution 1, dfs, O(N) time, O(N) space. 479ms, 25.26Mb.
     // non-valid worst case N^2 edges, would find cycle; valid V+E == N + N-1
     // 1, all connected, 2, no cycle, 3, edges = n-1; check 2,3
     public boolean validTree(int n, int[][] edges) {
@@ -60,7 +60,7 @@ public class GraphValidTree {
         return adj;
     }
 
-    // BFS, check conditions 1,3. 493ms, 27.76MB.
+    // solution 2, BFS, check conditions 1,3. 493ms, 27.76MB.
     public boolean validTreeBFS(int n, int[][] edges) {
         if (edges.length != n - 1) return false;
         buildGraph(n, edges);

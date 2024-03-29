@@ -60,10 +60,11 @@ public class NumCCUndirectedGraph {
     boolean[] visited;
     Queue<Integer> queue;
 
+    // solution 1, dfs, O(V+E) time and space.
     public int ccDFS(int n, int[][] edges) {
         int count = 0;
         visited = new boolean[n];
-        adj = GraphValidTree.buildGraph(n, edges);
+        adj = GraphValidTree.buildGraph(n, edges); // O(E) time.
         for (int v = 0; v < n; v++)
             if (!visited[v]) {
                 dfs(v);
@@ -77,6 +78,7 @@ public class NumCCUndirectedGraph {
         for (int w : adj.get(v)) if (!visited[w]) dfs(w);
     }
 
+    // solution 2, bfs, O(V+E) time and space.
     public int ccBFS(int n, int[][] edges) {
         int count = 0;
         visited = new boolean[n];
@@ -108,6 +110,7 @@ public class NumCCUndirectedGraph {
     byte[] height;
     int ufcc; // connected components in union find
 
+    // solution 3, uf, O(Elg*E) time, O(V) space.
     public int ccUF(int n, int[][] edges) {
         parent = new int[n];
         height = new byte[n];

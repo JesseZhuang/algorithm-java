@@ -24,22 +24,22 @@ import java.util.Set;
  * <p>
  * Constraints:
  * <p>
- * 0 <= nums.length <= 105
- * -109 <= nums[i] <= 109
+ * 0 <= nums.length <= 10^5
+ * -10^9 <= nums[i] <= 10^9
  */
 public class LongestConsecutiveSeq {
-    // O(N) time and space. 47ms, 75.9Mb.
+    // solution 1, O(N) time and space. 47ms, 75.9Mb.
     public int longestConsecutiveSet(int[] nums) {
         Set<Integer> set = new HashSet<>();
         for (int num : nums) set.add(num);
         int max = 0;
         Iterator<Integer> it = set.iterator();
-        while (it.hasNext()) {
+        while (it.hasNext()) { // for each loop works too
             int n = it.next();
             if (set.contains(n - 1)) continue; // avoids O(n^2)
-            int x = n + 1;
-            while (set.contains(x)) x++; // while(set.contains(x++)); increments one past intended
-            max = Math.max(max, x - n);
+            int x = n;
+            while (set.contains(x + 1)) x++; // while(set.contains(x++)); increments one past intended
+            max = Math.max(max, x - n + 1);
         }
         return max;
     }
