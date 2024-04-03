@@ -32,19 +32,8 @@ import java.util.Comparator;
  * -5 * 104 <= starti < endi <= 5 * 104
  */
 public class NonOverlapIntervals {
-    // O(NLgN) time, O(1) space. 71ms , 101.8Mb. sort by right bound, count non-overlapping.
-    public int eraseOverlapIntervals1(int[][] intervals) {
-        Arrays.sort(intervals, Comparator.comparingInt(i -> i[1])); // sort by interval right bound
-        int end = intervals[0][1];
-        int count = 1;
-        for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] < end) continue;
-            count++;
-            end = intervals[i][1];
-        }
-        return intervals.length - count;
-    }
 
+    // solution 1, O(NLgN) time, O(LgN, assume quick sort recursive) space.
     // sort by right bound, count overlapping. 73ms, 101.8Mb.
     public int eraseOverlapIntervals2(int[][] intervals) {
         Arrays.sort(intervals, Comparator.comparingInt(i -> i[1]));
@@ -57,7 +46,20 @@ public class NonOverlapIntervals {
         return count;
     }
 
-    // 73ms, 101.6Mb. sort by left, count overlapping.
+    // solution 2, 71ms , 101.8Mb. sort by right bound, count non-overlapping.
+    public int eraseOverlapIntervals1(int[][] intervals) {
+        Arrays.sort(intervals, Comparator.comparingInt(i -> i[1])); // sort by interval right bound
+        int end = intervals[0][1];
+        int count = 1;
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] < end) continue;
+            count++;
+            end = intervals[i][1];
+        }
+        return intervals.length - count;
+    }
+
+    // solution 3, 73ms, 101.6Mb. sort by left, count overlapping.
     public int eraseOverlapIntervals3(int[][] intervals) {
         Arrays.sort(intervals, Comparator.comparingInt(i -> i[0]));
         int count = 0, pre = 0;
