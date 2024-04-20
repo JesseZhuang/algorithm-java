@@ -8,7 +8,7 @@ import java.util.Queue;
 import java.util.TreeMap;
 
 /**
- * LeetCode 253, medium, LintCode 919, tags: treemap, heap.
+ * LeetCode 253, medium, LintCode 919, tags: treemap, heap, line sweep.
  * <p>
  * Given an array of meeting time intervals consisting of start and end times [[s1,e1],[s2,e2],...] (si < ei),
  * find the minimum number of conference rooms required.
@@ -61,13 +61,13 @@ public class MeetingRoomsII {
 
     // solution 2, O(NLgN) time, O(N) space. lint code, 325ms, 20.21Mb.
     public int minMeetingRoomsTreeMap(int[][] intervals) {
-        Map<Integer, Integer> map = new TreeMap<>(); // store start and end times and counts
+        Map<Integer, Integer> timeCount = new TreeMap<>(); // store start and end times and counts
         for (int[] interval : intervals) {
-            map.put(interval[0], 1 + map.getOrDefault(interval[0], 0)); // take 1 room
-            map.put(interval[1], map.getOrDefault(interval[1], 0) - 1); // free 1 room
+            timeCount.put(interval[0], 1 + timeCount.getOrDefault(interval[0], 0)); // take 1 room
+            timeCount.put(interval[1], timeCount.getOrDefault(interval[1], 0) - 1); // free 1 room
         }
         int active = 0, result = 0;
-        for (int v : map.values()) { // sweep line
+        for (int v : timeCount.values()) { // sweep line
             active += v;
             result = Math.max(result, active);
         }

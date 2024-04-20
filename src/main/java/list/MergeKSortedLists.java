@@ -37,16 +37,27 @@ import java.util.PriorityQueue;
  * Constraints:
  * <p>
  * k == lists.length
- * 0 <= k <= 104
+ * 0 <= k <= 10^4
  * 0 <= lists[i].length <= 500, n
  * N = n*k
- * -104 <= lists[i][j] <= 104
+ * -10^4 <= lists[i][j] <= 10^4
  * lists[i] is sorted in ascending order.
  * The sum of lists[i].length will not exceed 104.
  */
 public class MergeKSortedLists {
 
-    // O(NLgk) time, O(k) space. 14 ms, 47.9 Mb.
+    // solution 1: merge bottom up, 5ms, 47.5Mb. O(NLgk) time, O(1) space (modified input).
+    public ListNode mergeKListsMergeBU(ListNode[] lists) {
+        if (lists.length == 0) return null;
+        for (int interval = 1; interval < lists.length; interval *= 2) {
+            for (int i = 0; i < lists.length - interval; i += 2 * interval) {
+                lists[i] = Merge2SortedLists.mergeTwoListsIter2(lists[i], lists[i + interval]);
+            }
+        }
+        return lists[0];
+    }
+
+    // solution 2: heap, O(NLgk) time, O(k) space. 14 ms, 47.9 Mb.
     public ListNode mergeKListsHeap(ListNode[] lists) {
         PriorityQueue<ListNode> minHeap = new PriorityQueue<>(Comparator.comparingInt(node -> node.val));
         ListNode dummy = new ListNode(0), current = dummy;
@@ -75,14 +86,4 @@ public class MergeKSortedLists {
         return Merge2SortedLists.mergeTwoListsRec(l1, l2);
     }
 
-    // best: merge bottom up, 5ms, 47.5Mb. O(NLgk) time, O(1) space (modified input).
-    public ListNode mergeKListsMergeBU(ListNode[] lists) {
-        if (lists.length == 0) return null;
-        for (int interval = 1; interval < lists.length; interval *= 2) {
-            for (int i = 0; i < lists.length - interval; i += 2 * interval) {
-                lists[i] = Merge2SortedLists.mergeTwoListsIter2(lists[i], lists[i + interval]);
-            }
-        }
-        return lists[0];
-    }
 }

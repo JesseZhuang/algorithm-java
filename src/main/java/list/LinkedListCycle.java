@@ -42,6 +42,7 @@ public class LinkedListCycle {
     // Other solutions: 1) use hash set O(N) space.
     public boolean hasCycle(ListNode head) {
         ListNode slow = head, fast = head;
+        // note do not check slow
         while (fast != null && fast.next != null) { // fast.next != null && fast.next.next != null: NPE
             fast = fast.next.next;
             slow = slow.next;

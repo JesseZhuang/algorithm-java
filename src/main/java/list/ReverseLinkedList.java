@@ -24,6 +24,18 @@ import struct.ListNode;
  */
 public class ReverseLinkedList {
 
+    // best: 0ms 42.4MB. O(N) time, O(1) space.
+    public ListNode reverseListIterative2(ListNode head) {
+        ListNode res = null;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = res;
+            res = head;
+            head = next;
+        }
+        return res;
+    }
+
     public ListNode reverseListIterative(ListNode head) {
         if (head == null)
             return null;
@@ -36,18 +48,6 @@ public class ReverseLinkedList {
         }
         head.next = prev;
         return head;
-    }
-
-    // best: 0ms 42.4MB. O(N) time, O(1) space.
-    public ListNode reverseListIterative2(ListNode head) {
-        ListNode newHead = null;
-        while (head != null) {
-            ListNode next = head.next;
-            head.next = newHead;
-            newHead = head;
-            head = next;
-        }
-        return newHead;
     }
 
     public ListNode reverseListRecursive1(ListNode head) {
