@@ -16,6 +16,9 @@ public class ListNode {
         val = x;
     }
 
+    public ListNode() {
+    }
+
     /**
      * @return string representation of the linked list starting from this node.
      */

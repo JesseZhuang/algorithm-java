@@ -30,23 +30,24 @@ import struct.ListNode;
  * Hint1: Maintain two pointers and update one with a delay of n steps.
  */
 public class RemoveNthFromEnd {
-    // 0ms 40.2 MB. O(N) time, O(1) space.
+    // solution 1, 0ms 40.2 MB. O(N) time, O(1) space.
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode dummy = new ListNode(0); // boundary: nth could be head or head.next
+        ListNode dummy = new ListNode(); // boundary: nth could be head or head.next
         dummy.next = head;
-        ListNode cur = head.next, nth = dummy;
+        ListNode cur = head, nth = dummy;
         int count = 0;
         while (cur != null) {
             cur = cur.next;
             count++;
-            if (count >= n) nth = nth.next; // n+1 not n
+            if (count > n) nth = nth.next;
         }
         nth.next = nth.next.next; // size >= 1, no need null check, nth.next cannot be null
         return dummy.next;
     }
 
+    // solution 2, O(N) time, O(1) space.
     public ListNode removeNth(ListNode head, int n) {
-        ListNode dummy = new ListNode(0);
+        ListNode dummy = new ListNode();
         dummy.next = head;
         ListNode fast = dummy, slow = dummy;
         for (int i = 1; i <= n + 1; i++) fast = fast.next; // careful how many positions to move fast
