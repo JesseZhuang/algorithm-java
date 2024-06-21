@@ -30,32 +30,30 @@ public class ReorderList {
     // 1ms, 45.3 MB. O(N) time, O(1) space.
     public void reorderList(ListNode head) {
         // if (head == null) return;
-        ListNode slow = head, fast = head;
+        ListNode slow = head, fast = head, head1 = head;
         while (fast.next != null && fast.next.next != null) {
             slow = slow.next;
             fast = fast.next.next;
         } // at the end slow will be before the section that needs to be reversed
-        ListNode headToReverse = slow.next;
-        ListNode head2 = null;
+        ListNode headToReverse = slow.next, head2 = null;
+        slow.next = null;
         while (headToReverse != null) { // reverse the second half, 12345 -> 123;54
             ListNode temp = headToReverse.next;
             headToReverse.next = head2;
             head2 = headToReverse;
             headToReverse = temp;
         }
-        slow.next = null;
-        ListNode head1 = head;
-        while (head2 != null) {// zig zag funny merge
-            ListNode temp = head1.next;
-            head1.next = head2;
-            head1 = head2;
-            head2 = temp;
-
-//            ListNode temp1 = head1.next, temp2 = head2.next;
+        while (head2 != null) {// zig zag funny merge, not as easy to remember
+//            ListNode temp = head1.next;
 //            head1.next = head2;
-//            head2.next = temp1;
-//            head1 = temp1;
-//            head2 = temp2;
+//            head1 = head2;
+//            head2 = temp;
+
+            ListNode temp1 = head1.next, temp2 = head2.next;
+            head1.next = head2;
+            head2.next = temp1;
+            head1 = temp1;
+            head2 = temp2;
         }
     }
 }

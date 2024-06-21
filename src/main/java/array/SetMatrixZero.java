@@ -20,7 +20,7 @@ package array;
  * m == matrix.length
  * n == matrix[0].length
  * 1 <= m, n <= 200
- * -231 <= matrix[i][j] <= 231 - 1
+ * -2^31 <= matrix[i][j] <= 2^31 - 1
  * <p>
  * Follow up:
  * <p>

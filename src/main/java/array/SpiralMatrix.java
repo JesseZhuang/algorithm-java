@@ -40,8 +40,7 @@ public class SpiralMatrix {
         int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
         int[] limits = {c, r - 1};
         List<Integer> res = new ArrayList<>();
-        int iDir = 0;
-        int cr = 0, cc = -1; // important, start from outside of matrix
+        int iDir = 0, cr = 0, cc = -1; // important, start from outside of matrix
         while (limits[iDir % 2] != 0) {
             for (int i = 0; i < limits[iDir % 2]; i++) {
                 cr += dirs[iDir][0];

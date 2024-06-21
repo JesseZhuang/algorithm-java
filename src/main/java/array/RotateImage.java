@@ -28,20 +28,7 @@ package array;
  * to find three more solutions to this problem. Each solution uses two matrix operations.
  */
 public class RotateImage {
-    // 0ms, 40.9MB. O(N) O(n^2) time, O(1) space.
-    public void rotate1(int[][] matrix) {
-        int n = matrix.length; // using 5x5 matrix as example,
-        for (int i = 0; i < n / 2; i++) // layers need to do rotation: 5x5, 3x3
-            for (int j = i; j < n - i - 1; j++) { // elements to rotate in this layer {0,0}{0,1}{0,2}{0,3}; {1,1}{1,2}
-                int temp = matrix[i][j];
-                matrix[i][j] = matrix[n - j - 1][i]; // [x1][y1] = [x2][y2]. x1 == y2, y1 x2 symmetrical y1 = n-1-x2
-                matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1];
-                matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1];
-                matrix[j][n - i - 1] = temp;
-            }
-    }
-
-    // 0ms, 40.7Mb. transpose then reflect. O(N) O(n^2) time, O(1) space.
+    // solution 1, easier to remember boundaries, 0ms, 40.7Mb. transpose then reflect. O(N) O(n^2) time, O(1) space.
     // Another method: reverse up down then transpose
     // for counterclockwise rotate, first reverse left right then transpose
     // for 180, reflect left right then up down
@@ -60,4 +47,19 @@ public class RotateImage {
                 matrix[i][n - 1 - j] = temp;
             }
     }
+
+    // solution 2, 0ms, 40.9MB. O(N) O(n^2) time, O(1) space.
+    public void rotate1(int[][] matrix) {
+        int n = matrix.length; // using 5x5 matrix as example,
+        for (int i = 0; i < n / 2; i++) // layers need to do rotation: 5x5, 3x3
+            for (int j = i; j < n - i - 1; j++) { // elements to rotate in this layer {0,0}{0,1}{0,2}{0,3}; {1,1}{1,2}
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[n - j - 1][i]; // [x1][y1] = [x2][y2]. x1 == y2, y1 x2 symmetrical y1 = n-1-x2
+                matrix[n - j - 1][i] = matrix[n - i - 1][n - j - 1];
+                matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1];
+                matrix[j][n - i - 1] = temp;
+            }
+    }
+
+
 }

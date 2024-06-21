@@ -43,12 +43,12 @@ public class WordSearch {
     private boolean dfs(char[][] board, String word, int index, boolean[][] visited, int i, int j) {
         if (index == word.length()) return true;
         if (i >= board.length || i < 0 || j < 0 || j >= board[0].length
-                || visited[i][j] || board[i][j] != word.charAt(index)) return false;
-        visited[i][j] = true;
+                || visited[i][j] || board[i][j] != word.charAt(index)) return false; // board[i][j]=='8' visited
+        visited[i][j] = true; // board[i][j] ^= 256;
         int[][] dirs = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
         for (int[] dir : dirs)
             if (dfs(board, word, index + 1, visited, i + dir[0], j + dir[1])) return true;
-        visited[i][j] = false;
+        visited[i][j] = false; // board[i][j] ^= 256;
         return false;
     }
 }

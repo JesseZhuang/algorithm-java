@@ -49,13 +49,13 @@ public class RemoveNthFromEnd {
     public ListNode removeNth(ListNode head, int n) {
         ListNode dummy = new ListNode();
         dummy.next = head;
-        ListNode fast = dummy, slow = dummy;
-        for (int i = 1; i <= n + 1; i++) fast = fast.next; // careful how many positions to move fast
-        while (fast != null) {
-            slow = slow.next;
-            fast = fast.next;
+        ListNode front = dummy, back = dummy;
+        for (int i = 1; i <= n + 1; i++) front = front.next; // careful how many positions to move fast
+        while (front != null) {
+            back = back.next;
+            front = front.next;
         }
-        slow.next = slow.next.next;
+        back.next = back.next.next;
         return dummy.next;
     }
 }
