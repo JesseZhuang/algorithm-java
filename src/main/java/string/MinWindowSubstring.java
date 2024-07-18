@@ -45,14 +45,14 @@ public class MinWindowSubstring {
         int[] map = new int[128]; // ascii
         for (int i = 0; i < t.length(); i++) map[t.charAt(i)]++;
         int tNotFound = t.length(), left = 0, right = 0, minL = 0, minR = s.length() + 1;
-        while (right < s.length()) {
+        while (right < s.length()) { // move right to find a valid window
             if (map[s.charAt(right++)]-- > 0) tNotFound--;
             while (tNotFound == 0) {
                 if (right - left < minR - minL) {
                     minR = right;
                     minL = left;
                 }
-                if (map[s.charAt(left++)]++ == 0) tNotFound++;
+                if (map[s.charAt(left++)]++ == 0) tNotFound++; // move left to find a smaller window
             }
         }
         return minR == s.length() + 1 ? "" : s.substring(minL, minR);

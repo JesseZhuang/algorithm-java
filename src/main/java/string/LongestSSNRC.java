@@ -28,6 +28,8 @@ import java.util.Map;
  * <p>
  * 0 <= s.length <= 5 * 10^4, n, m: number of unique characters
  * s consists of English letters, digits, symbols and spaces. so m < 128, ascii
+ * <p>
+ * Hint: Generate all possible substrings & check for each substring if it's valid and keep updating maxLen accordingly.
  */
 public class LongestSSNRC {
     // solution 1, 5ms, 42.8 Mb. O(n) time, O(m) space. m: number of unique characters
