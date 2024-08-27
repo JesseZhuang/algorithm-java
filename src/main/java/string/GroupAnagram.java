@@ -35,12 +35,12 @@ public class GroupAnagram {
     // 6ms, 45.9Mb. O(mn) time, O(mn) space.
     // Other: construct key with delimiter and count; sort O(mnLgn) time;prime number for a-z, multiple as key
     public static List<List<String>> groupAnagrams(String[] strs) {
-        Map<String, List<String>> map = new HashMap<>();
+        Map<String, List<String>> map = new HashMap<>(); // use name keyToAnagrams if readability is desired
         final int R = 26;
         for (String s : strs) {
             char[] counts = new char[R];
             for (char c : s.toCharArray()) counts[c - 'a']++; // counting sort O(26)
-            String key = String.valueOf(counts);
+            String key = String.valueOf(counts); // anagrams will have the same String key
             if (!map.containsKey(key)) map.put(key, new ArrayList<>());
             map.get(key).add(s); // must be after creating list, must not be in else
         }

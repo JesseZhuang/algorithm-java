@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class ValidAnagram {
 
-    // 5ms, 42.3Mb. O(n) time, O(26) space.
+    // solution 1, 5ms, 42.3Mb. O(n) time, O(26) space.
     public boolean isAnagram(String s, String t) {
         if (s.length() != t.length()) return false;
         int[] counts = new int[26];
@@ -38,7 +38,7 @@ public class ValidAnagram {
         return true;
     }
 
-    // 16ms, 42.5Mb. LintCode follow up if inputs contain unicode characters. O(n) time and space.
+    // solution 2, 16ms, 42.5Mb. LintCode follow up if inputs contain unicode characters. O(n) time and space.
     public boolean isAnagramMap(String s, String t) {
         if (s.length() != t.length()) return false;
         Map<Character, Integer> map = new HashMap<>();
