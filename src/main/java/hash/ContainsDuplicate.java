@@ -50,6 +50,7 @@ public class ContainsDuplicate {
     public boolean containsDuplicate4(int[] numbers) {
         // previously [] empty array considered false!
         HashSet<Integer> set = new HashSet<>();
+        if (numbers == null) return false;
         for (int num : numbers) {
             if (set.contains(num)) return true;
             else set.add(num);
