@@ -40,7 +40,7 @@ public class GroupAnagram {
         for (String s : strs) {
             char[] counts = new char[R];
             for (char c : s.toCharArray()) counts[c - 'a']++; // counting sort O(26)
-            String key = String.valueOf(counts); // anagrams will have the same String key
+            String key = String.valueOf(counts); // anagrams will have the same String key, note char[] -> String
             if (!map.containsKey(key)) map.put(key, new ArrayList<>());
             map.get(key).add(s); // must be after creating list, must not be in else
         }
