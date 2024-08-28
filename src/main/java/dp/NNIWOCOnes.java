@@ -41,15 +41,15 @@ public class NNIWOCOnes {
         dp[0] = 1;
         dp[1] = 2;
         // ans(xxxx) = ans(xxx) + ans(xx) xxxx -> 0xxx + 10xx
-        for (int i = 2; i < 32; i++) dp[i] = dp[i - 1] + dp[i - 2];
+        for (int i = 2; i < 32; i++) dp[i] = dp[i - 1] + dp[i - 2]; // i<32 not i<n
         int res = 0;
         boolean pre = false; // pre: previous bit was 1?
-        for (int k = 30; k >= 0; k--) {
-            if ((n & (1 << k)) != 0) { // is the ith bit set?
+        for (int k = 30; k >= 0; k--) { // n<10^9 only need to check 30 bits
+            if ((n & (1 << k)) != 0) { // is the kth bit 1?
                 res += dp[k];
-                if (pre) return res;
+                if (pre) return res; // do not count itself, no +1 since n itself has consecutive ones
                 pre = true;
-            } else pre = false;
+            } else pre = false; //
         }
         return res + 1; // e.g., 1010 dp[3](1000)+dp[1](10)+1(1010 itself)
     }
