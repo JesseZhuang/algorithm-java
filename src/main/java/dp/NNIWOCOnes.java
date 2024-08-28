@@ -35,6 +35,7 @@ package dp;
  */
 public class NNIWOCOnes {
     // solution 1, dp, O(32) O(1) time and space
+    // other O(N), O(lgN) methods see https://www.geeksforgeeks.org/count-number-binary-strings-without-consecutive-1s/
     public int findIntegers(int n) {
         int[] dp = new int[32];
         dp[0] = 1;
