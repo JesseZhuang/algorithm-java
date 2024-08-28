@@ -34,7 +34,22 @@ package dp;
  * 1 <= n <= 10^9
  */
 public class NNIWOCOnes {
+    // solution 1, dp, O(32) O(1) time and space
     public int findIntegers(int n) {
-        return 0;
+        int[] dp = new int[32];
+        dp[0] = 1;
+        dp[1] = 2;
+        // ans(xxxx) = ans(xxx) + ans(xx) xxxx -> 0xxx + 10xx
+        for (int i = 2; i < 32; i++) dp[i] = dp[i - 1] + dp[i - 2];
+        int res = 0;
+        boolean pre = false; // pre: previous bit was 1?
+        for (int k = 30; k >= 0; k--) {
+            if ((n & (1 << k)) != 0) { // is the ith bit set?
+                res += dp[k];
+                if (pre) return res;
+                pre = true;
+            } else pre = false;
+        }
+        return res + 1; // e.g., 1010 dp[3](1000)+dp[1](10)+1(1010 itself)
     }
 }
