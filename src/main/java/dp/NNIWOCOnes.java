@@ -34,4 +34,7 @@ package dp;
  * 1 <= n <= 10^9
  */
 public class NNIWOCOnes {
+    public int findIntegers(int n) {
+        return 0;
+    }
 }
