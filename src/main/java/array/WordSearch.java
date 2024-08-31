@@ -1,5 +1,7 @@
 package array;
 
+import java.util.HashMap;
+
 /**
  * LeetCode 79, medium, tags: array, matrix, backtracking. LintCode 123.
  * Given an m x n grid of characters board and a string word, return true if word exists in the grid.
@@ -28,9 +30,21 @@ package array;
  * 1 <= m, n <= 6
  * 1 <= word.length <= 15, l
  * board and word consists of only lowercase and uppercase English letters.
+ * <p>
+ * Follow up: Could you use search pruning to make your solution faster with a larger board?
+ * 1, stop at mismatch
+ * 2, check the frequency of first and last char of the word in the board,
+ * and if the freq of first char is greater than last one, simple reverse the string and find the result
  */
 public class WordSearch {
-    // 383ms, 42.5Mb. O(mn 3^l) time, O(mn) space, O(min(l,mn)) recursion space.
+
+    public static void main(String[] args) {
+        String word = "test";
+        word = new StringBuilder(word).reverse().toString();
+        System.out.println(word);
+    }
+
+    // 383ms, 42.5Mb. O(mn 4^l) time, O(mn) space, O(min(l,mn)) recursion space.
     // Some use bitwise XOR 256 or set char to not letter to save space (visited array)
     public boolean exist(char[][] board, String word) {
         boolean[][] visited = new boolean[board.length][board[0].length];
@@ -49,6 +63,27 @@ public class WordSearch {
         for (int[] dir : dirs)
             if (dfs(board, word, index + 1, visited, i + dir[0], j + dir[1])) return true;
         visited[i][j] = false; // board[i][j] ^= 256;
+        return false;
+    }
+
+    // follow up: search pruning
+    public boolean exist2(char[][] board, String word) {
+        HashMap<Character, Integer> freqCnt = new HashMap<>();
+        for (int i = 0; i < board.length; i++)
+            for (int j = 0; j < board[0].length; j++)
+                freqCnt.put(board[i][j], freqCnt.getOrDefault(board[i][j], 0));
+        for (int i = 0; i < word.length(); i++)
+            if (freqCnt.get(word.charAt(i)) == 0) return false;
+        char firstLetter = word.charAt(0);
+        char lastLetter = word.charAt(word.length() - 1);
+        if (freqCnt.get(firstLetter) > freqCnt.get(lastLetter))
+            word = new StringBuilder(word).reverse().toString();
+
+        boolean[][] visited = new boolean[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++)
+            for (int j = 0; j < board[0].length; j++)
+                if (dfs(board, word, 0, visited, i, j)) return true;
+
         return false;
     }
 }
