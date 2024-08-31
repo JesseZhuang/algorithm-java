@@ -33,7 +33,7 @@ package array;
  */
 public class ShortestUnsorted {
     // solution 1, two pointer, n time, 1 space. 1ms, 44.2Mb.
-    // solution 1 sort then two pointer, nlgn time, n space.
+    // solution 2, sort then two pointer, nlgn time, n space.
     public int findUnsortedSubarray(int[] nums) {
         int n = nums.length, lo = -1, hi = -2, min = nums[n - 1], max = nums[0];
         for (int i = 1; i < n; i++) {
