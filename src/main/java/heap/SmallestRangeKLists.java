@@ -1,0 +1,61 @@
+package heap;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+
+/**
+ * LeetCode 632, hard, tags: array, hash table, greedy, sliding window, sorting, heap.
+ * <p>
+ * You have k lists of sorted integers in non-decreasing order. Find the smallest range that includes at least
+ * one number from each of the k lists.
+ * <p>
+ * We define the range [a, b] is smaller than range [c, d] if b - a < d - c or a < c if b - a == d - c.
+ * <p>
+ * Example 1:
+ * <p>
+ * Input: nums = [[4,10,15,24,26],[0,9,12,20],[5,18,22,30]]
+ * Output: [20,24]
+ * Explanation:
+ * List 1: [4, 10, 15, 24,26], 24 is in range [20,24].
+ * List 2: [0, 9, 12, 20], 20 is in range [20,24].
+ * List 3: [5, 18, 22, 30], 22 is in range [20,24].
+ * Example 2:
+ * <p>
+ * Input: nums = [[1,2,3],[1,2,3],[1,2,3]]
+ * Output: [1,1]
+ * <p>
+ * Constraints:
+ * <p>
+ * nums.length == k
+ * 1 <= k <= 3500
+ * 1 <= nums[i].length <= 50, consider this O(1)
+ * -10^5 <= nums[i][j] <= 10^5
+ * nums[i] is sorted in non-decreasing order.
+ */
+public class SmallestRangeKLists {
+
+    // heap, O(klgk) time, O(k) space. 35ms, 48.95Mb.
+    public int[] smallestRange(List<List<Integer>> nums) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+        int max = Integer.MIN_VALUE, left = (int) -1e5, right = (int) 1e5;
+        for (int r = 0; r < nums.size(); r++) {
+            int v = nums.get(r).get(0);
+            pq.add(new int[]{r, 0, v});
+            if (v > max) max = v;
+        }
+        while (pq.size() == nums.size()) {
+            int[] cur = pq.remove();
+            int r = cur[0], c = cur[1], v = cur[2];
+            if (max - v < right - left) {
+                left = v;
+                right = max;
+            }
+            if (c + 1 == nums.get(r).size()) return new int[]{left, right}; // completed one row, done
+            v = nums.get(r).get(c + 1);
+            if (v > max) max = v;
+            pq.add(new int[]{r, c + 1, v});
+        }
+        return new int[]{left, right};
+    }
+}
