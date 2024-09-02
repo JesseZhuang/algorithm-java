@@ -65,7 +65,7 @@ public class ReorganizeString {
         return String.valueOf(res);
     }
 
-    // heap, O(nLgk) time, O(1) space. 7ms, 41.56 Mb.
+    // heap, O(n+kLgk) time, O(k) space. k<=26. 7ms, 41.56 Mb.
     public String reorganizeString2(String s) {
         Map<Character, Integer> counts = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {

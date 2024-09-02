@@ -57,7 +57,7 @@ public class ImplTrie { // 36ms, 50.6 Mb. iterative.
 
     public boolean search(String word) { // O(n) time, O(1) space
         Node n = get(word);
-        return n == null ? false : n.isWord;
+        return n != null && n.isWord;
     }
 
     public boolean startsWith(String prefix) {
@@ -68,7 +68,7 @@ public class ImplTrie { // 36ms, 50.6 Mb. iterative.
         Node cur = root;
         for (int i = 0; i < word.length(); i++) {
             int id = word.charAt(i) - 'a';
-            if (cur == null || cur.next == null || cur.next[id] == null) return null;
+            if (cur.next[id] == null) return null;
             cur = cur.next[id];
         }
         return cur;
@@ -107,13 +107,14 @@ class ImplTrieR { // 33ms, 51.1 Mb. recursive.
 
     public boolean search(String word) {
         Node n = get(root, word, 0);
-        return n == null ? false : n.isWord;
+        return n != null && n.isWord;
     }
 
     public boolean startsWith(String prefix) {
         return get(root, prefix, 0) != null;
     }
 
+    // O(n) time, O(n) recursive stack space
     private Node get(Node n, String word, int d) {
         if (n == null) return null;
         if (d == word.length()) return n;
