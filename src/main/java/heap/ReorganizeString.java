@@ -46,17 +46,17 @@ public class ReorganizeString {
                 maxInd = i;
             }
         }
-        if (max > (s.length() + 1) / 2) return ""; // Impossible to form a solution
+        if (max > (s.length() + 1) / 2) return ""; // Impossible to form a solution, do not forget
         char[] res = new char[s.length()];
         int idx = 0;
         while (count[maxInd] > 0) { // place max frequency char at index 0,2,4,...
-            res[idx] = (char) (maxInd + 'a');
+            res[idx] = (char) (maxInd + 'a'); // remember to cast
             idx += 2;
             count[maxInd]--;
         }
         for (int i = 0; i < count.length; i++) {
             while (count[i] > 0) {
-                if (idx >= res.length) idx = 1;
+                if (idx >= res.length) idx = 1; // must be inside to continue after the most frequent letter
                 res[idx] = (char) (i + 'a');
                 idx += 2;
                 count[i]--;
@@ -65,7 +65,7 @@ public class ReorganizeString {
         return String.valueOf(res);
     }
 
-    // heap, O(n+kLgk) time, O(k) space. k<=26. 7ms, 41.56 Mb.
+    // heap, O(n+nLgk) time, O(k) space. k<=26. 7ms, 41.56 Mb.
     public String reorganizeString2(String s) {
         Map<Character, Integer> counts = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {
@@ -77,7 +77,7 @@ public class ReorganizeString {
         for (char c : counts.keySet()) pq.add(new int[]{c, -counts.get(c)}); // neg so counts desc
         StringBuilder sb = new StringBuilder();
         Character preC = null;
-        while (!pq.isEmpty()) {
+        while (!pq.isEmpty()) { // nLgk time
             char cur = (char) pq.remove()[0];
             sb.append(cur);
             counts.put(cur, counts.get(cur) - 1); // decrement since used one char

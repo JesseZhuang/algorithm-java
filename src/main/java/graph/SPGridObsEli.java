@@ -57,16 +57,16 @@ public class SPGridObsEli {
                 int cr = cur[0], cc = cur[1], ck = cur[2];
                 if (cr == r - 1 && cc == c - 1) return res;
                 for (int[] dir : dirs) {
-                    int nr = dir[0] + cr, nc = dir[1] + cc, nk = ck;
-                    if (nr < 0 || nr > r - 1 || nc < 0 || nc > c - 1) continue;
+                    int nr = dir[0] + cr, nc = dir[1] + cc, nk = ck; // nk = ck cannot be outside the inner loop
+                    if (nr < 0 || nr > r - 1 || nc < 0 || nc > c - 1) continue; // do not forget
                     if (grid[nr][nc] == 1) nk++;
-                    if (nk > k || visited[nr][nc][nk]) continue;
+                    if (nk > k || visited[nr][nc][nk]) continue; // do not forget visited, > not >=
                     visited[nr][nc][nk] = true;
                     q.add(new int[]{nr, nc, nk});
                 }
             }
             res++;
         }
-        return -1;
+        return -1; // not return res
     }
 }

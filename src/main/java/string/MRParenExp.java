@@ -50,18 +50,23 @@ package string;
  * cases where a and/or d do not exist, in which case use 1 instead of them.
  */
 public class MRParenExp {
+    public static void main(String[] args) {
+        MRParenExp tbt = new MRParenExp();
+        System.out.println(tbt.minimizeResult("237+48")); // 2(37+48)
+    }
+
     // O(mn) time, O(m+n) or O(1) (considering space for result string, can optimize with StringBuilder) space
     public String minimizeResult(String expression) {
         String[] sp = expression.split("\\+"); // + can be used as quantifier, needs escaping
         String left = sp[0], right = sp[1];
         // l, r Index at which we add ( and ), r=1 at least one digit before )
         int minL = 0, minR = 1, min = Integer.MAX_VALUE;
-        for (int l = 0; l < left.length(); l++) {
+        for (int l = 0; l < left.length(); l++) { // note <, at least one digit left of +
             int a = l == 0 ? 1 : Integer.parseInt(left.substring(0, l));
             int b = Integer.parseInt(left.substring(l));
-            for (int r = 1; r <= right.length(); r++) { // nested for loop must init r inside
+            for (int r = 1; r <= right.length(); r++) { // nested for loop must init r inside, <=, ) can be at end
                 int c = Integer.parseInt(right.substring(0, r));
-                int d = r == right.length() ? 1 : Integer.parseInt(right.substring(r));
+                int d = r == right.length() ? 1 : Integer.parseInt(right.substring(r)); // note not r.length-1
                 int res = a * (b + c) * d;
                 if (res < min) {
                     min = res;
@@ -72,10 +77,5 @@ public class MRParenExp {
         }
         return left.substring(0, minL) + "(" + left.substring(minL) + "+"
                 + right.substring(0, minR) + ")" + right.substring(minR);
-    }
-
-    public static void main(String[] args) {
-        MRParenExp tbt = new MRParenExp();
-        System.out.println(tbt.minimizeResult("237+48")); // 2(37+48)
     }
 }

@@ -1,8 +1,6 @@
 package heap;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * LeetCode 632, hard, tags: array, hash table, greedy, sliding window, sorting, heap.
@@ -35,6 +33,14 @@ import java.util.PriorityQueue;
  */
 public class SmallestRangeKLists {
 
+    public static void main(String[] args) {
+        List<List<Integer>> nums = new ArrayList<>();
+        nums.add(Arrays.asList(4, 10, 15, 24, 26));
+        nums.add(Arrays.asList(0, 9, 12, 20));
+        nums.add(Arrays.asList(5, 18, 22, 30));
+        System.out.println(Arrays.toString(new SmallestRangeKLists().smallestRange(nums)));
+    }
+
     // heap, O(klgk) time, O(k) space. 35ms, 48.95Mb.
     public int[] smallestRange(List<List<Integer>> nums) {
         PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
@@ -44,6 +50,7 @@ public class SmallestRangeKLists {
             pq.add(new int[]{r, 0, v});
             if (v > max) max = v;
         }
+        // [[4,10,15,24,26],[0,9,12,20],[5,18,22,30]] [0,5]->[20,24]
         while (pq.size() == nums.size()) {
             int[] cur = pq.remove();
             int r = cur[0], c = cur[1], v = cur[2];
