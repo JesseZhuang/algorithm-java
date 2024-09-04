@@ -46,11 +46,11 @@ public class WordBreakII {
     // in the worse case scenario where all combinations of the string are correct (e,g, s=aaa, dic=[a, aa, aaa]).
     // Some might argue that they reduce the number of recursive/iterative calls to n^2 using memo or DP just like
     // word break I. However, the time complexity of each recursive call in this approach is not linear anymore.
-    // Imagine the length of sublist is 2^(n-1). Optimization only happens when the return value is a integer or
+    // Imagine the length of sublist is 2^(n-1). Optimization only happens when the return value is an integer or
     // boolean. This is why we don't use DP/memo to solve subsets/permutation problem because all combinations are
     // valid. The code below combines (1) and (4) and beats 99% as the solution above suffers the problem that
     // the dictionary size might be too large.
-    // 4ms, 40.9Mb, O(2^n) time, O(max(N,MK)) space.
+    // 4ms, 40.9Mb, O(2^N) time, O(max(N,MK)) space.
     public List<String> wordBreak(String s, List<String> wordDict) {
         Set<String> hs = new HashSet<>();
         for (String w : wordDict) {
@@ -69,7 +69,7 @@ public class WordBreakII {
             if (hs.contains(s.substring(start, i + 1))) {
                 List<String> nexts = helper(hs, s, i + 1, map);
                 for (String next : nexts) {
-                    if (next == "") list.add(s.substring(start, i + 1) + next); // reaches the end
+                    if (next.isEmpty()) list.add(s.substring(start, i + 1) + next); // reaches the end
                     else list.add(s.substring(start, i + 1) + " " + next);
                 }
             }
