@@ -42,6 +42,7 @@ import java.util.List;
 public class EmployeeFreeTime {
 
     public static void main(String[] args) {
+        int[][] test = new int[][]{{1, 2, 5, 6}, {1, 3}, {4, 10}};
         Interval[] ia = {new Interval(1, 2), new Interval(5, 6),
                 new Interval(1, 3), new Interval(4, 10)};
         List<List<Interval>> t1 = new ArrayList<>();
@@ -65,6 +66,25 @@ public class EmployeeFreeTime {
             Interval cur = timeLine.get(i);
             if (cur.start > end) res.add(new Interval(end, cur.start));
             end = Math.max(end, cur.end);
+        }
+        return res;
+    }
+
+    // lint code 434ms, 23.84Mb.
+    public List<Interval> employeeFreeTimeLint(int[][] schedule) {
+        List<int[]> intervals = new ArrayList<>();
+        for (int[] s : schedule)
+            for (int i = 0; i < s.length; i += 2)
+                intervals.add(new int[]{s[i], s[i + 1]});
+        intervals.sort(Comparator.comparingInt(i -> i[0]));
+
+        int end = intervals.get(0)[1];
+        List<Interval> res = new ArrayList<>();
+        for (int i = 1; i < intervals.size(); i++) {
+            if (intervals.get(i)[0] > end) {
+                res.add(new Interval(end, intervals.get(i)[0]));
+            }
+            end = Math.max(end, intervals.get(i)[1]);
         }
         return res;
     }

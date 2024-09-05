@@ -40,6 +40,23 @@ import java.util.Set;
  * "aaa", therefore 'c' is before 'a' in output.
  * Similarly, we can find other orders.
  * <p>
+ * <p>
+ * Note:
+ * <p>
+ * You may assume all letters are in lowercase.
+ * You may assume that if a is a prefix of b, then a must appear before b in the given dictionary.
+ * If the order is invalid, return an empty string.
+ * There may be multiple valid order of letters, return any one of them is fine.
+ * <p>
+ * Constraints:
+ * <p>
+ * 1 <= words.length <= 100
+ * 1 <= words[i].length <= 100
+ * words[i] consists of only lowercase English letters.
+ * <p>
+ * <p>
+ * GeekForGeeks or some other website constraints:
+ * <p>
  * Your Task:
  * You don't need to read or print anything. Your task is to complete the function findOrder() which takes
  * the string array dict[], its size N and the integer K as input parameter and returns a string denoting
@@ -58,11 +75,6 @@ import java.util.Set;
  * You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules
  * of this new language. Derive the order of letters in this language.
  * <p>
- * You may assume all letters are in lowercase.
- * The dictionary is invalid, if string 'a' is prefix of string b and b is appeared before 'a'.
- * If the order is invalid, return an empty string.
- * There may be multiple valid order of letters, return the smallest in normal lexicographical order.
- * The letters in one string are of the same rank by default and are sorted in Human dictionary order.
  * Example 1:
  * <p>
  * Input：["wrt","wrf","er","ett","rftt"]
@@ -91,6 +103,13 @@ import java.util.Set;
  */
 public class AlienDict {
 
+    public static void main(String[] args) {
+        AlienDict t = new AlienDict();
+//        System.out.println(t.alienOrderBFS(new String[]{"wrt", "wrf", "er", "ett", "rftt"})); // expected wertf
+//        System.out.println(t.alienOrderBFS(new String[]{"z", "x"})); // expected zx
+        System.out.println(t.alienOrderBFS(new String[]{"ab", "ac"})); // expected abc
+    }
+
     // solution 1, O(nlgn) time, O(n) space. lint code, 271ms, 21.76 Mb.
     public String alienOrderBFS(String[] words) {
         return topological(buildGraph(words));
@@ -99,7 +118,7 @@ public class AlienDict {
     // O(n) time and space.
     private Map<Character, Set<Character>> buildGraph(String[] words) {
         Map<Character, Set<Character>> res = new HashMap<>();
-        for (String w : words) // create nodes
+        for (String w : words) //  ["ab", "ac"], create "a" anyway even no edge
             for (char j : w.toCharArray()) res.putIfAbsent(j, new HashSet<>());
         for (int i = 1; i < words.length; i++) {
             int j = 0;
@@ -119,7 +138,7 @@ public class AlienDict {
         for (char c : graph.keySet()) inDegree.put(c, 0);
         for (char v : graph.keySet())
             for (char w : graph.get(v)) inDegree.put(w, inDegree.get(w) + 1);
-        Queue<Character> q = new PriorityQueue<>();
+        Queue<Character> q = new PriorityQueue<>(); // sort by natural order, lexicographical
         for (Map.Entry<Character, Integer> entry : inDegree.entrySet())
             if (entry.getValue() == 0) q.add(entry.getKey());
         StringBuilder res = new StringBuilder();
@@ -136,11 +155,5 @@ public class AlienDict {
         }
         if (count != graph.size()) return "";
         return res.toString();
-    }
-
-    public static void main(String[] args) {
-        AlienDict t = new AlienDict();
-        System.out.println(t.alienOrderBFS(new String[]{"wrt", "wrf", "er", "ett", "rftt"})); // expected wertf
-        System.out.println(t.alienOrderBFS(new String[]{"z", "x"})); // expected zx
     }
 }

@@ -48,7 +48,23 @@ import java.util.Set;
  */
 public class WordSearchII {
 
-    // 153ms, 42.8Mb. dfs with trie node. O(mn*4^L) time.
+    public static void main(String[] args) {
+        char[][] board = {{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}};
+        String[] words = {"oath", "pea", "eat", "rain"}; // expected: {'eat','oath'}
+        WordSearchII tbt = new WordSearchII();
+        System.out.println(tbt.findWords(board, words));
+        board = new char[][]{{'a', 'b'}, {'c', 'd'}};
+        words = new String[]{"abcb"};  // expected: {}
+        System.out.println(tbt.findWords(board, words));
+        board = new char[][]{{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}};
+        words = new String[]{"oath", "pea", "eat", "rain", "hklf", "hf"};
+        System.out.println(tbt.findWords(board, words)); // expected: [oath, eat, hf, hklf]
+        board = new char[][]{{'a', 'a'}, {'a', 'a'}};
+        words = new String[]{"a"};
+        System.out.println(tbt.findWords1(board, words)); // multiple "a" found if not dedupe
+    }
+
+    // solution 1, 153ms, 42.8Mb. dfs with trie node. O(mn*4^L) time.
     public List<String> findWords(char[][] board, String[] words) {
         Node root = new Node();
         for (String w : words) insert(w, root);
@@ -63,7 +79,7 @@ public class WordSearchII {
     private void dfs(char[][] board, int r, int c, Node n, List<String> res) {
         char c1 = board[r][c];
         int id = c1 - 'a';
-        if (c == '#' || n.next[id] == null) return;
+        if (c1 == '#' || n.next[id] == null) return;
         n = n.next[id];
         if (n.word != null) {
             res.add(n.word);
@@ -77,7 +93,6 @@ public class WordSearchII {
         board[r][c] = c1;
     }
 
-
     private void insert(String word, Node root) {
         Node cur = root;
         for (int i = 0; i < word.length(); i++) {
@@ -88,11 +103,13 @@ public class WordSearchII {
         cur.word = word;
     }
 
-    // 2668 ms, 45.6 Mb. dfs with trie. O(mnl*4^l) time.
+    // solution 2, slow, 2668 ms, 45.6 Mb. dfs with trie. O(mnl*4^l) time.
+    // check trie.startsWith(candidate) will start from trie root every time
+    // e.g., for apple, a, ap, app, appl will need to go down from a from the top
     public List<String> findWords1(char[][] board, String[] words) {
         ImplTrie trie = new ImplTrie();
         for (String w : words) trie.insert(w); // O(NL) time and space.
-        Set<String> result = new HashSet<>();
+        Set<String> result = new HashSet<>(); // dedupe
         boolean[][] visited = new boolean[board.length][board[0].length]; // reuse, no need new for each iteration
         for (int r = 0; r < board.length; r++) {
             for (int c = 0; c < board[0].length; c++) {
@@ -101,7 +118,7 @@ public class WordSearchII {
                     findWords1(board, trie, result, r, c, visited, new StringBuilder(s));
             }
         }
-        return Arrays.asList(result.toArray(new String[result.size()]));
+        return Arrays.asList(result.toArray(new String[0]));
     }
 
     private void findWords1(char[][] board, ImplTrie trie, Set<String> found, int r, int c,
@@ -119,19 +136,6 @@ public class WordSearchII {
             }
         }
         visited[r][c] = false; // important!
-    }
-
-    public static void main(String[] args) {
-        char[][] board = {{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}};
-        String[] words = {"oath", "pea", "eat", "rain"}; // Output: {'eat','oath'}
-        WordSearchII tbt = new WordSearchII();
-        System.out.println(tbt.findWords1(board, words));
-        board = new char[][]{{'a', 'b'}, {'c', 'd'}};
-        words = new String[]{"abcb"};  //Output: {}
-        System.out.println(tbt.findWords1(board, words));
-        board = new char[][]{{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}};
-        words = new String[]{"oath", "pea", "eat", "rain", "hklf", "hf"};
-        System.out.println(tbt.findWords1(board, words));
     }
 }
 

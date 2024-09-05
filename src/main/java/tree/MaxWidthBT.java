@@ -2,7 +2,11 @@ package tree;
 
 import struct.TreeNode;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * LeetCode 662, medium, tags: binary tree, dfs, bfs,
@@ -41,23 +45,7 @@ public class MaxWidthBT {
     int res;
     Map<Integer, Integer> lLeft; // level->left most node position
 
-    // solution 1, dfs, O(n) time and space. 3ms, 44.36Mb.
-    public int widthOfBinaryTreeDfs(TreeNode root) {
-        res = 0;
-        lLeft = new HashMap<>();
-        dfs(root, 0, 0);
-        return res;
-    }
-
-    void dfs(TreeNode n, int d, int p) { // depth, position
-        if (n == null) return;
-        lLeft.putIfAbsent(d, p);
-        res = Math.max(res, p - lLeft.get(d) + 1);
-        dfs(n.left, d + 1, 2 * p);
-        dfs(n.right, d + 1, 2 * p + 1);
-    }
-
-    // solution 2, bfs, O(n) time and space, 2ms, 43.01Mb.
+    // solution 1, bfs, O(n) time and space, 2ms, 43.01Mb. One calculation of res per layer.
     public int widthOfBinaryTreeBfs(TreeNode root) {
         int res = 0;
         Queue<Map.Entry<TreeNode, Integer>> q = new ArrayDeque<>(); // map: node->position
@@ -75,4 +63,21 @@ public class MaxWidthBT {
         }
         return res;
     }
+
+    // solution 2, dfs, O(n) time and space. 3ms, 44.36Mb.
+    public int widthOfBinaryTreeDfs(TreeNode root) {
+        res = 0;
+        lLeft = new HashMap<>();
+        dfs(root, 0, 0);
+        return res;
+    }
+
+    void dfs(TreeNode n, int d, int p) { // depth, position
+        if (n == null) return;
+        lLeft.putIfAbsent(d, p);
+        res = Math.max(res, p - lLeft.get(d) + 1);
+        dfs(n.left, d + 1, 2 * p);
+        dfs(n.right, d + 1, 2 * p + 1);
+    }
+
 }
