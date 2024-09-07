@@ -40,7 +40,7 @@ public class MultiplyStrings {
                 int lowI = i + j + 1, highI = i + j;
                 int product = Character.getNumericValue(num1.charAt(i)) * Character.getNumericValue(num2.charAt(j));
                 int sum = product + res[lowI];
-                res[highI] += sum / 10;
+                res[highI] += sum / 10; // += not =
                 res[lowI] = sum % 10;
             }
         StringBuilder sb = new StringBuilder();

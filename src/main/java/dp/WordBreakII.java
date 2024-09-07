@@ -67,10 +67,10 @@ public class WordBreakII {
         if (start == s.length()) list.add("");
         for (int i = start; i < start + maxLen && i < s.length(); i++) { // reduce # iterations using maxLen
             if (hs.contains(s.substring(start, i + 1))) {
-                List<String> nexts = helper(hs, s, i + 1, map);
-                for (String next : nexts) {
-                    if (next.isEmpty()) list.add(s.substring(start, i + 1) + next); // reaches the end
-                    else list.add(s.substring(start, i + 1) + " " + next);
+                List<String> next = helper(hs, s, i + 1, map);
+                for (String sn : next) {
+                    if (sn.isEmpty()) list.add(s.substring(start, i + 1) + sn); // reaches the end
+                    else list.add(s.substring(start, i + 1) + " " + sn);
                 }
             }
         }

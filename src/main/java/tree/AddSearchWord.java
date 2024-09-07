@@ -54,17 +54,17 @@ public class AddSearchWord {
 }
 
 class WordDictionary { // 452 ms, 96 Mb.
-    Node root;
+    ImplTrie.Node root;
 
     public WordDictionary() {
-        root = new Node();
+        root = new ImplTrie.Node();
     }
 
     public void addWord(String word) {
-        Node cur = root;
+        ImplTrie.Node cur = root;
         for (int i = 0; i < word.length(); i++) {
             int id = word.charAt(i) - 'a';
-            if (cur.next[id] == null) cur.next[id] = new Node();
+            if (cur.next[id] == null) cur.next[id] = new ImplTrie.Node();
             cur = cur.next[id];
         }
         cur.isWord = true;
@@ -74,7 +74,7 @@ class WordDictionary { // 452 ms, 96 Mb.
         return match(word, 0, root); // wild card, worst case time search hit or miss O(26^L) e.g., "..g"
     }
 
-    private boolean match(String word, int d, Node n) {
+    private boolean match(String word, int d, ImplTrie.Node n) {
         if (d == word.length()) return n.isWord;
         int id = word.charAt(d) - 'a';
         if (word.charAt(d) != '.') return n.next[id] != null && match(word, d + 1, n.next[id]);
@@ -90,6 +90,14 @@ class WordDictionary { // 452 ms, 96 Mb.
 class WordDictionaryMap { // 2372ms, 50.5 Mb.
 
     Map<Integer, List<String>> map = new HashMap<>(); // space O(NL)
+
+    public static void main(String[] args) {
+        String[] words = {"bad", "dad", "mad"};
+        String[] searches = {"pad", "bad", ".ad", "b.."};
+        WordDictionaryMap tbt = new WordDictionaryMap();
+        for (String w : words) tbt.addWord(w);
+        for (String s : searches) System.out.println(String.format("%s in dict: %b", s, tbt.search(s)));
+    }
 
     public void addWord(String word) {
         int len = word.length();
@@ -108,13 +116,5 @@ class WordDictionaryMap { // 2372ms, 50.5 Mb.
         for (int i = 0; i < word.length(); i++) // this compare can be less than O(L)
             if (word.charAt(i) != '.' && word.charAt(i) != s.charAt(i)) return false;
         return true;
-    }
-
-    public static void main(String[] args) {
-        String[] words = {"bad", "dad", "mad"};
-        String[] searches = {"pad", "bad", ".ad", "b.."};
-        WordDictionaryMap tbt = new WordDictionaryMap();
-        for (String w : words) tbt.addWord(w);
-        for (String s : searches) System.out.println(String.format("%s in dict: %b", s, tbt.search(s)));
     }
 }

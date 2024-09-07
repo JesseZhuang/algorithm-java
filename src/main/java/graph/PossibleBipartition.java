@@ -35,13 +35,14 @@ public class PossibleBipartition {
     // dfs, v+e time and space. 14ms, 51.67Mb.
     public boolean possibleBipartition(int n, int[][] dislikes) {
         List<List<Integer>> adj = new ArrayList<>();
-        for (int i = 0; i < n; i++) adj.add(new ArrayList<>());
+        for (int i = 0; i < n + 1; i++) adj.add(new ArrayList<>());
         for (int[] d : dislikes) {
-            adj.get(d[0] - 1).add(d[1] - 1); // note vertices in dislikes starting with 1
-            adj.get(d[1] - 1).add(d[0] - 1);
+            adj.get(d[0]).add(d[1]); // note vertices in dislikes starting with 1
+            adj.get(d[1]).add(d[0]);
         }
-        Boolean[] colors = new Boolean[n];
-        for (int v = 0; v < n; v++)
+        Boolean[] colors = new Boolean[n + 1]; // also as visited[], important not boolean, default null:not visited
+        for (int v = 1; v <= n; v++)
+            // important to check visited before calling dfs, this dfs does not know starting vertex
             if (colors[v] == null && dfs(adj, v, colors, true)) return false;
         return true;
     }

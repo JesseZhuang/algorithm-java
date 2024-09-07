@@ -113,13 +113,13 @@ public class CountSay {
         String res = "1";
         while (--n > 0) {
             StringBuilder cur = new StringBuilder();
-            for (int i = 0; i < res.length(); i++) {
+            for (int i = 0; i < res.length(); i++) { // note for loop has i++, otherwise inf loop
                 int count = 1;
                 while ((i + 1) < res.length() && res.charAt(i) == res.charAt(i + 1)) {
                     i++;
                     count++;
                 }
-                cur.append(count).append(res.charAt(i));
+                cur.append(count).append(res.charAt(i)); // this way do not need to convert
             }
             res = cur.toString();
         }

@@ -46,7 +46,7 @@ public class SPGridObsEli {
         int[][] dirs = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         int r = grid.length, c = grid[0].length;
         Queue<int[]> q = new LinkedList<>(); // do not need pq since all edge weights same or no edge weight
-        boolean[][][] visited = new boolean[r][c][k + 1];
+        boolean[][][] visited = new boolean[r][c][k + 1]; // note k+1, [0,k]
         visited[0][0][0] = true; // do not forget
         q.add(new int[]{0, 0, 0});
         int res = 0;
@@ -58,7 +58,7 @@ public class SPGridObsEli {
                 if (cr == r - 1 && cc == c - 1) return res;
                 for (int[] dir : dirs) {
                     int nr = dir[0] + cr, nc = dir[1] + cc, nk = ck; // nk = ck cannot be outside the inner loop
-                    if (nr < 0 || nr > r - 1 || nc < 0 || nc > c - 1) continue; // do not forget
+                    if (nr < 0 || nr > r - 1 || nc < 0 || nc > c - 1) continue; // do not forget boundary check
                     if (grid[nr][nc] == 1) nk++;
                     if (nk > k || visited[nr][nc][nk]) continue; // do not forget visited, > not >=
                     visited[nr][nc][nk] = true;

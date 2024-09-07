@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static util.Constants.dirs;
+import static util.Constants.inside;
+
 /**
  * LeetCode 212, hard, tags: trie, string, matrix, array, backtracking.
  * <p>
@@ -47,6 +50,7 @@ import java.util.Set;
  * Implement Trie (Prefix Tree) first.
  */
 public class WordSearchII {
+    int r, c;
 
     public static void main(String[] args) {
         char[][] board = {{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}};
@@ -68,29 +72,28 @@ public class WordSearchII {
     public List<String> findWords(char[][] board, String[] words) {
         Node root = new Node();
         for (String w : words) insert(w, root);
-        int m = board.length, n = board[0].length;
+        r = board.length;
+        c = board[0].length;
         List<String> res = new ArrayList<>();
-        for (int r = 0; r < m; r++) // O(m)
-            for (int c = 0; c < n; c++) // O(n)
-                dfs(board, r, c, root, res); // O(4^L)
+        for (int i = 0; i < r; i++) // O(m)
+            for (int j = 0; j < c; j++) // O(n)
+                dfs(board, i, j, root, res); // O(4^L)
         return res;
     }
 
-    private void dfs(char[][] board, int r, int c, Node n, List<String> res) {
-        char c1 = board[r][c];
-        int id = c1 - 'a';
-        if (c1 == '#' || n.next[id] == null) return;
+    private void dfs(char[][] board, int i, int j, Node n, List<String> res) {
+        if (!inside(i, j, r, c)) return;
+        char tmp = board[i][j];
+        int id = tmp - 'a';
+        if (tmp == '#' || n.next[id] == null) return;
         n = n.next[id];
         if (n.word != null) {
             res.add(n.word);
             n.word = null; // dedupe, trick
         }
-        board[r][c] = '#'; // save boolean[][] visited trick
-        if (r > 0) dfs(board, r - 1, c, n, res);
-        if (c > 0) dfs(board, r, c - 1, n, res);
-        if (r < board.length - 1) dfs(board, r + 1, c, n, res);
-        if (c < board[0].length - 1) dfs(board, r, c + 1, n, res);
-        board[r][c] = c1;
+        board[i][j] = '#'; // save boolean[][] visited trick
+        for (int[] d : dirs) dfs(board, i + d[0], j + d[1], n, res);
+        board[i][j] = tmp;
     }
 
     private void insert(String word, Node root) {
@@ -107,7 +110,7 @@ public class WordSearchII {
     // check trie.startsWith(candidate) will start from trie root every time
     // e.g., for apple, a, ap, app, appl will need to go down from a from the top
     public List<String> findWords1(char[][] board, String[] words) {
-        ImplTrie trie = new ImplTrie();
+        ImplTrie.ImplTrieI trie = new ImplTrie.ImplTrieI();
         for (String w : words) trie.insert(w); // O(NL) time and space.
         Set<String> result = new HashSet<>(); // dedupe
         boolean[][] visited = new boolean[board.length][board[0].length]; // reuse, no need new for each iteration
@@ -121,10 +124,9 @@ public class WordSearchII {
         return Arrays.asList(result.toArray(new String[0]));
     }
 
-    private void findWords1(char[][] board, ImplTrie trie, Set<String> found, int r, int c,
+    private void findWords1(char[][] board, ImplTrie.ImplTrieI trie, Set<String> found, int r, int c,
                             boolean[][] visited, StringBuilder candidate) {
         visited[r][c] = true;
-        int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
         String cs = candidate.toString();
         if (trie.search(cs)) found.add(cs);
         for (int[] d : dirs) {
@@ -137,13 +139,13 @@ public class WordSearchII {
         }
         visited[r][c] = false; // important!
     }
-}
 
-class Node {
-    String word;
-    Node[] next;
+    static class Node {
+        String word; // note not boolean
+        Node[] next;
 
-    Node() {
-        next = new Node[26];
+        Node() {
+            next = new Node[26];
+        }
     }
 }

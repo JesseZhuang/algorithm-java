@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
+import static util.Constants.dirs;
+
 /**
  * LeetCode 417, medium, tags: array, dfs, bfs, matrix.
  * There is an m x n rectangular island that borders both the Pacific Ocean and Atlantic Ocean. The Pacific Ocean
@@ -60,7 +62,6 @@ import java.util.Queue;
 public class PacificWaterFlow {
     boolean[][] visitedP; // visited from pacific
     boolean[][] visitedA; // visited from atlantic
-    static int[][] deltas = new int[][]{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}; // 4 directions to explore
     List<List<Integer>> res;
     Queue<List<Integer>> q; // bfs queue
     int m, n; // number of rows(m), columns(n)
@@ -91,7 +92,7 @@ public class PacificWaterFlow {
         if (!inRange(r, c) || visited[r][c] || heights[r][c] < height) return; // < not <=
         visited[r][c] = true;
         if (visitedA[r][c] && visitedP[r][c]) res.add(Arrays.asList(r, c));
-        for (int[] delta : deltas) dfs(visited, r + delta[0], c + delta[1], heights[r][c]);
+        for (int[] d : dirs) dfs(visited, r + d[0], c + d[1], heights[r][c]);
     }
 
     private boolean inRange(int r, int c) {
@@ -126,8 +127,8 @@ public class PacificWaterFlow {
             if (visited[cr][cc]) continue;
             visited[cr][cc] = true;
             if (visitedA[cr][cc] && visitedP[cr][cc]) res.add(Arrays.asList(cr, cc));
-            for (int[] delta : deltas) {
-                int nr = cr + delta[0], nc = cc + delta[1];
+            for (int[] d : dirs) {
+                int nr = cr + d[0], nc = cc + d[1];
                 if (inRange(nr, nc) && heights[nr][nc] >= heights[cr][cc] && !visited[nr][nc])
                     q.add(Arrays.asList(nr, nc));
             }

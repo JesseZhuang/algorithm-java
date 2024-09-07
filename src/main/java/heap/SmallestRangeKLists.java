@@ -1,6 +1,10 @@
 package heap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * LeetCode 632, hard, tags: array, hash table, greedy, sliding window, sorting, heap.
@@ -51,7 +55,7 @@ public class SmallestRangeKLists {
             if (v > max) max = v;
         }
         // [[4,10,15,24,26],[0,9,12,20],[5,18,22,30]] [0,5]->[20,24]
-        while (pq.size() == nums.size()) {
+        while (pq.size() == nums.size()) { // not !pq.isEmpty()
             int[] cur = pq.remove();
             int r = cur[0], c = cur[1], v = cur[2];
             if (max - v < right - left) {
