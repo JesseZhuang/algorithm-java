@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
+import static util.Constants.dirs;
+
 /**
  * LeetCode 200, medium, tags: array, dfs, bfs, union find, matrix.
  * Given an m x n 2D binary grid which represents a map of '1's (land) and '0's (water),
@@ -41,11 +43,21 @@ import java.util.Queue;
  * grid[i][j] is '0' or '1'.
  */
 public class NumIslands {
-    static int[][] dirs = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
     int m;
     int n;
 
     char[][] grid;
+
+    public static void main(String[] args) {
+        char[][] grid = {
+                {'1', '1', '1', '1', '0'}, {'1', '1', '0', '1', '0'}, {'1', '1', '0', '0', '0'},
+                {'0', '0', '0', '0', '0'}
+        };
+
+        NumIslands t = new NumIslands();
+
+        t.numIslandsBFS(grid);
+    }
 
     // One idea is to modify '1' to '0' or some other char, modify input to reduce space.
     // O(mn) time and space. 13ms, 57.3 Mb.
@@ -104,16 +116,5 @@ public class NumIslands {
                 }
             }
         return count;
-    }
-
-    public static void main(String[] args) {
-        char[][] grid = {
-                {'1', '1', '1', '1', '0'}, {'1', '1', '0', '1', '0'}, {'1', '1', '0', '0', '0'},
-                {'0', '0', '0', '0', '0'}
-        };
-
-        NumIslands t = new NumIslands();
-
-        t.numIslandsBFS(grid);
     }
 }

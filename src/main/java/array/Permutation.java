@@ -1,6 +1,7 @@
 package array;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -30,7 +31,34 @@ import java.util.List;
  */
 public class Permutation {
 
-    // 1ms, 42.2 Mb. O(N*N!) time, O(N) space.
+    public static void main(String[] args) {
+        Permutation tbt = new Permutation();
+        int[] nums = new int[]{1, 2, 3};
+        System.out.println(tbt.permuteI(nums));
+    }
+
+    // Iterative, O(N*N!) time, O(1) space not including result space.
+    // GFG Johnson and Trotter maybe better but harder to implement
+    public List<List<Integer>> permuteI(int[] num) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> l0 = new ArrayList<>();
+        l0.add(num[0]);
+        res.add(l0);
+        for (int i = 1; i < num.length; i++) { // num[i] will be inserted at jth index for each existing list
+            List<List<Integer>> new_res = new ArrayList<>();
+            for (int j = 0; j <= i; ++j) {
+                for (List<Integer> l : res) {
+                    List<Integer> new_l = new LinkedList<>(l);
+                    new_l.add(j, num[i]);
+                    new_res.add(new_l);
+                }
+            }
+            res = new_res;
+        }
+        return res;
+    }
+
+    // 1ms, 42.2 Mb. O(N*N!) time, not considering result space: O(N) space or O(1) space if input is already a list.
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> numList = new ArrayList<>();
@@ -39,14 +67,17 @@ public class Permutation {
         return res;
     }
 
+    // A[1] + permutation of the rest
+    // A[2] + permutation of the rest
+    // see resources/permutation.png GFG all string permutations
     void permute(List<Integer> nums, int begin, List<List<Integer>> res) {
         if (begin == nums.size()) {
             res.add(new ArrayList<>(nums));
             return;
         }
         for (int i = begin; i < nums.size(); i++) {
-            swap(nums, begin, i);
-            permute(nums, begin + 1, res);
+            swap(nums, begin, i); // swap i_th to begin_th
+            permute(nums, begin + 1, res); // permute the rest
             swap(nums, begin, i);
         }
     }

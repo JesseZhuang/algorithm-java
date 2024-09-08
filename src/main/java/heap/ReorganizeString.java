@@ -35,7 +35,7 @@ public class ReorganizeString {
         System.out.println(new ReorganizeString().reorganizeString2("aba"));
     }
 
-    // solution 1, counting, n time, 1 space. 1ms, 41.72Mb.
+    // solution 1, counting, n time, k space. 1ms, 41.72Mb.
     public String reorganizeString(String s) {
         int[] count = new int[26];
         for (int i = 0; i < s.length(); i++) count[s.charAt(i) - 'a']++;

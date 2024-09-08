@@ -3,6 +3,8 @@ package graph;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+import static util.Constants.dirs;
+
 /**
  * LeetCode 329, hard, tags: array, dynamic programming, dfs, bfs, graph, topological sort, memoization, matrix.
  * <p>
@@ -35,7 +37,6 @@ import java.util.Queue;
  * 0 <= matrix[i][j] <= 2^31 - 1
  */
 public class LongestIPathMatrix {
-    public static final int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // 4 directions
 
     // solution1, dfs, 8ms, 44.18Mb. dfs+dp, O(mn) time and space.
     public int longestIncreasingPathDFS(int[][] matrix) {
