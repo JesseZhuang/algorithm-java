@@ -51,7 +51,7 @@ public class MaxWidthBT {
         Queue<Map.Entry<TreeNode, Integer>> q = new ArrayDeque<>(); // map: node->position
         q.add(new AbstractMap.SimpleEntry<>(root, 0));
         while (!q.isEmpty()) {
-            int l = q.peek().getValue(), r = l, s = q.size();
+            int l = q.peek().getValue(), r = l, s = q.size(); // init l, r here, do not have to use -1
             for (int i = 0; i < s; i++) { // important to get size before the for loop, since q size is changing
                 Map.Entry<TreeNode, Integer> e = q.remove();
                 TreeNode n = e.getKey();

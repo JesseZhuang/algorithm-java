@@ -1,4 +1,4 @@
-package array;
+package heap;
 
 import java.util.Arrays;
 import java.util.Comparator;

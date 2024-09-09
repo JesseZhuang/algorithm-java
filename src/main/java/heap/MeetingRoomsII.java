@@ -1,4 +1,4 @@
-package array;
+package heap;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -86,7 +86,7 @@ public class MeetingRoomsII {
         int rooms = 0, endPointer = 0;
         for (int i = 0; i < intervals.length; i++) { // seep line
             if (starts[i] < ends[endPointer]) rooms++; // occupy one more room on conflict
-            else endPointer++; // meeting[endPointer] ended, take that room
+            else endPointer++; // meeting[endPointer] ended, free that room
         }
         return rooms;
     }

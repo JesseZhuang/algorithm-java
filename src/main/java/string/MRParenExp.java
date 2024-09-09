@@ -60,22 +60,22 @@ public class MRParenExp {
         String[] sp = expression.split("\\+"); // + can be used as quantifier, needs escaping
         String left = sp[0], right = sp[1];
         // l, r Index at which we add ( and ), r=1 at least one digit before )
-        int minL = 0, minR = 1, min = Integer.MAX_VALUE;
-        for (int l = 0; l < left.length(); l++) { // note <, at least one digit left of +
-            int a = l == 0 ? 1 : Integer.parseInt(left.substring(0, l));
-            int b = Integer.parseInt(left.substring(l));
-            for (int r = 1; r <= right.length(); r++) { // nested for loop must init r inside, <=, ) can be at end
-                int c = Integer.parseInt(right.substring(0, r));
-                int d = r == right.length() ? 1 : Integer.parseInt(right.substring(r)); // note not r.length-1
+        int l = 0, r = 1, min = Integer.MAX_VALUE;
+        for (int i = 0; i < left.length(); i++) { // note <, at least one digit left of +
+            int a = i == 0 ? 1 : Integer.parseInt(left.substring(0, i));
+            int b = Integer.parseInt(left.substring(i));
+            for (int j = 1; j <= right.length(); j++) { // nested for loop must init r inside, <=, ')' can be at end
+                int c = Integer.parseInt(right.substring(0, j));
+                int d = j == right.length() ? 1 : Integer.parseInt(right.substring(j)); // note not r.length-1
                 int res = a * (b + c) * d;
                 if (res < min) {
                     min = res;
-                    minL = l;
-                    minR = r;
+                    l = i;
+                    r = j;
                 }
             }
         }
-        return left.substring(0, minL) + "(" + left.substring(minL) + "+"
-                + right.substring(0, minR) + ")" + right.substring(minR);
+        return left.substring(0, l) + "(" + left.substring(l) + "+"
+                + right.substring(0, r) + ")" + right.substring(r);
     }
 }
