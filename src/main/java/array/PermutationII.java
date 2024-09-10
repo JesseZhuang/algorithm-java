@@ -39,7 +39,7 @@ public class PermutationII {
         System.out.println(tbt.permute(nums));
     }
 
-    // solution, use set to avoid duplicate. O(N*N!) time, O(N) space.
+    // solution 2, use set to avoid duplicate. O(N*N!) time, O(N) space.
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> numList = new ArrayList<>();

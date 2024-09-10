@@ -34,7 +34,7 @@ public class Permutation {
     public static void main(String[] args) {
         Permutation tbt = new Permutation();
         int[] nums = new int[]{1, 2, 3};
-        System.out.println(tbt.permuteI(nums));
+        System.out.println(tbt.permute(nums));
     }
 
     // Iterative, O(N*N!) time, O(1) space not including result space.

@@ -40,6 +40,7 @@ import java.util.Set;
  */
 public class WordBreakII {
     int maxLen = 0;
+    Set<String> d; // dict of valid words
 
     // https://leetcode.com/problems/word-break-ii/discuss/44167/My-concise-JAVA-solution-based-on-memorized-DFS/215095
     // These are all good approaches when not all combinations are valid, but won't change the time complexity O(2^n)
@@ -52,29 +53,30 @@ public class WordBreakII {
     // the dictionary size might be too large.
     // 4ms, 40.9Mb, O(2^N) time, O(max(N,MK)) space.
     public List<String> wordBreak(String s, List<String> wordDict) {
-        Set<String> hs = new HashSet<>();
+        d = new HashSet<>();
         for (String w : wordDict) {
-            hs.add(w);
+            d.add(w);
             if (w.length() > maxLen) maxLen = w.length();
         }
-        Map<Integer, List<String>> map = new HashMap<>(); // index -> result list
-        return helper(hs, s, 0, map);
+        Map<Integer, List<String>> cache = new HashMap<>(); // index -> result list
+        return dfs(s, 0, cache);
     }
 
-    public List<String> helper(Set<String> hs, String s, int start, Map<Integer, List<String>> map) {
-        if (map.containsKey(start)) return map.get(start);
-        List<String> list = new ArrayList<>();
-        if (start == s.length()) list.add("");
-        for (int i = start; i < start + maxLen && i < s.length(); i++) { // reduce # iterations using maxLen
-            if (hs.contains(s.substring(start, i + 1))) {
-                List<String> next = helper(hs, s, i + 1, map);
+    public List<String> dfs(String s, int start, Map<Integer, List<String>> cache) {
+        if (cache.containsKey(start)) return cache.get(start);
+        List<String> res = new ArrayList<>();
+        if (start == s.length()) res.add("");
+        for (int i = start + 1; i <= start + maxLen && i <= s.length(); i++) { // reduce # iterations using maxLen
+            String w = s.substring(start, i);// the next word [start,i)
+            if (d.contains(w)) {
+                List<String> next = dfs(s, i, cache);
                 for (String sn : next) {
-                    if (sn.isEmpty()) list.add(s.substring(start, i + 1) + sn); // reaches the end
-                    else list.add(s.substring(start, i + 1) + " " + sn);
+                    if (sn.isEmpty()) res.add(w); // reached the end
+                    else res.add(w + " " + sn);
                 }
             }
         }
-        map.put(start, list);
-        return list;
+        cache.put(start, res);
+        return res;
     }
 }

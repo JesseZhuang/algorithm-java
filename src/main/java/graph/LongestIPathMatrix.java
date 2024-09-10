@@ -41,7 +41,8 @@ public class LongestIPathMatrix {
     // solution1, dfs, 8ms, 44.18Mb. dfs+dp, O(mn) time and space.
     public int longestIncreasingPathDFS(int[][] matrix) {
         int m = matrix.length, n = matrix[0].length;
-        int res = 1, cache[][] = new int[m][n];
+        int res = 1;
+        int[][] cache = new int[m][n]; // res for path starting from r,c
         for (int r = 0; r < m; r++)
             for (int c = 0; c < n; c++)
                 res = Math.max(res, dfs(matrix, r, c, m, n, cache));
