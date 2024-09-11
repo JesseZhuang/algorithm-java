@@ -8,7 +8,44 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
- * LeetCode 269 (premium), LintCode 892, hard, GFG, tags: bfs, topological sort, graph, string.
+ * LeetCode 269 (premium), LintCode 892, hard, GFG, tags: bfs, dfs, topological sort, graph, array, string.
+ * <p>
+ * There is a new alien language that uses the English alphabet. However, the order of the letters is unknown to you.
+ * <p>
+ * You are given a list of strings words from the alien language's dictionary. Now it is claimed that the strings
+ * in words are sorted lexicographically by the rules of this new language.
+ * <p>
+ * If this claim is incorrect, and the given arrangement of string in words cannot correspond to any order of
+ * letters, return "".
+ * <p>
+ * Otherwise, return a string of the unique letters in the new alien language sorted in lexicographically
+ * increasing order by the new language's rules. If there are multiple solutions, return any of them.
+ * <p>
+ * <p>
+ * <p>
+ * Example 1:
+ * <p>
+ * Input: words = ["wrt","wrf","er","ett","rftt"]
+ * Output: "wertf"
+ * Example 2:
+ * <p>
+ * Input: words = ["z","x"]
+ * Output: "zx"
+ * Example 3:
+ * <p>
+ * Input: words = ["z","x","z"]
+ * Output: ""
+ * Explanation: The order is invalid, so return "".
+ * <p>
+ * <p>
+ * Constraints:
+ * <p>
+ * 1 <= words.length <= 100
+ * 1 <= words[i].length <= 100
+ * words[i] consists of only lowercase English letters.
+ *
+ * <p>
+ * GFG
  * Given a sorted dictionary of an alien language having N words and k starting alphabets of standard dictionary.
  * Find the order of characters in the alien language.
  * Note: Many orders may be possible for a particular test case, thus you may return any valid order and output
@@ -111,6 +148,7 @@ public class AlienDict {
     }
 
     // solution 1, O(nlgn) time, O(n) space. lint code, 271ms, 21.76 Mb.
+    // leet code does not require return the smallest in normal lexicographical order. O(n) time.
     public String alienOrderBFS(String[] words) {
         return topological(buildGraph(words));
     }
