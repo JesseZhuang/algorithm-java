@@ -43,7 +43,9 @@ import java.util.List;
  */
 public class CriticalConnection {
 
-    private final List<List<Integer>> res = new ArrayList<>();
+    List<List<Integer>> res;
+    List<List<Integer>> adj;
+    int[] ranks;
 
     public static void main(String[] args) {
         List<List<Integer>> edges = ImmutableList.of(
@@ -54,22 +56,24 @@ public class CriticalConnection {
 
     // solution 1, dfs, O(v+e) time and space.
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
-        List<List<Integer>> adj = new ArrayList<>();
+        adj = new ArrayList<>();
+        res = new ArrayList<>();
+        ranks = new int[n];
         for (int i = 0; i < n; i++) adj.add(new ArrayList<>());
         for (List<Integer> e : connections) {
             adj.get(e.get(0)).add(e.get(1));
             adj.get(e.get(1)).add(e.get(0));
         }
         int[] ranks = new int[n];
-        dfs(adj, 0, 0, 1, ranks);
+        dfs(0, 0, 1);
         return res;
     }
 
-    private int dfs(List<List<Integer>> adj, int cur, int parent, int rank, int[] ranks) {
+    private int dfs(int cur, int parent, int rank) {
         ranks[cur] = rank;
         for (int next : adj.get(cur)) {
             if (next == parent) continue;
-            if (ranks[next] == 0) ranks[next] = dfs(adj, next, cur, rank + 1, ranks);
+            if (ranks[next] == 0) ranks[next] = dfs(next, cur, rank + 1);
             ranks[cur] = Math.min(ranks[cur], ranks[next]);
             if (rank < ranks[next]) res.add(Arrays.asList(cur, next));
         }

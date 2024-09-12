@@ -80,8 +80,7 @@ public class MeetingRoomsIII {
             PriorityQueue<long[]> used = new PriorityQueue<>( // sort by end time then room id
                     (a, b) -> a[0] != b[0] ? Long.compare(a[0], b[0]) : Long.compare(a[1], b[1]));
             PriorityQueue<Integer> unused = new PriorityQueue<>();
-
-            for (int i = 0; i < n; i++) unused.offer(i);
+            for (int i = 0; i < n; i++) unused.offer(i); // init do not forget
             Arrays.sort(meetings, (a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(a[1], b[1]));
             for (int[] m : meetings) {
                 int start = m[0], end = m[1];

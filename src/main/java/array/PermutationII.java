@@ -1,11 +1,13 @@
 package array;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * LeetCode 47, medium, tags: array, backtracking.
@@ -34,41 +36,9 @@ import java.util.Map;
 public class PermutationII {
 
     public static void main(String[] args) {
-        PermutationII tbt = new PermutationII();
+        Solution tbt = new PermutationII.Solution();
         int[] nums = new int[]{1, 1, 2};
-        System.out.println(tbt.permute(nums));
-    }
-
-    // solution 2, use set to avoid duplicate. O(N*N!) time, O(N) space.
-    public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-        List<Integer> numList = new ArrayList<>();
-        for (int n : nums) numList.add(n);
-        permute(numList, 0, res);
-        return res;
-    }
-
-    void permute(List<Integer> nums, int begin, List<List<Integer>> res) {
-        if (begin == nums.size()) {
-            res.add(new ArrayList<>(nums));
-            return;
-        }
-        HashSet<Integer> fixed = new HashSet<>();
-        for (int i = begin; i < nums.size(); i++) {
-            if (fixed.add(nums.get(i))) {
-                swap(nums, begin, i); // swap i_th to begin_th
-                permute(nums, begin + 1, res); // permute the rest
-                swap(nums, begin, i);
-            }
-        }
-    }
-
-    private void swap(List<Integer> nums, int i, int j) {
-        if (i != j) {
-            int temp = nums.get(i);
-            nums.set(i, nums.get(j));
-            nums.set(j, temp);
-        }
+        System.out.println(tbt.permuteUnique(nums));
     }
 
     // editorial solution, modifies map while backtracking
@@ -101,6 +71,41 @@ public class PermutationII {
             // revert the choice for the next exploration
             comb.removeLast();
             counter.put(num, count);
+        }
+    }
+
+    // solution 1, use set to avoid duplicate. O(N*N!) time, O(N) space. 7ms, 45.24Mb.
+    static class Solution {
+        int[] nums;
+        List<List<Integer>> res;
+
+        public List<List<Integer>> permuteUnique(int[] nums) {
+            this.nums = nums;
+            res = new ArrayList<>();
+            permute(0);
+            return res;
+        }
+
+        void permute(int begin) {
+            if (begin == nums.length) {
+                res.add(Arrays.stream(nums).boxed().collect(Collectors.toList()));
+                return;
+            }
+            HashSet<Integer> fixed = new HashSet<>();
+            for (int i = begin; i < nums.length; i++) {
+                if (fixed.add(nums[i])) {
+                    swap(i, begin);
+                    permute(begin + 1);
+                    swap(i, begin);
+                }
+            }
+        }
+
+        void swap(int i, int j) {
+            if (i == j) return;
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
         }
     }
 }

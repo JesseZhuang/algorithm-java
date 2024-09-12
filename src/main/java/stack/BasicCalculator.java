@@ -29,7 +29,7 @@ import java.util.Deque;
  * <p>
  * Constraints:
  * <p>
- * 1 <= s.length <= 3 * 105
+ * 1 <= s.length <= 3 * 10^5
  * s consists of digits, '+', '-', '(', ')', and ' '.
  * s represents a valid expression.
  * '+' is not used as a unary operation (i.e., "+1" and "+(2 + 3)" is invalid).
@@ -57,7 +57,7 @@ public class BasicCalculator {
                 vals.push(sign);
                 res = 0;
                 sign = 1;
-            } else if (s.charAt(i) == ')') res = res * vals.pop() + vals.pop();
+            } else if (s.charAt(i) == ')') res = res * vals.pop() + vals.pop(); // res*sign+pre_res
         }
         return res;
     }

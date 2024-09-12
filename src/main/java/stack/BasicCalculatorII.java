@@ -30,14 +30,61 @@ import java.util.Deque;
  * <p>
  * Constraints:
  * <p>
- * 1 <= s.length <= 3 * 105
+ * 1 <= s.length <= 3 * 10^5
  * s consists of integers and operators ('+', '-', '*', '/') separated by some number of spaces.
  * s represents a valid expression.
- * All the integers in the expression are non-negative integers in the range [0, 231 - 1].
+ * All the integers in the expression are non-negative integers in the range [0, 2^31 - 1].
  * The answer is guaranteed to fit in a 32-bit integer.
  */
 public class BasicCalculatorII {
-    // 20ms, 44.3Mb. O(n) time and space.
+
+    // solution 1 with dummy end, same complexity as solution 1 below
+    public static int calculate3(String s) {
+        int cur = 0, last = 0, res = 0;
+        s = s + "##";
+        char prevOp = '+'; // operation
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isWhitespace(c)) continue;
+            if (Character.isDigit(c)) cur = (cur * 10) + (c - '0');
+            else {
+                if (prevOp == '*') last *= cur;
+                else if (prevOp == '/') last /= cur;
+                else {
+                    res += last;
+                    last = prevOp == '+' ? cur : -cur;
+                }
+                prevOp = c;
+                cur = 0;
+            }
+        }
+        return res;
+    }
+
+
+    // solution 1, O(N) time, O(1) space. 34ms, 46.1Mb.
+    public static int calculate2(String s) {
+        int length = s.length();
+        int cur = 0, last = 0, res = 0;
+        char op = '+'; // operation
+        for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) cur = (cur * 10) + (c - '0');
+            if (!Character.isDigit(c) && !Character.isWhitespace(c) || i == length - 1) {// not else if
+                if (op == '+' || op == '-') {
+                    res += last;
+                    last = (op == '+') ? cur : -cur;
+                } else if (op == '*') last = last * cur;
+                else if (op == '/') last = last / cur;
+                op = c;
+                cur = 0;
+            }
+        }
+        res += last;
+        return res;
+    }
+
+    // solution 2, stack, 20ms, 44.3Mb. O(n) time and space.
     public static int calculate(String s) {
         Deque<Integer> vals = new ArrayDeque<>();
         char lastOp = '+';
@@ -57,36 +104,11 @@ public class BasicCalculatorII {
         return val;
     }
 
-    // O(N) time, O(1) space. 34ms, 46.1Mb.
-    public static int calculate2(String s) {
-        int length = s.length();
-        int curVal = 0, lastVal = 0, result = 0;
-        char operation = '+';
-        for (int i = 0; i < length; i++) {
-            char currentChar = s.charAt(i);
-            if (Character.isDigit(currentChar)) curVal = (curVal * 10) + (currentChar - '0');
-            if (!Character.isDigit(currentChar) && !Character.isWhitespace(currentChar) || i == length - 1) {
-                if (operation == '+' || operation == '-') {
-                    result += lastVal;
-                    lastVal = (operation == '+') ? curVal : -curVal;
-                } else if (operation == '*') {
-                    lastVal = lastVal * curVal;
-                } else if (operation == '/') {
-                    lastVal = lastVal / curVal;
-                }
-                operation = currentChar;
-                curVal = 0;
-            }
-        }
-        result += lastVal;
-        return result;
-    }
-
     public static void main(String[] args) {
         String[] tests = {"3+2*2", " 3/2 ", " 3+5 / 2 ", "1-1+1"};
         int[] expected = {7, 1, 5, 1};
-        for (int i = 0; i < tests.length; i++) {
-            System.out.println(calculate(tests[i]));
+        for (String test : tests) {
+            System.out.println(calculate3(test));
         }
     }
 }

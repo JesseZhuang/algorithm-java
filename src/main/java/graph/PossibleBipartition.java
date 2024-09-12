@@ -51,9 +51,8 @@ public class PossibleBipartition {
     boolean dfs(List<List<Integer>> adj, int v, Boolean[] colors, boolean color) {
         colors[v] = color;
         for (int w : adj.get(v)) {
-            if (colors[w] == null) {
-                if (dfs(adj, w, colors, !color)) return true;
-            } else if (colors[w] == colors[v]) return true; // already colored with same color, not possible
+            if (colors[w] == null && dfs(adj, w, colors, !color)) return true;
+            else if (colors[w] == colors[v]) return true; // already colored with same color, not possible
         }
         return false;
     }

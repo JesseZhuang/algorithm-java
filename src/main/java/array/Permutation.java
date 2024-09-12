@@ -73,6 +73,7 @@ public class Permutation {
     void permute(List<Integer> nums, int begin, List<List<Integer>> res) {
         if (begin == nums.size()) {
             res.add(new ArrayList<>(nums));
+            // Arrays.stream(nums).boxed().collect(Collectors.toList()) can just use the int[] nums as parameter
             return;
         }
         for (int i = begin; i < nums.size(); i++) {

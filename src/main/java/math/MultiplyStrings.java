@@ -34,7 +34,7 @@ public class MultiplyStrings {
     public String multiply(String num1, String num2) {
         //`num1[i] * num2[j]` will be placed at indices `[i + j`, `i + j + 1]`
         int m = num1.length(), n = num2.length();
-        int[] res = new int[m + n];
+        int[] res = new int[m + n]; // not n+m+1
         for (int i = m - 1; i >= 0; i--) // important, start from the right
             for (int j = n - 1; j >= 0; j--) {
                 int lowI = i + j + 1, highI = i + j;
