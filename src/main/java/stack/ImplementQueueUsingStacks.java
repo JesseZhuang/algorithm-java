@@ -22,6 +22,31 @@ import java.util.ArrayDeque;
  * you use only standard operations of a stack.
  * <li>You may assume that all operations are valid (for example, no dequeue or peek
  * operations will be called on an empty queue).
+ * <p>
+ * Example 1:
+ * <p>
+ * Input
+ * ["MyQueue", "push", "push", "peek", "pop", "empty"]
+ * [[], [1], [2], [], [], []]
+ * Output
+ * [null, null, null, 1, 1, false]
+ * <p>
+ * Explanation
+ * MyQueue myQueue = new MyQueue();
+ * myQueue.push(1); // queue is: [1]
+ * myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
+ * myQueue.peek(); // return 1
+ * myQueue.pop(); // return 1, queue is [2]
+ * myQueue.empty(); // return false
+ * <p>
+ * Constraints:
+ * <p>
+ * 1 <= x <= 9
+ * At most 100 calls will be made to push, pop, peek, and empty.
+ * All the calls to pop and peek are valid.
+ * <p>
+ * Follow-up: Can you implement the queue such that each operation is amortized O(1) time complexity? In other words,
+ * performing n operations will take overall O(n) time even if one of those operations may take longer.
  * </ul>
  * <b>Summary:</b>
  * <ul>
@@ -31,6 +56,15 @@ import java.util.ArrayDeque;
  */
 public class ImplementQueueUsingStacks {
 
+
+    public static void main(String[] args) {
+        MyQueue myQueue = new MyQueue();
+        myQueue.enqueue(1);
+        myQueue.enqueue(2);
+        System.out.println("dequeue-ing ... " + myQueue.dequeue() + " removed.");
+        System.out.println("peeking ... " + myQueue.peek() + " peeked.");
+        System.out.println("myQueue is empty? : " + myQueue.empty());
+    }
 
     @SuppressWarnings({"ConstantConditions", "unused"})
     private static class MyQueue {
@@ -71,9 +105,7 @@ public class ImplementQueueUsingStacks {
          * Get the front element. Amortized time.
          */
         public int peek() {
-            if (output.isEmpty())
-                while (!input.isEmpty())
-                    output.push(input.pop());
+            if (output.isEmpty()) while (!input.isEmpty()) output.push(input.pop());
             return output.peek();
         }
 
@@ -102,14 +134,5 @@ public class ImplementQueueUsingStacks {
         public boolean empty2() {
             return input.isEmpty();
         }
-    }
-
-    public static void main(String[] args) {
-        MyQueue myQueue = new MyQueue();
-        myQueue.enqueue(1);
-        myQueue.enqueue(2);
-        System.out.println("dequeue-ing ... " + myQueue.dequeue() + " removed.");
-        System.out.println("peeking ... " + myQueue.peek() + " peeked.");
-        System.out.println("myQueue is empty? : " + myQueue.empty());
     }
 }

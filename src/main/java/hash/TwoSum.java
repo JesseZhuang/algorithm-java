@@ -66,7 +66,7 @@ public class TwoSum {
     }
 
     /**
-     * Two sum return indexes.
+     * Two sum return indexes. O(n) time, O(range) space.
      *
      * @param nums   array, e.g. [0, 1, -3, 20, 10]
      * @param target sum to look for, e.g. 10.
@@ -90,7 +90,7 @@ public class TwoSum {
         // array to keep indices of valid input integers initialize with -1
         int radixSize = 1 + sMax - sMin; // Radix size R, e.g. 17
         int[] arr = new int[radixSize];
-        for (int i = 0; i < arr.length; i++) arr[i] = -1;
+        Arrays.fill(arr, -1);
 
         // second loop
         int offset = -sMin; // e.g. 3
@@ -106,7 +106,7 @@ public class TwoSum {
         return new int[]{0, 0};
     }
 
-    // O(N) space also needed for the copy of the array. No advantage to the hash map solution.
+    // O(N) space needed for the copy of the array. No advantage to the hash map solution. return index, not value.
     public int[] twoSumJavaQuickSort(int[] nums, int target) {
         int i = 0, j = 0;
         int[] copy = new int[nums.length];
