@@ -1,7 +1,7 @@
 package graph;
 
+import java.util.ArrayDeque;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Queue;
 
 import static util.Constants.dirs;
@@ -61,38 +61,37 @@ public class SPGetKeys {
     // bfs, mn time and space, 20ms, 49Mb.
     public int shortestPathAllKeys(String[] grid) {
         int m = grid.length, n = grid[0].length(), x = -1, y = -1, maxK = -1;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                char c = grid[i].charAt(j);
-                if (c == '@') {
-                    x = i;
-                    y = j;
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+                char ch = grid[r].charAt(c);
+                if (ch == '@') {
+                    x = r;
+                    y = c;
                 }
-                if (c >= 'a' && c <= 'f') maxK = Math.max(c - 'a' + 1, maxK);
+                if (ch >= 'a' && ch <= 'f') maxK = Math.max(ch - 'a' + 1, maxK);
             }
         }
-        State start = new State(0, x, y);
-        Queue<State> q = new LinkedList<>();
-        HashSet<State> visited = new HashSet<>(); // keys (1<<key#),r,c
-        visited.add(start);
-        q.add(start);
+        Queue<int[]> q = new ArrayDeque<>();
+        HashSet<String> marked = new HashSet<>(); // keys (1<<key#),r,c; set saves space comparing to boolean[]
+        marked.add(convert(x, y, 0));
+        q.add(new int[]{x, y, 0});
         int res = 0;
         while (!q.isEmpty()) {
             int size = q.size();
             while (size-- > 0) {
-                State cur = q.remove();
-                if (cur.keys == (1 << maxK) - 1) return res;
+                int[] cur = q.remove();
+                if (cur[2] == (1 << maxK) - 1) return res;
                 for (int[] d : dirs) {
-                    int ni = cur.i + d[0], nj = cur.j + d[1], keys = cur.keys;
-                    if (ni < 0 || ni > m - 1 || nj < 0 || nj > n - 1) continue;
-                    char c = grid[ni].charAt(nj);
+                    int nr = cur[0] + d[0], nc = cur[1] + d[1], nk = cur[2];
+                    if (nr < 0 || nr > m - 1 || nc < 0 || nc > n - 1) continue;
+                    char c = grid[nr].charAt(nc);
                     if (c == '#') continue;
-                    if (c >= 'A' && c <= 'F' && (keys & (1 << (c - 'A'))) == 0) continue; // don't have the key
-                    if (c >= 'a' && c <= 'f') keys |= 1 << (c - 'a');
-                    State ns = new State(keys, ni, nj);
-                    if (visited.contains(ns)) continue;
-                    visited.add(ns);
-                    q.add(ns);
+                    if (c >= 'A' && c <= 'F' && (nk & (1 << (c - 'A'))) == 0) continue; // don't have the key
+                    if (c >= 'a' && c <= 'f') nk |= 1 << (c - 'a'); // important, same key twice ok, do not use +=
+                    String state = convert(nr, nc, nk);
+                    if (marked.contains(state)) continue;
+                    marked.add(state);
+                    q.add(new int[]{nr, nc, nk});
                 }
             }
             res++;
@@ -100,30 +99,7 @@ public class SPGetKeys {
         return -1;
     }
 
-    public static class State {
-        int keys, i, j;
-
-        State(int keys, int i, int j) {
-            this.keys = keys; // 'a'->b1, 'b'-> b10
-            this.i = i;
-            this.j = j;
-        }
-
-        @Override
-        public final boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof State)) return false;
-
-            State state = (State) o;
-            return keys == state.keys && i == state.i && j == state.j;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = keys;
-            result = 31 * result + i;
-            result = 31 * result + j;
-            return result;
-        }
+    String convert(int r, int c, int k) {
+        return String.format("%d %d %d", r, c, k);
     }
 }

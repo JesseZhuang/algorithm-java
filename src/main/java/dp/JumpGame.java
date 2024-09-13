@@ -21,8 +21,8 @@ package dp;
  * <p>
  * Constraints:
  * <p>
- * 1 <= nums.length <= 104
- * 0 <= nums[i] <= 105
+ * 1 <= nums.length <= 10^4
+ * 0 <= nums[i] <= 10^5
  */
 public class JumpGame {
     // solution 1, O(n) time, O(1) space, 2ms, 42.8Mb
