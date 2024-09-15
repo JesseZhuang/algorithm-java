@@ -31,7 +31,7 @@ import java.util.Map;
  * 0 <= k <= 50
  */
 public class LongestSSKDC {
-    // solution 1, sliding window LinkedHashMap, lint code 683ms, 27.70Mb. n time, 1 space.
+    // solution 1, sliding window LinkedHashMap, lint code 683ms, 27.70Mb. n time, k space.
     public int lengthOfLongestSubstringKDistinct2(String s, int k) {
         int res = 0, n = s.length();
         Map<Character, Integer> lastSeen = new LinkedHashMap<>(); // char -> index where it was last seen
@@ -39,7 +39,7 @@ public class LongestSSKDC {
             char c = s.charAt(r);
             // important, key position in linked list, bug: eqgkcwGFvjjmxutystqdfhuMblWbylgjxsxgnoh, k=16
             // https://stackoverflow.com/questions/29377949/deletion-in-linkedhashmap-vs-hashmap, O(1) time
-            if (lastSeen.containsKey(c)) lastSeen.remove(c);
+            lastSeen.remove(c);
             lastSeen.put(c, r);
             if (lastSeen.size() <= k) res = Math.max(res, r - l + 1);
             else {

@@ -42,19 +42,19 @@ public class BasicCalculatorII {
     public static int calculate3(String s) {
         int cur = 0, last = 0, res = 0;
         s = s + "##";
-        char prevOp = '+'; // operation
+        char lastOp = '+'; // operation
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (Character.isWhitespace(c)) continue;
             if (Character.isDigit(c)) cur = (cur * 10) + (c - '0');
             else {
-                if (prevOp == '*') last *= cur;
-                else if (prevOp == '/') last /= cur;
+                if (lastOp == '*') last *= cur;
+                else if (lastOp == '/') last /= cur;
                 else {
                     res += last;
-                    last = prevOp == '+' ? cur : -cur;
+                    last = lastOp == '+' ? cur : -cur;
                 }
-                prevOp = c;
+                lastOp = c;
                 cur = 0;
             }
         }

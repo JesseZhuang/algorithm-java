@@ -40,16 +40,16 @@ public class NNIWOCOnes {
     // "[1]110" -> "[0]XXX", += dp[3]; "1[1]10" -> "1[0]XX", += dp[2]; "11[1]0" -> "11[0]X", already invalid
     // "[1]010" -> "[0]XXX", += dp[3]; "10[1]0" -> "10[0]X", += dp[1]; add 1010 itself
     public int findIntegers(int n) {
-        int[] dp = new int[32];
-        dp[0] = 1;
-        dp[1] = 2;
-        // ans(xxxx) = ans(xxx) + ans(xx) xxxx -> 0xxx + 10xx: dp[4]=dp[3]+dp[2]
-        for (int i = 2; i < 32; i++) dp[i] = dp[i - 1] + dp[i - 2]; // i<32 not i<n
+        int[] f = new int[32]; // fibonacci for 32 bits, not for int n
+        f[0] = 1;
+        f[1] = 2;
+        // ans(xxxx) = ans(xxx) + ans(xx) xxxx -> 0xxx + 10xx: f[4]=f[3]+f[2]
+        for (int i = 2; i < 32; i++) f[i] = f[i - 1] + f[i - 2]; // i<32 not i<n
         int res = 0;
         boolean pre = false; // pre: whether previous bit was 1
         for (int k = 30; k >= 0; k--) { // n<10^9 only need to check [30,0] bit shifts, left most is sign bit
             if ((n & (1 << k)) != 0) { // whether the kth bit is 1
-                res += dp[k];
+                res += f[k];
                 if (pre) return res; // do not count itself, no +1 since n itself has consecutive ones
                 pre = true; // do not forget
             } else pre = false; // do not forget

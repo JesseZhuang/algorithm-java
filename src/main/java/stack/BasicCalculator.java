@@ -43,21 +43,23 @@ public class BasicCalculator {
         int sign = 1, res = 0;
         Deque<Integer> vals = new ArrayDeque<>();
         for (int i = 0; i < s.length(); i++) {
-            if (Character.isDigit(s.charAt(i))) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
                 int sum = s.charAt(i) - '0';
                 while (i + 1 < s.length() && Character.isDigit(s.charAt(i + 1))) {
                     sum = sum * 10 + s.charAt(i + 1) - '0';
                     i++;
                 }
                 res += sum * sign;
-            } else if (s.charAt(i) == '+') sign = 1;
-            else if (s.charAt(i) == '-') sign = -1;
-            else if (s.charAt(i) == '(') {
+            } else if (c == '+') sign = 1;
+            else if (c == '-') sign = -1;
+            else if (c == '(') {
                 vals.push(res);
                 vals.push(sign);
-                res = 0;
+                res = 0; // do not forget reset
                 sign = 1;
-            } else if (s.charAt(i) == ')') res = res * vals.pop() + vals.pop(); // res*sign+pre_res
+            } else if (s.charAt(i) == ')') res = res * vals.pop() + vals.pop();
+            // res*sign+pre_res. in string: pre_res,sign,(res)
         }
         return res;
     }

@@ -2,7 +2,7 @@ package dp;
 
 /**
  * <p>
- * LeetCode 121. Easy. Tags: Array, Dynamic Programming.
+ * LeetCode 121, easy, tags: array, dp.
  * <p>
  * Best Time to Buy and Sell Stock，Easy. Say you have an array for which
  * the ith element is the price of a given stock on day i.
@@ -46,7 +46,7 @@ public class BuySellStock {
     public int maxProfitKadane(int[] prices) { // 7 1 5 3 6 4
         int maxHere = 0, res = 0;
         for (int i = 1; i < prices.length; i++) {
-            // max profit if sold at current index, important first item 0
+            // max profit if sold at current index, important first item 0, if loosing money, no buy no sell
             maxHere = Math.max(0, maxHere + (prices[i] - prices[i - 1])); // 0 4 2 5 3
             res = Math.max(maxHere, res); // 0 4 4 5 5
         }

@@ -1,11 +1,6 @@
 package dp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * LeetCode 140, hard, tags: array, hash table, string, dynamic programming, backtracking, trie, memoization.
@@ -41,6 +36,8 @@ import java.util.Set;
 public class WordBreakII {
     int maxLen = 0;
     Set<String> d; // dict of valid words
+    String s;
+    Map<Integer, List<String>> cache;
 
     // https://leetcode.com/problems/word-break-ii/discuss/44167/My-concise-JAVA-solution-based-on-memorized-DFS/215095
     // These are all good approaches when not all combinations are valid, but won't change the time complexity O(2^n)
@@ -54,22 +51,23 @@ public class WordBreakII {
     // 4ms, 40.9Mb, O(2^N) time, O(max(N,MK)) space.
     public List<String> wordBreak(String s, List<String> wordDict) {
         d = new HashSet<>();
+        this.s = s;
         for (String w : wordDict) {
             d.add(w);
             if (w.length() > maxLen) maxLen = w.length();
         }
-        Map<Integer, List<String>> cache = new HashMap<>(); // index -> result list
-        return dfs(s, 0, cache);
+        cache = new HashMap<>(); // index -> result list
+        return dfs(0);
     }
 
-    public List<String> dfs(String s, int start, Map<Integer, List<String>> cache) {
+    public List<String> dfs(int start) {
         if (cache.containsKey(start)) return cache.get(start);
         List<String> res = new ArrayList<>();
         if (start == s.length()) res.add("");
         for (int i = start + 1; i <= start + maxLen && i <= s.length(); i++) { // reduce # iterations using maxLen
             String w = s.substring(start, i);// the next word [start,i)
             if (d.contains(w)) {
-                List<String> next = dfs(s, i, cache);
+                List<String> next = dfs(i);
                 for (String sn : next) {
                     if (sn.isEmpty()) res.add(w); // reached the end
                     else res.add(w + " " + sn);
