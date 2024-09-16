@@ -2,11 +2,7 @@ package dp;
 
 import struct.TrieNode;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * LeetCode 139, medium, tags: dynamic programming, hash table, string, trie, memoization.
@@ -82,9 +78,9 @@ public class WordBreak {
 
     // solution 3, trie, 2ms, 42.4 Mb. O(N^2*K) time, O(max(N,MK)) space.
     public boolean wordBreakTrie(String s, List<String> wordDict) {
-        final int R = 26; // only lower case letters
-        TrieNode root = new TrieNode(R);
-        for (String word : wordDict) root.addWord(word, c1 -> c1 - 'a'); // O(M*K) space.
+        // only lower case letters
+        TrieNode root = new TrieNode();
+        for (String word : wordDict) root.addWord(word); // O(M*K) space.
         boolean[] f = new boolean[s.length() + 1]; // O(N) space
         f[s.length()] = true;
         for (int i = s.length() - 1; i >= 0; i--) {

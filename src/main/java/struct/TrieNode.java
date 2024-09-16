@@ -6,6 +6,10 @@ import java.util.function.Function;
  * a TrieNode for trie. @see {@link princeton.jsl.TrieSET}.
  */
 public class TrieNode {
+    /**
+     * convert lower case english letter to index [0-25]
+     */
+    public static Function<Character, Integer> lce26 = c -> c - 'a';
     public boolean isWord;
     public TrieNode[] next;
     int R; // radix
@@ -19,6 +23,13 @@ public class TrieNode {
         isWord = false;
         this.R = R;
         next = new TrieNode[R];
+    }
+
+    /**
+     * Constructor for 26 lower case english letters.
+     */
+    public TrieNode() {
+        this(26);
     }
 
     /**
@@ -36,4 +47,14 @@ public class TrieNode {
         }
         node.isWord = true;
     }
+
+    /**
+     * add a word into the trie. assuming 26 lower case english letters only.
+     *
+     * @param s the word string to add
+     */
+    public void addWord(String s) {
+        addWord(s, lce26);
+    }
+
 }

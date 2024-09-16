@@ -1,5 +1,7 @@
 package dp;
 
+import struct.TrieNode;
+
 import java.util.*;
 
 /**
@@ -48,7 +50,7 @@ public class WordBreakII {
     // boolean. This is why we don't use DP/memo to solve subsets/permutation problem because all combinations are
     // valid. The code below combines (1) and (4) and beats 99% as the solution above suffers the problem that
     // the dictionary size might be too large.
-    // 4ms, 40.9Mb, O(2^N) time, O(max(N,MK)) space.
+    // 4ms, 40.9Mb, O(N*2^N) time, O(max(N,MK)+N*2^N(recurse)) space.
     public List<String> wordBreak(String s, List<String> wordDict) {
         d = new HashSet<>();
         this.s = s;
@@ -76,5 +78,39 @@ public class WordBreakII {
         }
         cache.put(start, res);
         return res;
+    }
+
+    // solution 2, trie and iterate from end optimization. 5ms, 41.32Mb.
+    static class Solution {
+        public List<String> wordBreak(String s, List<String> wordDict) {
+            TrieNode root = new TrieNode();
+            for (String word : wordDict) root.addWord(word);
+            Map<Integer, List<String>> cache = new HashMap<>();
+
+            // Iterate from the end of the string to the beginning, no need to recurse
+            for (int start = s.length() - 1; start >= 0; start--) {
+                List<String> sentences = new ArrayList<>();
+                TrieNode cur = root;
+                for (int end = start; end < s.length(); end++) {
+                    char c = s.charAt(end);
+                    int index = c - 'a';
+                    // Check if the current character exists in the trie
+                    if (cur.next[index] == null) break;
+                    cur = cur.next[index];
+                    if (cur.isWord) {
+                        String cw = s.substring(start, end + 1); // current word
+                        // If it's the last word, add it as a valid sentence
+                        if (end == s.length() - 1) sentences.add(cw);
+                        else {
+                            // If it's not the last word, append it to each sentence formed by the remaining substring
+                            List<String> next = cache.get(end + 1);
+                            for (String sentence : next) sentences.add(cw + " " + sentence);
+                        }
+                    }
+                }
+                cache.put(start, sentences);
+            }
+            return cache.getOrDefault(0, new ArrayList<>());
+        }
     }
 }

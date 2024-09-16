@@ -1,12 +1,9 @@
 package string;
 
+import struct.TrieNodeS;
 import tree.ImplTrie;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static util.Constants.dirs;
 import static util.Constants.inside;
@@ -70,8 +67,8 @@ public class WordSearchII {
 
     // solution 1, 153ms, 42.8Mb. dfs with trie node. O(mn*4^L) time.
     public List<String> findWords(char[][] board, String[] words) {
-        Node root = new Node();
-        for (String w : words) insert(w, root);
+        TrieNodeS root = new TrieNodeS();
+        for (String w : words) root.addWord(w);
         r = board.length;
         c = board[0].length;
         List<String> res = new ArrayList<>();
@@ -81,7 +78,7 @@ public class WordSearchII {
         return res;
     }
 
-    private void dfs(char[][] board, int i, int j, Node n, List<String> res) {
+    private void dfs(char[][] board, int i, int j, TrieNodeS n, List<String> res) {
         if (!inside(i, j, r, c)) return;
         char tmp = board[i][j];
         int id = tmp - 'a';
@@ -94,16 +91,6 @@ public class WordSearchII {
         board[i][j] = '#'; // save boolean[][] visited trick
         for (int[] d : dirs) dfs(board, i + d[0], j + d[1], n, res);
         board[i][j] = tmp;
-    }
-
-    private void insert(String word, Node root) {
-        Node cur = root;
-        for (int i = 0; i < word.length(); i++) {
-            int id = word.charAt(i) - 'a';
-            if (cur.next[id] == null) cur.next[id] = new Node();
-            cur = cur.next[id];
-        }
-        cur.word = word;
     }
 
     // solution 2, slow, 2668 ms, 45.6 Mb. dfs with trie. O(mnl*4^l) time.
@@ -140,12 +127,4 @@ public class WordSearchII {
         visited[r][c] = false; // important!
     }
 
-    static class Node {
-        String word; // note not boolean
-        Node[] next;
-
-        Node() {
-            next = new Node[26];
-        }
-    }
 }
