@@ -74,12 +74,14 @@ public class IntArrayUtil {
     }
 
     public static void swap(int[] nums, int i, int j) {
+        if (i == j) return;
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;
     }
 
     public static void swap(Integer[] nums, int i, int j) {
+        if (i == j) return;
         int temp = nums[i];
         nums[i] = nums[j];
         nums[j] = temp;

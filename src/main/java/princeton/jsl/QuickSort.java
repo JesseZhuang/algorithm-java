@@ -9,6 +9,7 @@ import java.util.List;
 import static util.IntArrayUtil.isSorted;
 import static util.IntArrayUtil.swap;
 
+@SuppressWarnings("unused")
 public class QuickSort {
     public static void sort(Integer[] array) {
         List<Integer> list = Arrays.asList(array);
@@ -27,7 +28,15 @@ public class QuickSort {
         sort(array, j + 1, hi);
     }
 
-    private static int partition(Integer[] array, int lo, int hi) {
+    /**
+     * quick sort 2-way partition. note i,j starting points and increment before evaluation in while loops
+     *
+     * @param array the array to partition
+     * @param lo    left bound, inclusive
+     * @param hi    right bound, inclusive
+     * @return the index of the pivot
+     */
+    public static int partition(Integer[] array, int lo, int hi) {
         int i = lo, j = hi + 1;
         Integer pivot = array[i];
         while (true) {
@@ -38,6 +47,16 @@ public class QuickSort {
         }
         swap(array, lo, j);
         return j;
+    }
+
+    public static int partition3Way(int[] nums, int lo, int hi) {
+        int pivot = nums[lo], lt = lo, gt = hi, i = lo + 1;
+        while (i <= gt) {
+            if (nums[i] < pivot) swap(nums, i++, lt++);
+            else if (nums[i] > pivot) swap(nums, i, gt--);
+            else i++;
+        }
+        return lt;
     }
 
     public static void main(String[] args) {
