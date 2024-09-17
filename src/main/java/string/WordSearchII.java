@@ -47,7 +47,10 @@ import static util.Constants.inside;
  * Implement Trie (Prefix Tree) first.
  */
 public class WordSearchII {
-    int r, c;
+    int m, n;
+    TrieNodeS root;
+    List<String> res;
+    char[][] board;
 
     public static void main(String[] args) {
         char[][] board = {{'o', 'a', 'a', 'n'}, {'e', 't', 'a', 'e'}, {'i', 'h', 'k', 'r'}, {'i', 'f', 'l', 'v'}};
@@ -67,29 +70,30 @@ public class WordSearchII {
 
     // solution 1, 153ms, 42.8Mb. dfs with trie node. O(mn*4^L) time.
     public List<String> findWords(char[][] board, String[] words) {
-        TrieNodeS root = new TrieNodeS();
+        root = new TrieNodeS();
+        this.board = board;
         for (String w : words) root.addWord(w);
-        r = board.length;
-        c = board[0].length;
-        List<String> res = new ArrayList<>();
-        for (int i = 0; i < r; i++) // O(m)
-            for (int j = 0; j < c; j++) // O(n)
-                dfs(board, i, j, root, res); // O(4^L)
+        m = board.length;
+        n = board[0].length;
+        res = new ArrayList<>();
+        for (int i = 0; i < m; i++) // O(m)
+            for (int j = 0; j < n; j++) // O(n)
+                dfs(i, j, root); // O(4^L)
         return res;
     }
 
-    private void dfs(char[][] board, int i, int j, TrieNodeS n, List<String> res) {
-        if (!inside(i, j, r, c)) return;
+    private void dfs(int i, int j, TrieNodeS node) {
+        if (!inside(i, j, m, n)) return;
         char tmp = board[i][j];
         int id = tmp - 'a';
-        if (tmp == '#' || n.next[id] == null) return;
-        n = n.next[id];
-        if (n.word != null) {
-            res.add(n.word);
-            n.word = null; // dedupe, trick
+        if (tmp == '#' || node.next[id] == null) return;
+        node = node.next[id];
+        if (node.word != null) {
+            res.add(node.word);
+            node.word = null; // dedupe, trick
         }
         board[i][j] = '#'; // save boolean[][] visited trick
-        for (int[] d : dirs) dfs(board, i + d[0], j + d[1], n, res);
+        for (int[] d : dirs) dfs(i + d[0], j + d[1], node);
         board[i][j] = tmp;
     }
 

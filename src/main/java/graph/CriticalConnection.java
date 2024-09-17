@@ -64,18 +64,18 @@ public class CriticalConnection {
             adj.get(e.get(0)).add(e.get(1));
             adj.get(e.get(1)).add(e.get(0));
         }
-        int[] ranks = new int[n];
         dfs(0, 0, 1);
         return res;
     }
 
     private int dfs(int cur, int parent, int rank) {
+        if (ranks[cur] != 0) return ranks[cur];
         ranks[cur] = rank;
         for (int next : adj.get(cur)) {
             if (next == parent) continue;
-            if (ranks[next] == 0) ranks[next] = dfs(next, cur, rank + 1);
+            ranks[next] = dfs(next, cur, rank + 1);
             ranks[cur] = Math.min(ranks[cur], ranks[next]);
-            if (rank < ranks[next]) res.add(Arrays.asList(cur, next));
+            if (rank < ranks[next]) res.add(Arrays.asList(cur, next)); // not in cycle, critical
         }
         return ranks[cur];
     }
