@@ -1,13 +1,12 @@
 package princeton.jsl;
 
-import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import util.CollectionUtil;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class TrieSETTest {
     static TrieSET toBeTested;
@@ -33,6 +32,6 @@ class TrieSETTest {
 
     @Test
     void testKeysWithPrefix() {
-        assertEquals(ImmutableList.of("she", "shell"), CollectionUtil.toList(toBeTested.keysWithPrefix("sh")));
+        assertEquals(List.of("she", "shell"), CollectionUtil.toList(toBeTested.keysWithPrefix("sh")));
     }
 }
