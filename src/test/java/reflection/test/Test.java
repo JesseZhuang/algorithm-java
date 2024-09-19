@@ -39,7 +39,7 @@ public abstract class Test {
             Class<?> inputType = unboxing(inputs[0].getClass());
             Method m = c.getMethod(methodName, inputType);
             // static methods will ignore this instance
-            Object o = c.newInstance();
+            Object o = c.getDeclaredConstructor().newInstance();
             for (int i = 0; i < inputs.length; i++) {
                 Object e = expected[i];
                 R output = (R) m.invoke(o, inputs[i]);
@@ -88,9 +88,9 @@ public abstract class Test {
             }
             System.out.println(SUCCESS);
         } catch (ClassNotFoundException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException
-                | InstantiationException e) {
+                 | IllegalArgumentException | InvocationTargetException
+                 | NoSuchMethodException | SecurityException
+                 | InstantiationException e) {
             e.printStackTrace();
         }
     }
@@ -169,7 +169,7 @@ public abstract class Test {
                 inputTypes[i] = unboxing(inputs[0][i].getClass());
             }
             Method m = c.getMethod(methodName, inputTypes);
-            Object o = c.newInstance();
+            Object o = c.getDeclaredConstructor().newInstance();
             for (int i = 0; i < inputs.length; i++) {
                 R e = expected[i];
                 R output = (R) m.invoke(o, inputs[i]);
@@ -204,9 +204,9 @@ public abstract class Test {
             System.out.println(SUCCESS);
 
         } catch (ClassNotFoundException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException
-                | InstantiationException e) {
+                 | IllegalArgumentException | InvocationTargetException
+                 | NoSuchMethodException | SecurityException
+                 | InstantiationException e) {
             e.printStackTrace();
         }
     }

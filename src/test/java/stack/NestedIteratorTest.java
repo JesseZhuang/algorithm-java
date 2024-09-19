@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NestedIteratorTest {
     static NestedIterator tbt1;
@@ -35,23 +34,23 @@ public class NestedIteratorTest {
 
     @Test
     void testEager() {
-        assertEquals(new Integer(1), tbt1.next());
-        assertEquals(new Integer(2), tbt1.next());
-        assertEquals(false, tbt1.hasNext());
+        assertEquals(Integer.valueOf(1), tbt1.next());
+        assertEquals(Integer.valueOf(2), tbt1.next());
+        assertFalse(tbt1.hasNext());
     }
 
     @Test
     void testLazy() {
-        assertEquals(new Integer(1), tbt2.next());
-        assertEquals(new Integer(2), tbt2.next());
-        assertEquals(false, tbt2.hasNext());
+        assertEquals(Integer.valueOf(1), tbt2.next());
+        assertEquals(Integer.valueOf(2), tbt2.next());
+        assertFalse(tbt2.hasNext());
     }
 
     @Test
     void testLazy2() {
-        assertEquals(new Integer(1), tbt3.next());
+        assertEquals(Integer.valueOf(1), tbt3.next());
         assertTrue(tbt3.hasNext());
-        assertEquals(new Integer(2), tbt3.next());
-        assertEquals(false, tbt3.hasNext());
+        assertEquals(Integer.valueOf(2), tbt3.next());
+        assertFalse(tbt3.hasNext());
     }
 }

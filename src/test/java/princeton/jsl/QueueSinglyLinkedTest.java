@@ -24,7 +24,7 @@ public class QueueSinglyLinkedTest {
         tbt.add(0);
         tbt.add(1);
         assertEquals(2, tbt.size());
-        assertEquals(new Integer(0), tbt.remove());
-        assertEquals(new Integer(1), tbt.remove());
+        assertEquals(Integer.valueOf(0), tbt.remove());
+        assertEquals(Integer.valueOf(1), tbt.remove());
     }
 }

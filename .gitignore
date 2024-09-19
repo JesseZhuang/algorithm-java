@@ -9,6 +9,8 @@ bin/
 # gradle files
 .gradle/
 gradle
+gradlew
+gradlew.bat
 
 # BlueJ files
 *.ctxt
