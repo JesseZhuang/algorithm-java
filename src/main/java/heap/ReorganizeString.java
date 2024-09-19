@@ -1,8 +1,6 @@
 package heap;
 
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.PriorityQueue;
 
 /**
@@ -24,8 +22,8 @@ import java.util.PriorityQueue;
  * <p>
  * Constraints:
  * <p>
- * 1 <= s.length <= 500
- * s consists of lowercase English letters.
+ * 1 <= s.length <= 500, n
+ * s consists of lowercase English letters, k <= 26
  * <p>
  * Hint 1
  * Alternate placing the most common letters.
@@ -37,7 +35,7 @@ public class ReorganizeString {
 
     // solution 1, counting, n time, k space. 1ms, 41.72Mb.
     public String reorganizeString(String s) {
-        int[] count = new int[26];
+        int[] count = new int[26]; // can use hashmap if desired
         for (int i = 0; i < s.length(); i++) count[s.charAt(i) - 'a']++;
         int max = 0, maxInd = 0;
         for (int i = 0; i < count.length; i++) {
@@ -65,24 +63,27 @@ public class ReorganizeString {
         return String.valueOf(res);
     }
 
-    // heap, O(n+nLgk) time, O(k) space. k<=26. 7ms, 41.56 Mb.
+    // heap, O(n+nLgk) time, O(k) space. k<=26. 4ms, 41.60 mb.
     public String reorganizeString2(String s) {
-        Map<Character, Integer> counts = new HashMap<>();
+        // -cnt, char descending by count
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        int[] counts = new int[26];
+        int maxCnt = 0;
         for (int i = 0; i < s.length(); i++) {
-            int count = counts.getOrDefault(s.charAt(i), 0) + 1;
-            if (count > (s.length() + 1) / 2) return "";
-            counts.put(s.charAt(i), count);
+            int id = s.charAt(i) - 'a';
+            counts[id]++;
+            if (counts[id] > maxCnt) maxCnt = counts[id];
         }
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
-        for (char c : counts.keySet()) pq.add(new int[]{c, -counts.get(c)}); // neg so counts desc
+        if (maxCnt > (s.length() + 1) / 2) return "";
+        for (int i = 0; i < counts.length; i++) if (counts[i] != 0) pq.add(new int[]{-counts[i], i});
         StringBuilder sb = new StringBuilder();
-        Character preC = null;
-        while (!pq.isEmpty()) { // nLgk time
-            char cur = (char) pq.remove()[0];
-            sb.append(cur);
-            counts.put(cur, counts.get(cur) - 1); // decrement since used one char
-            if (preC != null && counts.get(preC) > 0) pq.add(new int[]{preC, -counts.get(preC)});
-            preC = cur;
+        int prevId = -1; // important, to alternate, otherwise keep getting the most frequent char
+        while (!pq.isEmpty()) {
+            int id = pq.remove()[1];
+            sb.append((char) (id + 'a'));
+            counts[id]--;
+            if (prevId != -1 && counts[prevId] > 0) pq.add(new int[]{-counts[prevId], prevId});
+            prevId = id;
         }
         return sb.toString();
     }

@@ -63,13 +63,14 @@ public class QuickSelect {
     }
 
     public static int kthSmallest(int[] a, int lo, int hi, int k) {
+        int target = k - 1;
         while (lo < hi) {
             int pi = partition(a, lo, hi);
-            if (pi == k - 1) break;
-            else if (pi < k - 1) lo = pi + 1;
+            if (pi == target) break;
+            else if (pi < target) lo = pi + 1;
             else hi = pi - 1;
         }
-        return a[k - 1];
+        return a[target];
     }
 
     // recursive version
@@ -87,10 +88,11 @@ public class QuickSelect {
 
     // iterative version
     public static int kthLargest(int[] array, int lo, int hi, int k) {
+        int target = array.length - k;
         while (lo < hi) {
             int pi = partitionLarge(array, lo, hi);
-            if (pi == array.length - k) break;
-            else if (pi < array.length - k) lo = pi + 1;
+            if (pi == target) break;
+            else if (pi < target) lo = pi + 1;
             else hi = pi - 1;
         }
         return array[array.length - k];

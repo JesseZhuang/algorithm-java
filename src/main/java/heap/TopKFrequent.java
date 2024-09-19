@@ -60,11 +60,11 @@ public class TopKFrequent {
 
     // 11ms, 45.1 Mb. O(NLgK) time and O(N) space.
     public int[] topKFrequentHeap(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int n : nums) map.put(n, map.getOrDefault(n, 0) + 1);
+        Map<Integer, Integer> counts = new HashMap<>();
+        for (int n : nums) counts.put(n, counts.getOrDefault(n, 0) + 1);
         PriorityQueue<Map.Entry<Integer, Integer>> maxHeap =
-                new PriorityQueue<>(Collections.reverseOrder(Comparator.comparingInt(e -> e.getValue())));
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) maxHeap.add(entry);
+                new PriorityQueue<>(Collections.reverseOrder(Comparator.comparingInt(Map.Entry::getValue)));
+        maxHeap.addAll(counts.entrySet());
         int[] res = new int[k];
         for (int i = 0; i < k; i++) {
             Map.Entry<Integer, Integer> entry = maxHeap.poll();
@@ -77,7 +77,7 @@ public class TopKFrequent {
     public int[] topKFrequentMap(int[] nums, int k) {
         Map<Integer, Integer> count = new HashMap<>();
         for (int n : nums) count.put(n, count.getOrDefault(n, 0) + 1);
-        TreeMap<Integer, List<Integer>> map = new TreeMap<>();
+        TreeMap<Integer, List<Integer>> map = new TreeMap<>(); // count->[numbers]
         for (Map.Entry<Integer, Integer> entry : count.entrySet()) {
             if (!map.containsKey(entry.getValue())) map.put(entry.getValue(), new ArrayList<>());
             map.get(entry.getValue()).add(entry.getKey());

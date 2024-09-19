@@ -56,11 +56,11 @@ public class TwoSum {
 
     // solution 1, 1ms, 433.6Mb. O(N) time and space.
     public int[] twoSumMap(int[] nums, int target) {
-        HashMap<Integer, Integer> valIndex = new HashMap<>();
+        HashMap<Integer, Integer> valInd = new HashMap<>(); // value->index
         for (int i = 0; i < nums.length; i++) {
             int v = target - nums[i];
-            if (valIndex.containsKey(v)) return new int[]{valIndex.get(v), i};
-            else valIndex.put(nums[i], i);
+            if (valInd.containsKey(v)) return new int[]{valInd.get(v), i};
+            else valInd.put(nums[i], i);
         }
         throw new RuntimeException();
     }

@@ -38,6 +38,6 @@ public class MergeIntervals {
             if (intervals[i][0] > result.getLast()[1]) result.add(intervals[i]);
             else result.getLast()[1] = Math.max(result.getLast()[1], intervals[i][1]);
         }
-        return result.toArray(new int[result.size()][2]);
+        return result.toArray(int[][]::new); // int[][]::new for java 11+, new int[0][0] for lower versions
     }
 }

@@ -38,6 +38,7 @@ package tree;
  * word and prefix consist only of lowercase English letters.
  * At most 3 * 104 calls in total will be made to insert, search, and startsWith
  */
+@SuppressWarnings("unused")
 public class ImplTrie { // 36ms, 50.6 Mb. iterative.
 
     static class Node {
@@ -87,7 +88,7 @@ public class ImplTrie { // 36ms, 50.6 Mb. iterative.
         }
     }
 
-    class ImplTrieR { // 33ms, 51.1 Mb. recursive.
+    static class ImplTrieR { // 33ms, 51.1 Mb. recursive.
         Node root;
 
         ImplTrieR() {
