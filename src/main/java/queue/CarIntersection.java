@@ -51,18 +51,13 @@ public class CarIntersection {
     }
 
     Queue<Car> getQueue(Car.Direction direction) {
-        switch (direction) {
-            case NORTH:
-                return north;
-            case SOUTH:
-                return south;
-            case WEST:
-                return west;
-            case EAST:
-                return east;
-            default:
-                throw new IllegalStateException("Unexpected direction: " + direction);
-        }
+        return switch (direction) {
+            case NORTH -> north;
+            case SOUTH -> south;
+            case WEST -> west;
+            case EAST -> east;
+            default -> throw new IllegalStateException("Unexpected direction: " + direction);
+        };
     }
 
     List<Car> getMax2Cars() {
@@ -85,18 +80,13 @@ public class CarIntersection {
     }
 
     Car.Direction mirror(Car.Direction direction) {
-        switch (direction) {
-            case NORTH:
-                return Car.Direction.SOUTH;
-            case SOUTH:
-                return Car.Direction.NORTH;
-            case WEST:
-                return Car.Direction.EAST;
-            case EAST:
-                return Car.Direction.WEST;
-            default:
-                throw new IllegalStateException("Unexpected direction: " + direction);
-        }
+        return switch (direction) {
+            case NORTH -> Car.Direction.SOUTH;
+            case SOUTH -> Car.Direction.NORTH;
+            case WEST -> Car.Direction.EAST;
+            case EAST -> Car.Direction.WEST;
+            default -> throw new IllegalStateException("Unexpected direction: " + direction);
+        };
     }
 
     void switchDirection() {
@@ -110,16 +100,18 @@ public class CarIntersection {
 @Data
 @RequiredArgsConstructor
 class Car {
-    @NonNull Direction direction;
-    @NonNull String name;
-
-    enum Direction {
-        NORTH, SOUTH, WEST, EAST
-    }
+    @NonNull
+    Direction direction;
+    @NonNull
+    String name;
 
     public static void main(String[] args) {
         Car car = new Car(Direction.NORTH, "car1");
         System.out.println("car " + car);
+    }
+
+    enum Direction {
+        NORTH, SOUTH, WEST, EAST
     }
 
 }

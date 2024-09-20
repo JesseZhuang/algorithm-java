@@ -1,12 +1,6 @@
 package array;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -91,9 +85,9 @@ public class PermutationII {
                 res.add(Arrays.stream(nums).boxed().collect(Collectors.toList()));
                 return;
             }
-            HashSet<Integer> fixed = new HashSet<>();
+            HashSet<Integer> fixed = new HashSet<>(); // note set construct out then check in for loop
             for (int i = begin; i < nums.length; i++) {
-                if (fixed.add(nums[i])) {
+                if (fixed.add(nums[i])) { // note not adding begin
                     swap(i, begin);
                     permute(begin + 1);
                     swap(i, begin);

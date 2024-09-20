@@ -70,16 +70,16 @@ public class Permutation {
     // A[1] + permutation of the rest
     // A[2] + permutation of the rest
     // see resources/permutation.png GFG all string permutations
-    void permute(List<Integer> nums, int fix, List<List<Integer>> res) {
-        if (fix == nums.size()) {
+    void permute(List<Integer> nums, int begin, List<List<Integer>> res) {
+        if (begin == nums.size()) {
             res.add(new ArrayList<>(nums));
             // Arrays.stream(nums).boxed().collect(Collectors.toList()) can just use the int[] nums as parameter
             return;
         }
-        for (int i = fix; i < nums.size(); i++) {
-            swap(nums, fix, i); // swap i_th to begin_th
-            permute(nums, fix + 1, res); // permute the rest
-            swap(nums, fix, i);
+        for (int i = begin; i < nums.size(); i++) {
+            swap(nums, begin, i); // swap i_th to begin_th
+            permute(nums, begin + 1, res); // permute the rest
+            swap(nums, begin, i);
         }
     }
 

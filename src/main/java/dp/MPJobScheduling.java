@@ -46,20 +46,21 @@ import java.util.TreeMap;
  * Use binarySearch (lower_bound/upper_bound on C++) to get the next index for the DP transition.
  */
 public class MPJobScheduling {
+    // 53ms, 54.89mb. treemap, nlgn, n.
     public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
         int len = startTime.length;
-        int[][] dp = new int[len][3];
+        int[][] mi = new int[len][3]; // meeting info
         for (int i = 0; i < len; i++)
-            dp[i] = new int[]{startTime[i], endTime[i], profit[i]};
+            mi[i] = new int[]{startTime[i], endTime[i], profit[i]};
 
-        Arrays.sort(dp, Comparator.comparingInt(a -> a[1])); // sort by end time
-        TreeMap<Integer, Integer> intsMap = new TreeMap<>(); // endTime, total profit
-        intsMap.put(0, 0); // dummy job end at 0, profit 0, important
-        for (int[] i : dp) {
-            int cur = intsMap.floorEntry(i[0]).getValue() + i[2]; // max <= i[0]
-            if (cur > intsMap.lastEntry().getValue()) // max key
-                intsMap.put(i[1], cur); // put (endTime, profit)
+        Arrays.sort(mi, Comparator.comparingInt(a -> a[1])); // sort by end time
+        TreeMap<Integer, Integer> endTp = new TreeMap<>(); // endTime, total profit, must declare as treemap
+        endTp.put(0, 0); // dummy job end at 0, profit 0, important
+        for (int[] i : mi) {
+            int cur = endTp.floorEntry(i[0]).getValue() + i[2]; // max <= i[0]
+            if (cur > endTp.lastEntry().getValue()) // max key
+                endTp.put(i[1], cur); // put (endTime, profit)
         }
-        return intsMap.lastEntry().getValue();
+        return endTp.lastEntry().getValue();
     }
 }

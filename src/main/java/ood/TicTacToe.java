@@ -80,8 +80,8 @@ import array.FindWinnerTicTacToe;
  */
 public class TicTacToe {
 
-    private FindWinnerTicTacToe fw;
     boolean gameEnded;
+    private FindWinnerTicTacToe fw;
 
     TicTacToe(int n) {
         fw = new FindWinnerTicTacToe(n);
@@ -90,16 +90,16 @@ public class TicTacToe {
     int move(int row, int col, int player) {
         if (gameEnded) throw new RuntimeException("game ended");
         String res = fw.tictactoe(row, col, player);
-        switch (res) {
+        return switch (res) {
             case "A":
-                return 1;
+                yield 1;
             case "B":
-                return 2;
+                yield 2;
             case "Draw":
                 gameEnded = true; // fall through to return 0
             default: // Pending
-                return 0;
-        }
+                yield 0;
+        };
     }
 }
 

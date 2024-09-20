@@ -68,7 +68,7 @@ public class SPGetKeys {
                     x = r;
                     y = c;
                 }
-                if (ch >= 'a' && ch <= 'f') maxK = Math.max(ch - 'a' + 1, maxK);
+                if (ch >= 'a' && ch <= 'f') maxK = Math.max(ch - 'a' + 1, maxK); // only need to +1 here
             }
         }
         Queue<int[]> q = new ArrayDeque<>();

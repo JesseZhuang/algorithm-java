@@ -6,27 +6,6 @@ import java.util.function.BiFunction;
  * segment tree array recursive (AR) version with lazy propagation, supports min and max queries.
  */
 public class SegmentTreeARLM {
-    static class Node {
-        int sum;
-        int min;
-        int max;
-        int lazy;
-    }
-
-    enum Operation {
-        MIN(Math::min), MAX(Math::max), SUM(Integer::sum);
-
-        BiFunction<Integer, Integer, Integer> op;
-
-        Operation(BiFunction<Integer, Integer, Integer> op) {
-            this.op = op;
-        }
-
-        private int apply(int a, int b) {
-            return op.apply(a, b);
-        }
-    }
-
     private Node[] heap;
     private int n;
 
@@ -82,24 +61,18 @@ public class SegmentTreeARLM {
 
     private int rq(int ci, int left, int right, int sLeft, int sRight, Operation op) {
         if (left <= sLeft && right >= sRight) { // query range contains current search range
-            switch (op) {
-                case SUM:
-                    return heap[ci].sum;
-                case MAX:
-                    return heap[ci].max;
-                case MIN:
-                    return heap[ci].min;
-            }
+            return switch (op) {
+                case SUM -> heap[ci].sum;
+                case MAX -> heap[ci].max;
+                case MIN -> heap[ci].min;
+            };
         }
         if (left > sRight || right < sLeft) { // query range is outside
-            switch (op) {
-                case SUM:
-                    return 0;
-                case MAX:
-                    return Integer.MIN_VALUE;
-                case MIN:
-                    return Integer.MAX_VALUE;
-            }
+            return switch (op) {
+                case SUM -> 0;
+                case MAX -> Integer.MIN_VALUE;
+                case MIN -> Integer.MAX_VALUE;
+            };
         }
         int mid = mid(sLeft, sRight);
         propagate(ci, sLeft, mid, sRight);
@@ -161,5 +134,26 @@ public class SegmentTreeARLM {
             save(2 * ci + 2, heap[ci].lazy, mid + 1, right);
             heap[ci].lazy = 0;
         }
+    }
+
+    enum Operation {
+        MIN(Math::min), MAX(Math::max), SUM(Integer::sum);
+
+        BiFunction<Integer, Integer, Integer> op;
+
+        Operation(BiFunction<Integer, Integer, Integer> op) {
+            this.op = op;
+        }
+
+        private int apply(int a, int b) {
+            return op.apply(a, b);
+        }
+    }
+
+    static class Node {
+        int sum;
+        int min;
+        int max;
+        int lazy;
     }
 }

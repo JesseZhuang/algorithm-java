@@ -54,24 +54,19 @@ public class ReversePolishNotation {
         for (int i = 0; i < tokens.length; i++) {
             int val1, val2;
             switch (tokens[i]) {
-                case "+":
-                    stack.push(stack.pop() + stack.pop());
-                    break;
-                case "-":
+                case "+" -> stack.push(stack.pop() + stack.pop());
+                case "-" -> {
                     val2 = stack.pop();
                     val1 = stack.pop();
                     stack.push(val1 - val2);
-                    break;
-                case "/":
+                }
+                case "/" -> {
                     val2 = stack.pop();
                     val1 = stack.pop();
                     stack.push(val1 / val2);
-                    break;
-                case "*":
-                    stack.push(stack.pop() * stack.pop());
-                    break;
-                default:
-                    stack.push(Integer.parseInt(tokens[i]));
+                }
+                case "*" -> stack.push(stack.pop() * stack.pop());
+                default -> stack.push(Integer.parseInt(tokens[i]));
             }
         }
         return stack.pop();

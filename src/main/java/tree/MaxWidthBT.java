@@ -2,11 +2,7 @@ package tree;
 
 import struct.TreeNode;
 
-import java.util.AbstractMap;
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * LeetCode 662, medium, tags: binary tree, dfs, bfs,
@@ -48,7 +44,7 @@ public class MaxWidthBT {
     // solution 1, bfs, O(n) time and space, 2ms, 43.01Mb. One calculation of res per layer.
     public int widthOfBinaryTreeBfs(TreeNode root) {
         int res = 0;
-        Queue<Map.Entry<TreeNode, Integer>> q = new ArrayDeque<>(); // map: node->position
+        Queue<Map.Entry<TreeNode, Integer>> q = new ArrayDeque<>(); // map: node->position, or use class NotedNode
         q.add(new AbstractMap.SimpleEntry<>(root, 0));
         while (!q.isEmpty()) {
             int l = q.peek().getValue(), r = l, s = q.size(); // init l, r here, do not have to use -1

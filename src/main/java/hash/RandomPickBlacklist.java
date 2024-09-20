@@ -68,8 +68,7 @@ public class RandomPickBlacklist {
                 if (b >= m) continue; // do not forget
                 while (map.containsKey(n - 1)) n--;
                 map.put(b, n - 1);
-                n--;
-
+                n--; // do not forget this line
             }
             r = new Random();
         }
