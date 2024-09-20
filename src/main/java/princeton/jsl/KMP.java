@@ -17,6 +17,7 @@ import edu.princeton.cs.algs4.StdOut;
  * see <a href="https://algs4.cs.princeton.edu/53substring">Section 5.3</a> of
  * <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
  */
+@SuppressWarnings("unused")
 public class KMP {
     private final int R;       // the radix
     private int[][] dfa;       // the KMP automaton
@@ -54,8 +55,7 @@ public class KMP {
     public KMP(char[] pattern, int R) {
         this.R = R;
         this.pattern = new char[pattern.length];
-        for (int j = 0; j < pattern.length; j++)
-            this.pattern[j] = pattern[j];
+        System.arraycopy(pattern, 0, this.pattern, 0, pattern.length);
 
         // build DFA from pattern
         int m = pattern.length;
@@ -67,6 +67,39 @@ public class KMP {
             dfa[pattern[j]][j] = j + 1;      // Set match case.
             x = dfa[pattern[j]][x];        // Update restart state.
         }
+    }
+
+    /**
+     * Takes a pattern string and an input string as command-line arguments;
+     * searches for the pattern string in the text string; and prints
+     * the first occurrence of the pattern string in the text string.
+     *
+     * @param args the command-line arguments
+     */
+    public static void main(String[] args) {
+        String pat = args[0];
+        String txt = args[1];
+        char[] pattern = pat.toCharArray();
+        char[] text = txt.toCharArray();
+
+        edu.princeton.cs.algs4.KMP kmp1 = new edu.princeton.cs.algs4.KMP(pat);
+        int offset1 = kmp1.search(txt);
+
+        edu.princeton.cs.algs4.KMP kmp2 = new edu.princeton.cs.algs4.KMP(pattern, 256);
+        int offset2 = kmp2.search(text);
+
+        // print results
+        StdOut.println("text:    " + txt);
+
+        StdOut.print("pattern: ");
+        for (int i = 0; i < offset1; i++)
+            StdOut.print(" ");
+        StdOut.println(pat);
+
+        StdOut.print("pattern: ");
+        for (int i = 0; i < offset2; i++)
+            StdOut.print(" ");
+        StdOut.println(pat);
     }
 
     /**
@@ -109,39 +142,5 @@ public class KMP {
         }
         if (j == m) return i - m;    // found
         return n;                    // not found
-    }
-
-
-    /**
-     * Takes a pattern string and an input string as command-line arguments;
-     * searches for the pattern string in the text string; and prints
-     * the first occurrence of the pattern string in the text string.
-     *
-     * @param args the command-line arguments
-     */
-    public static void main(String[] args) {
-        String pat = args[0];
-        String txt = args[1];
-        char[] pattern = pat.toCharArray();
-        char[] text = txt.toCharArray();
-
-        edu.princeton.cs.algs4.KMP kmp1 = new edu.princeton.cs.algs4.KMP(pat);
-        int offset1 = kmp1.search(txt);
-
-        edu.princeton.cs.algs4.KMP kmp2 = new edu.princeton.cs.algs4.KMP(pattern, 256);
-        int offset2 = kmp2.search(text);
-
-        // print results
-        StdOut.println("text:    " + txt);
-
-        StdOut.print("pattern: ");
-        for (int i = 0; i < offset1; i++)
-            StdOut.print(" ");
-        StdOut.println(pat);
-
-        StdOut.print("pattern: ");
-        for (int i = 0; i < offset2; i++)
-            StdOut.print(" ");
-        StdOut.println(pat);
     }
 }

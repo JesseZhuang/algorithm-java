@@ -11,7 +11,7 @@ public class PrefixSum {
     public PrefixSum(int[] nums) {
         sums = new int[nums.length];
         sums[0] = nums[0];
-        for (int i = 1; i < nums.length; i++) sums[i] = nums[i] + sums[i - 1];
+        for (int i = 1; i < nums.length; i++) sums[i] = nums[i] + sums[i - 1]; // sums[i] sum [0,i]
     }
 
     /**

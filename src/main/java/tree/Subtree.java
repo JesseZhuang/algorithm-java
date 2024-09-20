@@ -1,5 +1,6 @@
 package tree;
 
+import string.KMP1D;
 import struct.TreeNode;
 
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ import java.util.List;
  * <p>
  * The number of nodes in the root tree is in the range [1, 2000]. n
  * The number of nodes in the subRoot tree is in the range [1, 1000]. m
- * -104 <= root.val <= 104
- * -104 <= subRoot.val <= 104
+ * -10^4 <= root.val <= 10^4
+ * -10^4 <= subRoot.val <= 10^4
  * <p>
  * Hints:
  * <ul>
@@ -39,90 +40,71 @@ import java.util.List;
  * AND isIdentical(s.right,t.right)
  * </ul>
  */
+@SuppressWarnings("unused")
 public class Subtree {
-    static final String COMMA = ",";
-    static final String NULL_NODE = "#";
+    // solution 1, 2ms, 42 Mb. recursive. O(m+n) time and stack space.
+    static class Solution1 {
 
-    // 2ms, 42 Mb. recursive. O(m+n) time and stack space.
-    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        if (root == null) return false; // avoid NPE, clarification q.
-        return identical(root, subRoot) || isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
-    }
+        public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+            if (root == null) return false; // avoid NPE, clarification q.
+            return identical(root, subRoot) || isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+        }
 
-    private boolean identical(TreeNode a, TreeNode b) {
-        if (a == null || b == null) return a == b;
-        return a.val == b.val && identical(a.left, b.left) && identical(a.right, b.right);
-    }
-
-    // 5ms, 42.3Mb. O(m+n) time and space.
-    public boolean isSubtreeString(TreeNode root, TreeNode subRoot) {
-        StringBuilder sb = new StringBuilder(), sb2 = new StringBuilder();
-        preOrderHelper(root, sb);
-        preOrderHelper(subRoot, sb2);
-        return kmp(sb2.toString(), sb.toString());
-    }
-
-    private void preOrderHelper(TreeNode node, StringBuilder sb) {
-        if (node == null) sb.append(NULL_NODE);
-        else {
-            sb.append(COMMA).append(node.val).append(COMMA); // without first comma fails for [12], [2]
-            preOrderHelper(node.left, sb);
-            sb.append(COMMA);
-            preOrderHelper(node.right, sb);
+        private boolean identical(TreeNode a, TreeNode b) {
+            if (a == null || b == null) return a == b;
+            return a.val == b.val && identical(a.left, b.left) && identical(a.right, b.right);
         }
     }
 
-    // Knuth-Morris-Pratt algorithm to check if `needle` is in `haystack` or not
-    private boolean kmp(String needle, String haystack) {
-        int[] restart = restartTable(needle);
-        int i, j;
-        for (i = 0, j = 0; i < haystack.length() && j < needle.length(); ) {
-            if (haystack.charAt(i) == needle.charAt(j)) {
-                i++;
-                j++;
-            } else if (j == 0) i++;
-            else j = restart[j - 1]; // mismatch, back up j, compare with i again
+    // solution 2, 5ms, 42.3Mb. O(m+n) time and space.
+    static class Solution2 {
+        static final String COMMA = ",";
+        static final String NULL_NODE = "#";
+
+        public boolean isSubtreeString(TreeNode root, TreeNode subRoot) {
+            StringBuilder sb = new StringBuilder(), sb2 = new StringBuilder();
+            preOrderHelper(root, sb);
+            preOrderHelper(subRoot, sb2);
+            KMP1D kmp = new KMP1D(sb2.toString());
+            return kmp.inHaystack(sb.toString());
         }
-        return j == needle.length();
-    }
 
-    public static int[] restartTable(String needle) {
-        int[] restart = new int[needle.length()];
-        for (int i = 1, j = 0; i < needle.length(); ) {
-            if (needle.charAt(i) == needle.charAt(j)) {
-                restart[i] = ++j;
-                i++;
-            } else if (j == 0) i++;// nowhere to back up
-            else j = restart[j - 1];
+        private void preOrderHelper(TreeNode node, StringBuilder sb) {
+            if (node == null) sb.append(NULL_NODE);
+            else {
+                sb.append(COMMA).append(node.val).append(COMMA); // without first comma fails for [12], [2]
+                preOrderHelper(node.left, sb);
+                sb.append(COMMA);
+                preOrderHelper(node.right, sb);
+            }
         }
-        return restart;
     }
 
-    final int MOD_1 = 1000000007; //BigInteger.probablePrime();
-    final int MOD_2 = 2147483647;
+    static class Solution3 {
+        final int MOD_1 = 1000000007; //BigInteger.probablePrime();
+        final int MOD_2 = 2147483647;
+        List<long[]> memo = new ArrayList<>();
 
-    long[] hashSubtreeAtNode(TreeNode node, boolean needToAdd) {
-        if (node == null) return new long[]{3, 7};
-        long[] left = hashSubtreeAtNode(node.left, needToAdd);
-        long[] right = hashSubtreeAtNode(node.right, needToAdd);
-        long left1 = (left[0] << 5) % MOD_1; // avoid overflow
-        long right1 = (right[0] << 1) % MOD_1;
-        long left2 = (left[1] << 7) % MOD_2;
-        long right2 = (right[1] << 1) % MOD_2;
-        long[] hashPair = {(left1 + right1 + node.val) % MOD_1,
-                (left2 + right2 + node.val) % MOD_2};
-        if (needToAdd) memo.add(hashPair);
-        return hashPair;
+        long[] hashSubtreeAtNode(TreeNode node, boolean needToAdd) {
+            if (node == null) return new long[]{3, 7};
+            long[] left = hashSubtreeAtNode(node.left, needToAdd);
+            long[] right = hashSubtreeAtNode(node.right, needToAdd);
+            long left1 = (left[0] << 5) % MOD_1; // avoid overflow
+            long right1 = (right[0] << 1) % MOD_1;
+            long left2 = (left[1] << 7) % MOD_2;
+            long right2 = (right[1] << 1) % MOD_2;
+            long[] hashPair = {(left1 + right1 + node.val) % MOD_1,
+                    (left2 + right2 + node.val) % MOD_2};
+            if (needToAdd) memo.add(hashPair);
+            return hashPair;
+        }
+
+        // 7ms, 49.4 Mb. hashing. can add check collision with identical() for O(m)
+        public boolean isSubtreeHash(TreeNode root, TreeNode subRoot) {
+            hashSubtreeAtNode(root, true); // hashing and memorize hash of all nodes in tree
+            long[] s = hashSubtreeAtNode(subRoot, false);
+            for (long[] m : memo) if (m[0] == s[0] && m[1] == s[1]) return true;
+            return false;
+        }
     }
-
-    List<long[]> memo = new ArrayList<>();
-
-    // 7ms, 49.4 Mb. hashing. can add check collision with identical() for O(m)
-    public boolean isSubtreeHash(TreeNode root, TreeNode subRoot) {
-        hashSubtreeAtNode(root, true); // hashing and memorize hash of all nodes in tree
-        long[] s = hashSubtreeAtNode(subRoot, false);
-        for (long[] m : memo) if (m[0] == s[0] && m[1] == s[1]) return true;
-        return false;
-    }
-
 }
