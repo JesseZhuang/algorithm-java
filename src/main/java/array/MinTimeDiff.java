@@ -25,19 +25,20 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class MinTimeDiff {
-    // solution 1, bucket/counting sort, n, 1(24*60<<n).
+    // solution 1, bucket/counting sort, n, 1(24*60<<n). 3ms, 45.32mb.
     public int findMinDifference(List<String> timePoints) {
         // create buckets array for the times converted to minutes
-        boolean[] minutes = new boolean[24 * 60];
+        int mDay = 24 * 60; // minutes in a day, var name cannot start with number
+        boolean[] minutes = new boolean[mDay];
         for (String time : timePoints) {
             int min = Integer.parseInt(time.substring(0, 2)) * 60 +
-                    Integer.parseInt(time.substring(3));
+                    Integer.parseInt(time.substring(3)); // not 2, do not include :
             if (minutes[min]) return 0;
             minutes[min] = true;
         }
         int prev = -1, first = -1, last = -1, res = Integer.MAX_VALUE;
         // find differences between adjacent elements in sorted array
-        for (int i = 0; i < 24 * 60; i++) {
+        for (int i = 0; i < mDay; i++) {
             if (minutes[i]) {
                 if (prev != -1) res = Math.min(res, i - prev);
                 prev = i;
@@ -45,6 +46,6 @@ public class MinTimeDiff {
                 last = i;
             }
         }
-        return Math.min(res, 24 * 60 - last + first);
+        return Math.min(res, mDay - last + first);
     }
 }

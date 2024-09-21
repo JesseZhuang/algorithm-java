@@ -1,7 +1,6 @@
 package dp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,6 +29,8 @@ import java.util.List;
  */
 public class PerfectSquares {
 
+    static List<Integer> dp = new ArrayList<>(List.of(0));
+
     // solution 1, Legendre's three-square Lagrange's four-square theorem
     // O(sqrt(N)) time, O(1) space, 1ms, 39.32Mb.
     public static int numSquares1(int n) { // 1,2,3,4 possibilities
@@ -45,16 +46,14 @@ public class PerfectSquares {
         return 3;
     }
 
-    static List<Integer> dp = new ArrayList<>(Arrays.asList(0));
-
-    // solution 2, dp, O(N*sqrt(N)) time, O(N) space. 32ms, 43.54Mb. with static dp, 3ms, 39.3MB.
+    // solution 2, dp, O(N*sqrt(N)) time, O(N) space. 3ms, 40.73Mb. with static dp, 3ms, 39.3MB.
     public static int numSquares2(int n) {
         // dp [0, 1, 2, 3, 1, 2, 3, 4, 2, 1, 2, 3, 3] for 12
-        while (dp.size() <= n) {
-            int m = dp.size(), squares = Integer.MAX_VALUE;
-            // sum of dp[m-i*i] and a perfect square number i*i
-            for (int i = 1; i * i <= m; i++) squares = Math.min(squares, dp.get(m - i * i) + 1);
-            dp.add(squares); // do not forget, otherwise infinite loop
+        while (dp.size() <= n) { // grow dp to size n+1
+            int m = dp.size(), next = Integer.MAX_VALUE;
+            // sum of dp[m-i*i] and a perfect square number i*i, iterate and find min for next number to add to dp
+            for (int i = 1; i * i <= m; i++) next = Math.min(next, dp.get(m - i * i) + 1);
+            dp.add(next); // do not forget, otherwise infinite loop
         }
         return dp.get(n);
     }

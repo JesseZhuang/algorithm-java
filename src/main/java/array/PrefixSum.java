@@ -1,7 +1,7 @@
 package array;
 
 public class PrefixSum {
-    private int[] sums; // O(n) space.
+    private final int[] sums; // O(n) space.
 
     /**
      * construct prefix sum. O(n) time.

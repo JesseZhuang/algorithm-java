@@ -35,6 +35,7 @@ import java.util.stream.IntStream;
  * <li>Rabin-Karp Monte Carlo version 7N, hash calculations expensive 46 ms.
  * </ul>
  */
+@SuppressWarnings("unused")
 public class ImplementStrStr {
 
     public static void main(String[] args) {
@@ -74,7 +75,7 @@ public class ImplementStrStr {
      * 46 ms
      */
     public int RabinKarpMC(String haystack, String needle) {
-        if (needle.length() == 0) return 0;
+        if (needle.isEmpty()) return 0;
         // without line below fail for "", "a" and "aaa", "aaaa"
         if (haystack.length() < needle.length()) return -1;
         int R = 128, m = needle.length();
@@ -322,7 +323,7 @@ public class ImplementStrStr {
     }
 
     /**
-     * 5 ms
+     * 5 ms, brute force, java library version
      */
     public int strStrBF(String haystack, String needle) {
         for (int i = 0; i < haystack.length() - needle.length() + 1; i++) {

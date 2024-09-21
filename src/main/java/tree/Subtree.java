@@ -56,7 +56,7 @@ public class Subtree {
         }
     }
 
-    // solution 2, 5ms, 42.3Mb. O(m+n) time and space.
+    // solution 2, kmp, 5ms, 42.3Mb. O(m+n) time and space.
     static class Solution2 {
         static final String COMMA = ",";
         static final String NULL_NODE = "#";
@@ -80,6 +80,7 @@ public class Subtree {
         }
     }
 
+    // 7ms, 49.4 Mb. hashing. can add check collision with identical() for O(m)
     static class Solution3 {
         final int MOD_1 = 1000000007; //BigInteger.probablePrime();
         final int MOD_2 = 2147483647;
@@ -99,7 +100,6 @@ public class Subtree {
             return hashPair;
         }
 
-        // 7ms, 49.4 Mb. hashing. can add check collision with identical() for O(m)
         public boolean isSubtreeHash(TreeNode root, TreeNode subRoot) {
             hashSubtreeAtNode(root, true); // hashing and memorize hash of all nodes in tree
             long[] s = hashSubtreeAtNode(subRoot, false);

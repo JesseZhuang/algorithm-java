@@ -7,10 +7,10 @@ package array;
  * @see <a href="https://wcipeg.com/wiki/Prefix_sum_array_and_difference_array">PEG wiki</a>
  */
 public class DifferenceArray {
-    private int[] diff;
+    private final int[] diff;
 
     public DifferenceArray(int[] nums) {
-        diff = new int[nums.length + 1];
+        diff = new int[nums.length + 1]; // last element is dummy
         diff[0] = nums[0];
         for (int i = 1; i < nums.length; i++) diff[i] = nums[i] - nums[i - 1];
     }

@@ -31,27 +31,32 @@ import java.util.List;
  * 1 <= ai < bi <= n
  * All the pairs of dislikes are unique.
  */
+@SuppressWarnings("unused")
 public class PossibleBipartition {
+    List<List<Integer>> adj;
+    Boolean[] colors;
+    boolean one = true;
+
     // dfs, v+e time and space. 14ms, 51.67Mb.
     public boolean possibleBipartition(int n, int[][] dislikes) {
-        List<List<Integer>> adj = new ArrayList<>();
+        adj = new ArrayList<>();
         for (int i = 0; i < n + 1; i++) adj.add(new ArrayList<>());
         for (int[] d : dislikes) {
             adj.get(d[0]).add(d[1]); // note vertices in dislikes starting with 1
             adj.get(d[1]).add(d[0]);
         }
-        Boolean[] colors = new Boolean[n + 1]; // also as visited[], important not boolean, default null:not visited
+        colors = new Boolean[n + 1]; // also as visited[], important not boolean, default null:not visited
         for (int v = 1; v <= n; v++)
-            // important to check visited before calling dfs, this dfs does not know starting vertex
-            if (colors[v] == null && dfs(adj, v, colors, true)) return false;
+            // important to check visited before calling dfs
+            if (colors[v] == null && dfs(v, one)) return false;
         return true;
     }
 
-    // return true if bipartition not possible, odd length cycle exists
-    boolean dfs(List<List<Integer>> adj, int v, Boolean[] colors, boolean color) {
+    // return true if bi-partition not possible, odd length cycle exists
+    boolean dfs(int v, boolean color) {
         colors[v] = color;
         for (int w : adj.get(v)) {
-            if (colors[w] == null && dfs(adj, w, colors, !color)) return true;
+            if (colors[w] == null && dfs(w, !color)) return true; // !color one->two two->one
             else if (colors[w] == colors[v]) return true; // already colored with same color, not possible
         }
         return false;
