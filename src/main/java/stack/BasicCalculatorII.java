@@ -38,24 +38,24 @@ import java.util.Deque;
  */
 public class BasicCalculatorII {
 
-    // solution 1 with dummy end, same complexity as solution 1 below
+    // solution 1 with dummy end, same complexity as solution 1 below. 14ms, 44.23mb.
     public static int calculate3(String s) {
-        int cur = 0, last = 0, res = 0;
-        s = s + "##";
-        char lastOp = '+'; // operation
+        int cur = 0, last = 0, res = 0; // 3 tier cache
+        s = s + "##";  // 3+2*2, for the last two #: last*=cur 4=2*2 then res+=last 7=4+3
+        char prevOp = '+'; // operation
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (Character.isWhitespace(c)) continue;
-            if (Character.isDigit(c)) cur = (cur * 10) + (c - '0');
+            if (Character.isDigit(c)) cur = cur * 10 + c - '0';
             else {
-                if (lastOp == '*') last *= cur;
-                else if (lastOp == '/') last /= cur;
+                if (prevOp == '*') last *= cur;
+                else if (prevOp == '/') last /= cur;
                 else {
-                    res += last;
-                    last = lastOp == '+' ? cur : -cur;
+                    res += last; // accumulate last to res
+                    last = prevOp == '+' ? cur : -cur; // set last to cur
                 }
-                lastOp = c;
-                cur = 0;
+                prevOp = c;
+                cur = 0; // res+=last, last=cur or -cur, cur=0
             }
         }
         return res;

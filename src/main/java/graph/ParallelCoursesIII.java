@@ -1,7 +1,6 @@
 package graph;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 /**
  * LeetCode 2050, hard, tags: array, graph, dp, topological sort.
@@ -63,33 +62,63 @@ import java.util.stream.IntStream;
  * Hint 3
  * How would you generalize this approach?
  */
+@SuppressWarnings("unused")
 public class ParallelCoursesIII {
 
-    // solution 1, bfs, n+e time and space.
-    public int minimumTime(int n, int[][] relations, int[] time) {
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-        for (int i = 0; i < n + 1; i++) graph.put(i, new ArrayList<>());
-        int[] indegree = new int[n + 1];
-        for (int[] e : relations) {
-            graph.get(e[0]).add(e[1]);
-            indegree[e[1]]++;
-        }
-        Queue<Integer> q = new LinkedList<>();
-        int[] maxTime = new int[n + 1];
-        for (int v = 0; v < n; v++) {
-            if (indegree[v] == 0) {
-                q.add(v);
-                maxTime[v] = time[v];
+    // solution 1, bfs, n+e time and space. 26ms, 69.7mb.
+    static class SolutionBFS {
+        public int minimumTime(int n, int[][] relations, int[] time) {
+            int[] maxTime = new int[n + 1];
+            List<List<Integer>> adj = new ArrayList<>();
+            for (int i = 0; i < n + 1; i++) adj.add(new ArrayList<>());
+            int[] indegree = new int[n + 1];
+            for (int[] e : relations) {
+                adj.get(e[0]).add(e[1]);
+                indegree[e[1]]++;
             }
-        }
-        while (!q.isEmpty()) {
-            int v = q.remove();
-            for (int w : graph.get(v)) {
-                maxTime[w] = Math.max(maxTime[w], maxTime[v] + time[w]);
-                indegree[w]--;
-                if (indegree[w] == 0) q.add(w);
+            Queue<Integer> q = new ArrayDeque<>();
+            for (int v = 1; v < n + 1; v++)
+                if (indegree[v] == 0) {
+                    q.add(v);
+                    maxTime[v] = time[v - 1]; // set maxTime when adding vertex to the q
+                }
+            while (!q.isEmpty()) {
+                int v = q.remove();
+                for (int w : adj.get(v)) {
+                    maxTime[w] = Math.max(maxTime[v] + time[w - 1], maxTime[w]);
+                    indegree[w]--;
+                    if (indegree[w] == 0) q.add(w);
+                }
             }
+            return Arrays.stream(maxTime).max().getAsInt();
         }
-        return IntStream.of(maxTime).max().getAsInt();
+    }
+
+    // solution 2, dfs, n+e time and space. 18ms, 84.7mb.
+    static class SolutionDfs {
+        List<List<Integer>> adj;
+        int[] cache;
+        int[] time;
+
+        public int minimumTime(int n, int[][] relations, int[] time) {
+            this.time = time;
+            adj = new ArrayList<>();
+            for (int i = 0; i < n + 1; i++) adj.add(new ArrayList<>());
+            cache = new int[n + 1];
+            Arrays.fill(cache, -1);
+            for (int[] e : relations) adj.get(e[0]).add(e[1]);
+            int res = 0;
+            for (int v = 1; v <= n; v++) res = Math.max(res, dfs(v));
+            return res;
+        }
+
+        int dfs(int v) {
+            if (cache[v] != -1) return cache[v];
+            int res = 0;
+            for (int w : adj.get(v)) res = Math.max(res, dfs(w));
+            res += time[v - 1];
+            cache[v] = res;
+            return res;
+        }
     }
 }

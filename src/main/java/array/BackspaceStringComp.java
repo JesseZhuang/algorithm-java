@@ -44,7 +44,7 @@ public class BackspaceStringComp {
     }
 
     /**
-     * move index to a real char to compare
+     * move index to a real char to compare, taking care of the backspace chars
      *
      * @param i starting index
      * @param s the string to look at

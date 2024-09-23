@@ -91,8 +91,8 @@ public class TopKFrequent {
 
     // solution 2, quick select, 9ms. 46.6 Mb, O(N) average case, O(N^2) worse case, O(N) space.
     static class SolutionQS {
-        int[] unique;
-        Map<Integer, Integer> count;
+        int[] unique; // unique numbers in the array, set(nums)
+        Map<Integer, Integer> count; // num->count
         Random r;
 
         public int[] topKFrequent(int[] nums, int k) {

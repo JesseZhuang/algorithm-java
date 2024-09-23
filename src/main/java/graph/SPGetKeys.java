@@ -9,7 +9,7 @@ import static util.Constants.dirs;
 /**
  * LeetCode 864, hard, tags: bit, bfs, matrix, array.
  * <p>
- * You are given an m x n grid grid where:
+ * You are given an m x n grid where:
  * <p>
  * '.' is an empty cell.
  * '#' is a wall.
@@ -56,6 +56,7 @@ import static util.Constants.dirs;
  * Each key in the grid is unique.
  * Each key in the grid has a matching lock.
  */
+@SuppressWarnings("unused")
 public class SPGetKeys {
 
     // bfs, mn time and space, 20ms, 49Mb.

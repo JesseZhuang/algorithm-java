@@ -71,38 +71,47 @@ import java.util.PriorityQueue;
  * With each meeting, check if there are any free rooms. If there are, then use the room with the smallest number.
  * Otherwise, assign the meeting to the room whose meeting will end the soonest.
  */
+@SuppressWarnings("unused")
 public class MeetingRoomsIII {
 
-    // O(mlgm+mlgn) time, O(n+nlgn) space. 74ms, 97.6Mb.
-    static class Solution1 {
+    // 2 heaps, O(mlgm+mlgn) time, O(n+nlgn) space. 74ms, 97.6Mb.
+    static class SolutionHeap {
         public int mostBooked(int n, int[][] meetings) {
             int[] count = new int[n];
-            PriorityQueue<long[]> used = new PriorityQueue<>( // sort by end time then room id
-                    (a, b) -> a[0] != b[0] ? Long.compare(a[0], b[0]) : Long.compare(a[1], b[1]));
+            // sort by end time then room id
+            PriorityQueue<RoomInfo> used = new PriorityQueue<>(
+                    (r1, r2) -> r1.e == r2.e ? Integer.compare(r1.r, r2.r) : Long.compare(r1.e, r2.e));
             PriorityQueue<Integer> unused = new PriorityQueue<>();
             for (int i = 0; i < n; i++) unused.add(i); // init do not forget
             Arrays.sort(meetings, (a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(a[1], b[1]));
             for (int[] m : meetings) {
                 int start = m[0], end = m[1];
-                while (!used.isEmpty() && used.peek()[0] <= start) {
-                    int room = (int) used.remove()[1];
-                    unused.add(room); // free the available rooms
-                }
+                // free the available rooms
+                while (!used.isEmpty() && used.peek().e <= start) unused.add(used.remove().r);
                 int room;
                 if (!unused.isEmpty()) { // use the first room available
                     room = unused.remove();
-                    used.add(new long[]{end, room});
+                    used.add(new RoomInfo(room, end));
                 } else { // delay this meeting
-                    long[] first = used.remove();
-                    long firstEnd = first[0];
-                    room = (int) first[1];
-                    used.add(new long[]{firstEnd + end - start, room});
+                    RoomInfo first = used.remove();
+                    room = first.r;
+                    used.add(new RoomInfo(room, first.e + end - start));
                 }
                 count[room]++;
             }
             int maxId = 0;
             for (int i = 1; i < n; i++) if (count[i] > count[maxId]) maxId = i;
             return maxId;
+        }
+
+        static class RoomInfo {
+            int r; // room
+            long e; // end time
+
+            RoomInfo(int r, long e) {
+                this.r = r;
+                this.e = e;
+            }
         }
     }
 
