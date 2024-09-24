@@ -1,8 +1,10 @@
 package array;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * LeetCode 46, medium, tags: array, backtracking.
@@ -32,7 +34,7 @@ import java.util.List;
 public class Permutation {
 
     public static void main(String[] args) {
-        Permutation tbt = new Permutation();
+        Permutation.SolutionRecur tbt = new Permutation.SolutionRecur();
         int[] nums = new int[]{1, 2, 3};
         System.out.println(tbt.permute(nums));
     }
@@ -59,35 +61,38 @@ public class Permutation {
     }
 
     // 1ms, 42.2 Mb. O(N*N!) time, not considering result space: O(N) space or O(1) space if input is already a list.
-    public List<List<Integer>> permute(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-        List<Integer> numList = new ArrayList<>();
-        for (int n : nums) numList.add(n);
-        permute(numList, 0, res);
-        return res;
-    }
+    static class SolutionRecur {
+        int[] nums;
+        List<List<Integer>> res;
 
-    // A[1] + permutation of the rest
-    // A[2] + permutation of the rest
-    // see resources/permutation.png GFG all string permutations
-    void permute(List<Integer> nums, int begin, List<List<Integer>> res) {
-        if (begin == nums.size()) {
-            res.add(new ArrayList<>(nums));
-            // Arrays.stream(nums).boxed().collect(Collectors.toList()) can just use the int[] nums as parameter
-            return;
+        public List<List<Integer>> permute(int[] nums) {
+            this.nums = nums;
+            res = new ArrayList<>();
+            permute(0);
+            return res;
         }
-        for (int i = begin; i < nums.size(); i++) {
-            swap(nums, begin, i); // swap i_th to begin_th
-            permute(nums, begin + 1, res); // permute the rest
-            swap(nums, begin, i);
-        }
-    }
 
-    private void swap(List<Integer> nums, int i, int j) {
-        if (i != j) {
-            int temp = nums.get(i);
-            nums.set(i, nums.get(j));
-            nums.set(j, temp);
+        // A[1] + permutation of the rest
+        // A[2] + permutation of the rest
+        // see resources/permutation.png GFG all string permutations
+        void permute(int begin) {
+            if (begin == nums.length) {
+                res.add(Arrays.stream(nums).boxed().collect(Collectors.toList()));
+                return;
+            }
+            for (int i = begin; i < nums.length; i++) {
+                swap(begin, i); // swap i_th to begin_th
+                permute(begin + 1); // permute the rest
+                swap(begin, i);
+            }
+        }
+
+        private void swap(int i, int j) {
+            if (i != j) {
+                int temp = nums[i];
+                nums[j] = nums[i];
+                nums[i] = temp;
+            }
         }
     }
 }

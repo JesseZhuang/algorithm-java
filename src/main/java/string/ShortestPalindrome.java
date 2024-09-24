@@ -28,15 +28,16 @@ package string;
 public class ShortestPalindrome {
     // find longest from index 0. aacecaaa -> aacecaa, abcd -> a
 
-    // kmp, O(n) time and space
+    // kmp, O(n) time and space.
     static class Solution1 {
 
         public String shortestPalindrome(String s) {
             String reverse = new StringBuilder(s).reverse().toString();
             String combine = s + "#" + reverse;
-            int[] prefixTable = new KMP1D(combine).restartTable;
-            int palindromeLength = prefixTable[combine.length() - 1];
-            StringBuilder suffix = new StringBuilder(s.substring(palindromeLength)).reverse();
+            int[] table = new KMP1D(combine).restartTable;
+            int palinLen = table[combine.length() - 1];
+            if (palinLen == s.length()) return s;
+            StringBuilder suffix = new StringBuilder(s.substring(palinLen)).reverse();
             return suffix.append(s).toString();
         }
     }
@@ -69,7 +70,7 @@ public class ShortestPalindrome {
         }
     }
 
-    // Manacher's algorithm, O(n) time and space.
+    // Manacher's algorithm, O(n) time and space. 11ms, 44.7mb.
     static class Solution3 {
         public String shortestPalindrome(String s) {
             // Return early if the string is null or empty

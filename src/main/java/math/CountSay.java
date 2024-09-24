@@ -78,6 +78,7 @@ package math;
  * <li>the list function run out of heap space around 70 (-Xms 256m -Xmx 1024m).
  * </ul>
  */
+@SuppressWarnings("unused")
 public class CountSay {
     public static void main(String[] args) {
         CountSay cs = new CountSay();
@@ -87,24 +88,6 @@ public class CountSay {
             System.out.println("length: " + s.length());
         }
         // cs.countAndSayList(50); // may run out of heap
-    }
-
-    public String countAndSayRecursive(int n) {
-        if (n < 1) return null;
-        if (n == 1) return "1";
-        String s = countAndSayRecursive(n - 1);
-        StringBuilder sb = new StringBuilder();
-        int i = 0;
-        while (i < s.length()) {
-            char num = s.charAt(i++);
-            int count = 1;
-            while (i < s.length() && s.charAt(i) == num) {
-                count++;
-                i++;
-            }
-            sb.append(count).append(num);
-        }
-        return sb.toString();
     }
 
     // solution 1, O(2^n) time (worst case string length double each loop), O(2^n) space returned as result.
@@ -124,6 +107,24 @@ public class CountSay {
             res = cur.toString();
         }
         return res;
+    }
+
+    public String countAndSayRecursive(int n) {
+        if (n < 1) return null;
+        if (n == 1) return "1";
+        String s = countAndSayRecursive(n - 1);
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        while (i < s.length()) {
+            char num = s.charAt(i++);
+            int count = 1;
+            while (i < s.length() && s.charAt(i) == num) {
+                count++;
+                i++;
+            }
+            sb.append(count).append(num);
+        }
+        return sb.toString();
     }
 
     public void countAndSayList(int n) {

@@ -80,7 +80,7 @@ public class WordBreakII {
         return res;
     }
 
-    // solution 2, trie and iterate from end optimization. 5ms, 41.32Mb.
+    // solution 2, trie and iterate from end optimization. 5ms, 41.32Mb. same complexity.
     static class Solution {
         public List<String> wordBreak(String s, List<String> wordDict) {
             TrieNode root = new TrieNode();
@@ -99,11 +99,11 @@ public class WordBreakII {
                     cur = cur.next[index];
                     if (cur.isWord) {
                         String cw = s.substring(start, end + 1); // current word
-                        // If it's the last word, add it as a valid sentence
+                        // if it's the last word, add it as a valid sentence
                         if (end == s.length() - 1) sentences.add(cw);
                         else {
                             // If it's not the last word, append it to each sentence formed by the remaining substring
-                            List<String> next = cache.get(end + 1);
+                            List<String> next = cache.get(end + 1); // scanned backward, so this will not be null
                             for (String sentence : next) sentences.add(cw + " " + sentence);
                         }
                     }

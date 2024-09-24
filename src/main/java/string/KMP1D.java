@@ -16,6 +16,18 @@ public class KMP1D {
         restartTable = restartTable(needle);
     }
 
+    /**
+     * A method to find the longest palindrome prefix.
+     *
+     * @param s the string to look into.
+     * @return the longest palindrome prefix from s.
+     */
+    public static String longestPalindrome(String s) {
+        String combine = s + "#" + new StringBuilder(s).reverse();
+        KMP1D kmp = new KMP1D(combine);
+        return s.substring(0, kmp.restartTable[combine.length() - 1]);
+    }
+
     private int[] restartTable(String needle) {
         int[] restart = new int[needle.length()];
         for (int i = 1, j = 0; i < needle.length(); ) {

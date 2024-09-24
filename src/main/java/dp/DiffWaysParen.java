@@ -38,7 +38,7 @@ import java.util.List;
  * All the integer values in the input expression are in the range [0, 99].
  * The integer values in the input expression do not have a leading '-' or '+' denoting the sign.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "unchecked"})
 public class DiffWaysParen {
     // solution 1, tabulation, O(n2^n) time and O(2^n) space. No recursive stack space. 1ms, 42.10mb.
     // time: catalan number T(n)=sum(T(1)*T(n-2)+T(2)*T(n-2)...) T(0)==0, T(1)==constant 4^n/(n^1.5*sqrt(pi))
@@ -47,18 +47,18 @@ public class DiffWaysParen {
         List<Integer>[][] dp;
 
         public List<Integer> diffWaysToCompute(String expression) {
-            int n = expression.length();
             this.e = expression;
-            dp = new ArrayList[n][n]; // dp[i][j]: possible res for expression[i,j]
-            initBaseCases();
-            for (int length = 3; length <= n; length++)// Fill the dp table for all possible subexpressions
-                for (int start = 0; start + length - 1 < n; start++)
-                    processSubexpression(start, start + length - 1);
+            int n = e.length();
+            dp = new ArrayList[n][n]; // dp[i][j]: possible res for expression [i,j] inclusive
+            init();
+            for (int len = 3; len <= n; len++) // Fill the dp table for all possible subexpressions
+                for (int start = 0, end = start + len - 1; end < n; start++, end++)
+                    process(start, end);
             return dp[0][n - 1];
         }
 
         // base cases: single digits and two-digit numbers
-        private void initBaseCases() {
+        private void init() {
             int n = e.length();
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
@@ -70,26 +70,23 @@ public class DiffWaysParen {
                         int dig2 = e.charAt(i + 1) - '0';
                         int number = dig1 * 10 + dig2;
                         dp[i][i + 1].add(number);
-                    }
-                    dp[i][i].add(dig1);
+                    } else dp[i][i].add(dig1);
                 }
             }
         }
 
-        // Try all possible positions to split the e
-        private void processSubexpression(int start, int end) {
+        // try all possible positions to split the e, process sub-expressions
+        private void process(int start, int end) {
             for (int split = start; split <= end; split++) {
                 if (Character.isDigit(e.charAt(split))) continue; // only process when split is an op
-                List<Integer> leftResults = dp[start][split - 1];
-                List<Integer> rightResults = dp[split + 1][end];
-                computeResults(e.charAt(split), leftResults,
-                        rightResults, dp[start][end]);
+                List<Integer> leftRes = dp[start][split - 1];
+                List<Integer> rightRes = dp[split + 1][end];
+                compute(e.charAt(split), leftRes, rightRes, dp[start][end]);
             }
         }
 
         // Compute res based on the operator at position 'split'
-        private void computeResults(char op, List<Integer> leftRes,
-                                    List<Integer> rightRes, List<Integer> res) {
+        private void compute(char op, List<Integer> leftRes, List<Integer> rightRes, List<Integer> res) {
             for (int lv : leftRes)
                 for (int rv : rightRes)
                     switch (op) {

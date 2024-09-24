@@ -54,7 +54,7 @@ public class CriticalConnection {
         System.out.println(new CriticalConnection().criticalConnections(4, edges));
     }
 
-    // solution 1, dfs, O(v+e) time and space.
+    // solution 1, dfs, O(v+e) time and space. 92ms, 111.4mb.
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
         adj = new ArrayList<>();
         res = new ArrayList<>();
@@ -68,15 +68,14 @@ public class CriticalConnection {
         return res;
     }
 
-    private int dfs(int cur, int parent, int rank) {
-        if (ranks[cur] != 0) return ranks[cur];
-        ranks[cur] = rank;
-        for (int next : adj.get(cur)) {
-            if (next == parent) continue;
-            ranks[next] = dfs(next, cur, rank + 1);
-            ranks[cur] = Math.min(ranks[cur], ranks[next]);
-            if (rank < ranks[next]) res.add(Arrays.asList(cur, next)); // not in cycle, critical
+    void dfs(int v, int parent, int rank) {
+        if (ranks[v] != 0) return;
+        ranks[v] = rank;
+        for (int w : adj.get(v)) {
+            if (w == parent) continue;
+            dfs(w, v, rank + 1);
+            ranks[v] = Math.min(ranks[v], ranks[w]);
+            if (rank < ranks[w]) res.add(Arrays.asList(v, w)); // not in cycle, critical
         }
-        return ranks[cur];
     }
 }

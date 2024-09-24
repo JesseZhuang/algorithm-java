@@ -26,7 +26,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class LexicoNum {
-    // solution 1, iterative, n, 1.
+    // solution 1, iterative, n, 1. 5ms, 47.73mb.
     public List<Integer> lexicalOrder(int n) { // 103
         List<Integer> res = new ArrayList<>();
         int cur = 1;

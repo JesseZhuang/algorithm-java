@@ -1,6 +1,6 @@
 package string;
 
-import struct.TrieNodeS;
+import struct.TrieNode26;
 import tree.ImplTrie;
 
 import java.util.*;
@@ -48,7 +48,7 @@ import static util.Constants.inside;
  */
 public class WordSearchII {
     int m, n;
-    TrieNodeS root;
+    TrieNode26 root;
     List<String> res;
     char[][] board;
 
@@ -70,7 +70,7 @@ public class WordSearchII {
 
     // solution 1, 153ms, 42.8Mb. dfs with trie node. O(mn*4^L) time.
     public List<String> findWords(char[][] board, String[] words) {
-        root = new TrieNodeS();
+        root = new TrieNode26();
         this.board = board;
         for (String w : words) root.addWord(w);
         m = board.length;
@@ -82,7 +82,7 @@ public class WordSearchII {
         return res;
     }
 
-    private void dfs(int i, int j, TrieNodeS node) {
+    private void dfs(int i, int j, TrieNode26 node) {
         if (!inside(i, j, m, n)) return;
         char tmp = board[i][j];
         int id = tmp - 'a';

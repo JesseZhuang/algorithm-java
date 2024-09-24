@@ -27,17 +27,10 @@ package string;
  * <p>
  * Constraints:
  * <p>
- * 1 <= s.length <= 2 * 105
+ * 1 <= s.length <= 2 * 10^5
  * s consists only of printable ASCII characters.
  */
 public class ValidPalindrome {
-    // O(n) time and space. 659ms, 43.3Mb.
-    public boolean isPalindromeR(String s) {
-        String actual = s.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
-        String rev = new StringBuffer(actual).reverse().toString();
-        return actual.equals(rev);
-    }
-
     // 3ms 41.9 Mb. two pointer, O(n) time, O(1) space.
     public boolean isPalindrome2P(String s) {
         for (int i = 0, j = s.length() - 1; i < j; i++, j--) {
@@ -46,5 +39,12 @@ public class ValidPalindrome {
             if (Character.toUpperCase(s.charAt(i)) != Character.toUpperCase(s.charAt(j))) return false;
         }
         return true;
+    }
+    
+    // O(n) time and space. 659ms, 43.3Mb.
+    public boolean isPalindromeR(String s) {
+        String actual = s.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+        String rev = new StringBuilder(actual).reverse().toString();
+        return actual.equals(rev);
     }
 }

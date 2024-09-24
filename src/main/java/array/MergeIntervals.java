@@ -33,12 +33,13 @@ public class MergeIntervals {
     // Another idea for identifying connected components and merging. O(N^2) time and space.
     public int[][] merge(int[][] intervals) {
         Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
-        Deque<int[]> result = new ArrayDeque<>();
-        result.add(intervals[0]);
+        Deque<int[]> res = new ArrayDeque<>();
+        res.add(intervals[0]);
         for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] > result.getLast()[1]) result.add(intervals[i]);
-            else result.getLast()[1] = Math.max(result.getLast()[1], intervals[i][1]);
+            int[] prev = res.getLast();
+            if (intervals[i][0] > prev[1]) res.add(intervals[i]);
+            else prev[1] = Math.max(prev[1], intervals[i][1]);
         }
-        return result.toArray(int[][]::new); // int[][]::new for java 11+, new int[0][0] for lower versions
+        return res.toArray(int[][]::new); // int[][]::new for java 11+, new int[0][0] for lower versions
     }
 }

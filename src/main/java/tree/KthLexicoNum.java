@@ -23,15 +23,20 @@ package tree;
  */
 @SuppressWarnings("unused")
 public class KthLexicoNum {
+
+    // 0ms, 39.86mb. prefix tree or trie, lgn^2, lgn.
     static class Solution1 {
+        int n;
+
         public int findKthNumber(int n, int k) {
+            this.n = n;
             int cur = 1;
             k--;
             while (k > 0) {
-                int step = countSteps(n, cur, cur + 1);
-                if (step <= k) { // can skip to next node
+                int steps = countSteps(cur);
+                if (steps <= k) { // can skip to next node
                     cur++;
-                    k -= step;
+                    k -= steps;
                 } else { // look in this tree node
                     cur *= 10;
                     k--;
@@ -41,25 +46,24 @@ public class KthLexicoNum {
         }
 
         /**
-         * p1:prefix1:cur, p2:prefix2:cur+1. p2 is always the next right node beside p1's right most node, .e.g,
+         * cur:prefix1, prefix2:cur+1. p2 is always the next right node beside cur's right most node, .e.g,
          * 2 next to 1, 20 next to 19, 200 next to 199, .etc.
-         * if p2<=n, add number of nodes from p1 to p2 to steps
-         * else if p2>n, add n+1-p1 to steps. n+1 because need to include n.
-         * so min(n+1,p2)-p1
+         * if p2<=n, add number of nodes from cur to p2 to steps
+         * else if p2>n, add n+1-cur to steps. n+1 because need to include n.
+         * so min(n+1,p2)-cur
          *
-         * @param n  limit numbers are in [1,n]
-         * @param p1 node 1
-         * @param p2 node 2
-         * @return steps between the two tree nodes
+         * @param cur node 1
+         * @return steps between the two tree nodes [cur, cur+1)
          */
-        private int countSteps(int n, long p1, long p2) { // 13,1,2
-            int steps = 0;
-            while (p1 <= n) {
-                steps += (int) (Math.min(n + 1, p2) - p1); //steps += 1,4
-                p1 *= 10;
-                p2 *= 10;
+        private int countSteps(long cur) { // n=13, cur=1
+            int res = 0;
+            long next = cur + 1;
+            while (cur <= n) {
+                res += (int) (Math.min(n + 1, next) - cur); // res += 1,4
+                cur *= 10;
+                next *= 10;
             }
-            return steps;
+            return res;
         }
     }
 }
