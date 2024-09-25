@@ -102,7 +102,7 @@ public class WordBreakII {
                         // if it's the last word, add it as a valid sentence
                         if (end == s.length() - 1) sentences.add(cw);
                         else {
-                            // If it's not the last word, append it to each sentence formed by the remaining substring
+                            // append it to each sentence formed by the remaining substring
                             List<String> next = cache.get(end + 1); // scanned backward, so this will not be null
                             for (String sentence : next) sentences.add(cw + " " + sentence);
                         }

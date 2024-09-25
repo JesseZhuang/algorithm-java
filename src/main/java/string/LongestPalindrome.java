@@ -19,89 +19,46 @@ package string;
  * 1 <= s.length <= 1000
  * s consist of only digits and English letters.
  */
+@SuppressWarnings("unused")
 public class LongestPalindrome {
-    int left, maxLen;
 
-    // 23 ms, 41.9Mb. O(n^2) time, O(1) space.
-    public String longestPalindrome(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            extendPalindrome(s, i, i); // odd length
-            extendPalindrome(s, i, i + 1);
+    // solution 1 expand from center, 23 ms, 41.9Mb. O(n^2) time, O(1) space.
+    static class Solution1 {
+        int left, maxLen;
+        String s;
+
+        public String longestPalindrome(String s) {
+            this.s = s;
+            for (int i = 0; i < s.length(); i++) {
+                extendPalindrome(i, i); // odd length
+                extendPalindrome(i, i + 1); // even length
+            }
+            return s.substring(left, left + maxLen);
         }
-        return s.substring(left, left + maxLen);
+
+        /**
+         * find the length of the longest palindrome centered at left, right
+         *
+         * @param left  left index
+         * @param right right index
+         */
+        private void extendPalindrome(int left, int right) {
+            while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+                left--;
+                right++;
+            } // left, right will stop when out of bound or no longer match
+            if (maxLen < right - left - 1) {
+                this.left = left + 1; // move back to a matched index
+                maxLen = right - left - 1;
+            }
+        }
     }
 
-    private void extendPalindrome(String s, int left, int right) {
-        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
-            left--;
-            right++;
-        } // left, right will stop when out of bound or no longer match
-        if (maxLen < right - left - 1) {
-            this.left = left + 1;
-            maxLen = right - left - 1;
-        }
-    }
-
-    // O(n) time and space. manachers algorithm, GFG. 8ms, 42.1Mb.
+    // O(n) time and space. Manacher's algorithm. 10ms, 42.75mb.
     // https://en.wikipedia.org/wiki/Longest_palindromic_substring#Manacher's_algorithm
-    public static String manachers(String s) {
-        int N = s.length();
-        if (N == 0) return "";
-        if (N == 1) return s;
-        N = 2 * N + 1; // center count, center could be character or space between
-        int[] L = new int[N]; // O(n) space, LPS Length Array
-        L[0] = 0;
-        L[1] = 1;
-        int c = 1, cr = 2; // center, center right
-        int i = 0; // currentRightPosition
-
-        int iMirror; // currentLeftPosition
-        int expand, diff;
-        int maxLPSLength = 0, maxLPSCenterPosition = 0;
-        int start, end;
-
-        for (i = 2; i < N; i++) {
-            iMirror = 2 * c - i;
-            expand = 0; // Reset expand - means no expansion required
-            diff = cr - i;
-            if (diff >= 0) { // If currentRightPosition i is within centerRightPosition R
-                if (L[iMirror] < diff) L[i] = L[iMirror]; // Case 1
-                else if (L[iMirror] == diff && cr == N - 1) L[i] = L[iMirror];
-                else if (L[iMirror] == diff && cr < N - 1) {
-                    L[i] = L[iMirror];
-                    expand = 1; // Expansion required
-                } else if (L[iMirror] > diff) { // Case 4
-                    L[i] = diff;
-                    expand = 1;
-                }
-            } else {
-                L[i] = 0;
-                expand = 1;
-            }
-            if (expand == 1) {
-                try { // Attempt to expand palindrome centered at currentRightPosition i.
-                    while (((i + L[i]) < N && (i - L[i]) > 0)
-                            && (((i + L[i] + 1) % 2 == 0)
-                            || (s.charAt((i + L[i] + 1) / 2) == s.charAt((i - L[i] - 1) / 2)))) {
-                        L[i]++;
-                    }
-                } catch (Exception e) {
-                    assert true;
-                }
-            }
-            if (L[i] > maxLPSLength) {// Track maxLPSLength
-                maxLPSLength = L[i];
-                maxLPSCenterPosition = i;
-            }
-            // If palindrome centered at currentRightPosition i expand beyond centerRightPosition R,
-            // adjust centerPosition C based on expanded palindrome.
-            if (i + L[i] > cr) {
-                c = i;
-                cr = i + L[i];
-            }
+    static class Solution2 {
+        public String longestPalindrome(String s) {
+            return new Manacher(s).longestPalindromicSubstring();
         }
-        start = (maxLPSCenterPosition - maxLPSLength) / 2;
-        end = start + maxLPSLength - 1;
-        return s.substring(start, end + 1);
     }
 }

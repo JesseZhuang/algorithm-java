@@ -27,6 +27,6 @@ class KMP1DTest {
     @ParameterizedTest
     @CsvSource({"abcd,a", "aacecaaa,aacecaa", "aca,aca", "aaab,aaa"})
     void findPalindromePrefix(String s, String p) {
-        assertEquals(p, KMP1D.longestPalindrome(s));
+        assertEquals(p, KMP1D.longestPalindromePrefix(s));
     }
 }

@@ -22,7 +22,7 @@ public class KMP1D {
      * @param s the string to look into.
      * @return the longest palindrome prefix from s.
      */
-    public static String longestPalindrome(String s) {
+    public static String longestPalindromePrefix(String s) {
         String combine = s + "#" + new StringBuilder(s).reverse();
         KMP1D kmp = new KMP1D(combine);
         return s.substring(0, kmp.restartTable[combine.length() - 1]);

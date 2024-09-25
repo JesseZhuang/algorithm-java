@@ -90,32 +90,8 @@ public class PalindromeSS {
         return res;
     }
 
-    // 2ms, 40.7 Mb. Manachers algorithm. O(n) time and space.
+    // 2ms, 40.7 Mb. Manacher's algorithm. O(n) time and space.
     public int manachers(String s) {
-        StringBuilder sExpand = new StringBuilder("@#");
-        for (int i = 0; i < s.length(); ++i) {
-            sExpand.append(s.charAt(i));
-            sExpand.append("#");
-        }
-        sExpand.append("$");
-        int n = sExpand.length();
-        int[] palRadii = new int[n]; // max length palindrome centered at i
-        int right = 0;
-        int center = 0;
-        for (int i = 1; i < n - 1; ++i) {
-            if (i < right) {
-                palRadii[i] = Math.min(right - i, palRadii[center - (i - center)]);
-            }
-            while (sExpand.charAt(i + palRadii[i] + 1) == sExpand.charAt(i - palRadii[i] - 1)) ++palRadii[i];
-            if (i + palRadii[i] > right) {
-                center = i;
-                right = i + palRadii[i];
-            }
-        }
-        int cnt = 0;
-        for (int c = 1; c < n - 1; ++c) cnt += (palRadii[c] + 1) / 2;
-        // number of palindromes at this center == (maxLen + 1) / 2
-        // e.g., aba(b,aba), cnt == 2 == (len:3 +1)/2; a 1 == (1+1)/2; abba(bb,abba) 2 == (4+1)/2;
-        return cnt;
+        return new Manacher(s).cntPalindromeSubstring();
     }
 }
