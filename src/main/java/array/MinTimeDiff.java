@@ -39,12 +39,11 @@ public class MinTimeDiff {
         int prev = -1, first = -1, last = -1, res = Integer.MAX_VALUE;
         // find differences between adjacent elements in sorted array
         for (int i = 0; i < mDay; i++) {
-            if (minutes[i]) {
-                if (prev != -1) res = Math.min(res, i - prev);
-                prev = i;
-                if (first == -1) first = i;
-                last = i;
-            }
+            if (!minutes[i]) continue;
+            if (prev != -1) res = Math.min(res, i - prev);
+            if (first == -1) first = i;
+            prev = i;
+            last = i;
         }
         return Math.min(res, mDay - last + first);
     }
