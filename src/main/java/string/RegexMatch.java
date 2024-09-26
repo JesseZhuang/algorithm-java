@@ -33,68 +33,63 @@ package string;
  * p contains only lowercase English letters, '.', and '*'.
  * It is guaranteed for each appearance of the character '*', there will be a previous valid character to match.
  */
+@SuppressWarnings("unused")
 public class RegexMatch {
 
-    // dp, O(mn) time and space. 2ms, 40.7MB. backwards, logic same to recursive.
-    public boolean isMatch(String s, String p) {// remember by correlate to recursive 1 method
-        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
-        dp[s.length()][p.length()] = true; // both empty string, true
-        for (int i = s.length(); i >= 0; i--) {
-            for (int j = p.length() - 1; j >= 0; j--) { // dp[i<s.length()][p.length()] all false
-                boolean firstMatch = (i < s.length() && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.'));
-                if (j + 1 < p.length() && p.charAt(j + 1) == '*')
-                    dp[i][j] = dp[i][j + 2] || (firstMatch && dp[i + 1][j]);
-                else dp[i][j] = firstMatch && dp[i + 1][j + 1];
-            }
-        }
-        return dp[0][0];
-    }
-
-    // https://leetcode.com/problems/regular-expression-matching/discuss/191830/Java-DP-solution-beats-100-with-explanation
-    // 2ms, 41.1 Mb. DP, forward.
-    public boolean isMatch2(String s, String p) {
-        boolean dp[][] = new boolean[s.length() + 1][p.length() + 1];
-        dp[0][0] = true;
-        for (int j = 2; j <= p.length(); j++) dp[0][j] = p.charAt(j - 1) == '*' && dp[0][j - 2];
-        for (int j = 1; j <= p.length(); j++) {
-            for (int i = 1; i <= s.length(); i++) {
-                if (s.charAt(i - 1) == p.charAt(j - 1) || p.charAt(j - 1) == '.')
-                    dp[i][j] = dp[i - 1][j - 1];
-                else if (p.charAt(j - 1) == '*')
-                    dp[i][j] = dp[i][j - 2] ||
-                            ((s.charAt(i - 1) == p.charAt(j - 2) || p.charAt(j - 2) == '.') && dp[i - 1][j]);
-            }
-        }
-        return dp[s.length()][p.length()];
-    }
-
-    // O((m+n)2^(m+n/2)) time and space. TLE. T(m,n) = T(m-1,n)+T(m,n-2), recursive.
-    public boolean isMatchR1(String s, String p) {
-        if (p.isEmpty()) return s.isEmpty();
-        boolean firstMatch = !s.isEmpty() && (p.charAt(0) == s.charAt(0) || p.charAt(0) == '.');
-        if (p.length() >= 2 && p.charAt(1) == '*')
-            return isMatchR1(s, p.substring(2)) || (firstMatch && isMatchR1(s.substring(1), p));
-        else return firstMatch && isMatchR1(s.substring(1), p.substring(1));
-    }
-
-    // TLE, recursive 2.
-    public boolean isMatchR2(String s, String p) {
-        return isMatchR2(0, s, 0, p);
-    }
-
-    private boolean isMatchR2(int i, String s, int j, String p) {
-        int sn = s.length(), pn = p.length();
-        if (j == pn) return i == sn;
-        char si = s.charAt(i), pj = p.charAt(j);
-        boolean firstMatch = i < sn && (pj == si || pj == '.');
-        if (j + 1 < pn && p.charAt(j + 1) == '*')
-            return isMatchR2(i, s, j + 2, p) || (firstMatch && isMatchR2(i + 1, s, j, p));
-        else return firstMatch && isMatchR2(i + 1, s, j + 1, p);
-    }
-
     public static void main(String[] args) {
-        RegexMatch tbt = new RegexMatch();
+        RegexMatch.SolutionRecur tbt = new RegexMatch.SolutionRecur();
         tbt.isMatch("aab", "c*a*b");
+    }
+
+    // dp, O(mn) time and space. 2ms, 40.7MB. backwards, logic same to recursive.
+    static class SolutionDP {
+        public boolean isMatch(String s, String p) {// remember by correlate to recursive method
+            int n = s.length(), m = p.length();
+            boolean[][] dp = new boolean[n + 1][m + 1];
+            dp[n][m] = true; // both empty string, true
+            for (int i = n; i >= 0; i--) { // p may match empty string in s, i start with n
+                for (int j = m - 1; j >= 0; j--) { // dp[i<s.length()][p.length()] all false
+                    boolean firstMatch = (i < n && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.'));
+                    if (j + 1 < m && p.charAt(j + 1) == '*')
+                        dp[i][j] = dp[i][j + 2] || (firstMatch && dp[i + 1][j]);
+                        // ignore the two chars in p, e.g., s:ab, p:c*ab, ignore c* in p, ab matches ab
+                        // or first match && ignore first char in s, e.g., s:ab p: a*b, ignore a in s, b matches a*b
+                    else dp[i][j] = firstMatch && dp[i + 1][j + 1];
+                }
+            }
+            return dp[0][0];
+        }
+
+        // https://leetcode.com/problems/regular-expression-matching/discuss/191830/Java-DP-solution-beats-100-with-explanation
+        // 2ms, 41.1 Mb. DP, forward.
+        public boolean isMatch2(String s, String p) {
+            boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+            dp[0][0] = true;
+            // set first row of dp, match anything followed by star to empty string
+            for (int j = 2; j <= p.length(); j++) dp[0][j] = p.charAt(j - 1) == '*' && dp[0][j - 2];
+            for (int j = 1; j <= p.length(); j++) {
+                for (int i = 1; i <= s.length(); i++) {
+                    if (s.charAt(i - 1) == p.charAt(j - 1) || p.charAt(j - 1) == '.') // first char match
+                        dp[i][j] = dp[i - 1][j - 1];
+                    else if (p.charAt(j - 1) == '*')
+                        dp[i][j] = dp[i][j - 2] || // ignore the two chars in p
+                                ((s.charAt(i - 1) == p.charAt(j - 2) || p.charAt(j - 2) == '.') && dp[i - 1][j]);
+                    // or s[i-1] matches p[j-2] so we ignore s[i-1] and take dp[i-1][j]
+                }
+            }
+            return dp[s.length()][p.length()];
+        }
+    }
+
+    // O((m+n)2^(m+n/2)) time and space. TLE (2024 99sms, 45.42mb). T(m,n) = T(m-1,n)+T(m,n-2), recursive.
+    static class SolutionRecur {
+        public boolean isMatch(String s, String p) {
+            if (p.isEmpty()) return s.isEmpty();
+            boolean firstMatch = !s.isEmpty() && (p.charAt(0) == s.charAt(0) || p.charAt(0) == '.');
+            if (p.length() >= 2 && p.charAt(1) == '*')
+                return isMatch(s, p.substring(2)) || (firstMatch && isMatch(s.substring(1), p));
+            else return firstMatch && isMatch(s.substring(1), p.substring(1));
+        }
     }
 
 }

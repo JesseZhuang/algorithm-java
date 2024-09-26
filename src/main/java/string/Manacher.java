@@ -61,6 +61,7 @@ public class Manacher {
                 center = i;
             }
         }
+        // $#a#@ center:2,maxL=1, so s.substring(0,1)
         return s.substring((center - 1 - length) / 2, (center - 1 + length) / 2);
     }
 
