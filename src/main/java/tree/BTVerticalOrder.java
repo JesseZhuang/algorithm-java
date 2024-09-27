@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * LeetCode 314, LintCode 651, medium, tags: tree, bfs, dfs, hash table.
+ * Companies: facebook.
  * <p>
  * Given the root of a binary tree, return the vertical order traversal of its nodes' values.
  * (i.e., from top to bottom, column by column).
@@ -59,22 +60,23 @@ import java.util.List;
  * The number of nodes in the tree is in the range [0, 100].
  * -100 <= Node.val <= 100
  */
+@SuppressWarnings("unused")
 public class BTVerticalOrder {
 
     // solution 1, hashmap, n time, n space. LintCode 233ms, 20.17Mb.
-    // solution 2, treemap, nlgn time, n space.
+    // another, treemap, nlgn time, n space.
     public List<List<Integer>> verticalOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) return res;
-        ArrayDeque<Pair<TreeNode, Integer>> q = new ArrayDeque<>();
+        ArrayDeque<Pair<TreeNode, Integer>> q = new ArrayDeque<>(); // bfs
         q.offer(new Pair<>(root, 0));
-        HashMap<Integer, List<Integer>> colNodes = new HashMap<>();
+        HashMap<Integer, List<Integer>> colNodes = new HashMap<>(); // column -> nodes
         int minC = 0, maxC = 0;
         while (!q.isEmpty()) {
             Pair<TreeNode, Integer> p = q.remove();
             root = p.getKey();
             int col = p.getValue();
-            colNodes.computeIfAbsent(col, c -> new ArrayList()).add(root.val);
+            colNodes.computeIfAbsent(col, c -> new ArrayList<>()).add(root.val);
             if (root.left != null) q.add(new Pair<>(root.left, col - 1));
             if (root.right != null) q.offer(new Pair<>(root.right, col + 1));
             if (minC > col) minC = col;

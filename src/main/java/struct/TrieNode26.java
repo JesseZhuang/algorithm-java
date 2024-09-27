@@ -23,7 +23,7 @@ public class TrieNode26 {
      *
      * @param s the word string to add
      */
-    public void addWord(String s) {
+    public void insert(String s) {
         TrieNode26 cur = this;
         for (int i = 0; i < s.length(); i++) {
             int id = lce26.apply(s.charAt(i));

@@ -28,7 +28,7 @@ import edu.princeton.cs.algs4.SuffixArray;
  * given strings.
  * <p>
  * This implementation computes the suffix array of a single string (the concatenation
- * of the stwo string with the character '\1' in the middle).
+ * of the two string with the character '\1' in the middle).
  * It assumes that the character '\1' does not appear in either string.
  * For an alternate implementation, see
  * <a href = "https://algs4.cs.princeton.edu/63suffix/LongestCommonSubstring.java.html">LongestCommonSubstring.java</a>.
@@ -72,7 +72,7 @@ public class LongestCommonSubstringConcatenate {
             // adjacent suffixes both from first text string
             if (suffix.index(i) < n1 && suffix.index(i - 1) < n1) continue;
 
-            // adjacent suffixes both from secondt text string
+            // adjacent suffixes both from second text string
             if (suffix.index(i) > n1 && suffix.index(i - 1) > n1) continue;
 
             // check if adjacent suffixes longer common substring

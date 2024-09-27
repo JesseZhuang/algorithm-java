@@ -33,14 +33,15 @@ package string;
 public class ValidPalindrome {
     // 3ms 41.9 Mb. two pointer, O(n) time, O(1) space.
     public boolean isPalindrome2P(String s) {
-        for (int i = 0, j = s.length() - 1; i < j; i++, j--) {
-            while (!Character.isLetterOrDigit(s.charAt(i)) && i < j) i++;
-            while (!Character.isLetterOrDigit(s.charAt(j)) && i < j) j--;
-            if (Character.toUpperCase(s.charAt(i)) != Character.toUpperCase(s.charAt(j))) return false;
+        for (int l = 0, r = s.length() - 1; l < r; l++, r--) {
+            while (!Character.isLetterOrDigit(s.charAt(l)) && l < r) l++;
+            while (!Character.isLetterOrDigit(s.charAt(r)) && l < r) r--;
+            if (l < r && Character.toUpperCase(s.charAt(l)) != Character.toUpperCase(s.charAt(r)))
+                return false;
         }
         return true;
     }
-    
+
     // O(n) time and space. 659ms, 43.3Mb.
     public boolean isPalindromeR(String s) {
         String actual = s.replaceAll("[^A-Za-z0-9]", "").toLowerCase();

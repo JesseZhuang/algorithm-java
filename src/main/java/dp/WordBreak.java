@@ -80,7 +80,7 @@ public class WordBreak {
     public boolean wordBreakTrie(String s, List<String> wordDict) {
         // only lower case letters
         TrieNode root = new TrieNode();
-        for (String word : wordDict) root.addWord(word); // O(M*K) space.
+        for (String word : wordDict) root.insert(word); // O(M*K) space.
         boolean[] f = new boolean[s.length() + 1]; // O(N) space
         f[s.length()] = true;
         for (int i = s.length() - 1; i >= 0; i--) {

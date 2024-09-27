@@ -16,7 +16,7 @@ class PalindromeSSTest {
 
     @Test
     void countSubstrings() {
-        assertEquals(3, tbt.countSubstrings("abc"));
-        assertEquals(6, tbt.countSubstrings("aaa"));
+        assertEquals(3, tbt.manachers("abc"));
+        assertEquals(6, tbt.manachers("aaa"));
     }
 }

@@ -69,7 +69,7 @@ public class SumPrefixScore {
 
         public int[] sumPrefixScores(String[] words) {
             int n = words.length;
-            for (String word : words) root.addWord(word);
+            for (String word : words) root.insert(word);
             int[] scores = new int[n];
             for (int i = 0; i < n; i++) scores[i] = count(words[i]);
             return scores;

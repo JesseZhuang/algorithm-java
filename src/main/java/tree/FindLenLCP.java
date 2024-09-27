@@ -1,6 +1,10 @@
 package tree;
 
+import struct.TrieNode;
+
 import java.util.HashSet;
+
+import static struct.TrieNode.decimal;
 
 /**
  * LeetCode 3043, medium, tags: array, hash table, trie, string.
@@ -51,51 +55,18 @@ public class FindLenLCP {
     // solution 1, trie, same complexity. 34ms, 55.25mb.
     static class Solution1 {
         public int longestCommonPrefix(int[] arr1, int[] arr2) {
-            Trie trie = new Trie();
-            for (int num : arr1) trie.insert(num);
+            TrieNode root = new TrieNode(10, decimal);
+            for (int n : arr1) root.insert(String.valueOf(n));
             int res = 0;
-            for (int num : arr2) {
-                int len = trie.findLongestPrefix(num);
+            for (int n : arr2) {
+                int len = root.lcpLen(String.valueOf(n));
                 res = Math.max(res, len);
             }
             return res;
         }
-
-        static class TrieNode {
-            // Each node has up to 10 possible children (digits 0-9)
-            TrieNode[] next = new TrieNode[10];
-        }
-
-        static class Trie {
-            TrieNode root = new TrieNode();
-
-            // Insert a number into the Trie by treating it as a string of digits
-            void insert(int num) {
-                TrieNode node = root;
-                String numStr = Integer.toString(num);
-                for (char digit : numStr.toCharArray()) {
-                    int id = digit - '0';
-                    if (node.next[id] == null) node.next[id] = new TrieNode();
-                    node = node.next[id];
-                }
-            }
-
-            int findLongestPrefix(int num) {
-                TrieNode node = root;
-                String numStr = Integer.toString(num);
-                int len = 0;
-                for (char digit : numStr.toCharArray()) {
-                    int id = digit - '0';
-                    if (node.next[id] == null) break;
-                    len++;
-                    node = node.next[id];
-                }
-                return len;
-            }
-        }
     }
 
-    // solution 2, hashset, mlog_10M+nlog_10N time, mlog_10M space.
+    // solution 2, hashset, mlog_10M+nlog_10N time, mlog_10M space. 51ms, 55.2mb.
     static class Solution2 {
         public int longestCommonPrefix(int[] arr1, int[] arr2) {
             HashSet<Integer> arr1Prefix = new HashSet<>(); // prefixes from arr1

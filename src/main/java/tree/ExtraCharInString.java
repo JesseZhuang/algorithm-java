@@ -46,8 +46,8 @@ public class ExtraCharInString {
         public int minExtraChar(String s, String[] dictionary) {
             int n = s.length();
             var root = new TrieNode();
-            for (String w : dictionary) root.addWord(w);
-            var dp = new int[n + 1]; // note n+1
+            for (String w : dictionary) root.insert(w);
+            var dp = new int[n + 1]; // note n+1, index->res: min number of extra char
             for (int start = n - 1; start >= 0; start--) {
                 dp[start] = dp[start + 1] + 1; // assume charAt(start) not in dictionary
                 var cur = root;

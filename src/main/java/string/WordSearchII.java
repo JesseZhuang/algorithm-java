@@ -72,7 +72,7 @@ public class WordSearchII {
     public List<String> findWords(char[][] board, String[] words) {
         root = new TrieNode26();
         this.board = board;
-        for (String w : words) root.addWord(w);
+        for (String w : words) root.insert(w);
         m = board.length;
         n = board[0].length;
         res = new ArrayList<>();

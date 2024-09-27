@@ -1,5 +1,8 @@
 package tree;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * LeetCode 729, medium, tags: array, segment tree, sorted set, binary search, design.
  * <p>
@@ -42,5 +45,23 @@ package tree;
  * Hint 1
  * Store the events as a sorted list of intervals. If none of the events conflict, then the new event can be added.
  */
+@SuppressWarnings("unused")
 public class MyCalendarI {
+    // solution 1, tree map. nlgn, n. 21ms, 45.8mb.
+    static class MyCalendar {
+        TreeMap<Integer, Integer> calendar;
+
+        MyCalendar() {
+            calendar = new TreeMap<>();
+        }
+
+        public boolean book(int start, int end) {
+            Map.Entry<Integer, Integer> prev = calendar.floorEntry(start),
+                    next = calendar.ceilingEntry(start);
+            if ((prev != null && prev.getValue() > start) ||
+                    (next != null && end > next.getKey())) return false;
+            calendar.put(start, end);
+            return true;
+        }
+    }
 }

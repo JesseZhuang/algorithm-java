@@ -32,7 +32,7 @@ public class Manacher {
                 center = i;
                 right = i + p[i];
             }
-            if (i - p[i] == 1) mppl = Math.max(mppl, p[i]); // can reach to beginning
+            if (i - (p[i] + 1) == 0) mppl = Math.max(mppl, p[i]); // can reach to beginning
         }
     }
 

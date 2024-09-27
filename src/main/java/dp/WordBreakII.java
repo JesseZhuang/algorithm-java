@@ -84,7 +84,7 @@ public class WordBreakII {
     static class Solution {
         public List<String> wordBreak(String s, List<String> wordDict) {
             TrieNode root = new TrieNode();
-            for (String word : wordDict) root.addWord(word);
+            for (String word : wordDict) root.insert(word);
             Map<Integer, List<String>> cache = new HashMap<>();
 
             // Iterate from the end of the string to the beginning, no need to recurse
