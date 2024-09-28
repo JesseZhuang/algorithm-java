@@ -87,11 +87,10 @@ public class PermutationII {
             }
             HashSet<Integer> fixed = new HashSet<>(); // note set construct out then check in for loop
             for (int i = begin; i < nums.length; i++) {
-                if (fixed.add(nums[i])) { // note not adding begin
-                    swap(i, begin);
-                    permute(begin + 1);
-                    swap(i, begin);
-                }
+                if (!fixed.add(nums[i])) continue;
+                swap(i, begin);
+                permute(begin + 1);
+                swap(i, begin);
             }
         }
 

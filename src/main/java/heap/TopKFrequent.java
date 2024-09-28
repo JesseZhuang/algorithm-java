@@ -38,7 +38,7 @@ public class TopKFrequent {
 
     // solution 1, 10ms, 45 Mb. bucket, O(N) time and space.
     public int[] topKFrequentBucket(int[] nums, int k) {
-        List<List<Integer>> bucket = new ArrayList<>(); // count->number
+        List<List<Integer>> bucket = new ArrayList<>(); // count->{number...}
         for (int i = 0; i < nums.length + 1; i++) bucket.add(new ArrayList<>());
         Map<Integer, Integer> count = new HashMap<>(); // number->count
         for (int n : nums) count.put(n, count.getOrDefault(n, 0) + 1);

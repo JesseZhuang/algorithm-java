@@ -49,7 +49,7 @@ public class RegexMatch {
             dp[n][m] = true; // both empty string, true
             for (int i = n; i >= 0; i--) { // p may match empty string in s, i start with n
                 for (int j = m - 1; j >= 0; j--) { // dp[i<s.length()][p.length()] all false
-                    boolean firstMatch = (i < n && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.'));
+                    boolean firstMatch = i < n && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.'); // i<n important
                     if (j + 1 < m && p.charAt(j + 1) == '*')
                         dp[i][j] = dp[i][j + 2] || (firstMatch && dp[i + 1][j]);
                         // ignore the two chars in p, e.g., s:ab, p:c*ab, ignore c* in p, ab matches ab

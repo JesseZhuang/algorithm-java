@@ -51,7 +51,7 @@ public class BuySellCoolDown {
         int len = prices.length;
         if (len < 2) return 0;
         // cool down or rest is not really an action, so at the end we either end with a buy or a sell
-        int[] sell = new int[len]; // max profit ending with a sell
+        int[] sell = new int[len]; // max profit ending with a sell on i-th day
         int[] buy = new int[len]; // max profit ending with a buy
 
         buy[0] = -prices[0]; // bought at 0

@@ -31,6 +31,7 @@ package array;
  * <p>
  * Follow up: Can you solve it in O(n) time and O(1) space?
  */
+@SuppressWarnings("unused")
 public class BackspaceStringComp {
 
     // solution 1, scan backward, O(n) time O(1) space. 0ms,41.46mb.
@@ -39,7 +40,7 @@ public class BackspaceStringComp {
             i = move(i, s);
             j = move(j, t);
             if (!(i >= 0 && j >= 0 && s.charAt(i) == t.charAt(j)))
-                return (i == j) && (i == -1);
+                return i == j && i == -1;
         }
     }
 
