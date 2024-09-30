@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
  * <p>
  * Constraints:
  * <p>
- * 1 <= n <= 105
+ * 1 <= n <= 10^5
  * 0 <= p <= n - 1
  * 0 <= banned.length <= n - 1
  * 0 <= banned[i] <= n - 1

@@ -31,33 +31,24 @@ import java.util.Map;
  * ...
  * There is 1 substring whose length is 12, "abcabcabcabc"
  * So the answer is 1 + 2 + ... + 10 = 55.
+ * <p>
  */
+@SuppressWarnings("unused")
 public class SubstringKDC {
+    // hashmap, n, n. 528ms, 26.66mb.
     public long kDistinctCharacters(String s, int k) {
         long res = 0;
-        int r = 0; // right
-        char c;
+        int r = 0, n = s.length(); // right pointer
         Map<Character, Integer> charCnt = new HashMap<>();
-        for (int l = 0; l < s.length(); l++) { // l left
-            while (r < s.length() && charCnt.size() < k) {
-                c = s.charAt(r);
-                if (charCnt.containsKey(c)) {
-                    charCnt.put(c, charCnt.get(c) + 1);
-                } else {
-                    charCnt.put(c, 1);
-                }
-                r++;
-            }
-            if (charCnt.size() == k) {
-                res = res + (s.length() - r + 1);
-            }
-            c = s.charAt(l);
+        for (int l = 0; l < n; l++) { // l left
+            while (r < n && charCnt.size() < k)
+                charCnt.compute(s.charAt(r++), (key, v) -> v == null ? 1 : v + 1);
+            if (charCnt.size() == k) res += n - r + 1; // r-1 pointing at kth char
+            char c = s.charAt(l);
             if (charCnt.containsKey(c)) {
-                if (charCnt.get(c) > 1) {
-                    charCnt.put(c, charCnt.get(c) - 1);
-                } else {
-                    charCnt.remove(c);
-                }
+                int cnt = charCnt.get(c);
+                if (cnt == 1) charCnt.remove(c);
+                else charCnt.put(c, cnt - 1);
             }
         }
         return res;

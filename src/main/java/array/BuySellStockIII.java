@@ -65,7 +65,7 @@ public class BuySellStockIII {
                 for (int j = 1; j < dp[0].length; j++) {
                     // i-1 transactions j-1 th day max profit - prices[j-1]
                     maxDiff = Math.max(maxDiff, dp[i - 1][j - 1] - prices[j - 1]);
-                    // no action or sell
+                    // no action or sell on j-th day
                     dp[i][j] = Math.max(dp[i][j - 1], prices[j] + maxDiff);
                 }
             }
