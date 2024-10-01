@@ -10,7 +10,7 @@ package string;
  */
 public class Manacher {
     public int mppl; // max palindrome prefix length
-    public int[] p;  // p[i] = length of longest palindromic substring of t, centered at i, or radius of padded
+    public int[] p;  // p[i] = length of longest palindromic substring of s, centered at i, or radius of padded
     public char[] t;  // transformed string
     private String s;  // original string
 
