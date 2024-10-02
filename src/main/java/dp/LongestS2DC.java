@@ -52,5 +52,7 @@ public class LongestS2DC {
     public static void main(String[] args) {
         // use debug and check map size, can see count.size() == 26
         lengthOfLongestSubstringTwoDistinct("aaaa aaaa aaaa aaaa aaaa aaaa bcdefghijklmnopqrstuvwzyz");
+        System.out.println(String.valueOf(69));
+        System.out.println(String.valueOf('\u0000'));
     }
 }

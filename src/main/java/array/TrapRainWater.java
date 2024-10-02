@@ -29,16 +29,16 @@ public class TrapRainWater {
 
     // 1ms, 43Mb. two pointer. O(n) time, O(1) space.
     public int trap2p(int[] height) {
-        int left = 0, right = height.length - 1, leftWall = 0, rightWall = 0, res = 0;
-        while (left < right) {
-            if (height[left] < height[right]) {
-                if (leftWall < height[left]) leftWall = height[left];
-                else res += leftWall - height[left];
-                ++left;
+        int l = 0, r = height.length - 1, lw = 0, rw = 0, res = 0; // left wall: lw, right wall: rw
+        while (l < r) {
+            if (height[l] < height[r]) {// calculate with the lower wall
+                if (lw < height[l]) lw = height[l];
+                else res += lw - height[l];
+                ++l;
             } else {
-                if (rightWall < height[right]) rightWall = height[right];
-                else res += rightWall - height[right];
-                --right;
+                if (rw < height[r]) rw = height[r];
+                else res += rw - height[r];
+                --r;
             }
         }
         return res;

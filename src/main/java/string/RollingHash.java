@@ -1,5 +1,9 @@
 package string;
 
+import util.Pair;
+
+import java.util.*;
+
 // cp-algorithms version
 @SuppressWarnings("unused")
 public class RollingHash {
@@ -37,6 +41,27 @@ public class RollingHash {
     }
 
     /**
+     * Group identical strings. The obvious approach is O(mnlgn): sorting O(nlgn) and each comparison O(m). With
+     * hashing, comparison is O(1) so overall complexity is O(mn+nlgn).
+     *
+     * @param strings input strings.
+     * @return grouped strings.
+     */
+    public static List<List<String>> groupDuplicates(List<String> strings) {
+        int n = strings.size();
+        List<Pair<Long, Integer>> hashes = new ArrayList<>();
+        for (int i = 0; i < n; i++) hashes.add(new Pair<>(hash(strings.get(i)), i));
+        Collections.sort(hashes, Comparator.comparingLong(Pair::getKey));
+        List<List<String>> res = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (i == 0 || !Objects.equals(hashes.get(i).getKey(), hashes.get(i - 1).getKey()))
+                res.add(new ArrayList<>());
+            res.getLast().add(strings.get(hashes.get(i).getValue()));
+        }
+        return res;
+    }
+
+    /**
      * Take from the pre-calculated h[] array.
      *
      * @return rolling hash of the string from the constructor.
@@ -53,6 +78,7 @@ public class RollingHash {
      * we can precompute the inverse of every p^i, then the calculation is O(1) time.
      * In practice, if two substrings one multiplied by p^a and the other p^b, assume a<b, then we multiple the
      * first one by p^(b-a) now the two hashes can be compared easily with no need for any division.
+     * This implementation normalize every substring to p^(n-1).
      * todo: implement other applications with cp-algorithms
      *
      * @param s input string.

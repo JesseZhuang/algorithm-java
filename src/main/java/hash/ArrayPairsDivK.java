@@ -1,11 +1,7 @@
 package hash;
 
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * LeetCode 1497, medium, tags: array, hash table, counting.
@@ -50,34 +46,23 @@ import java.util.Objects;
  * Hint 3
  * Take care of the case when i == k - i and when i == 0
  */
+@SuppressWarnings("unused")
 public class ArrayPairsDivK {
     // solution 1, n, k. hashing/counting.
     static class Solution {
         public boolean canArrange(int[] arr, int k) {
-            Map<Integer, Integer> remainderCount = new HashMap<>();
-
+            Map<Integer, Integer> remCnt = new HashMap<>(); // remainder:count
             // Store the count of remainders in a map.
-            for (int i : arr) {
-                int rem = ((i % k) + k) % k;
-                remainderCount.put(rem, remainderCount.getOrDefault(rem, 0) + 1);
+            for (int a : arr) {
+                int rem = ((a % k) + k) % k; // handles negative values
+                remCnt.put(rem, remCnt.getOrDefault(rem, 0) + 1);
             }
-
-            for (int i : arr) {
-                int rem = ((i % k) + k) % k;
-
-                // If the remainder for an element is 0, then the count
-                // of numbers that give this remainder must be even.
-                if (rem == 0) {
-                    if (remainderCount.get(rem) % 2 == 1) return false;
-                }
-                // If the remainder rem and k-rem do not have the
-                // same count then pairs can not be made.
-                else if (
-                        !Objects.equals(
-                                remainderCount.get(rem),
-                                remainderCount.get(k - rem)
-                        )
-                ) return false;
+            for (int a : arr) {
+                int rem = ((a % k) + k) % k;
+                // remainder 0 pair with remainder 0 element
+                if (rem == 0) if (remCnt.get(rem) % 2 == 1) return false;
+                    // Objects.equals avoids null pointer
+                else if (!Objects.equals(remCnt.get(rem), remCnt.get(k - rem))) return false;
             }
             return true;
         }
@@ -85,22 +70,16 @@ public class ArrayPairsDivK {
 
     // solution 2, sorting/2pointer. nlgn, lgn.
     static class Solution2 {
-
         public boolean canArrange(int[] arr, int k) {
             Integer[] array = new Integer[arr.length];
-            for (int i = 0; i < arr.length; ++i) {
-                array[i] = arr[i];
-            }
-
-            Arrays.sort(array, Comparator.comparingInt(a -> (k + (a % k)) % k));
-
+            for (int i = 0; i < arr.length; ++i) array[i] = arr[i];
+            Arrays.sort(array, Comparator.comparingInt(a -> (k + (a % k)) % k)); // sort by remainder
             int start = 0, end = array.length - 1;
-            while (start < end) {
+            while (start < end) { // check elements divisible by k (remainder:0)
                 if (array[start] % k != 0) break;
                 if (array[start + 1] % k != 0) return false;
                 start = start + 2;
             }
-
             while (start < end) {
                 if ((array[start] + array[end]) % k != 0) return false;
                 start++;
