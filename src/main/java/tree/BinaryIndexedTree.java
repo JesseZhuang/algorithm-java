@@ -14,7 +14,7 @@ public class BinaryIndexedTree {
     private int BITree[]; // O(n) space
 
 
-    public BinaryIndexedTree(int arr[]) {
+    public BinaryIndexedTree(int[] arr) {
         int l = arr.length + 1; // important, used as boundary in for loops below, bug: l=nums.length
         BITree = new int[l]; // 0th element is dummy
 //        for (int i = 0; i < arr.length; i++) update(i, arr[i]); // O(nlgn) initialization time.

@@ -19,10 +19,10 @@ public class BinaryIndexedTreeTest {
         assertEquals(0, tbt.getSum(-1));
         assertEquals(6, tbt.getSum(3));
         assertEquals(11, tbt.getSum(4));
-        tbt.update(3, 4);
+        tbt.update(3, 4); // {2,1,1,6,5}
         assertEquals(15, tbt.getSum(4));
         assertEquals(10, tbt.getSum(3));
-        tbt.update(3, -3);
+        tbt.update(3, -3); // {2,1,1,3,5}
         assertEquals(7, tbt.getSum(3));
     }
 

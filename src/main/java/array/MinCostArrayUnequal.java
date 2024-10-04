@@ -1,7 +1,7 @@
 package array;
 
 /**
- * LeetCode 2499. Hard. Tags: array, hash table.
+ * LeetCode 2499, Hard. Tags: array, hash table.
  * You are given two 0-indexed integer arrays nums1 and nums2, of equal length n.
  * <p>
  * In one operation, you can swap the values of any two indices of nums1. The cost of this operation is
@@ -55,7 +55,8 @@ public class MinCostArrayUnequal {
     // 4ms 59.8Mb. O(N) time, O(1) space.
     public static long minimumTotalCost1(int[] nums1, int[] nums2) {
         long res = 0;
-        int map[] = new int[nums1.length + 1], swaps = 0, mostFreqVal = 0; // map to keep what values need swap
+        int[] map = new int[nums1.length + 1]; // map to keep what values need swap
+        int swaps = 0, mostFreqVal = 0;
         for (int i = 0; i < nums1.length; i++) {
             if (nums1[i] == nums2[i]) {
                 swaps++; // equal count, swap needed
@@ -73,6 +74,16 @@ public class MinCostArrayUnequal {
             }
         }
         return -1;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(minimumTotalCost1(new int[]{2, 2, 2, 1, 3}, new int[]{1, 2, 2, 3, 3}));// 10
+        System.out.println(minimumTotalCost1(new int[]{1, 2, 2}, new int[]{1, 2, 2})); // -1
+        System.out.println(minimumTotalCost1(new int[]{1}, new int[]{1})); // -1
+        System.out.println(minimumTotalCost1(new int[]{1, 2, 3}, new int[]{1, 2, 3})); // 3
+        System.out.println(minimumTotalCost1(new int[]{1, 2, 2, 2, 2, 4, 5}, new int[]{1, 2, 2, 2, 2, 5, 4})); // -1
+        System.out.println(minimumTotalCost1(new int[]{1, 2, 2, 2, 2, 4, 5, 6},
+                new int[]{1, 2, 2, 2, 2, 6, 4, 5})); // 28, mostFreq:2 count:4, sum 0..7 == 28
     }
 
     // 4ms 59.7 Mb.
@@ -98,15 +109,5 @@ public class MinCostArrayUnequal {
             }
         }
         return freq[mostFrequent] > nums1.length ? -1 : ans;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(minimumTotalCost1(new int[]{2, 2, 2, 1, 3}, new int[]{1, 2, 2, 3, 3}));// 10
-        System.out.println(minimumTotalCost1(new int[]{1, 2, 2}, new int[]{1, 2, 2})); // -1
-        System.out.println(minimumTotalCost1(new int[]{1}, new int[]{1})); // -1
-        System.out.println(minimumTotalCost1(new int[]{1, 2, 3}, new int[]{1, 2, 3})); // 3
-        System.out.println(minimumTotalCost1(new int[]{1, 2, 2, 2, 2, 4, 5}, new int[]{1, 2, 2, 2, 2, 5, 4})); // -1
-        System.out.println(minimumTotalCost1(new int[]{1, 2, 2, 2, 2, 4, 5, 6},
-                new int[]{1, 2, 2, 2, 2, 6, 4, 5})); // 28, mostFreq:2 count:4, sum 0..7 == 28
     }
 }

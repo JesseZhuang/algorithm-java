@@ -1,8 +1,9 @@
 package string;
 
-import util.Pair;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 // cp-algorithms version
 @SuppressWarnings("unused")
@@ -41,24 +42,36 @@ public class RollingHash {
     }
 
     /**
-     * Group identical strings. The obvious approach is O(mnlgn): sorting O(nlgn) and each comparison O(m). With
+     * Group identical strings.
+     * <p>
+     * string.length: m
+     * number of strings: n
+     * <p>
+     * The obvious approach is O(mnlgn): sorting O(nlgn) and each comparison O(m). With
      * hashing, comparison is O(1) so overall complexity is O(mn+nlgn).
+     * <p>
+     * If order is not required, hashmap method below is O(mn).
      *
      * @param strings input strings.
      * @return grouped strings.
      */
     public static List<List<String>> groupDuplicates(List<String> strings) {
         int n = strings.size();
-        List<Pair<Long, Integer>> hashes = new ArrayList<>();
-        for (int i = 0; i < n; i++) hashes.add(new Pair<>(hash(strings.get(i)), i));
-        Collections.sort(hashes, Comparator.comparingLong(Pair::getKey));
-        List<List<String>> res = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            if (i == 0 || !Objects.equals(hashes.get(i).getKey(), hashes.get(i - 1).getKey()))
-                res.add(new ArrayList<>());
-            res.getLast().add(strings.get(hashes.get(i).getValue()));
+//        List<List<String>> res = new ArrayList<>();
+//        List<Pair<Long, Integer>> hashes = new ArrayList<>();
+//        for (int i = 0; i < n; i++) hashes.add(new Pair<>(hash(strings.get(i)), i));
+//        Collections.sort(hashes, Comparator.comparingLong(Pair::getKey));
+//        for (int i = 0; i < n; i++) {
+//            if (i == 0 || !Objects.equals(hashes.get(i).getKey(), hashes.get(i - 1).getKey()))
+//                res.add(new ArrayList<>());
+//            res.getLast().add(strings.get(hashes.get(i).getValue()));
+//        }
+        Map<Long, List<String>> map = new HashMap<>();
+        for (String string : strings) {
+            long h = hash(string);
+            map.computeIfAbsent(h, k -> new ArrayList<>()).add(string);
         }
-        return res;
+        return new ArrayList<>(map.values());
     }
 
     /**
