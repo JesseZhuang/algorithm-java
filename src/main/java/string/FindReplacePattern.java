@@ -1,9 +1,7 @@
 package string;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * LeetCode 890, LintCode 1592, medium, tags: array, hash table, string.
@@ -42,26 +40,17 @@ public class FindReplacePattern {
     // solution 1, filter. O(nl) time and space. 3ms, 42.54mb.
     // other solutions including two maps, normalize (mnpqrr, xyzabb->aabcde), indexof equal.
     public List<String> findAndReplacePattern(String[] words, String pattern) {
-        List<String> ans = new ArrayList<>();
-        for (String word : words)
-            if (match(word, pattern))
-                ans.add(word);
-        return ans;
+        return Arrays.stream(words).filter(w -> match(w, pattern)).collect(Collectors.toList());
     }
 
     public boolean match(String w, String p) {
         Map<Character, Character> llm = new HashMap<>(); // letter->letter mapping
         for (int i = 0; i < w.length(); ++i) {
             char c1 = w.charAt(i), c2 = p.charAt(i);
-            if (llm.computeIfAbsent(c1, k -> c2) != c2) return false;
+            // ifAbsent, putIfAbsent returns null, computeIfAbsent returns new v
+            // if containsKey, both returns existing value without doing anything
+            if (llm.computeIfAbsent(c1, k -> c2) != c2) return false; // mapped to another letter
         }
-        boolean[] seen = new boolean[26];
-        for (char c : llm.values()) {
-            int id = c - 'a';
-            if (seen[id]) return false;
-            seen[id] = true;
-        }
-        return true;
-        // return llm.values().size() == new HashSet<>(llm.values()).size();
+        return llm.values().size() == new HashSet<>(llm.values()).size(); // two letters mapped to same
     }
 }
