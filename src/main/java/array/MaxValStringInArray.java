@@ -53,7 +53,7 @@ public class MaxValStringInArray {
 
     // 6ms, 42.5Mb.
     public int maximumValueStream(String[] strs) {
-        return Stream.of(strs).mapToInt(t -> t.matches("\\d+") ? Integer.valueOf(t) : t.length())
+        return Stream.of(strs).mapToInt(t -> t.matches("\\d+") ? Integer.parseInt(t) : t.length())
                 .max().getAsInt();
     }
 }

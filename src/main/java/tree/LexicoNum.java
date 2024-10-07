@@ -34,7 +34,7 @@ public class LexicoNum {
             res.add(cur);
             if (cur * 10 <= n) cur *= 10; // 1->10->100
             else { // 103->10,then 11,12,...,19->1,then 2,20,21,...29,3,30,...9,90,...99
-                while (cur % 10 == 9 || cur >= n) cur /= 10; // Remove the last digit
+                while (cur % 10 == 9 || cur >= n) cur /= 10; // while not if n==192 192->19->1, then 2, not 20
                 cur += 1; // Increment the number
             }
         }

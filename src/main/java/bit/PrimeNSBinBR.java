@@ -41,8 +41,8 @@ import java.util.Set;
  * <p>
  * Constraints:
  * <p>
- * 1 <= left <= right <= 106
- * 0 <= right - left <= 104
+ * 1 <= left <= right <= 10^6
+ * 0 <= right - left <= 10^4
  */
 public class PrimeNSBinBR {
     // 10ms, 39.4Mb. O(n) time, O(1) space.
@@ -58,11 +58,10 @@ public class PrimeNSBinBR {
 
     // 4ms, 39.4Mb.
     public int countPrimeSetBits2(int L, int R) {
-        int ans = 0;
+        int res = 0;
         for (int x = L; x <= R; ++x)
-            if (isSmallPrime(Integer.bitCount(x)))
-                ans++;
-        return ans;
+            if (isSmallPrime(Integer.bitCount(x))) res++;
+        return res;
     }
 
     public boolean isSmallPrime(int x) {
