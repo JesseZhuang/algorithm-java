@@ -1,6 +1,6 @@
 package string;
 
-import array.Permutation;
+import array.PermutationII;
 
 import java.util.stream.Collectors;
 
@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class MaxBinaryConcat {
     public int maxGoodNumber(int[] nums) {
-        var p = new Permutation().permuteI(nums);
+        var p = new PermutationII().permuteMap(nums);
         // list of int -> to binary string then concat, then parse back to int, take max
         return p.stream().map(l -> l.stream().map(Integer::toBinaryString).collect(Collectors.joining()))
                 .mapToInt(s -> Integer.parseInt(s, 2)).max().orElseThrow();

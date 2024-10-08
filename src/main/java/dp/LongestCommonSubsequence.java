@@ -39,48 +39,57 @@ package dp;
  * <p>
  * see resources/longest.common.subsequence.png.
  */
+@SuppressWarnings("unused")
 public class LongestCommonSubsequence {
+
     // solution 1, dp, 11ms, 39.8 Mb. O(M*N) time, O(min(M,N)) space.
-    public int longestCommonSubsequenceDP2(String text1, String text2) {
-        int m = text1.length(), n = text2.length();
-        if (m < n) return longestCommonSubsequenceDP2(text2, text1);
-        int[] dp = new int[n + 1];
-        for (int i = 0; i < text1.length(); ++i) {
-            for (int j = 0, prevRow = 0, prevRowPrevCol = 0; j < text2.length(); ++j) {
-                prevRowPrevCol = prevRow;
-                prevRow = dp[j + 1];
-                dp[j + 1] = text1.charAt(i) == text2.charAt(j) ? prevRowPrevCol + 1 : Math.max(dp[j], prevRow);
+    static class Solution1 {
+        public int longestCommonSubsequence(String text1, String text2) {
+            int m = text1.length(), n = text2.length();
+            if (m < n) return longestCommonSubsequence(text2, text1); // ensure m>=n
+            int[] dp = new int[n + 1];
+            for (int i = 0; i < m; ++i) {
+                for (int j = 0, pr = 0, prpc = 0; j < n; ++j) {
+                    prpc = pr; // dp[i][j] when j->j+1, dp[i][j+1]->dp[i][j] prev row->prov row prev col
+                    pr = dp[j + 1]; // dp[i][j+1]
+                    // setting dp[i+1][j+1]
+                    dp[j + 1] = text1.charAt(i) == text2.charAt(j) ? prpc + 1 : Math.max(dp[j], pr);
+                }
             }
+            return dp[n];
         }
-        return dp[n];
     }
 
-    /**
-     * See longest.common.subsequence.png in resources.
-     * 13 ms, 46.3 Mb. O(M*N) time, O(M*N) space.
-     */
-    public int longestCommonSubsequenceDP1(String text1, String text2) {
-        int[][] dp = new int[text1.length() + 1][text2.length() + 1];
-        for (int i = 0; i < text1.length(); ++i)
-            for (int j = 0; j < text2.length(); ++j)
-                if (text1.charAt(i) == text2.charAt(j)) dp[i + 1][j + 1] = 1 + dp[i][j];
-                else dp[i + 1][j + 1] = Math.max(dp[i][j + 1], dp[i + 1][j]); // max(prevRow, prevCol)
-        return dp[text1.length()][text2.length()];
+    static class Solution2 {
+        /**
+         * See longest.common.subsequence.png in resources.
+         * 13 ms, 46.3 Mb. O(M*N) time, O(M*N) space.
+         */
+        public int longestCommonSubsequence(String text1, String text2) {
+            int[][] dp = new int[text1.length() + 1][text2.length() + 1];
+            for (int i = 0; i < text1.length(); ++i)
+                for (int j = 0; j < text2.length(); ++j)
+                    if (text1.charAt(i) == text2.charAt(j)) dp[i + 1][j + 1] = 1 + dp[i][j];
+                    else dp[i + 1][j + 1] = Math.max(dp[i][j + 1], dp[i + 1][j]); // max(prevRow, prevCol)
+            return dp[text1.length()][text2.length()];
+        }
     }
 
-    public int longestCommonSubsequenceRecursive(String text1, String text2) {
-        return longestCommonSubsequence(text1, text2, 0, 0);
-    }
+    static class Solution3 {
+        public int longestCommonSubsequenceRecursive(String text1, String text2) {
+            return longestCommonSubsequence(text1, text2, 0, 0);
+        }
 
-    // time limit exceeded. O(2^N) time, O(1) space.
-    private int longestCommonSubsequence(String text1, String text2, int i, int j) {
-        if (i == text1.length() || j == text2.length()) return 0;
-        if (text1.charAt(i) == text2.charAt(j))
-            return 1 + longestCommonSubsequence(text1, text2, i + 1, j + 1);
-        else return Math.max(// T(N,M) = 2(T(M,N)) + 1, similar to hanoi tower, 2^n, exponential
-                longestCommonSubsequence(text1, text2, i + 1, j),
-                longestCommonSubsequence(text1, text2, i, j + 1)
-        );
+        // time limit exceeded. O(2^N) time, O(1) space.
+        private int longestCommonSubsequence(String text1, String text2, int i, int j) {
+            if (i == text1.length() || j == text2.length()) return 0;
+            if (text1.charAt(i) == text2.charAt(j))
+                return 1 + longestCommonSubsequence(text1, text2, i + 1, j + 1);
+            else return Math.max(// T(N,M) = 2(T(M,N)) + 1, similar to hanoi tower, 2^n, exponential
+                    longestCommonSubsequence(text1, text2, i + 1, j),
+                    longestCommonSubsequence(text1, text2, i, j + 1)
+            );
+        }
     }
 
 }

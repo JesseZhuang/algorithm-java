@@ -49,18 +49,17 @@ import java.util.TreeMap;
 public class MyCalendarI {
     // solution 1, tree map. nlgn, n. 21ms, 45.8mb.
     static class MyCalendar {
-        TreeMap<Integer, Integer> calendar;
+        TreeMap<Integer, Integer> booked;
 
         MyCalendar() {
-            calendar = new TreeMap<>();
+            booked = new TreeMap<>();
         }
 
         public boolean book(int start, int end) {
-            Map.Entry<Integer, Integer> prev = calendar.floorEntry(start),
-                    next = calendar.ceilingEntry(start);
+            Map.Entry<Integer, Integer> prev = booked.floorEntry(start), next = booked.ceilingEntry(start);
             if ((prev != null && prev.getValue() > start) ||
                     (next != null && end > next.getKey())) return false;
-            calendar.put(start, end);
+            booked.put(start, end);
             return true;
         }
     }
