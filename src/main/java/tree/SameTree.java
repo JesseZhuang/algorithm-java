@@ -26,17 +26,24 @@ import java.util.LinkedList;
  * Constraints:
  * <p>
  * The number of nodes in both trees is in the range [0, 100].
- * -104 <= Node.val <= 104
+ * -10^4 <= Node.val <= 10^4
  */
+@SuppressWarnings("unused")
 public class SameTree {
-    // 0ms, 41.3 Mb. O(N) time and space, recursive.
+    public static void main(String[] args) {
+        TreeNode p = TreeNode.constructTreeNaturalNumbers(2);
+        TreeNode q = TreeNode.constructTreeNaturalNumbers(2);
+        System.out.println(new SameTree().isSameTreeBFS(p, q));
+    }
+
+    // 0ms, 41.3 Mb. O(N) time and O(h) space, recursive.
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if (p == null || q == null) return p == q;
         return p.val == q.val && isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
     }
 
     // 1ms, 42 Mb. BFS, O(N) time and space.
-    public static boolean isSameTreeBFS(TreeNode p, TreeNode q) {
+    public boolean isSameTreeBFS(TreeNode p, TreeNode q) {
         LinkedList<TreeNode> deqP = new LinkedList<>(); // ArrayDeque does not allow null
         LinkedList<TreeNode> deqQ = new LinkedList<>();
         deqP.add(p);
@@ -54,11 +61,5 @@ public class SameTree {
             }
         }
         return true;
-    }
-
-    public static void main(String[] args) {
-        TreeNode p = TreeNode.constructTreeNaturalNumbers(2);
-        TreeNode q = TreeNode.constructTreeNaturalNumbers(2);
-        System.out.println(isSameTreeBFS(p, q));
     }
 }

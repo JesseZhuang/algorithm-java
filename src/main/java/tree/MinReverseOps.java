@@ -69,7 +69,7 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("unused")
 public class MinReverseOps {
-    // n, n. 20ms, 63.88mb. use next neighbor array and set visited to hi+2.
+    // n, n. 20ms, 63.88mb. use next neighbor array and set visited to hi+2. credit to dumbunny8128@.
     static class Solution1 {
         public int[] minReverseOperations(int n, int p, int[] banned, int k) {
             int[] res = new int[n], nn = new int[n]; // next neighbor
@@ -100,7 +100,7 @@ public class MinReverseOps {
                 }
                 q = nq;
             }
-            for (int i = 0; i < n; i++) if (res[i] == -2) res[i] = -1;
+            for (int b : banned) res[b] = -1;
             return res;
         }
     }
