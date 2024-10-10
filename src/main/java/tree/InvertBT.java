@@ -27,12 +27,13 @@ import java.util.Queue;
  * The number of nodes in the tree is in the range [0, 100].
  * -100 <= Node.val <= 100
  */
+@SuppressWarnings("unused")
 public class InvertBT {
     // 0ms, 39.6 MB. recursive. O(n) time and space (O(height), worst case O(n)).
     public TreeNode invertTree(TreeNode root) {
         if (root == null) return null;
-        TreeNode right = invertTree(root.right), left = invertTree(root.left); // must use temp variables
-        root.left = right;
+        TreeNode left = invertTree(root.left); // must use temp variables
+        root.left = invertTree(root.right);
         root.right = left;
         return root;
     }

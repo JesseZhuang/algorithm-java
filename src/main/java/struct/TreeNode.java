@@ -17,13 +17,13 @@ import java.util.Queue;
  * Here's an example:
  *
  * <pre>
- *       1
- *      / \
- *     2  3
- *    /
- *   4
- *  / \
- * #   5
+ *        1
+ *      /  \
+ *     2    3
+ *    /\   / \
+ *   # #  4  #
+ *       / \
+ *      #  5
  * </pre>
  *
  * <p>
@@ -33,15 +33,134 @@ import java.util.Queue;
  * than level order traversal.
  */
 public class TreeNode {
+    private static final String NULL_NODE = "#";
+    private static final String COMMA = ",";
     public int val;
     public TreeNode left;
     public TreeNode right;
 
-    private static final String NULL_NODE = "#";
-    private static final String COMMA = ",";
-
     public TreeNode(int x) {
         val = x;
+    }
+
+    public static int depth(TreeNode node) {
+        if (node == null) return 0;
+        return 1 + Math.max(depth(node.left), depth(node.right));
+    }
+
+    /**
+     * Construct tree with natural increasing numbers, e.g., 2 layer tree level order 0,1,2,#,#,#,#.
+     *
+     * @param numLayers number of layers to construct.
+     * @return constructed tree root node.
+     */
+    public static TreeNode constructTreeNaturalNumbers(int numLayers) {
+        if (numLayers == 0) return null;
+        TreeNode root = new TreeNode(0);
+        int curLayer = 1;
+        // number of nodes in each layer is geometric series
+        while (curLayer++ < numLayers) root = add1Layer(root);
+        return root;
+    }
+
+    /**
+     * Construct tree from pre-order (NLR node, left subtree, right subtree) string, e.g., 0,1,2,#,#
+     * <pre>
+     *     0
+     *    / \
+     *   1  #
+     *  / \
+     * 2  #
+     * </pre>
+     *
+     * @param tree pre-order string delimited by space or comma.
+     * @return root node of the constructed tree.
+     */
+    public static TreeNode readFromPreOrderString(String tree) {
+        String[] nums = tree.split("[\\s,]");
+        if (nums.length == 0) return null;
+        TreeNode root = readOneNode(nums[0]);
+        if (root == null) return null;
+        ArrayDeque<TreeNode> stack = new ArrayDeque<>(); // stack
+        stack.push(root);
+        TreeNode cur = root;
+        boolean leftFlag = true;
+        for (int i = 1; i < nums.length; i++) {
+            TreeNode node = readOneNode(nums[i]);
+            if (node == null) {
+                if (stack.isEmpty()) break;
+                if (leftFlag) leftFlag = false;
+                cur = stack.pop();
+            } else {
+                if (leftFlag) {
+                    cur.left = node;
+                    cur = cur.left;
+                } else {
+                    cur.right = node;
+                    cur = cur.right;
+                }
+                stack.push(cur);
+                if (!leftFlag) leftFlag = true;
+            }
+        }
+        return root;
+    }
+
+    /**
+     * Reads a tree form LeetCode OJ format level order string.
+     *
+     * @param tree a level ordered string representation of a binary tree
+     * @return the root TreeNode of the binary tree
+     */
+    public static TreeNode readFromLevelOrderString(String tree) {
+        String[] nums = tree.split("[\\s,]");
+        if (nums.length == 0) return null;
+        TreeNode root = readOneNode(nums[0]);
+        if (root == null) return null;
+        Queue<TreeNode> q = new ArrayDeque<>();
+        q.add(root);
+        int i = 1;
+        while (!q.isEmpty() && i < nums.length) {
+            TreeNode p = q.remove();
+            p.left = readOneNode(nums[i++]);
+            if (p.left != null) q.add(p.left);
+            if (i < nums.length) p.right = readOneNode(nums[i++]);
+            if (p.right != null) q.add(p.right);
+        }
+        return root;
+    }
+
+    /*
+      <pre>
+          1                    1
+         / \                  /
+        2   4                2
+       /                    /
+      3                    3
+                          /
+                         4
+      </pre>
+
+      The above two trees will both be "1,2,3,4" (pre-order) if we omit right null nodes and
+      two null children.
+     */
+
+    private static TreeNode readOneNode(String s) {
+        if (s == null) throw new IllegalArgumentException(
+                "Please use \"null\" " + "or \"#\" to represent a null TreeNode.");
+        if (s.equals("#") || s.equals("null")) return null;
+        else return new TreeNode(Integer.parseInt(s));
+    }
+
+    private static TreeNode add1Layer(TreeNode node) {
+        if (node.left == null) {
+            node.left = new TreeNode(2 * node.val + 1);
+            node.right = new TreeNode(2 * node.val + 2);
+        } else {
+            add1Layer(node.left);
+            add1Layer(node.right);
+        }
+        return node;
     }
 
     @Override
@@ -62,26 +181,6 @@ public class TreeNode {
     public int depth() {
         return depth(this);
     }
-
-    public static int depth(TreeNode node) {
-        if (node == null) return 0;
-        return 1 + Math.max(depth(node.left), depth(node.right));
-    }
-
-    /*
-      <pre>
-          1                    1
-         / \                  /
-        2   4                2
-       /                    /
-      3                    3
-                          /
-                         4
-      </pre>
-
-      The above two trees will both be "1,2,3,4" (pre-order) if we omit right null nodes and
-      two null children.
-     */
 
     /**
      * @return pre-order traversal string: root, left, right (NLR).
@@ -181,108 +280,6 @@ public class TreeNode {
             res.append(printLevel(root.right, level - 1));
         }
         return res.toString();
-    }
-
-
-    /**
-     * Construct tree with natural increasing numbers, e.g., 2 layer tree level order 0,1,2,#,#,#,#.
-     *
-     * @param numLayers number of layers to construct.
-     * @return constructed tree root node.
-     */
-    public static TreeNode constructTreeNaturalNumbers(int numLayers) {
-        if (numLayers == 0) return null;
-        TreeNode root = new TreeNode(0);
-        int curLayer = 1;
-        // number of nodes in each layer is geometric series
-        while (curLayer++ < numLayers) root = add1Layer(root);
-        return root;
-    }
-
-    /**
-     * Construct tree from pre-order (NLR node, left subtree, right subtree) string, e.g., 0,1,2,#,#
-     * <pre>
-     *     0
-     *    / \
-     *   1  #
-     *  / \
-     * 2  #
-     * </pre>
-     *
-     * @param tree pre-order string delimited by space or comma.
-     * @return root node of the constructed tree.
-     */
-    public static TreeNode readFromPreOrderString(String tree) {
-        String[] nums = tree.split("[\\s,]");
-        if (nums.length == 0) return null;
-        TreeNode root = readOneNode(nums[0]);
-        if (root == null) return null;
-        ArrayDeque<TreeNode> stack = new ArrayDeque<>(); // stack
-        stack.push(root);
-        TreeNode cur = root;
-        boolean leftFlag = true;
-        for (int i = 1; i < nums.length; i++) {
-            TreeNode node = readOneNode(nums[i]);
-            if (node == null) {
-                if (stack.isEmpty()) break;
-                if (leftFlag) leftFlag = false;
-                cur = stack.pop();
-            } else {
-                if (leftFlag) {
-                    cur.left = node;
-                    cur = cur.left;
-                } else {
-                    cur.right = node;
-                    cur = cur.right;
-                }
-                stack.push(cur);
-                if (!leftFlag) leftFlag = true;
-            }
-        }
-        return root;
-    }
-
-
-    /**
-     * Reads a tree form LeetCode OJ format level order string.
-     *
-     * @param tree a level ordered string representation of a binary tree
-     * @return the root TreeNode of the binary tree
-     */
-    public static TreeNode readFromLevelOrderString(String tree) {
-        String[] nums = tree.split("[\\s,]");
-        if (nums.length == 0) return null;
-        TreeNode root = readOneNode(nums[0]);
-        if (root == null) return null;
-        Queue<TreeNode> q = new ArrayDeque<>();
-        q.add(root);
-        int i = 1;
-        while (!q.isEmpty() && i < nums.length) {
-            TreeNode p = q.remove();
-            p.left = readOneNode(nums[i++]);
-            if (p.left != null) q.add(p.left);
-            if (i < nums.length) p.right = readOneNode(nums[i++]);
-            if (p.right != null) q.add(p.right);
-        }
-        return root;
-    }
-
-    private static TreeNode readOneNode(String s) {
-        if (s == null) throw new IllegalArgumentException(
-                "Please use \"null\" " + "or \"#\" to represent a null TreeNode.");
-        if (s.equals("#") || s.equals("null")) return null;
-        else return new TreeNode(Integer.parseInt(s));
-    }
-
-    private static TreeNode add1Layer(TreeNode node) {
-        if (node.left == null) {
-            node.left = new TreeNode(2 * node.val + 1);
-            node.right = new TreeNode(2 * node.val + 2);
-        } else {
-            add1Layer(node.left);
-            add1Layer(node.right);
-        }
-        return node;
     }
 
 }

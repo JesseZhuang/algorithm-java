@@ -54,19 +54,28 @@ public class BuySellStockIII {
         }
     }
 
-    // generalize to k transactions. 3ms, 61mb. n, n.
-    static class Solution2 {
+    // generalize to k transactions. 3ms, 61mb. kn, kn. See {@link BuySellStockIV} to get to k space.
+    // dp[i][k] = max(
+    //    dp[i][k-1],  // no more actions, same as k-1 th day
+    //    prices[k]-prices[m]+dp[i-1][m], where m in [0,k-1] => prices[k]+maxDiff
+    // )
+    // maxDiff = max(maxDiff, dp[i-1][k-1]-prices[k-1]
+    // focusing on second term
+    // dp[i][k]: prices[k]-prices[m]+dp[i-1][m] where m in [0,k-1]
+    // dp[i][k-1]: prices[k-1]-prices[m]+dp[i-1][m] where m in [0,k-2]
+    // comparing dp[i-1][m]-prices[m] where m in [0,k-1] vs in [0,k-2] is maxDiff
+    static class Solution3 {
         public int maxProfit(int[] prices) {
             int n = prices.length;
             int K = 2;
             int[][] dp = new int[K + 1][n]; // max profit for i transactions on j-th day
             for (int i = 1; i < dp.length; i++) { // size k+1
                 int maxDiff = -prices[0];
-                for (int j = 1; j < dp[0].length; j++) {
-                    // i-1 transactions j-1 th day max profit - prices[j-1]
-                    maxDiff = Math.max(maxDiff, dp[i - 1][j - 1] - prices[j - 1]);
-                    // no action or sell on j-th day
-                    dp[i][j] = Math.max(dp[i][j - 1], prices[j] + maxDiff);
+                for (int k = 1; k < dp[0].length; k++) {
+                    // i-1 transactions k-1 th day max profit - prices[k-1]
+                    maxDiff = Math.max(maxDiff, dp[i - 1][k - 1] - prices[k - 1]);
+                    // no action or sell on k-th day
+                    dp[i][k] = Math.max(dp[i][k - 1], prices[k] + maxDiff);
                 }
             }
             return dp[K][n - 1];

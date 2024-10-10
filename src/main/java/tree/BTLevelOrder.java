@@ -31,6 +31,7 @@ import java.util.List;
  */
 public class BTLevelOrder {
     // 1ms, 42.6 Mb. BFS. O(n) time, O(max-leaves, worst case n/2) space.
+    // BFS uses less space if the tree is not balanced, imagine height==n
     public List<List<Integer>> levelOrderBFS(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
         Deque<TreeNode> queue = new LinkedList<>();

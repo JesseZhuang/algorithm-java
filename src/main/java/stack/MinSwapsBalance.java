@@ -53,7 +53,7 @@ package stack;
  */
 @SuppressWarnings("unused")
 public class MinSwapsBalance {
-    // n, 1. int to track stack size.
+    // n, 1. int to track stack size. (unmatched left brackets count+1)/2
     static class Solution {
         public int minSwaps(String s) {
             int ss = 0; // stack size

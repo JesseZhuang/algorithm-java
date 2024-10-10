@@ -1,7 +1,6 @@
 package math;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -92,21 +91,4 @@ public class HappyNumber {
         return false;
     }
 
-    @Deprecated
-    public boolean isHappyWrong(int n) {
-        if (n <= 0) return false;
-        HashSet<Integer> unhappyNums = new HashSet<>();
-        while (unhappyNums.add(n)) {
-            int ss = 0;
-            // does not work for n = 100
-            while (n >= 10) {
-                ss += (n / 10) * (n / 10);
-                n %= 10;
-            }
-            ss += n * n;
-            if (ss == 1) return true;
-            n = ss;
-        }
-        return false;
-    }
 }

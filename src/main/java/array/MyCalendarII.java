@@ -2,6 +2,8 @@ package array;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * LeetCode 731, medium, tags: array, binary search, design, segment tree, prefix sum, ordered set.
@@ -55,7 +57,36 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class MyCalendarII {
-    // solution 1, O(n) time and space. 46ms, 46.09mb. treemap line sweep solution nlgn, n.
+    // solution 1, line sweep more flexible. n, n.
+    static class MyCalendarTwoI {
+        private TreeMap<Integer, Integer> bCnt; // booking cnt
+        private int maxBook; // max overlapping
+
+        public MyCalendarTwoI() {
+            bCnt = new TreeMap<>();
+            maxBook = 2;
+        }
+
+        public boolean book(int start, int end) {
+            bCnt.put(start, bCnt.getOrDefault(start, 0) + 1); // + indicates start
+            bCnt.put(end, bCnt.getOrDefault(end, 0) - 1); // - indicates end
+            int overlapped = 0;
+            // Calculate the prefix sum of bookings. O(n) iterate in sequence.
+            for (Map.Entry<Integer, Integer> entry : bCnt.entrySet()) {
+                overlapped += entry.getValue();
+                if (overlapped > maxBook) { // roll back
+                    bCnt.put(start, bCnt.get(start) - 1);
+                    bCnt.put(end, bCnt.get(end) + 1);
+                    if (bCnt.get(start) == 0) bCnt.remove(start);
+                    if (bCnt.get(end) == 0) bCnt.remove(end);
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    // solution 2, O(n) time and space. 46ms, 46.09mb.
     static class MyCalendarTwo {
         private List<int[]> booked; // booked
         private List<int[]> dBooked; // double booked time intervals
