@@ -41,7 +41,7 @@ public class NNIWOCOnes {
     // "[1]010" -> "[0]XXX", += dp[3]; "10[1]0" -> "10[0]X", += dp[1]; add 1010 itself
     public int findIntegers(int n) {
         int[] f = new int[32]; // fibonacci for 32 bits, not for int n, bit->num non-consecutive
-        f[0] = 1;
+        f[0] = 1; // f indicates total number of non-neg int wo consecutive ones in [0,1<<i)
         f[1] = 2;
         // ans(xxxx) = ans(xxx) + ans(xx) xxxx -> 0xxx + 10xx: f[4]=f[3]+f[2]
         for (int i = 2; i < 32; i++) f[i] = f[i - 1] + f[i - 2]; // i<32 not i<n

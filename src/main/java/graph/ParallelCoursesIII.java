@@ -90,7 +90,7 @@ public class ParallelCoursesIII {
                     if (indegree[w] == 0) q.add(w);
                 }
             }
-            return Arrays.stream(maxTime).max().getAsInt();
+            return Arrays.stream(maxTime).max().orElseThrow();
         }
     }
 
@@ -107,18 +107,18 @@ public class ParallelCoursesIII {
             cache = new int[n + 1];
             Arrays.fill(cache, -1);
             for (int[] e : relations) adj.get(e[0]).add(e[1]);
-            int res = 0;
-            for (int v = 1; v <= n; v++) res = Math.max(res, dfs(v));
-            return res;
+            for (int v = 1; v <= n; v++) dfs(v);
+            return Arrays.stream(cache).max().orElseThrow();
         }
 
-        int dfs(int v) {
-            if (cache[v] != -1) return cache[v];
-            int res = 0;
-            for (int w : adj.get(v)) res = Math.max(res, dfs(w));
-            res += time[v - 1];
-            cache[v] = res;
-            return res;
+        void dfs(int v) {
+            if (cache[v] != -1) return;
+            cache[v] = 0;
+            for (int w : adj.get(v)) {
+                dfs(w);
+                cache[v] = Math.max(cache[v], cache[w]);
+            }
+            cache[v] += time[v - 1];
         }
     }
 }

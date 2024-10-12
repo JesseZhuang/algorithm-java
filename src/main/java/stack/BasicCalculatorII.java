@@ -48,8 +48,8 @@ public class BasicCalculatorII {
             if (Character.isWhitespace(c)) continue;
             if (Character.isDigit(c)) cur = cur * 10 + c - '0';
             else {
-                if (prevOp == '*') last *= cur;
-                else if (prevOp == '/') last /= cur;
+                if (prevOp == '*') last *= cur; // fold cur->last
+                else if (prevOp == '/') last /= cur; // fold cur->last
                 else {
                     res += last; // accumulate last to res
                     last = prevOp == '+' ? cur : -cur; // set last to cur
