@@ -44,6 +44,7 @@ package bit;
  * Divide the numbers in ranges like [2-3], [4-7], [8-15] and so on. And try to generate new range from previous.
  * Or does the odd/even status of the number help you in calculating the number of 1s?
  */
+@SuppressWarnings("unused")
 public class CountingBits {
     // solution 1, 2ms, 48.5 Mb. No repeating calculations. O(n) time, O(1) space.
     public int[] countBits2(int n) {

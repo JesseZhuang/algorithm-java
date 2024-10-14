@@ -43,17 +43,18 @@ public class SmallestRangeKLists {
 
     // heap, O(klgk) time, O(k) space. 35ms, 48.95Mb.
     public int[] smallestRange(List<List<Integer>> nums) {
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[2]));
+        // pq to keep {r,c,v}
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
         int max = Integer.MIN_VALUE, left = (int) -1e5, right = (int) 1e5;
         for (int r = 0; r < nums.size(); r++) {
-            int v = nums.get(r).get(0);
-            pq.add(new int[]{r, 0, v});
+            int v = nums.get(r).getFirst();
+            pq.add(new int[]{v, r, 0});
             if (v > max) max = v;
         }
         // [[4,10,15,24,26],[0,9,12,20],[5,18,22,30]] [0,5]->[20,24]
         while (pq.size() == nums.size()) { // not !pq.isEmpty()
             int[] cur = pq.remove();
-            int r = cur[0], c = cur[1], v = cur[2];
+            int v = cur[0], r = cur[1], c = cur[2];
             if (max - v < right - left) {
                 left = v;
                 right = max;
@@ -64,7 +65,7 @@ public class SmallestRangeKLists {
             // left,right,max,v [pq]; -1e5,1e5,5->9,0 [4,5,9];  0,5,9->10,4, [5,9,10]; 0,5,10->18,5, [9,10,18];
             // 0,5,18->18,9, [10,12,18]; 0,5,18->18,10, [12,15,18]; 0,5,18->20,12, [15,18,20]
             // 0,5,20->24,15, [18,20,24]; 0,5,24->24,18, [20,22,24]; 20,24,24->, 20, [22,24] break
-            pq.add(new int[]{r, c + 1, v});
+            pq.add(new int[]{v, r, c + 1});
         }
         return new int[]{left, right};
     }

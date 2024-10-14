@@ -37,149 +37,114 @@ import java.util.*;
  * Note:
  * <p>
  * The input prerequisites is a graph represented by a list of edges, not adjacency matrices.
- * Read more about how a graph is represented. You may assume that there are no duplicate edges in the input prerequisites.
+ * Read more about how a graph is represented. You may assume that there are no duplicate edges in the
+ * input prerequisites.
  * <p>
- * <b>Summary</b>:
+ * Constraints:
  * <p>
- * <ul>
- * <li>DFS reverse post, O(V+E) linear time, O(V+E) linear space. 6 ms 62.42%, 46 MB 64.63%.
- * <li>BFS, O(V+E) linear time, O(V+E) linear space.
- * </ul>
+ * 1 <= numCourses <= 2000, n
+ * 0 <= prerequisites.length <= numCourses * (numCourses - 1), e
+ * prerequisites[i].length == 2
+ * 0 <= ai, bi < numCourses
+ * ai != bi
+ * All the pairs [ai, bi] are distinct.
+ * <p>
+ * Hint 1
+ * This problem is equivalent to finding the topological order in a directed graph. If a cycle exists, no topological
+ * ordering exists and therefore it will be impossible to take all courses.
+ * Hint 2
+ * Topological Sort via DFS - A great video tutorial (21 minutes) on Coursera explaining the basic concepts of
+ * Topological Sort. https://www.youtube.com/watch?v=ozso3xxkVGU
+ * Hint 3
+ * Topological sort could also be done via BFS.
  */
+@SuppressWarnings("unused")
 public class CourseScheduleII {
-    public Integer[] findOrderDFS(int numCourses, Integer[][] prerequisites) {
-        return helper(numCourses, prerequisites, true);
-    }
 
-    public Integer[] findOrderBFS(int numCourses, Integer[][] prerequisites) {
-        return helper(numCourses, prerequisites, false);
-    }
+    // credit @lx223, n+e, n+e.
+    static class Solution {
+        List<List<Integer>> adj;
+        BitSet hasCycle;
+        BitSet marked;
+        BitSet onStack;
+        List<Integer> order;
 
-    private Integer[] helper(int numCourses, Integer[][] prerequisites, boolean useDFS) {
-        List<Integer> result;
-        Digraph dg = new Digraph(numCourses);
-        for (Integer[] edge : prerequisites) dg.addEdge(edge[1], edge[0]);
-        Optional<Iterable<Integer>> order;
-        if (useDFS) order = Optional.ofNullable(new Topological(dg).order());
-        else order = Optional.ofNullable(new TopologicalX(dg).order());
-        result = CollectionUtil.toList(order.orElse(new ArrayList<>()));
-        return result.toArray(new Integer[result.size()]);
-    }
-
-    public Integer[] findOrderBFS2(int numCourses, Integer[][] prerequisites) {
-        Map<Integer, List<Integer>> adjList = new HashMap<>();
-        int[] indegree = new int[numCourses];
-        Integer[] topologicalOrder = new Integer[numCourses];
-
-        // Create the adjacency list representation of the graph
-        for (int i = 0; i < prerequisites.length; i++) {
-            int dest = prerequisites[i][0];
-            int src = prerequisites[i][1];
-            List<Integer> lst = adjList.getOrDefault(src, new ArrayList<>());
-            lst.add(dest);
-            adjList.put(src, lst);
-
-            // Record in-degree of each vertex
-            indegree[dest] += 1;
+        public int[] findOrder(int numCourses, int[][] prerequisites) {
+            int[] indeg = new int[numCourses];
+            adj = new ArrayList<>(numCourses);
+            int n = numCourses;
+            while (n-- > 0) adj.add(new ArrayList<>());
+            for (int[] edge : prerequisites) {
+                indeg[edge[0]]++;
+                adj.get(edge[1]).add(edge[0]);
+            }
+            //return byBFS(indeg);
+            return byDfs();
         }
 
-        // Add all vertices with 0 in-degree to the queue
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < numCourses; i++) if (indegree[i] == 0) q.add(i);
+        private int[] byDfs() {
+            hasCycle = new BitSet(1);
+            marked = new BitSet(adj.size());
+            onStack = new BitSet(adj.size());
+            order = new ArrayList<>();
+            for (int i = adj.size() - 1; i >= 0; i--)
+                if (!hasCycle.get(0)) dfs(i);
+                else return new int[0];
+            Collections.reverse(order);
+            return order.stream().mapToInt(i -> i).toArray(); // unbox
+        }
 
-        int i = 0;
-        // Process until the Q becomes empty
-        while (!q.isEmpty()) {
-            int node = q.remove();
-            topologicalOrder[i++] = node;
+        private void dfs(int v) {
+            if (marked.get(v)) return;
+            marked.set(v);
+            onStack.set(v);
+            for (int w : adj.get(v)) {
+                if (hasCycle.get(0)) return;
+                else if (onStack.get(w)) hasCycle.set(0);
+                else dfs(w);
+            }
+            onStack.clear(v);
+            order.add(v);
+        }
 
-            // Reduce the in-degree of each neighbor by 1
-            if (adjList.containsKey(node)) {
-                for (Integer neighbor : adjList.get(node)) {
-                    indegree[neighbor]--;
-
-                    // If in-degree of a neighbor becomes 0, add it to the Q
-                    if (indegree[neighbor] == 0) {
-                        q.add(neighbor);
-                    }
+        private int[] byBFS(int[] indeg) {
+            int[] order = new int[indeg.length];
+            ArrayDeque<Integer> q = new ArrayDeque<>();
+            for (int i = 0; i < indeg.length; i++) if (indeg[i] == 0) q.add(i);
+            int cnt = 0;
+            while (!q.isEmpty()) {
+                int v = q.poll();
+                order[cnt++] = v;
+                for (int w : adj.get(v)) {
+                    indeg[w]--;
+                    if (indeg[w] == 0) q.offer(w);
+                    else if (indeg[w] < 0) return new int[0];
                 }
             }
-        }
-
-        // Check to see if topological sort is possible or not.
-        if (i == numCourses) return topologicalOrder;
-        return new Integer[0];
-    }
-
-    // DFS2
-    static int WHITE = 1;
-    static int GRAY = 2;
-    static int BLACK = 3;
-
-    boolean isPossible;
-    Map<Integer, Integer> color;
-    Map<Integer, List<Integer>> adjList;
-    List<Integer> topologicalOrder;
-
-    private void init(int numCourses) {
-        this.isPossible = true;
-        this.color = new HashMap<>();
-        this.adjList = new HashMap<>();
-        this.topologicalOrder = new ArrayList<>();
-
-        // By default all vertices are WHITE
-        for (int i = 0; i < numCourses; i++) {
-            this.color.put(i, WHITE);
+            return cnt == indeg.length ? order : new int[0];
         }
     }
 
-    private void dfs(int node) {
-        // Don't recurse further if we found a cycle already
-        if (!this.isPossible) {
-            return;
+    // algs4, dfs reverse post order with stack onStack[] check cycle
+    // bfs q indegree 0, count==V check cycle
+    static class SolutionAlgs4 {
+        public Integer[] findOrderDFS(int numCourses, Integer[][] prerequisites) {
+            return helper(numCourses, prerequisites, true);
         }
 
-        // Start the recursion
-        this.color.put(node, GRAY);
-
-        // Traverse on neighboring vertices
-        for (Integer neighbor : this.adjList.getOrDefault(node, new ArrayList<>())) {
-            if (this.color.get(neighbor) == WHITE) this.dfs(neighbor);
-            else if (this.color.get(neighbor) == GRAY)
-                // An edge to a GRAY vertex represents a cycle
-                this.isPossible = false;
+        public Integer[] findOrderBFS(int numCourses, Integer[][] prerequisites) {
+            return helper(numCourses, prerequisites, false);
         }
 
-        // Recursion ends. We mark it as black
-        this.color.put(node, BLACK);
-        this.topologicalOrder.add(node);
-    }
-
-    public Integer[] findOrderDFS2(int numCourses, Integer[][] prerequisites) {
-        this.init(numCourses);
-
-        // Create the adjacency list representation of the graph
-        for (int i = 0; i < prerequisites.length; i++) {
-            int dest = prerequisites[i][0];
-            int src = prerequisites[i][1];
-            List<Integer> lst = adjList.getOrDefault(src, new ArrayList<Integer>());
-            lst.add(dest);
-            adjList.put(src, lst);
+        private Integer[] helper(int numCourses, Integer[][] prerequisites, boolean useDFS) {
+            List<Integer> result;
+            Digraph dg = new Digraph(numCourses);
+            for (Integer[] edge : prerequisites) dg.addEdge(edge[1], edge[0]);
+            Optional<Iterable<Integer>> order;
+            if (useDFS) order = Optional.ofNullable(new Topological(dg).order());
+            else order = Optional.ofNullable(new TopologicalX(dg).order());
+            result = CollectionUtil.toList(order.orElse(new ArrayList<>()));
+            return result.toArray(Integer[]::new);
         }
-
-        // If the node is unprocessed, then call dfs on it.
-        for (int i = 0; i < numCourses; i++) if (this.color.get(i) == WHITE) this.dfs(i);
-
-        Integer[] order;
-        if (this.isPossible) {
-            order = new Integer[numCourses];
-            for (int i = 0; i < numCourses; i++) {
-                order[i] = this.topologicalOrder.get(numCourses - i - 1);
-            }
-        } else {
-            order = new Integer[0];
-        }
-
-        return order;
     }
 }

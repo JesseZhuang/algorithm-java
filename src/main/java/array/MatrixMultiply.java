@@ -3,6 +3,8 @@ package array;
 /**
  * Why the dot product is done this way?
  * https://www.mathsisfun.com/algebra/matrix-multiplying.html
+ * <p>
+ * Companies: Amazon.
  */
 public class MatrixMultiply {
     public static int[][] multiply(int[][] a, int[][] b) {
