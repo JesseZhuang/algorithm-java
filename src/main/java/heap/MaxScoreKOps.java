@@ -51,13 +51,16 @@ public class MaxScoreKOps {
     // heap, n+klgn, n.
     static class Solution {
         public long maxKelements(int[] nums, int k) {
+            // use negative values, java pq no constructor taking collection and comparator, addAll nlgn
+            // or create custom reverse int class, override comparable interface
             PriorityQueue<Integer> pq = new PriorityQueue<>(
                     Arrays.stream(nums).boxed().map(i -> -i).collect(Collectors.toList()));
+            pq.comparator();
             long res = 0;
             while (k-- > 0) {
                 int cur = -pq.remove();
                 res += cur;
-                pq.add(-(int) Math.ceil(cur / 3.0));
+                pq.add(-(cur + 2) / 3);
             }
             return res;
         }

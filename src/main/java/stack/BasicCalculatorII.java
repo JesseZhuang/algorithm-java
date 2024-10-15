@@ -36,17 +36,18 @@ import java.util.Deque;
  * All the integers in the expression are non-negative integers in the range [0, 2^31 - 1].
  * The answer is guaranteed to fit in a 32-bit integer.
  */
+@SuppressWarnings("unused")
 public class BasicCalculatorII {
 
     // solution 1 with dummy end, same complexity as solution 1 below. 14ms, 44.23mb.
     public static int calculate3(String s) {
         int cur = 0, last = 0, res = 0; // 3 tier cache
-        s = s + "##";  // 3+2*2, for the last two #: last*=cur 4=2*2 then res+=last 7=4+3
+        s = s + "##";  // 3+2*2, for the last two #: last*=cur 4=2*2 then res+=last 7=3+4
         char prevOp = '+'; // operation
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (Character.isWhitespace(c)) continue;
-            if (Character.isDigit(c)) cur = cur * 10 + c - '0';
+            if (Character.isDigit(c)) cur = c + cur * 10 - '0';
             else {
                 if (prevOp == '*') last *= cur; // fold cur->last
                 else if (prevOp == '/') last /= cur; // fold cur->last
@@ -105,8 +106,8 @@ public class BasicCalculatorII {
     }
 
     public static void main(String[] args) {
-        String[] tests = {"3+2*2", " 3/2 ", " 3+5 / 2 ", "1-1+1"};
-        int[] expected = {7, 1, 5, 1};
+        String[] tests = {"3+2*2", " 3/2 ", " 3+5 / 2 ", "1-1+1", "2147483647"};
+        int[] expected = {7, 1, 5, 1, 2147483647};
         for (String test : tests) {
             System.out.println(calculate3(test));
         }

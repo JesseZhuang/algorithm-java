@@ -52,7 +52,7 @@ public class Inversions {
             else if (j > hi) a[k] = aux[i++];
             else if (aux[j] < aux[i]) {
                 a[k] = aux[j++];
-                inversions += (mid - i + 1);
+                inversions += (mid - i + 1); // mid-(i-1)
             } else a[k] = aux[i++];
         }
         return inversions;
