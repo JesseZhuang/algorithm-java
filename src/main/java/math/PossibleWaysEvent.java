@@ -27,8 +27,8 @@ public class PossibleWaysEvent {
             for (int i = 1; i <= n; i++) { // performer
                 long[] ndp = new long[x + 1];
                 for (int j = 1; j <= x; j++) { // assign to one of the band/stage
-                    ndp[j] = (ndp[j] + dp[j] * j) % MOD;
-                    ndp[j] = (ndp[j] + dp[j - 1] * (x - j + 1)) % MOD;
+                    ndp[j] = (ndp[j] + dp[j] * j) % MOD; // join one of the existing band
+                    ndp[j] = (ndp[j] + dp[j - 1] * (x - j + 1)) % MOD; // join a stage create a new band
                 }
                 dp = ndp;
             }

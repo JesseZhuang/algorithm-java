@@ -49,7 +49,7 @@ public class LongestCommonSubsequence {
             if (m < n) return longestCommonSubsequence(text2, text1); // ensure m>=n
             int[] dp = new int[n + 1];
             for (int i = 0; i < m; ++i) {
-                for (int j = 0, pr = 0, prpc = 0; j < n; ++j) {
+                for (int j = 0, pr = 0, prpc; j < n; ++j) {
                     prpc = pr; // dp[i][j] when j->j+1, dp[i][j+1]->dp[i][j] prev row->prov row prev col
                     pr = dp[j + 1]; // dp[i][j+1]
                     // setting dp[i+1][j+1]

@@ -55,7 +55,6 @@ public class MaxScoreKOps {
             // or create custom reverse int class, override comparable interface
             PriorityQueue<Integer> pq = new PriorityQueue<>(
                     Arrays.stream(nums).boxed().map(i -> -i).collect(Collectors.toList()));
-            pq.comparator();
             long res = 0;
             while (k-- > 0) {
                 int cur = -pq.remove();

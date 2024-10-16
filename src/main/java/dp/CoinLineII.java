@@ -28,9 +28,9 @@ package dp;
 @SuppressWarnings("unused")
 public class CoinLineII {
     // dp, n, 1.
-    //sum[i] = values[i] + values[i+1] + ... + values[n-1]
-    //f[i] = max( // max payer1 for coins[i,n-1]
+    // sum[i] = values[i] + values[i+1] + ... + values[n-1]
+    // f[i] = max( // max payer1 for coins[i,n-1]
     //    values[i] + (sum[i+1] - f[i+1]),                  // player1 take 1 coin
     //    values[i] + values[i+1] + (sum[i+2] - f[i+2])	    // player1 take 2 coins
-    //);
+    // );
 }

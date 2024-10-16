@@ -49,7 +49,7 @@ public class FindMinRotatedSortedArray {
         while (lo < hi) {
             int mid = lo + (hi - lo) / 2;
             if (nums[mid] > nums[hi]) lo = mid + 1; // min must be on the right half
-            else hi = mid; // min must be on left half including mid
+            else hi = mid; // min must be on left half including mid. if equal can do hi--;
         }
         return nums[lo]; // return nums[hi] also passed lc oj
     }

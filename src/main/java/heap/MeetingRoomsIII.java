@@ -3,6 +3,9 @@ package heap;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.stream.IntStream;
+
+import static java.util.Comparator.comparingInt;
 
 /**
  * LeetCode 2402, hard, tags: array, heap, hash table, sorting, simulation.
@@ -80,17 +83,17 @@ public class MeetingRoomsIII {
             int[] count = new int[n];
             // sort by end time then room id
             PriorityQueue<RoomInfo> used = new PriorityQueue<>(
-                    (r1, r2) -> r1.e == r2.e ? Integer.compare(r1.r, r2.r) : Long.compare(r1.e, r2.e));
-            PriorityQueue<Integer> unused = new PriorityQueue<>();
-            for (int i = 0; i < n; i++) unused.add(i); // init do not forget
-            Arrays.sort(meetings, (a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(a[1], b[1]));
+                    Comparator.<RoomInfo>comparingLong(r -> r.e).thenComparingInt(r -> r.r));
+            // init do not forget
+            PriorityQueue<Integer> free = new PriorityQueue<>(IntStream.range(0, n).boxed().toList());
+            Arrays.sort(meetings, Comparator.<int[]>comparingInt(a -> a[0]).thenComparingInt(a -> a[1]));
             for (int[] m : meetings) {
                 int start = m[0], end = m[1];
                 // free the available rooms
-                while (!used.isEmpty() && used.peek().e <= start) unused.add(used.remove().r);
+                while (!used.isEmpty() && used.peek().e <= start) free.add(used.remove().r);
                 int room;
-                if (!unused.isEmpty()) { // use the first room available
-                    room = unused.remove();
+                if (!free.isEmpty()) { // use the first room available
+                    room = free.remove();
                     used.add(new RoomInfo(room, end));
                 } else { // delay this meeting
                     RoomInfo first = used.remove();
@@ -126,7 +129,7 @@ public class MeetingRoomsIII {
         public int mostBooked(int n, int[][] meetings) {
             long[] endTime = new long[n]; // room's meeting end time
             int[] count = new int[n]; // room's meeting count
-            Arrays.sort(meetings, Comparator.comparingInt(a -> a[0]));
+            Arrays.sort(meetings, comparingInt(a -> a[0]));
             for (int[] m : meetings) {
                 int start = m[0], end = m[1];
                 long first = Long.MAX_VALUE;// first available rime
