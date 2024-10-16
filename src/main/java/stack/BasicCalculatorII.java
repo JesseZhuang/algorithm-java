@@ -2,6 +2,7 @@ package stack;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 /**
  * LeetCode 227, medium, tags: math, string, stack.
@@ -62,54 +63,41 @@ public class BasicCalculatorII {
         return res;
     }
 
-
-    // solution 1, O(N) time, O(1) space. 34ms, 46.1Mb.
-    public static int calculate2(String s) {
-        int length = s.length();
-        int cur = 0, last = 0, res = 0;
-        char op = '+'; // operation
-        for (int i = 0; i < length; i++) {
+    // solution 2, stack, 20ms, 44.3Mb. O(n) time and space.
+    public static int calculate(String s) {
+        Deque<Integer> vals = new ArrayDeque<>(List.of(0, 0)); // res, last, two tiers of cache in stack
+        s += "#";
+        char prevOp = '+';l
+        for (int i = 0, cur = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (Character.isDigit(c)) cur = (cur * 10) + (c - '0');
-            if (!Character.isDigit(c) && !Character.isWhitespace(c) || i == length - 1) {// not else if
-                if (op == '+' || op == '-') {
-                    res += last;
-                    last = (op == '+') ? cur : -cur;
-                } else if (op == '*') last = last * cur;
-                else if (op == '/') last = last / cur;
-                op = c;
+            if (Character.isWhitespace(c)) continue;
+            if (Character.isDigit(c)) cur = cur * 10 + s.charAt(i) - '0';
+            else {
+                if (prevOp == '*') vals.push(vals.pop() * cur);
+                else if (prevOp == '/') vals.push(vals.pop() / cur);
+                else {
+                    vals.push(vals.pop() + vals.pop()); // res+=last
+                    vals.push(prevOp == '+' ? cur : -cur); // set last to cur
+                }
+                prevOp = c;
                 cur = 0;
             }
         }
-        res += last;
-        return res;
-    }
-
-    // solution 2, stack, 20ms, 44.3Mb. O(n) time and space.
-    public static int calculate(String s) {
-        Deque<Integer> vals = new ArrayDeque<>();
-        char lastOp = '+';
-        for (int i = 0, n = 0; i < s.length(); i++) {
-            if (Character.isDigit(s.charAt(i))) n = n * 10 + s.charAt(i) - '0';
-            if (!Character.isDigit(s.charAt(i)) && ' ' != s.charAt(i) || i == s.length() - 1) {
-                if (lastOp == '+') vals.push(n);
-                else if (lastOp == '-') vals.push(-n);
-                else if (lastOp == '*') vals.push(vals.pop() * n);
-                else if (lastOp == '/') vals.push(vals.pop() / n);
-                lastOp = s.charAt(i);
-                n = 0;
-            }
-        }
-        int val = 0;
-        while (!vals.isEmpty()) val += vals.pop();
-        return val;
+        return vals.pop() + vals.pop();
     }
 
     public static void main(String[] args) {
-        String[] tests = {"3+2*2", " 3/2 ", " 3+5 / 2 ", "1-1+1", "2147483647"};
-        int[] expected = {7, 1, 5, 1, 2147483647};
+        String[] tests = {
+                "3+2*2",
+                " 3/2 ",
+                " 3+5 / 2 ",
+                "1-1+1",
+                "2147483647",
+                "1+1+1+1+1",
+        };
+        int[] expected = {7, 1, 5, 1, 2147483647, 5};
         for (String test : tests) {
-            System.out.println(calculate3(test));
+            System.out.println(calculate(test));
         }
     }
 }
