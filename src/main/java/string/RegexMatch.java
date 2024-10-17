@@ -41,23 +41,25 @@ public class RegexMatch {
         tbt.isMatch("aab", "c*a*b");
     }
 
-    // dp, O(mn) time and space. 2ms, 40.7MB. backwards, logic same to recursive.
+    // dp, mn, m. 2ms, 40.7MB. backwards, logic same to recursive.
     static class SolutionDP {
-        public boolean isMatch(String s, String p) {// remember by correlate to recursive method
+        public boolean isMatch(String s, String p) {// relate to recursive method
             int n = s.length(), m = p.length();
-            boolean[][] dp = new boolean[n + 1][m + 1];
-            dp[n][m] = true; // both empty string, true
+            boolean[] dp = new boolean[m + 1]; // dp[n+1][m+1]
+            dp[m] = true; // n,m both empty string, true
             for (int i = n; i >= 0; i--) { // p may match empty string in s, i start with n
+                boolean[] ndp = (i == n) ? dp : new boolean[m + 1];
                 for (int j = m - 1; j >= 0; j--) { // dp[i<s.length()][p.length()] all false
                     boolean firstMatch = i < n && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.'); // i<n important
                     if (j + 1 < m && p.charAt(j + 1) == '*')
-                        dp[i][j] = dp[i][j + 2] || (firstMatch && dp[i + 1][j]);
+                        ndp[j] = ndp[j + 2] || (firstMatch && dp[j]);
                         // ignore the two chars in p, e.g., s:ab, p:c*ab, ignore c* in p, ab matches ab
                         // or first match && ignore first char in s, e.g., s:ab p: a*b, ignore a in s, b matches a*b
-                    else dp[i][j] = firstMatch && dp[i + 1][j + 1];
+                    else ndp[j] = firstMatch && dp[j + 1];
                 }
+                dp = ndp;
             }
-            return dp[0][0];
+            return dp[0];
         }
 
         // https://leetcode.com/problems/regular-expression-matching/discuss/191830/Java-DP-solution-beats-100-with-explanation
