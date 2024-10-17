@@ -1,7 +1,6 @@
 package dp;
 
-import com.google.common.math.LongMath;
-import math.Factorial;
+import math.StirlingNum;
 
 /**
  * LeetCode 1692, hard, tags: dp.
@@ -58,14 +57,13 @@ import math.Factorial;
  * see {@link math.PossibleWaysEvent}, difference is every bag has at least one candy, whereas, there can be empty
  * stages without any performers.
  * <p>
- * see https://en.wikipedia.org/wiki/Twelvefold_way, stirling number of the second kind, count the number of ways to
- * partition a set of n labelled objects into k nonempty unlabelled subsets.
- * recurrence: s(n+1,k) = k*s(n,k)+s(n,k-1), pick a set or in a new set
+ * see <a href="https://en.wikipedia.org/wiki/Twelvefold_way">12fold</a>,
  */
 @SuppressWarnings("unused")
 public class WaysCandies {
     // dp, nk, k.
     // not easy to collapse the other dimension, j++: 1 more ball into existing bag dp
+    // i++: 1 more bag, hard to dp, e.g., 3 candies in 2 bags (3 ways), 1 more bag, only 1 way now.
     static class Solution2 {
         public int waysToDistribute(int n, int k) {
             final int mod = (int) 1e9 + 7;
@@ -81,7 +79,6 @@ public class WaysCandies {
             return dp[k];
         }
     }
-
 
     // f[i][j] as the number of different ways to distribute i candies to j bags. f[0][0]=1
     // the ith candy can be in a new bag or existing bag (choose one of the j bags)
@@ -99,34 +96,22 @@ public class WaysCandies {
         }
     }
 
-    // 1/k! * sigma (-1)^(k-i)*(k choose i)*i^n
+    static class SolutionR {
+        public int waysToDistribute(int n, int k) {
+            return StirlingNum.Second.recur(n, k);
+        }
+    }
+
     static class Solution3 {
         public int waysToDistribute(int n, int k) {
-            final int mod = (int) 1e9 + 7;
-            int i1 = (k % 2 == 0) ? 1 : -1;
-            long res = 0;
-            for (int i = 0; i <= k; i++, i1 *= -1)
-                res += i1 * LongMath.binomial(k, i) * LongMath.pow(i, n);
-            res /= LongMath.factorial(k);
-            res %= mod;
-            return (int) res;
+            return StirlingNum.Second.iter1(n, k);
         }
     }
 
     // sigma (-1)^(k-i)*i^n/((k-i)!i!) where i in [0,k], this equation needs double
     static class Solution4 {
         public int waysToDistribute(int n, int k) {
-            final int mod = (int) 1e9 + 7;
-            double res = 0;
-            Factorial f = new Factorial();
-            int b1k = k;
-            long t2, b1, b2 = 1;
-            for (int i = 0, t1 = (k % 2 == 0) ? 1 : -1; i <= k; i++, t1 *= -1, b1k--, b2 *= i) {
-                t2 = (long) Math.pow(i, n);
-                b1 = f.factorialInt(b1k);
-                res = (res + (double) (t1 * t2) / (b1 * b2));
-            }
-            return (int) ((long) res % mod); // res can get large ...
+            return StirlingNum.Second.iter2(n, k);
         }
     }
 

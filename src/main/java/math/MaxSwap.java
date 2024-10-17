@@ -22,45 +22,8 @@ package math;
  * <p>
  * 0 <= num <= 10^8, N digits
  */
+@SuppressWarnings("unused")
 public class MaxSwap {
-    // 0ms, 39.3 Mb, one pass
-    public int maximumSwap(int num) {
-        char[] digits = Integer.toString(num).toCharArray();
-        int maxIndex = digits.length - 1, leftIndex = -1, rightIndex = -1;
-        for (int i = digits.length - 2; i >= 0; i--) {
-            if (digits[i] > digits[maxIndex]) maxIndex = i;
-            else if (digits[i] < digits[maxIndex]) { // best candidate for max swap
-                leftIndex = i;
-                rightIndex = maxIndex;
-            }
-        }
-        if (leftIndex == -1) return num;
-        char tmp = digits[rightIndex];
-        digits[rightIndex] = digits[leftIndex];
-        digits[leftIndex] = tmp;
-        return Integer.valueOf(new String(digits));
-    }
-
-    // 0ms, 39.3Mb, bucket to remember index (rightmost), O(N) time, O(1) space.
-    public int maximumSwapBucket(int num) {
-        char[] digits = Integer.toString(num).toCharArray();
-        int[] buckets = new int[10]; // digit -> index
-        for (int i = 0; i < digits.length; i++) buckets[digits[i] - '0'] = i;
-        int max = 9;
-        for (int i = 0; i < digits.length; i++) {
-            for (int k = max; k > digits[i] - '0'; k--) {
-                if (buckets[k] > i) {
-                    char tmp = digits[i];
-                    digits[i] = digits[buckets[k]];
-                    digits[buckets[k]] = tmp;
-                    return Integer.valueOf(new String(digits));
-                }
-            }
-            max = digits[i] - '0';
-        }
-        return num;
-    }
-
     public static void main(String[] args) {
         System.out.println('0' - 1); // 47
         System.out.println(Integer.valueOf('0')); // 48, char '0'
@@ -68,5 +31,52 @@ public class MaxSwap {
         char maxDigit = '0' - 1;
         System.out.println(maxDigit); // '/'
         System.out.println(Character.toChars(47)); // '/'
+    }
+
+    // N, 1.
+    static class Solution {
+        public int maximumSwap(int num) {
+            // max digit hd, index hi. low digit ld, index li
+            int hd = 0, hi = 0, ld = 0, li = 0;
+            int curHd = -1, curHi = 0;
+            int i = 1, res = num;
+            while (num > 0) {
+                int d = num % 10; // iterate digits from right to left
+                if (d > curHd) {
+                    curHd = d;
+                    curHi = i;
+                } else if (d < curHd) {
+                    ld = d;
+                    li = i;
+                    hd = curHd;
+                    hi = curHi;
+                }
+                i *= 10;
+                num /= 10;
+            }
+            // res += hd*(li-hi) + ld*(hi-li);
+            res += li * (hd - ld) + hi * (ld - hd);
+            return res;
+        }
+    }
+
+    static class Solution2 {
+        // 0ms, 39.3 Mb, one pass, N time and space.
+        public int maximumSwap(int num) {
+            char[] digits = Integer.toString(num).toCharArray();
+            int maxId = digits.length - 1, l = -1, r = -1;
+            for (int i = digits.length - 2; i >= 0; i--) {
+                if (digits[i] > digits[maxId]) maxId = i;
+                else if (digits[i] < digits[maxId]) {
+                    l = i; // leftmost digit less than max digit
+                    r = maxId;
+                }
+            }
+            if (l == -1) return num;
+            char tmp = digits[r];
+            digits[r] = digits[l];
+            digits[l] = tmp;
+            return Integer.parseInt(new String(digits));
+        }
     }
 }

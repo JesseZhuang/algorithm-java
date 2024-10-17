@@ -2,6 +2,7 @@ package heap;
 
 import util.Pair;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -44,17 +45,82 @@ import java.util.Queue;
  */
 @SuppressWarnings("unused")
 public class LongestHappyS {
+
+    // @xxxxkav (python) intuition is to choose a char different from the previous one with the max remaining cnt
+    // if cur char has only one left or it is not the max, take one. otherwise take two.
+    // (a+b+c)lgk, k
     static class Solution1 {
+        public String longestDiverseString(int a, int b, int c) {
+            StringBuilder sb = new StringBuilder();
+            Queue<Pair<Integer, Character>> pq = new PriorityQueue<>(
+                    Comparator.<Pair<Integer, Character>>comparingInt(Pair::getKey).reversed());
+            pq.add(new Pair<>(a, 'a'));
+            pq.add(new Pair<>(b, 'b'));
+            pq.add(new Pair<>(c, 'c'));
+            var cur = pq.remove();
+            while (cur.getKey() > 0) {
+                int n = cur.getKey();
+                char ch = cur.getValue();
+                if (n == 1 || pq.peek().getKey() > n) {
+                    sb.append(ch);
+                    n--;
+                } else {
+                    sb.append(ch).append(ch);
+                    n -= 2;
+                }
+                cur = pq.remove();
+                pq.add(new Pair<>(n, ch));
+            }
+            return sb.toString();
+        }
+    }
+
+    // greedy, a+b+c, 1.
+    static class Solution2 {
+        public String longestDiverseString(int a, int b, int c) {
+            int cura = 0, curb = 0, curc = 0;
+            // max total iterations possible is given by the sum of a, b and c.
+            int total = a + b + c;
+            StringBuilder res = new StringBuilder();
+            for (int i = 0; i < total; i++) {
+                if ((a >= b && a >= c && cura < 2) || (a > 0 && (curb == 2 || curc == 2))) {
+                    // If 'a' is maximum and its streak less than 2,
+                    // or if streak of 'b' or 'c' is 2, then 'a' will be the next character.
+                    res.append('a');
+                    a--;
+                    cura++;
+                    curb = 0;
+                    curc = 0;
+                } else if ((b >= a && b >= c && curb < 2) || (b > 0 && (curc == 2 || cura == 2))) {
+                    res.append('b');
+                    b--;
+                    curb++;
+                    cura = 0;
+                    curc = 0;
+                } else if ((c >= a && c >= b && curc < 2) || (c > 0 && (cura == 2 || curb == 2))) {
+                    res.append('c');
+                    c--;
+                    curc++;
+                    cura = 0;
+                    curb = 0;
+                }
+            }
+            return res.toString();
+        }
+    }
+
+    // For [11,5,3], as an example, we first generate 'aabaabaab', and our piles become [5,2,3].
+    // At this time, c becomes the medium pile, and we generate '..aac' ([3,2,2]).
+    // we add one more '..aa', c becomes the largest pile and we pull two characters from it '..cc' ([1,2,0]).
+    // We add the rest '..bba', and the resulting string is 'aabaabaabaacaaccbba'.
+    // a+b+c time and space. @votrubac
+    static class Solution3 {
         String generate(int a, int b, int c, String aa, String bb, String cc) {
-            if (a < b)
-                return generate(b, a, c, bb, aa, cc);
-            if (b < c)
-                return generate(a, c, b, aa, cc, bb);
-            if (b == 0)
-                return aa.repeat(Math.min(2, a));
+            if (a < b) return generate(b, a, c, bb, aa, cc); // a>=b
+            if (b < c) return generate(a, c, b, aa, cc, bb); // b>=c
+            if (b == 0) return aa.repeat(Math.min(2, a));
             int use_a = Math.min(2, a), use_b = a - use_a >= b ? 1 : 0;
-            return aa.repeat(use_a) + bb.repeat(use_b) +
-                    generate(a - use_a, b - use_b, c, aa, bb, cc);
+            return aa.repeat(use_a) + bb.repeat(use_b) + generate(a - use_a, b - use_b, c, aa, bb, cc);
         }
 
         public String longestDiverseString(int a, int b, int c) {
@@ -62,40 +128,5 @@ public class LongestHappyS {
         }
     }
 
-    static class Solution2 {
-        public String longestDiverseString(int a, int b, int c) {
-            StringBuilder sb = new StringBuilder();
-            Queue<Pair<Character, Integer>> pq = new PriorityQueue<>((c1, c2) -> (c2.getValue() - c1.getValue()));
 
-            if (a > 0)
-                pq.add(new Pair<>('a', a));
-            if (b > 0)
-                pq.add(new Pair<>('b', b));
-            if (c > 0)
-                pq.add(new Pair<Character, Integer>('c', c));
-
-            while (!pq.isEmpty()) {
-                Pair<Character, Integer> first = pq.poll();
-                if (!sb.isEmpty() && sb.charAt(sb.length() - 1) == first.getKey()) {
-                    if (pq.isEmpty())
-                        return sb.toString();
-                    Pair<Character, Integer> second = pq.poll();
-                    sb.append(second.getKey());
-                    if (second.getValue() - 1 > 0) {
-                        pq.add(new Pair<>(second.getKey(), second.getValue() - 1));
-                    }
-                    pq.add(first);
-                } else {
-                    int limit = Math.min(2, first.getValue());
-                    int counter = 0;
-                    while (counter++ < limit) {
-                        sb.append(first.getKey());
-                    }
-                    if (first.getValue() - limit > 0)
-                        pq.add(new Pair<>(first.getKey(), first.getValue() - limit));
-                }
-            }
-            return sb.toString();
-        }
-    }
 }

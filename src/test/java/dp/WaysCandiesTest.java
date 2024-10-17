@@ -12,6 +12,7 @@ class WaysCandiesTest {
     WaysCandies.Solution2 tbt2;
     WaysCandies.Solution3 tbt3;
     WaysCandies.Solution4 tbt4;
+    WaysCandies.SolutionR tbt5;
 
     @BeforeEach
     void setUp() {
@@ -19,6 +20,7 @@ class WaysCandiesTest {
         tbt2 = new WaysCandies.Solution2();
         tbt3 = new WaysCandies.Solution3();
         tbt4 = new WaysCandies.Solution4();
+        tbt5 = new WaysCandies.SolutionR();
     }
 
     @ParameterizedTest
@@ -28,5 +30,6 @@ class WaysCandiesTest {
         assertEquals(expected, tbt2.waysToDistribute(n, k));
         assertEquals(expected, tbt3.waysToDistribute(n, k));
         assertEquals(expected, tbt4.waysToDistribute(n, k));
+        assertEquals(expected, tbt5.waysToDistribute(n, k));
     }
 }

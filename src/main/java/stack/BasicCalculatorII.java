@@ -67,7 +67,7 @@ public class BasicCalculatorII {
     public static int calculate(String s) {
         Deque<Integer> vals = new ArrayDeque<>(List.of(0, 0)); // res, last, two tiers of cache in stack
         s += "#";
-        char prevOp = '+';l
+        char prevOp = '+';
         for (int i = 0, cur = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (Character.isWhitespace(c)) continue;
