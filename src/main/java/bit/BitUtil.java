@@ -26,4 +26,14 @@ public class BitUtil {
     public static int lowest1bit(int n) {
         return Integer.lowestOneBit(n);
     }
+
+    /**
+     * Bit wise negate.
+     *
+     * @param n input number
+     * @return bit wise negate ~n == -n-1 == -(n+1)
+     */
+    public static int negate(int n) {
+        return ~n;
+    }
 }

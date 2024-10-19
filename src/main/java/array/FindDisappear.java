@@ -59,7 +59,7 @@ public class FindDisappear {
 
     // solution 2, set seen negative, n time, 1 space. 5ms, 53.48Mb.
     public List<Integer> findDisappearedNumbers2(int[] nums) {
-        for (int n : nums) { // mark n is present by negating nums[n-1], may have been negated before
+        for (int n : nums) { // mark n is present by negative nums[n-1], may have been negatived before
             n = Math.abs(n);
             nums[n - 1] = -Math.abs(nums[n - 1]);
         }

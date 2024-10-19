@@ -49,7 +49,7 @@ import java.util.PriorityQueue;
 public class MaxStarSumOfGraph {
     // 199 ms, 167.4 Mb. O(V+E) time, O(V*E) space.
     public int maxStarSum(int[] vals, int[][] edges, int k) {
-        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>(); // vertex -> max heap of neighbors (negated)
+        Map<Integer, PriorityQueue<Integer>> map = new HashMap<>(); // vertex -> max heap of neighbors (negative)
         for (int[] edge : edges) {// O(E)
             map.computeIfAbsent(edge[0], t -> new PriorityQueue<>()).offer(-vals[edge[1]]);
             map.computeIfAbsent(edge[1], t -> new PriorityQueue<>()).offer(-vals[edge[0]]);
