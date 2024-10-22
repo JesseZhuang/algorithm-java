@@ -44,13 +44,16 @@ package bit;
  */
 @SuppressWarnings("unused")
 public class KthBitNthBinary {
-    // 1, 1.
+    // 1, 1. @lee215
     static class Solution {
         public char findKthBit(int n, int k) {
             int base = k & 1 ^ 1; // base case in recursive method below, return 0 if n==1, if middle return 1
-            int flipCnt = (k / (k & -k)) >> 1; // flip count
+            // assume k=x*pow(2) x is odd, number of 0,1 groups in x>>1 is flip count
+            int flipCnt = (k / (k & -k)) >> 1;
             int flipOdd = flipCnt & 1; // flip count is odd?
             return (char) (flipOdd ^ base + '0');
+            // return str(int((bin(k).split('1')[-2]=='') == k%2))
+            // return (char)((k / (k & -k) >> 1 & 1) ^ (k & 1 ^ 1) + '0');
         }
     }
 
