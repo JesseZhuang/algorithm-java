@@ -14,8 +14,12 @@ public class BitUtil {
      * @return base 2 logarithm
      */
     public static int ilog2(int n) {
-        // log2 of 0 is undefined. valid for any integer (0,INT_MAX]
+        // log2 of 0 is undefined. otherwise same to rust ilog2() for any integer (0,INT_MAX]
         return 31 - Integer.numberOfLeadingZeros(n);
+    }
+
+    public static int bitLength(int n) {
+        return 32 - Integer.numberOfLeadingZeros(n);
     }
 
     /**

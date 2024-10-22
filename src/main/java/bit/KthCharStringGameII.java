@@ -70,8 +70,8 @@ public class KthCharStringGameII {
         public char kthCharacter(long k, int[] operations) {
             int cnt = 0, n = operations.length; // cnt: count of op that matters
             k -= 1; // index of char
-            int ilog2 = 63 - Long.numberOfLeadingZeros(k); // see {@link BitUtil.ilog2}, floor(log2(x))
-            for (int i = ilog2; i >= 0; --i)
+            int len1 = 63 - Long.numberOfLeadingZeros(k); // see {@link BitUtil.ilog2}, floor(log2(x))
+            for (int i = len1; i >= 0; --i)
                 if ((k >> i & 1) > 0) cnt += operations[i];
             return (char) ('a' + cnt % 26);
         }
