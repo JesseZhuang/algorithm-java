@@ -6,8 +6,9 @@ package bit;
 @SuppressWarnings("unused")
 public class BitUtil {
     /**
-     * base 2 logarithm, round down. which gives the position for the highest 1 bit.
+     * base 2 logarithm, round down (floor). which gives the position for the highest 1 bit.
      * for example, log2(4) is 2, highest 1 bit of 4 is at 2nd from right (0 based indexing)
+     * ilog2 == bit length - 1
      *
      * @param n input int.
      * @return base 2 logarithm
