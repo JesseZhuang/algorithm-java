@@ -44,26 +44,62 @@ package array;
  * At most 1000 calls will be made to next.
  */
 @SuppressWarnings("unused")
+// O(1) init, O(n) next (O(1) amortized); O(1) space does not count input
 public class RLEIterator {
-    int index;
-    int[] A;
+    int idx;
+    int[] encoding;
 
-    public RLEIterator(int[] A) {
-        this.A = A;
-        index = 0;
+    public RLEIterator(int[] encoding) {
+        this.encoding = encoding;
+        idx = 0;
     }
 
     public int next(int n) {
-        while (index < A.length && n > A[index]) {
-            n = n - A[index];
-            index += 2;
+        // current val will be exhausted
+        while (idx < encoding.length && n > encoding[idx]) {
+            n -= encoding[idx];
+            idx += 2;
+        }
+        // all data exhausted
+        if (idx >= encoding.length) return -1;
+        // exhausting
+        encoding[idx] = encoding[idx] - n;
+        return encoding[idx + 1];
+    }
+}
+
+@SuppressWarnings("unused")
+class Solution2 {
+    // n init, lgn next; n space
+    static class RLEIterator {
+        long[] sumCnt; // accumulative sum count
+        int[] num; // values
+        long cur = 0; // overall how many will be exhausted
+        int low = 0;  // last state of cur, already exhausted
+
+        public RLEIterator(int[] encoding) { // {3,8,2,5}
+            sumCnt = new long[encoding.length / 2]; // {3,5}
+            num = new int[encoding.length / 2];  // {8,5}
+            for (int i = 0; i < encoding.length; i += 2) {
+                int id = i / 2;
+                sumCnt[id] = encoding[i];
+                if (i > 1) sumCnt[id] += sumCnt[id - 1];
+                num[id] = encoding[i + 1];
+            }
         }
 
-        if (index >= A.length) {
-            return -1;
+        public int next(int n) {
+            if (sumCnt.length == 0) return -1;
+            cur += n;
+            if (cur > sumCnt[sumCnt.length - 1]) return -1;
+            int l = low, h = sumCnt.length - 1;
+            while (l < h) { // bisect left
+                int mid = l + (h - l) / 2;
+                if (sumCnt[mid] >= cur) h = mid;
+                else l = mid + 1;
+            }
+            low = l;
+            return num[l];
         }
-
-        A[index] = A[index] - n;
-        return A[index + 1];
     }
 }

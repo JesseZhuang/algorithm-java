@@ -30,11 +30,11 @@ public class BinarySearch {
      * Arrays.binarySearch or typical binary search returns -1 if not found. This version returns the position to be
      * inserted.
      *
-     * @param array array to search.
+     * @param array  array to search.
      * @param target target to find.
      * @return index where the target is found or where it should be inserted. For duplicates, return earliest position.
      */
-    public static int binarySearchIndexToInsert(int[] array, int target){
+    public static int binarySearchIndexToInsert(int[] array, int target) {
         int length = array.length;
         int lo = 0, hi = length - 1;
         while (lo <= hi) {
@@ -46,6 +46,27 @@ public class BinarySearch {
             } else hi = middle - 1;
         }
         return lo;//hi < lo, array[lo] > target > array[lo - 1], so return lo. example find 2 in [1,2], hi=0, lo=1
+    }
+
+    /**
+     * bisect left, return index of the leftmost duplicate if exists otherwise the index to insert to keep
+     * the array sorted.
+     * <p>
+     * Same complexity as {@link BinarySearch#binarySearchIndexToInsert}.
+     *
+     * @param array,  input array.
+     * @param target, target to find.
+     * @return index found.
+     */
+    public static int bisectLeft(int[] array, int target) {
+        int lo = 0;
+        int hi = array.length - 1;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (array[mid] >= target) hi = mid;
+            else lo = mid + 1;
+        }
+        return lo;
     }
 
     /**
