@@ -1,7 +1,8 @@
 package stack;
 
-import java.util.ArrayList;
-import java.util.List;
+import jdk.jshell.JShell;
+
+import javax.script.ScriptException;
 import java.util.Stack;
 
 /**
@@ -55,48 +56,29 @@ import java.util.Stack;
 public class ParseBoolExp {
     // optimized stack solution, n, n.
     static class Solution1 {
-
         public boolean parseBoolExpr(String expression) {
             Stack<Character> st = new Stack<>();
-
-            // Traverse through the expression
-            for (char currChar : expression.toCharArray()) {
-                if (currChar == ',' || currChar == '(') continue; // Skip commas and open parentheses
-
+            for (char c : expression.toCharArray()) {
+                if (c == ',' || c == '(') continue;
                 // Push operators and boolean values to the stack
-                if (
-                        currChar == 't' ||
-                                currChar == 'f' ||
-                                currChar == '!' ||
-                                currChar == '&' ||
-                                currChar == '|'
-                ) st.push(currChar);
+                if (c == 't' || c == 'f' || c == '!' || c == '&' || c == '|') st.push(c);
                     // Handle closing parentheses and evaluate the subexpression
-                else if (currChar == ')') {
+                else if (c == ')') {
                     boolean hasTrue = false, hasFalse = false;
-
                     // Process the values inside the parentheses
-                    while (
-                            st.peek() != '!' && st.peek() != '&' && st.peek() != '|'
-                    ) {
-                        char topValue = st.pop();
-                        if (topValue == 't') hasTrue = true;
-                        if (topValue == 'f') hasFalse = true;
+                    while (st.peek() != '!' && st.peek() != '&' && st.peek() != '|') {
+                        char ch = st.pop();
+                        if (hasTrue && hasFalse) continue; // small optimization
+                        if (ch == 't') hasTrue = true;
+                        if (ch == 'f') hasFalse = true;
                     }
-
                     // Pop the operator and evaluate the subexpression
                     char op = st.pop();
-                    if (op == '!') {
-                        st.push(hasTrue ? 'f' : 't');
-                    } else if (op == '&') {
-                        st.push(hasFalse ? 'f' : 't');
-                    } else {
-                        st.push(hasTrue ? 't' : 'f');
-                    }
+                    if (op == '!') st.push(hasTrue ? 'f' : 't');
+                    else if (op == '&') st.push(hasFalse ? 'f' : 't');
+                    else st.push(hasTrue ? 't' : 'f');
                 }
             }
-
-            // The final result is at the top of the stack
             return st.peek() == 't';
         }
     }
@@ -105,57 +87,47 @@ public class ParseBoolExp {
     // another solution string manipulation n^2, n.
     static class Solution2 {
 
-        int index = 0;
-
         public boolean parseBoolExpr(String expression) {
-            return evaluate(expression);
+            return parse(expression, 0, expression.length());
         }
 
-        // Recursively parse and evaluate the boolean expression
-        private boolean evaluate(String expr) {
-            char currChar = expr.charAt(index++);
-
-            // Base cases: true ('t') or false ('f')
-            if (currChar == 't') return true;
-            if (currChar == 'f') return false;
-
-            // Handle NOT operation '!(...)'
-            if (currChar == '!') {
-                index++; // Skip '('
-                boolean result = !evaluate(expr);
-                index++; // Skip ')'
-                return result;
-            }
-
-            // Handle AND '&(...)' and OR '|(...)'
-            List<Boolean> values = new ArrayList<>();
-            index++; // Skip '('
-            while (expr.charAt(index) != ')') {
-                if (expr.charAt(index) != ',') {
-                    values.add(evaluate(expr)); // Collect results of subexpressions
-                } else {
-                    index++; // Skip commas
+        private boolean parse(String s, int lo, int hi) {
+            char c = s.charAt(lo);
+            if (hi - lo == 1) return c == 't'; // base case.
+            boolean res = c == '&'; // only when c is &, set res to true; otherwise(|,!) false.
+            for (int i = lo + 2, start = i, level = 0; i < hi; ++i) {
+                char d = s.charAt(i);
+                if (level == 0 && (d == ',' || d == ')')) { // a valid sub-expression.
+                    boolean cur = parse(s, start, i); // recurse to sub-problem.
+                    start = i + 1; // next sub-expression start index.
+                    if (c == '&') res &= cur;
+                    else if (c == '|') res |= cur;
+                    else res = !cur; // c == '!'.
                 }
+                if (d == '(') ++level;
+                if (d == ')') --level;
             }
-            index++; // Skip ')'
+            return res;
+        }
+    }
 
-            // Manual AND operation: returns false if any value is false
-            if (currChar == '&') {
-                for (Boolean v : values) {
-                    if (!v) return false;
-                }
-                return true;
+    static class Solution3 {
+        // stackoverflow java eval
+        public static boolean parseBoolExpr1(String expression) throws ScriptException {
+            // method 1, gradle 9.0 does not build
+//            ScriptEngineManager manager = new ScriptEngineManager();
+//            ScriptEngine engine = manager.getEngineByName("js");
+//            System.out.println(engine.eval("4*5"));
+//            System.out.println(engine.eval(expression));
+            // method 2
+            try (JShell js = JShell.create()) {
+                return js.eval(js.sourceCodeAnalysis().analyzeCompletion(expression).source())
+                        .getFirst().value().equals("true");
             }
+        }
 
-            // Manual OR operation: returns true if any value is true
-            if (currChar == '|') {
-                for (Boolean v : values) {
-                    if (v) return true;
-                }
-                return false;
-            }
-
-            return false; // This point should never be reached
+        public static void main(String[] args) throws ScriptException {
+            System.out.println(parseBoolExpr1("true || false"));
         }
     }
 }
