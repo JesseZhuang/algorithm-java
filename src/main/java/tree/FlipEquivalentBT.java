@@ -39,8 +39,19 @@ import java.util.Stack;
  */
 @SuppressWarnings("unused")
 public class FlipEquivalentBT {
-    // iterative dfs, n, n
+
+    // recursive, n,n.
     static class Solution1 {
+        public boolean flipEquiv(TreeNode r1, TreeNode r2) {
+            if (r1 == null || r2 == null) return r1 == r2;
+            return r1.val == r2.val &&
+                    ((flipEquiv(r1.left, r2.left) && flipEquiv(r1.right, r2.right)) ||
+                            (flipEquiv(r1.left, r2.right) && flipEquiv(r1.right, r2.left)));
+        }
+    }
+
+    // iterative dfs, n, n
+    static class Solution3 {
         // Checks whether the pair of nodes should be examined
         public boolean check(TreeNode node1, TreeNode node2) {
             if (node1 == null && node2 == null) return true;
@@ -71,7 +82,7 @@ public class FlipEquivalentBT {
     }
 
     // canonical form, n. n
-    static class Solution2 {
+    static class Solution4 {
         public void findCanonicalForm(TreeNode root) {
             if (root == null) return;
             // post-order traversal: first bring subtrees into their canonical form

@@ -103,10 +103,9 @@ public class LongestIPathMatrix {
                     int r = rc[0], c = rc[1];
                     for (int[] dir : dirs) {
                         int nr = r + dir[0], nc = c + dir[1];
-                        if (nr >= 0 && nr < m && nc >= 0 && nc < n && matrix[nr][nc] > matrix[r][c]) {
-                            indegree[nr][nc]--;
-                            if (indegree[nr][nc] == 0) q.add(new int[]{nr, nc});
-                        }
+                        if (nr < 0 || nr > m - 1 || nc < 0 || nc > n - 1 || matrix[nr][nc] <= matrix[r][c]) continue;
+                        indegree[nr][nc]--;
+                        if (indegree[nr][nc] == 0) q.add(new int[]{nr, nc});
                     }
                 }
                 res++;

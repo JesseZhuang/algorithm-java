@@ -40,11 +40,23 @@ import java.util.Map;
  * linked list O(1) time, O(N) space. Note cannot use HashTable at leetcode, not imported maybe. 38ms, 109.8Mb.
  * </ul>
  */
+@SuppressWarnings("unused")
 public class LRUCache {
-    private Map<Integer, DLinkedNode> cache = new HashMap<Integer, DLinkedNode>();
+    private Map<Integer, DLinkedNode> cache = new HashMap<>();
     private int count;
     private int capacity;
     private DLinkedNode head, tail;
+
+    public LRUCache(int capacity) {
+        this.count = 0;
+        this.capacity = capacity;
+        head = new DLinkedNode();
+        head.pre = null;
+        tail = new DLinkedNode();
+        tail.post = null;
+        head.post = tail;
+        tail.pre = head;
+    }
 
     /**
      * Always add the new node right after head;
@@ -83,23 +95,9 @@ public class LRUCache {
         return res;
     }
 
-
-    public LRUCache(int capacity) {
-        this.count = 0;
-        this.capacity = capacity;
-        head = new DLinkedNode();
-        head.pre = null;
-        tail = new DLinkedNode();
-        tail.post = null;
-        head.post = tail;
-        tail.pre = head;
-    }
-
     public int get(int key) {
         DLinkedNode node = cache.get(key);
-        if (node == null) {
-            return -1;
-        }
+        if (node == null) return -1;
         // move the accessed node to the head;
         this.moveToHead(node);
         return node.value;
