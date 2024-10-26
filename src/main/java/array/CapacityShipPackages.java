@@ -47,6 +47,7 @@ package array;
  * 1 <= days <= weights.length <= 5 * 10^4, n
  * 1 <= weights[i] <= 500, w
  */
+@SuppressWarnings("unused")
 public class CapacityShipPackages {
 
     // solution 1, 9ms, 45.8 Mb. O(nLgw) time, O(1) space.
@@ -56,7 +57,21 @@ public class CapacityShipPackages {
             if (weight > max) max = weight;
             sum += weight;
         }
-        int l = max, r = sum;
+
+//        Predicate<Integer> check = (mid -> {
+//            int cnt = 1, cur = 0;
+//            for (int w : weights) {
+//                if (cur + w > mid) {
+//                    cnt++;
+//                    if (cnt > days) return false;
+//                    cur = 0;
+//                }
+//                cur += w;
+//            }
+//            return cur <= days;
+//        });
+
+        int l = max, r = sum, res = l;
         while (l < r) { // not <= because if l incremented to r from r-1, r-1 does not work, r must work
             int mid = l + (r - l) / 2, count = 1, cur = 0; // note count starts with 1
             for (int w : weights) {
@@ -68,12 +83,16 @@ public class CapacityShipPackages {
                 cur += w;
             }
             if (count > days) l = mid + 1;
-            else r = mid; // need <= days, test [l, mid] because mid is a possible working solution
+            else {
+                res = mid; // this works, try smaller
+                r = mid - 1;
+            }
         }
-        return l; // capacity should make sure need <= days
+        return res;
     }
 
     public static void main(String[] args) {
-        shipWithinDays2(new int[]{3, 2, 2, 4, 1, 4}, 3);
+        System.out.println(shipWithinDays2(new int[]{3, 2, 2, 4, 1, 4}, 3));
+        ;
     }
 }

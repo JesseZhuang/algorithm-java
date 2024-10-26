@@ -73,7 +73,7 @@ public class HeightBTSRQ {
             return res;
         }
 
-        // Function to calculate the height of the tree
+        // Function to calculate the height of the tree, not including node itself
         private int height(TreeNode node) {
             if (node == null) return -1;
             if (nHeight.containsKey(node)) return nHeight.get(node);
@@ -82,13 +82,13 @@ public class HeightBTSRQ {
             return h;
         }
 
-        // DFS to precompute the maximum values after removing the subtree
-        private void dfs(TreeNode node, int depth, int maxVal) {
+        // DFS to precompute the maximum height after removing the subtree
+        private void dfs(TreeNode node, int depth, int maxH) {
             if (node == null) return;
-            resMap.put(node.val, maxVal);
-            // Traverse left and right subtrees while updating max values
-            dfs(node.left, depth + 1, Math.max(maxVal, depth + 1 + height(node.right)));
-            dfs(node.right, depth + 1, Math.max(maxVal, depth + 1 + height(node.left)));
+            resMap.put(node.val, maxH);
+            // maxH or depth + sibling height
+            dfs(node.left, depth + 1, Math.max(maxH, depth + 1 + height(node.right)));
+            dfs(node.right, depth + 1, Math.max(maxH, depth + 1 + height(node.left)));
         }
     }
 }

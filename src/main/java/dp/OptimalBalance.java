@@ -105,4 +105,13 @@ public class OptimalBalance {
             return f[(1 << m) - 1]; // transactions for set including all non-zero balances
         }
     }
+
+    static class Solution2 {
+        public int minTransfers(int[][] transactions) {
+            // todo
+            // idea: pick fattest edge (TreeSet or PQ), while path length (#edges) > 1
+            // create new edge to balance or if backward edge available, decrease its weight to cancel
+            return 0;
+        }
+    }
 }

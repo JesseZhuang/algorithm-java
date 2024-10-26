@@ -16,6 +16,7 @@ import static java.util.stream.Collectors.*;
  * Calculate how to settle the money.
  * e.g., {payer: A, amount: 1000, payees: [B, C]}
  */
+@SuppressWarnings("unused")
 public class SettleTransactions {
 
     public static void main(String[] args) {
@@ -68,29 +69,7 @@ public class SettleTransactions {
         }
         return res;
     }
-
-    List<Edge> minimize(List<Edge> owes) {
-        List<Edge> res = new ArrayList<>();
-        Map<String, List<Edge>> adj = owes.stream().collect(groupingBy(e -> e.start));
-        Set<String> visited = new HashSet<>();
-        Stack<String> post = new Stack<>();
-        for (String start : adj.keySet()) {
-            dfs(adj, start, visited, post);
-        }
-        // proces parallel edges and cycles, similar to maxflow
-        // find bottleneck, max, then some edges can be removed
-        visited.clear();
-        return res;
-    }
-
-    void dfs(Map<String, List<Edge>> adj, String start, Set<String> visited, Stack<String> post) {
-        if (visited.contains(start)) return;
-        visited.add(start);
-        for (Edge e : adj.get(start))
-            dfs(adj, e.end, visited, post);
-        post.add(start);
-    }
-
+    
     @AllArgsConstructor
     @ToString
     static class Transaction {
