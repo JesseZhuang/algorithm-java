@@ -3,21 +3,12 @@ package graph;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 /**
- * Related to LeetCode 465.
+ * Related to LeetCode 465. Companies: pinterest.
  * <p>
  * Example:
  * A paid 4000 for flights for A, B, C, D
@@ -30,15 +21,15 @@ public class SettleTransactions {
     public static void main(String[] args) {
         SettleTransactions tbt = new SettleTransactions();
         List<Transaction> fee = new ArrayList<>();
-        fee.add(new Transaction("A", Arrays.asList(new String[]{"A", "B", "C", "D"}), 4000));
-        fee.add(new Transaction("C", Arrays.asList(new String[]{"C", "D"}), 2000));
-        fee.add(new Transaction("A", Arrays.asList(new String[]{"C", "A"}), 2000));
+        fee.add(new Transaction("A", Arrays.asList("A", "B", "C", "D"), 4000));
+        fee.add(new Transaction("C", Arrays.asList("C", "D"), 2000));
+        fee.add(new Transaction("A", Arrays.asList("C", "A"), 2000));
         System.out.println(tbt.settle2(fee)); // C->A 2000, B->A 1000, D->[A,C] 1000
     }
 
     List<Transaction> settle2(List<Transaction> fee) {
         List<Transaction> res = new ArrayList<>();
-        Map<String, Map<String, Integer>> owe = new HashMap<>();
+        Map<String, Map<String, Integer>> owe = new HashMap<>(); // {payee owes {payer, amount}}
         for (Transaction t : fee) {
             int amount = t.amount / t.payee.size();
             for (String payee : t.payee)
@@ -49,6 +40,7 @@ public class SettleTransactions {
                 }
         }
         for (String start : owe.keySet()) {
+            // group by owe amount, collect payees to list: amount->[payees]
             Map<Integer, List<String>> amounts = owe.get(start).entrySet().stream().collect(
                     groupingBy(Map.Entry::getValue, mapping(Map.Entry::getKey, toList())));
             for (int a : amounts.keySet())

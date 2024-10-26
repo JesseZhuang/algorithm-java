@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * LeetCode 465, hard, LintCode 707, tags: bit manipulation, array, dynamic programming, backtracking, bit mask.
+ * Companies: pinterest.
  * <p>
  * You are given an array of transactions where transactions[i] = [from_i, toi, amount_i] indicates that
  * the person with ID = from_i gave amount_i $ to the person with ID = toi.
@@ -67,34 +68,41 @@ import java.util.List;
  * Explanation:
  * Only one edge need to added. There is [1,0,4]
  */
+@SuppressWarnings("unused")
 public class OptimalBalance {
 
-    // O(n) + O(m * 2^m), m worst case n, so O(m*2^m). O(2^m) space.
-    public int minTransfers(int[][] transactions) { // [[0,1,10],[2,0,5]]
-        int[] g = new int[12];
-        for (int[] t : transactions) { // O(n)
-            g[t[0]] -= t[2];
-            g[t[1]] += t[2];
-        } // g: [-5, 5, 0] 0:+5-10==-5; 1:10==10;2:-5==-5
-        List<Integer> nums = new ArrayList<>();
-        for (int x : g)
-            if (x != 0) nums.add(x); // {-5,5,-5}
-        int m = nums.size(); // m==3
-        int[] f = new int[1 << m]; // index: subset of people, 2^m
-        // subsets: 0:no one, 1: only person 0, 10(2): only person 1, 11(3): person 1 and 2, .etc
-        Arrays.fill(f, 1 << 29);
-        f[0] = 0;
-        for (int i = 1; i < 1 << m; i++) { // starting from 1
-            int sum = 0;
-            for (int j = 0; j < m; ++j)
-                if ((i >> j & 1) == 1) sum += nums.get(j); // is jth person in subset i?
-            if (sum == 0) {
-                f[i] = Integer.bitCount(i) - 1; // init: number of people - 1
-                for (int j = (i - 1) & i; j > 0; j = (j - 1) & i)
-                    f[i] = Math.min(f[i], f[j] + f[i ^ j]); // split subset into two parts and minimize
+    // f[i] dp, min transactions to settle debt to 0 for subset i, i in [1, 1<<m)
+    // subset i 1 (one person: 0), 11 (two people, 0 and 1)
+    // f[i] = {0, when i==0
+    //         inf, when i!=0, s!=0
+    //         min(|i|-1, min(f[j]+f[i-j])) where i!=0,s==0 i,j non empty, j is subset of i }
+    static class Solution1 {
+        // O(n) + O(m * 2^m), m worst case n, so O(m*2^m). O(2^m) space.
+        public int minTransfers(int[][] transactions) { // [[0,1,10],[2,0,5]]
+            int[] g = new int[12];
+            for (int[] t : transactions) { // O(n)
+                g[t[0]] -= t[2];
+                g[t[1]] += t[2];
+            } // g: [-5,10,-5,0,0...] 0:+5-10==-5; 1:10==10;2:-5==-5
+            List<Integer> nums = new ArrayList<>();
+            for (int x : g)
+                if (x != 0) nums.add(x); // {-5,10,-5}
+            int m = nums.size();
+            int[] f = new int[1 << m]; // index: subset of people, 2^m
+            // subsets: 0:no one, 1: only person 0, 10(2): only person 1, 11(3): person 1 and 2, .etc
+            Arrays.fill(f, 1 << 29);
+            f[0] = 0;
+            for (int i = 1; i < 1 << m; i++) { // starting from 1: non empty
+                int sum = 0;
+                for (int j = 0; j < m; ++j)
+                    if ((i >> j & 1) == 1) sum += nums.get(j); // is jth person in subset i?
+                if (sum == 0) { // when i==7, 111 -5+10+-5==0, iterate j in [6,1] f[6]+f[1],f[5]+f[2],...
+                    f[i] = Integer.bitCount(i) - 1; // init: number of people - 1
+                    for (int j = (i - 1) & i; j > 0; j = (j - 1) & i)
+                        f[i] = Math.min(f[i], f[j] + f[i ^ j]); // split subset into two parts and minimize
+                }
             }
+            return f[(1 << m) - 1]; // transactions for set including all non-zero balances
         }
-        return f[(1 << m) - 1]; // transactions for set including all non-zero balances
     }
-
 }
