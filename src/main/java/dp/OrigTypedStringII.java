@@ -69,7 +69,7 @@ public class OrigTypedStringII {
     // iterating group of bb, [0, 0, 1, 2, 1, 0, 0, 0] s==5, meaning size 2: ab; size 3: aab, abb; size 4: aabb.
     // s==2 sum=0, add dp[1]:1. set ndp[2] to 1
     // s==3 sum=1, add dp[2]:1, minus dp[0]:0, set ndp[3] to 2
-    // s==4 sum=2, add dp[3]:0, then minus dp[s-cnt-1:1]:1, so set ndp[4] to 1
+    // s==4 sum=2, add dp[3]:0, minus dp[s-cnt-1:1]:1, so set ndp[4] to 1
     static class Solution {
         public int possibleStringCount(String word, int k) {
             final int MOD = (int) (1e9 + 7);
