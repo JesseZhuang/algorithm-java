@@ -58,7 +58,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class OrigTypedStringII {
-    // dp, O(n+k^2), O(k).
+    // dp, O(n+k), O(k).
     // dp[i][j] possibilities for characters in runs[0,i] string size of exactly j, where j in [0,k-1]
     // init empty string, 0 char, possibilities: 1
     // e.g., aaabbb, k:3. dp [1,0,0]
@@ -93,24 +93,24 @@ public class OrigTypedStringII {
 
             if (k <= runs.size()) return (int) res;
 
-            int mS = k - 1; // dp upto k-1 size
-            long[] dp = new long[mS + 1];
+            int mS = k - 1 - runs.size();
+            long[] dp = new long[mS + 1]; // index [0,mS] string size string size [runs.size(),k-1]
             dp[0] = 1;
 
             for (int cnt : runs) { // O(k*min(n,k))==O(k^2)
                 long[] ndp = new long[mS + 1];
                 long sum = 0;
+                int mi = cnt - 1;
                 for (int s = 0; s <= mS; s++) {
-                    if (s >= 1) sum = (sum + dp[s - 1]) % MOD;
-                    if (s - cnt - 1 >= 0) sum = (sum - dp[s - cnt - 1] + MOD) % MOD;
+                    sum = (sum + dp[s]) % MOD;
+                    if (s > mi) sum = (sum - dp[s - mi - 1] + MOD) % MOD;
                     ndp[s] = sum;
                 }
                 dp = ndp;
             }
 
             long atMostK = 0;
-            for (int s = runs.size(); s <= mS; s++) atMostK = (atMostK + dp[s]) % MOD;
-
+            for (int s = 0; s <= mS; s++) atMostK = (atMostK + dp[s]) % MOD;
             return (int) ((res - atMostK + MOD) % MOD);
         }
     }
