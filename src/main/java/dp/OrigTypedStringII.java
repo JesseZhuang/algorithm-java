@@ -66,10 +66,13 @@ public class OrigTypedStringII {
     // iterate group of bbb, dp [0,0,1] meaning size 1: not possible, size 2: ab
     // e.g., aabbccdd, k:8, init dp dp [1,0,0,0,0,0,0,0]
     // iterate group of aa, dp [0,1,1,0,0,0,0,0] meaning size 1: a, size 2: aa
-    // iterating group of bb, [0, 0, 1, 2, 1, 0, 0, 0] s==5, meaning size 2: ab; size 3: aab, abb; size 4: aabb.
-    // s==2 sum=0, add dp[1]:1. set ndp[2] to 1
-    // s==3 sum=1, add dp[2]:1, minus dp[0]:0, set ndp[3] to 2
-    // s==4 sum=2, add dp[3]:0, minus dp[s-cnt-1:1]:1, so set ndp[4] to 1
+    // iterate group of bb, [0, 0, 1, 2, 1, 0, 0, 0] s==5, meaning size 2: ab; size 3: aab, abb; size 4: aabb.
+    // iterate group of cc: prefix_sum: ps
+    // size 3: +dp[2]:1 ps 0->1, -dp[0]:0 ps 1->1, meaning taking ab, use 1 c: [abc]
+    // size 4: +dp[3]:2 ps 1->3, -dp[1]:0 ps 3->3, meaning taking aab,abb, use 1 c: [abcc,aabc,abbc]
+    // size 5: +dp[4]:1 ps 3->4, -dp[2]:1 ps 4->3, meaning taking aabb, removing abccc: [aabcc,abbcc,aabbc]
+    // size 6: +dp[5]:0 ps 3->3, -dp[3]:2 ps 3->1, meaning removing aabccc,abbccc: [aabbcc]
+    // size 7: +dp[6]:0 ps 1->1, -dp[4]:1 ps 1->0, meaning removing aabbccc: []
     static class Solution {
         public int possibleStringCount(String word, int k) {
             final int MOD = (int) (1e9 + 7);

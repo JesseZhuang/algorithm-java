@@ -55,7 +55,7 @@ package queue;
 public class CircularDeque {
     // linked list, 5ms, 44.38mb. 1, k.
     static class Solution1 {
-        class Node {
+        static class Node {
             public int val;
             public Node next;
             public Node prev;
@@ -67,7 +67,7 @@ public class CircularDeque {
             }
         }
 
-        class MyCircularDeque {
+        static class MyCircularDeque {
 
             Node head;
             Node rear;
@@ -152,7 +152,7 @@ public class CircularDeque {
 
     // array, 4ms, 44.8mb. 1, k.
     static class Solution2 {
-        class MyCircularDeque {
+        static class MyCircularDeque {
             int[] array;
             int front;
             int rear;
