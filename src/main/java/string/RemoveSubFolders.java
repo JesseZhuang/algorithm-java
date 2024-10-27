@@ -53,6 +53,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class RemoveSubFolders {
 
+    // todo, trie, O(N*L) time and space.
     static class Solution {
         TrieNode root;
 
