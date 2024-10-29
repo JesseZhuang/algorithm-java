@@ -48,6 +48,7 @@ import static java.util.stream.Collectors.toSet;
 @SuppressWarnings("unused")
 public class LongestSquareStreak {
     // set, n, n.
+    // binary search or sort based, nlgn, n.
     static class Solution {
         public int longestSquareStreak(int[] nums) {
             int res = 0;
