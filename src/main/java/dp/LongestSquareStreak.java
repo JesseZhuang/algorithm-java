@@ -1,7 +1,9 @@
 package dp;
 
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Set;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * LeetCode 2501, medium, tags: array, hash table, binary search, dp, sorting.
@@ -45,39 +47,24 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 public class LongestSquareStreak {
-    // set, n, n. todo
+    // set, n, n.
     static class Solution {
-
         public int longestSquareStreak(int[] nums) {
-            int longestStreak = 0;
-
-            // Create a Set to store all unique numbers from the input array
-            Set<Integer> uniqueNumbers = new HashSet<>();
-            for (int num : nums) {
-                uniqueNumbers.add(num);
-            }
-
-            // Iterate through each number in the input array
-            for (int startNumber : nums) {
-                int currentStreak = 0;
-                long current = startNumber;
-
+            int res = 0;
+            Set<Integer> uniq = Arrays.stream(nums).boxed().collect(toSet());
+            for (int start : nums) {
+                int streak = 0; // cur streak
+                long cur = start;
                 // Continue the streak as long as we can find the next square in the set
-                while (uniqueNumbers.contains((int) current)) {
-                    currentStreak++;
-
+                while (uniq.contains((int) cur)) {
+                    streak++;
                     // Break if the next square would be larger than 10^5 (problem constraint)
-                    if (current * current > 1e5) break;
-
-                    current *= current;
+                    if (cur * cur > 1e5) break;
+                    cur *= cur;
                 }
-
-                // Update the longest streak if necessary
-                longestStreak = Math.max(longestStreak, currentStreak);
+                res = Math.max(res, streak);
             }
-
-            // Return -1 if no valid streak found, otherwise return the longest streak
-            return longestStreak < 2 ? -1 : longestStreak;
+            return res < 2 ? -1 : res;
         }
     }
 }
