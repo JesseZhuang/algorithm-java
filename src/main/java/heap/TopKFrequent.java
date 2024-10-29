@@ -5,7 +5,9 @@ import java.util.*;
 import static util.IntArrayUtil.swap;
 
 /**
- * LeetCode 347, medium, tags: array, hash table, heap, divide and conquer, sorting, bucket sort, counting, quick select.
+ * LeetCode 347, medium, tags: array, hash table, heap, divide and conquer, sorting, bucket sort, counting,
+ * quick select.
+ * Companies: Hertz.
  * <p>
  * Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer
  * in any order.

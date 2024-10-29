@@ -4,7 +4,8 @@ import struct.ListNode;
 
 /**
  * <p>
- * LeetCode 206. Easy. Tags: LinkedList, recursion.
+ * LeetCode 206, easy, tags: LinkedList, recursion.
+ * Companies: Hertz.
  * <p>
  * Reverse a singly linked list.
  * <p>
@@ -36,39 +37,11 @@ public class ReverseLinkedList {
         return res;
     }
 
-    public ListNode reverseListIterative(ListNode head) {
-        if (head == null)
-            return null;
-        ListNode prev = null;
-        while (head.next != null) {
-            ListNode temp = prev;
-            prev = head;
-            head = head.next;
-            prev.next = temp;
-        }
-        head.next = prev;
-        return head;
-    }
-
     public ListNode reverseListRecursive1(ListNode head) {
         if (head == null || head.next == null) return head;
         ListNode rev = reverseListRecursive1(head.next); // reverse the rest of the list
         head.next.next = head; // head.next now points to the tail, put head after that
         head.next = null; // tail.next is head and head.next is tail, set head.next to null to break the cycle
         return rev;
-    }
-
-    public ListNode reverseListRecursive2(ListNode head) {
-        return helper(head, null);
-    }
-
-    private ListNode helper(ListNode head, ListNode rev) {
-        if (head == null)
-            return rev;
-        ListNode temp = rev; // rev points the start of already reversed
-        rev = head; // move rev forward
-        head = head.next; // move head forward
-        rev.next = temp; // modify rev.next to point to the already reversed, saved in temp
-        return helper(head, rev); // tail recursion
     }
 }
