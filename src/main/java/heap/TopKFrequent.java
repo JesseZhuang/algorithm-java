@@ -40,20 +40,17 @@ public class TopKFrequent {
 
     // solution 1, 10ms, 45 Mb. bucket, O(N) time and space.
     public int[] topKFrequentBucket(int[] nums, int k) {
-        List<List<Integer>> bucket = new ArrayList<>(); // count->{number...}
-        for (int i = 0; i < nums.length + 1; i++) bucket.add(new ArrayList<>());
-        Map<Integer, Integer> count = new HashMap<>(); // number->count
-        for (int n : nums) count.put(n, count.getOrDefault(n, 0) + 1);
-        for (int key : count.keySet()) {
-            int frequency = count.get(key);
-            bucket.get(frequency).add(key);
-        }
+        HashMap<Integer, Integer> numCnt = new HashMap<>();
+        for (int n : nums) numCnt.put(n, numCnt.getOrDefault(n, 0) + 1);
+        // cnt: [1,n]
+        int n = nums.length;
+        List<List<Integer>> bucket = new ArrayList<>(); // cnt->{num...}
+        for (int i = 0; i < n + 1; i++) bucket.add(new ArrayList<>());
+        for (int num : numCnt.keySet()) bucket.get(numCnt.get(num)).add(num);
         int[] res = new int[k];
-        int j = 0;
-        for (int i = nums.length; i > 0; i--) {
-            if (bucket.get(i).isEmpty()) continue;
-            for (int n : bucket.get(i)) {
-                res[j++] = n;
+        for (int i = n, j = 0; i >= 1; i--) {
+            for (int num : bucket.get(i)) {
+                res[j++] = num;
                 if (j == k) return res;
             }
         }

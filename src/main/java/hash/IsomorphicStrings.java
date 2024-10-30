@@ -2,6 +2,7 @@ package hash;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * LeetCode 205. Easy.
@@ -34,8 +35,8 @@ public class IsomorphicStrings {
     // 11ms, 42.4 Mb. O(N) time, O(R) space. Must use 2 maps.
     public boolean isIsomorphicMap(String s, String t) {
         HashMap<Character, Integer> map1 = new HashMap<>(), map2 = new HashMap<>();
-        for (Integer i = 0; i < s.length(); i++) // note use boxed type to handle null cases
-            if (map1.put(s.charAt(i), i) != map2.put(t.charAt(i), i)) return false;
+        for (int i = 0; i < s.length(); i++) // note use boxed type to handle null cases
+            if (!Objects.equals(map1.put(s.charAt(i), i), map2.put(t.charAt(i), i))) return false;
         return true;
     }
 
