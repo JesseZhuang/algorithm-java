@@ -3,14 +3,10 @@ package dp;
 import struct.ListNode;
 import util.IntArrayUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
- * LeetCode 300, medium, tags: array, binary search, dynamic programmin.
+ * LeetCode 300, medium, tags: array, binary search, dynamic programming.
  * Given an integer array nums, return the length of the longest strictly increasing subsequence.
  * <p>
  * Example 1:
@@ -37,9 +33,11 @@ import java.util.List;
  * Follow up: Can you come up with an algorithm that runs in O(n log(n)) time complexity?
  * Reference: https://en.wikipedia.org/wiki/Patience_sorting
  */
+@SuppressWarnings("unused")
 public class LongestIncreasingSubSequence {
 
     /**
+     * todo: clean up, put each solution in its own class
      * Solution 1, binary search.
      * O(NLgN) time, O(N) space. 5ms 41.8 Mb.
      * For uniformly random deck, the expected number of piles is
@@ -77,7 +75,7 @@ public class LongestIncreasingSubSequence {
 
     private List<Integer> extractLIS(List<ListNode> piles) {
         List<Integer> result = new ArrayList<>(piles.size());
-        for (ListNode curr = piles.isEmpty() ? null : piles.get(piles.size() - 1); curr != null; curr = curr.next)
+        for (ListNode curr = piles.isEmpty() ? null : piles.getLast(); curr != null; curr = curr.next)
             result.add(curr.val);
         Collections.reverse(result);
         return result;
@@ -100,12 +98,22 @@ public class LongestIncreasingSubSequence {
         return bit.get(20000);
     }
 
+    // O(N^2) time, O(N) space. 85ms, 42 Mb.
+    int lengthOfLISDP(int[] nums) {
+        int[] dp = new int[nums.length]; // LIS count with nums[i] as the end element
+        Arrays.fill(dp, 1);
+        for (int i = 0; i < nums.length; ++i)
+            for (int j = 0; j < i; ++j)
+                if (nums[i] > nums[j] && dp[i] < dp[j] + 1) dp[i] = dp[j] + 1;
+        return IntArrayUtil.maxOfArrayWithStream(dp);
+    }
+
     /**
      * Combine dp with Fenwick (Binary Indexed) Tree.
      * Does not support range max query because max does not have an inverse operation like sum.
      */
-    class MaxBIT {
-        int tree[];
+    static class MaxBIT {
+        int[] tree;
 
         MaxBIT(int size) {
             tree = new int[size + 1]; // leave tree[0] unused
@@ -128,15 +136,5 @@ public class LongestIncreasingSubSequence {
                 index += index & (-index);
             }
         }
-    }
-
-    // O(N^2) time, O(N) space. 85ms, 42 Mb.
-    int lengthOfLISDP(int[] nums) {
-        int[] dp = new int[nums.length]; // LIS count with nums[i] as the end element
-        Arrays.fill(dp, 1);
-        for (int i = 0; i < nums.length; ++i)
-            for (int j = 0; j < i; ++j)
-                if (nums[i] > nums[j] && dp[i] < dp[j] + 1) dp[i] = dp[j] + 1;
-        return IntArrayUtil.maxOfArrayWithStream(dp);
     }
 }

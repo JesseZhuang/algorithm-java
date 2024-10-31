@@ -19,8 +19,8 @@ public class BinaryIndexedTree {
         BITree = new int[l]; // 0th element is dummy
 //        for (int i = 0; i < arr.length; i++) update(i, arr[i]); // O(nlgn) initialization time.
         // O(n) init time
-        for (int i = 1; i < l; i++) BITree[i] = arr[i - 1];
-        for (int i = 1; i < l; i++) {
+        System.arraycopy(arr, 0, BITree, 1, l - 1);
+        for (int i = 1; i < l; i++) { // update
             int p = i + (i & -i); // parenthesis important
             if (p < l) BITree[p] += BITree[i];
         }
@@ -31,7 +31,7 @@ public class BinaryIndexedTree {
      * see tree.BITSum.png in src/main/resources
      *
      * @param index index to get sum for [0,index]
-     * @return
+     * @return sum for [0,index]
      */
     public int getSum(int index) {
         int sum = 0; // Initialize result

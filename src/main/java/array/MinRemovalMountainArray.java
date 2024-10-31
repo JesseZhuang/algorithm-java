@@ -1,8 +1,10 @@
 package array;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * LeetCode1671, hard, tags: binary search, array, dp, greedy.
@@ -37,80 +39,53 @@ import java.util.List;
  * Hint 1
  * Think the opposite direction instead of minimum elements to remove the maximum mountain subsequence
  * Hint 2
- * Think of LIS it's kind of close
+ * Think of LIS (longest increasing subsequence) it's kind of close
  */
 @SuppressWarnings("unused")
 public class MinRemovalMountainArray {
-    // todo
+    // binary search, nlgn, n.
     static class Solution {
-
-        private List<Integer> getLongestIncreasingSubsequenceLength(
-                List<Integer> v
-        ) {
-            List<Integer> lisLen = new ArrayList<>(
-                    Collections.nCopies(v.size(), 1)
-            );
+        private List<Integer> getLISLen(List<Integer> v) {
+            List<Integer> lisLen = new ArrayList<>(Collections.nCopies(v.size(), 1));
             List<Integer> lis = new ArrayList<>();
-            lis.add(v.get(0));
-
+            lis.add(v.getFirst());
             for (int i = 1; i < v.size(); i++) {
                 int index = lowerBound(lis, v.get(i));
-
                 // Add to the list if v[i] is greater than the last element
-                if (index == lis.size()) {
-                    lis.add(v.get(i));
-                } else {
-                    // Replace the element at index with v[i]
-                    lis.set(index, v.get(i));
-                }
-
+                if (index == lis.size()) lis.add(v.get(i));
+                else lis.set(index, v.get(i)); // Replace the element at index with v[i]
                 lisLen.set(i, lis.size());
             }
-
             return lisLen;
         }
 
-        // Returns the index of the first element which is equal to or greater than target.
+        // Returns the index of the first element which is equal to or greater than target. bisect left.
         private int lowerBound(List<Integer> lis, int target) {
             int left = 0, right = lis.size() - 1;
             while (left <= right) {
                 int mid = left + (right - left) / 2;
-                if (lis.get(mid) >= target) {
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
-                }
+                if (lis.get(mid) >= target) right = mid - 1;
+                else left = mid + 1;
             }
             return left;
         }
 
         public int minimumMountainRemovals(int[] nums) {
             int N = nums.length;
-            List<Integer> numsList = new ArrayList<>();
-            for (int num : nums) numsList.add(num);
-
-            List<Integer> lisLength = getLongestIncreasingSubsequenceLength(
-                    numsList
-            );
+            List<Integer> numsList = Arrays.stream(nums).boxed().collect(Collectors.toList());
+            List<Integer> lisLen = getLISLen(numsList);
 
             Collections.reverse(numsList);
-            List<Integer> ldsLength = getLongestIncreasingSubsequenceLength(
-                    numsList
-            );
-            // Reverse the length array to correctly depict the lenght of longest decreasing subsequnec for each index.
+            List<Integer> ldsLength = getLISLen(numsList);
+            // Reverse to correctly depict the length of longest decreasing subsequence for each index.
             Collections.reverse(ldsLength);
-
-            int minRemovals = Integer.MAX_VALUE;
+            int res = Integer.MAX_VALUE;
             for (int i = 0; i < N; i++) {
-                if (lisLength.get(i) > 1 && ldsLength.get(i) > 1) {
-                    minRemovals = Math.min(
-                            minRemovals,
-                            N - lisLength.get(i) - ldsLength.get(i) + 1
-                    );
-                }
+                if (lisLen.get(i) > 1 && ldsLength.get(i) > 1)
+                    res = Math.min(res, N - lisLen.get(i) - ldsLength.get(i) + 1);
+                // N- (lis+lds-1)
             }
-
-            return minRemovals;
+            return res;
         }
     }
 }

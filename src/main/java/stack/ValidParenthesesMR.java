@@ -41,57 +41,61 @@ import java.util.Deque;
  * Check the array from left to right, remove characters that do not meet the property mentioned above,
  * same idea in backward way.
  */
+@SuppressWarnings("unused")
 public class ValidParenthesesMR {
-
     // solution 1, counts, two pass, O(N) time, O(1) space. 15ms, 42.9MB.
-    public String minRemoveToMakeValid(String s) {
-        int left = 0, right = 0, l = s.length();
-        // need to look ahead to know whether a ( should be included or not
-        for (int i = 0; i < l; i++) if (s.charAt(i) == ')') right++;
-        StringBuilder res = new StringBuilder();
-        for (int i = 0; i < l; i++) {
-            char c = s.charAt(i);
-            if (c == '(') {
-                if (left == right) continue; // invalid (, skip
-                left++;
-            } else if (c == ')') {
-                right--;
-                if (left == 0) continue; // invalid ), skip
-                left--;
+    static class Solution1 {
+        public String minRemoveToMakeValid(String s) {
+            int left = 0, right = 0, l = s.length();
+            // need to look ahead to know whether a ( should be included or not
+            for (int i = 0; i < l; i++) if (s.charAt(i) == ')') right++;
+            StringBuilder res = new StringBuilder();
+            for (int i = 0; i < l; i++) {
+                char c = s.charAt(i);
+                if (c == '(') {
+                    if (left == right) continue; // invalid (, skip
+                    left++;
+                } else if (c == ')') {
+                    right--;
+                    if (left == 0) continue; // invalid ), skip
+                    left--;
+                }
+                res.append(c);
             }
-            res.append(c);
+            return res.toString();
         }
-        return res.toString();
     }
 
     // solution 2, 74 ms, 55.1 Mb. O(N) time, O(N) space. stack.
-    // Another method is to use a set for the open left parentheses to be removed
-    public String minRemoveToMakeValidStack(String s) {
-        Deque<Integer> stack = new ArrayDeque<>();
-        String[] arr = s.split("");
-        for (int i = 0; i < arr.length; i++) {
-            if ("(".equals(arr[i])) stack.push(i); // remember index
-            else if (")".equals(arr[i])) {
-                if (!stack.isEmpty()) stack.pop(); // valid )
-                else arr[i] = ""; // invalid )
+    static class Solution2 {
+        // Another method is to use a set for the open left parentheses to be removed
+        public String minRemoveToMakeValidStack(String s) {
+            Deque<Integer> stack = new ArrayDeque<>();
+            String[] res = s.split("");
+            for (int i = 0; i < res.length; i++) {
+                if ("(".equals(res[i])) stack.push(i); // remember index
+                else if (")".equals(res[i])) {
+                    if (!stack.isEmpty()) stack.pop(); // valid )
+                    else res[i] = ""; // invalid )
+                }
             }
+            while (!stack.isEmpty()) res[stack.pop()] = ""; // extra (: invalid
+            return String.join("", res);
         }
-        while (!stack.isEmpty()) arr[stack.pop()] = ""; // extra (: invalid
-        return String.join("", arr);
-    }
 
-    // 32ms, 53.7Mb.
-    public String minRemoveToMakeValidStack2(String s) {
-        Deque<Integer> stack = new ArrayDeque<>();
-        StringBuilder res = new StringBuilder(s);
-        for (int i = 0; i < res.length(); i++) {
-            if (res.charAt(i) == '(') stack.push(i);
-            else if (res.charAt(i) == ')') {
-                if (!stack.isEmpty()) stack.pop();
-                else res.setCharAt(i, '#');
+        // 32ms, 53.7Mb. n, n.
+        public String minRemoveToMakeValidStack2(String s) {
+            Deque<Integer> stack = new ArrayDeque<>();
+            StringBuilder res = new StringBuilder(s);
+            for (int i = 0; i < res.length(); i++) {
+                if (res.charAt(i) == '(') stack.push(i);
+                else if (res.charAt(i) == ')') {
+                    if (!stack.isEmpty()) stack.pop();
+                    else res.setCharAt(i, '#');
+                }
             }
+            while (!stack.isEmpty()) res.setCharAt(stack.pop(), '#');
+            return res.toString().replaceAll("#", "");
         }
-        while (!stack.isEmpty()) res.setCharAt(stack.pop(), '#');
-        return res.toString().replaceAll("#", "");
     }
 }
