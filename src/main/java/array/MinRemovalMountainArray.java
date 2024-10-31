@@ -40,6 +40,8 @@ import java.util.stream.Collectors;
  * Think the opposite direction instead of minimum elements to remove the maximum mountain subsequence
  * Hint 2
  * Think of LIS (longest increasing subsequence) it's kind of close
+ * <p>
+ * See {@link dp.LongestIncreasingSubSequence}
  */
 @SuppressWarnings("unused")
 public class MinRemovalMountainArray {

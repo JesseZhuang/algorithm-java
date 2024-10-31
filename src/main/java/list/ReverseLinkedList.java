@@ -26,7 +26,7 @@ import struct.ListNode;
 public class ReverseLinkedList {
 
     // best: 0ms 42.4MB. O(N) time, O(1) space.
-    public ListNode reverseListIterative2(ListNode head) {
+    public ListNode reverseListIterative(ListNode head) {
         ListNode res = null;
         while (head != null) {
             ListNode next = head.next;
@@ -37,9 +37,9 @@ public class ReverseLinkedList {
         return res;
     }
 
-    public ListNode reverseListRecursive1(ListNode head) {
+    public ListNode reverseListRecursive(ListNode head) {
         if (head == null || head.next == null) return head;
-        ListNode rev = reverseListRecursive1(head.next); // reverse the rest of the list
+        ListNode rev = reverseListRecursive(head.next); // reverse the rest of the list
         head.next.next = head; // head.next now points to the tail, put head after that
         head.next = null; // tail.next is head and head.next is tail, set head.next to null to break the cycle
         return rev;

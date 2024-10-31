@@ -72,27 +72,30 @@ public class SPGetKeys {
                 if (ch >= 'a' && ch <= 'f') maxK = Math.max(ch - 'a' + 1, maxK); // only need to +1 here
             }
         }
-        Queue<int[]> q = new ArrayDeque<>();
-        HashSet<String> marked = new HashSet<>(); // keys (1<<key#),r,c; set saves space comparing to boolean[]
-        marked.add(convert(x, y, 0));
-        q.add(new int[]{x, y, 0});
+        Queue<State> q = new ArrayDeque<>();
+        // keys (1<<key#),r,c; set saves space comparing to 3D boolean[]: mn vs mnk
+        // can use String.format("%d %d %d", r, c, k) as key, space is important
+        HashSet<State> vis = new HashSet<>();
+        var state = new State(x, y, 0);
+        vis.add(state);
+        q.add(state);
         int res = 0;
         while (!q.isEmpty()) {
             int size = q.size();
             while (size-- > 0) {
-                int[] cur = q.remove();
-                if (cur[2] == (1 << maxK) - 1) return res;
+                var cur = q.remove();
+                if (cur.k == (1 << maxK) - 1) return res;
                 for (int[] d : dirs) {
-                    int nr = cur[0] + d[0], nc = cur[1] + d[1], nk = cur[2];
+                    int nr = cur.r + d[0], nc = cur.c + d[1], nk = cur.k;
                     if (nr < 0 || nr > m - 1 || nc < 0 || nc > n - 1) continue;
                     char c = grid[nr].charAt(nc);
                     if (c == '#') continue;
                     if (c >= 'A' && c <= 'F' && (nk & (1 << (c - 'A'))) == 0) continue; // don't have the key
                     if (c >= 'a' && c <= 'f') nk |= 1 << (c - 'a'); // important, same key twice ok, do not use +=
-                    String state = convert(nr, nc, nk);
-                    if (marked.contains(state)) continue;
-                    marked.add(state);
-                    q.add(new int[]{nr, nc, nk});
+                    state = new State(nr, nc, nk);
+                    if (vis.contains(state)) continue;
+                    vis.add(state);
+                    q.add(state);
                 }
             }
             res++;
@@ -100,7 +103,6 @@ public class SPGetKeys {
         return -1;
     }
 
-    String convert(int r, int c, int k) {
-        return String.format("%d %d %d", r, c, k);
+    record State(int r, int c, int k) {
     }
 }

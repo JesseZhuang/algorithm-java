@@ -1,11 +1,11 @@
 package list;
 
+import junit.converter.ListNodeConverter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import struct.ListNode;
-import junit.converter.ListNodeConverter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,10 +24,6 @@ class ReverseLinkedListTest {
         ListNode headOfReversed;
         assertEquals(headOfReversed = reverseLinkedList.reverseListIterative(head), reversed);
         head = reverseLinkedList.reverseListIterative(headOfReversed);
-        assertEquals(reverseLinkedList.reverseListIterative2(head), reversed);
-        head = reverseLinkedList.reverseListIterative(headOfReversed);
-        assertEquals(reverseLinkedList.reverseListRecursive1(head), reversed);
-        head = reverseLinkedList.reverseListIterative(headOfReversed);
-        assertEquals(reverseLinkedList.reverseListRecursive2(head), reversed);
+        assertEquals(reverseLinkedList.reverseListRecursive(head), reversed);
     }
 }
