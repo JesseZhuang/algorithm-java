@@ -103,6 +103,6 @@ public class SPGetKeys {
         return -1;
     }
 
-    record State(int r, int c, int k) {
+    record State(int r, int c, int k) { // inner record do not need static
     }
 }

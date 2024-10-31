@@ -53,91 +53,76 @@ package queue;
  */
 @SuppressWarnings("unused")
 public class CircularDeque {
-    // linked list, 5ms, 44.38mb. 1, k.
+    // doubly linked list, 5ms, 44.38mb. 1, k.
     static class Solution1 {
         static class Node {
             public int val;
             public Node next;
             public Node prev;
 
-            public Node(int val, Node next, Node prev) {
+            public Node(int val, Node prev, Node next) {
                 this.val = val;
-                this.next = next;
                 this.prev = prev;
+                this.next = next;
             }
         }
 
         static class MyCircularDeque {
 
             Node head;
-            Node rear;
+            Node tail;
             int size;
-            int capacity;
+            int cap;
 
             public MyCircularDeque(int k) {
                 size = 0;
-                capacity = k;
+                cap = k;
+                head = new Node(-1, null, null); // dummy
+                tail = new Node(-1, null, null);
+                head.prev = tail; // circular ref init
+                tail.next = head;
             }
 
             public boolean insertFront(int value) {
                 if (isFull()) return false;
-                if (head == null) {
-                    // first element in list
-                    head = new Node(value, null, null);
-                    rear = head;
-                } else {
-                    // add new head
-                    Node newHead = new Node(value, head, null);
-                    head.prev = newHead;
-                    head = newHead;
-                }
+                Node n = new Node(value, head.prev, head); // add before head after tail, head.next still null
+                head.prev.next = n;
+                head.prev = n;
                 size++;
                 return true;
             }
 
             public boolean insertLast(int value) {
                 if (isFull()) return false;
-                if (head == null) {
-                    // first element in list
-                    head = new Node(value, null, null);
-                    rear = head;
-                } else {
-                    // add new element to end
-                    rear.next = new Node(value, null, rear);
-                    rear = rear.next;
-                }
+                Node n = new Node(value, tail, tail.next); // add after tail before head, tail.prev still null
+                tail.next.prev = n;
+                tail.next = n;
                 size++;
                 return true;
             }
 
             public boolean deleteFront() {
                 if (isEmpty()) return false;
-                if (size == 1) {
-                    head = null;
-                    rear = null;
-                } else head = head.next;
+                head.prev.prev.next = head; // head.prev no longer reachable, but its next still pointing to head
+                head.prev = head.prev.prev;
                 size--;
                 return true;
             }
 
             public boolean deleteLast() {
                 if (isEmpty()) return false;
-                if (size == 1) {
-                    head = null;
-                    rear = null;
-                } else rear = rear.prev;
+                tail.next.next.prev = tail;
+                tail.next = tail.next.next;
                 size--;
                 return true;
             }
 
             public int getFront() {
-                if (isEmpty()) return -1;
-                return head.val;
+                return head.prev.val; // if empty, tail.val:-1
             }
 
             public int getRear() {
-                if (isEmpty()) return -1;
-                return rear.val;
+                return tail.next.val;
             }
 
             public boolean isEmpty() {
@@ -145,7 +130,7 @@ public class CircularDeque {
             }
 
             public boolean isFull() {
-                return size == capacity;
+                return size == cap;
             }
         }
     }
