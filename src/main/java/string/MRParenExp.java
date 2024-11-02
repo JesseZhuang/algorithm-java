@@ -2,6 +2,7 @@ package string;
 
 /**
  * LeetCode 2232, medium, tags: string, enumeration.
+ * Companies: pinterest.
  * <p>
  * You are given a 0-indexed string expression of the form "<num1>+<num2>" where <num1> and <num2>
  * represent positive integers.

@@ -48,13 +48,16 @@ public class ExtraCharInString {
             var root = new TrieNode();
             for (String w : dictionary) root.insert(w);
             var dp = new int[n + 1]; // note n+1, index->res: min number of extra char
+            // base case dp[n] empty string: 0
             for (int start = n - 1; start >= 0; start--) {
                 dp[start] = dp[start + 1] + 1; // assume charAt(start) not in dictionary
                 var cur = root;
                 for (int end = start; end < n; end++) {
                     int id = lce26.apply(s.charAt(end));
-                    if (cur.next[id] == null) break;
+                    if (cur.next[id] == null) break; // not in dictionary, give up, try start--
                     cur = cur.next[id];
+                    // s[start,end] is in dictionary
+                    // dp[start] = min(dp[start], dp[end+1]), dp[end+1] for s[end+1,n-1]
                     if (cur.isWord) dp[start] = Math.min(dp[start], dp[end + 1]);
                 }
             }
