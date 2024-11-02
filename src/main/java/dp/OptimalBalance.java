@@ -1,13 +1,10 @@
 package dp;
 
-import lombok.AllArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * LeetCode 465, hard, LintCode 707, tags: bit manipulation, array, dynamic programming, backtracking, bit mask.
@@ -76,12 +73,44 @@ import java.util.Stack;
 @SuppressWarnings("unused")
 public class OptimalBalance {
 
+    // n*2^n, n.
+    // todo keep an eye to see if there is a dp solution with n space
+    static class Solution1 {
+        public int minTransfers(int[][] transactions) {
+            int[] balance = new int[12];
+            for (int[] t : transactions) {
+                int from = t[0], to = t[1], amount = t[2];
+                balance[from] -= amount;
+                balance[to] += amount;
+            }
+            // Collect non-zero balances (debts)
+            List<Integer> debts = Arrays.stream(balance).boxed().filter(b -> b != 0).collect(Collectors.toList());
+            debts.sort(Comparator.reverseOrder()); // settle larger debts first, reducing the search space
+            return dfs(debts, 0);
+        }
+
+        private int dfs(List<Integer> debts, int s) {
+            while (s < debts.size() && debts.get(s) == 0) s++; // skip 0 balances
+            if (s == debts.size()) return 0; // base case, all debts settled
+            int res = Integer.MAX_VALUE;
+            for (int i = s + 1; i < debts.size(); i++) {
+                if (debts.get(i) * debts.get(s) < 0) {
+                    debts.set(i, debts.get(i) + debts.get(s)); // try i give s to make s 0
+                    res = Math.min(res, 1 + dfs(debts, s + 1));
+                    debts.set(i, debts.get(i) - debts.get(s)); // backtrack
+                    if (debts.get(i) + debts.get(s) == 0) break; // optimization, exact match found, stop further
+                }
+            }
+            return res;
+        }
+    }
+
     // f[i] dp, min transactions to settle debt to 0 for subset i, i in [1, 1<<m)
     // subset i 1 (one person: 0), 11 (two people, 0 and 1)
     // f[i] = {0, when i==0
     //         inf, when i!=0, s!=0
     //         min(|i|-1, min(f[j]+f[i-j])) where i!=0,s==0 i,j non empty, j is subset of i }
-    static class Solution1 {
+    static class Solution2 {
         // Time: O(e) + O(n * 2^n), n<=12. Space: O(2^n).
         public int minTransfers(int[][] transactions) { // [[0,1,10],[2,0,5]]
             int[] g = new int[12];
@@ -111,106 +140,5 @@ public class OptimalBalance {
         }
     }
 
-    // assumption: no parallel edges
-    static class Solution2 {
-        final static int P = 12; // max 12 people from constraints
-        final static int D = 100; // max amount for a transaction
 
-        public int minTransfers(int[][] transactions) {
-            // idea: pick fattest edge (TreeSet or PQ), while path length (#edges) > 1
-            // create new edge to balance or if backward edge available, decrease its weight to cancel
-            Network nw = new Network();
-            for (int[] t : transactions) nw.addEdge(new Edge(t[1], t[0], t[2]));
-            nw.minimize();
-            return nw.E;
-        }
-
-        static class Network {
-            HashMap<Integer, Edge>[] adj;
-            boolean[] vis;
-            Edge[] edgeTo;
-            boolean[] onStack;
-            int E;
-            HashSet<Stack<Edge>> cycles;
-            HashSet<Stack<Edge>> paths;
-
-            Network() {
-                adj = new HashMap[P];
-                for (int i = 0; i < P; i++) adj[i] = new HashMap<>();
-            }
-
-            void addEdge(Edge e) {
-                adj[e.v].put(e.w, e);
-                E++;
-            }
-
-            void minimize() {
-                removeCycles();
-                reducePaths();
-            }
-
-            // remove the min weight edge in the cycle to settle debt and remove cycle
-            void removeCycles() {
-                vis = new boolean[P];
-                onStack = new boolean[P];
-                cycles = new HashSet<>();
-                edgeTo = new Edge[P];
-                for (int v = 0; v < P; v++) if (!vis[v]) dfsC(v); // n+e
-                for (Stack<Edge> cycle : cycles) {
-                    int minW = D + 1;
-                    for (Edge e : cycle) minW = Math.min(minW, e.weight);
-                    if (minW == 0) continue;
-                    for (Edge e : cycle) {
-                        e.weight -= minW;
-                        if (e.weight == 0) {
-                            adj[e.v].remove(e.w);
-                            E--;
-                        }
-                    }
-                }
-            }
-
-            // number of edges will only reduce if path >=3 and contains duplicate weights
-            // find all paths that can be settled
-            // 1) length longer than 2, e.g., 1->2(5),2->3(5),3->4(10).
-            // 2) duplicate weights in the path, this duplicate also has to be the bottleneck
-            // if create edge and remove min weight edge in the path with brute force, O(n!)
-            // thought about maxflow, but need more thought
-            void reducePaths() {
-
-            }
-
-            // find all cycles
-            void dfsC(int v) {
-                onStack[v] = true;
-                vis[v] = true;
-                Stack<Edge> cycle;
-                for (Edge e : adj[v].values()) {
-                    if (!vis[e.w]) {
-                        edgeTo[e.w] = e;
-                        dfsC(e.w);
-                    } else if (onStack[e.w]) {
-                        int w = e.w;
-                        cycle = new Stack<>();
-                        while (e.v != w) {
-                            cycle.push(e);
-                            e = edgeTo[e.v];
-                        }
-                        cycle.push(e);
-                        cycles.add(cycle);
-                    }
-                }
-                onStack[v] = false;
-            }
-        }
-
-        @AllArgsConstructor
-        static class Edge {
-            int v, w, weight;
-
-            int other(int u) {
-                return u == v ? w : v;
-            }
-        }
-    }
 }
