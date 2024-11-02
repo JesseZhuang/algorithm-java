@@ -3,6 +3,7 @@ package dp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,19 +74,58 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class OptimalBalance {
 
-    // n*2^n, n.
-    // todo keep an eye to see if there is a dp solution with n space
+    // f[i] dp, min transactions to settle debt to 0 for subset i, i in [1, 1<<m)
+    // subset i 1 (one person: 0), 11 (two people, 0 and 1)
+    // f[i] = {
+    //          0, when i==0
+    //          inf, when i!=0, sum!=0
+    //          min(|i|-1, min(f[j]+f[i-j])) where i!=0,sum==0 i,j non-empty, j is subset of i,
+    //          |i| is bit_count or number of people in set i
+    //        }
+    static class Solution2 {
+        // Time: O(e) + O(n * 2^n), n<=12. Space: O(2^n).
+        public int minTransfers(int[][] transactions) { // [[0,1,10],[2,0,5]]
+            HashMap<Integer, Integer> bal = new HashMap<>(); // person -> balance
+            for (int[] t : transactions) { // O(n)
+                bal.put(t[0], bal.getOrDefault(t[0], 0) - t[2]);
+                bal.put(t[1], bal.getOrDefault(t[1], 0) + t[2]);
+            } // [-5,10,-5,0,0...] 0:+5-10==-5; 1:10==10;2:-5==-5
+            List<Integer> debts = new ArrayList<>(); // non-zero balances
+            for (int x : bal.values()) if (x != 0) debts.add(x); // {-5,10,-5}
+            int n = debts.size();
+            int[] f = new int[1 << n]; // index: subset of people, 2^n space
+            // subsets: 0:no one, 1: only person 0, 10(2): only person 1, 11(3): person 1 and 2, .etc
+            Arrays.fill(f, 1 << 29);
+            f[0] = 0;
+            for (int i = 1; i < 1 << n; i++) { // starting from 1: non empty
+                int sum = 0;
+                for (int j = 0; j < n; ++j)
+                    if ((i >> j & 1) == 1) sum += debts.get(j); // is jth person in subset i?
+                if (sum == 0) { // when i==7, 111 -5+10+-5==0, iterate j in [6,1] f[6]+f[1],f[5]+f[2],...
+                    f[i] = Integer.bitCount(i) - 1; // init: number of people - 1
+                    for (int j = (i - 1) & i; j > 0; j = (j - 1) & i)
+                        f[i] = Math.min(f[i], f[j] + f[i ^ j]); // split subset into two parts and minimize
+//                    for (int k = 1; k < i; k++)
+//                        if ((i & k) == k && dp[k] + dp[i - k] < dp[i])
+//                            dp[i] = dp[k] + dp[i - k];
+                }
+            }
+            return f[(1 << n) - 1]; // transactions for set including all non-zero balances
+        }
+    }
+
+    // n!, n.
     static class Solution1 {
         public int minTransfers(int[][] transactions) {
-            int[] balance = new int[12];
-            for (int[] t : transactions) {
-                int from = t[0], to = t[1], amount = t[2];
-                balance[from] -= amount;
-                balance[to] += amount;
+            HashMap<Integer, Integer> balances = new HashMap<>(); // person -> balance
+            for (int[] t : transactions) { // O(n)
+                balances.put(t[0], balances.getOrDefault(t[0], 0) - t[2]);
+                balances.put(t[1], balances.getOrDefault(t[1], 0) + t[2]);
             }
             // Collect non-zero balances (debts)
-            List<Integer> debts = Arrays.stream(balance).boxed().filter(b -> b != 0).collect(Collectors.toList());
-            debts.sort(Comparator.reverseOrder()); // settle larger debts first, reducing the search space
+            // settle larger debts first, reducing the search space
+            List<Integer> debts = balances.values().stream().filter(b -> b != 0)
+                    .sorted(Comparator.reverseOrder()).collect(Collectors.toList());
             return dfs(debts, 0);
         }
 
@@ -104,41 +144,5 @@ public class OptimalBalance {
             return res;
         }
     }
-
-    // f[i] dp, min transactions to settle debt to 0 for subset i, i in [1, 1<<m)
-    // subset i 1 (one person: 0), 11 (two people, 0 and 1)
-    // f[i] = {0, when i==0
-    //         inf, when i!=0, s!=0
-    //         min(|i|-1, min(f[j]+f[i-j])) where i!=0,s==0 i,j non empty, j is subset of i }
-    static class Solution2 {
-        // Time: O(e) + O(n * 2^n), n<=12. Space: O(2^n).
-        public int minTransfers(int[][] transactions) { // [[0,1,10],[2,0,5]]
-            int[] g = new int[12];
-            for (int[] t : transactions) { // O(n)
-                g[t[0]] -= t[2];
-                g[t[1]] += t[2];
-            } // g: [-5,10,-5,0,0...] 0:+5-10==-5; 1:10==10;2:-5==-5
-            List<Integer> debts = new ArrayList<>(); // non-zero balances
-            for (int x : g)
-                if (x != 0) debts.add(x); // {-5,10,-5}
-            int n = debts.size();
-            int[] f = new int[1 << n]; // index: subset of people, 2^n space
-            // subsets: 0:no one, 1: only person 0, 10(2): only person 1, 11(3): person 1 and 2, .etc
-            Arrays.fill(f, 1 << 29);
-            f[0] = 0;
-            for (int i = 1; i < 1 << n; i++) { // starting from 1: non empty
-                int sum = 0;
-                for (int j = 0; j < n; ++j)
-                    if ((i >> j & 1) == 1) sum += debts.get(j); // is jth person in subset i?
-                if (sum == 0) { // when i==7, 111 -5+10+-5==0, iterate j in [6,1] f[6]+f[1],f[5]+f[2],...
-                    f[i] = Integer.bitCount(i) - 1; // init: number of people - 1
-                    for (int j = (i - 1) & i; j > 0; j = (j - 1) & i)
-                        f[i] = Math.min(f[i], f[j] + f[i ^ j]); // split subset into two parts and minimize
-                }
-            }
-            return f[(1 << n) - 1]; // transactions for set including all non-zero balances
-        }
-    }
-
 
 }
