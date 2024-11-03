@@ -31,10 +31,8 @@ public class KMP1D {
     private int[] restartTable(String needle) {
         int[] restart = new int[needle.length()];
         for (int i = 1, j = 0; i < needle.length(); ) {
-            if (needle.charAt(i) == needle.charAt(j)) {
-                restart[i] = ++j;
-                i++;
-            } else if (j == 0) i++;// nowhere to back up
+            if (needle.charAt(i) == needle.charAt(j)) restart[i++] = ++j;
+            else if (j == 0) i++; // nowhere to back up
             else j = restart[j - 1];
         }
         return restart;

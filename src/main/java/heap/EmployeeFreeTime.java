@@ -5,7 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * LeetCode 759, hard, tags: array, priority queue, sorting.
+ * LeetCode 759, LintCode 850, hard, tags: array, priority queue, sorting.
+ * Companies: pinterest.
  * <p>
  * We are given a list schedule of employees, which represents the working time for each employee.
  * <p>
@@ -39,6 +40,7 @@ import java.util.List;
  * 1 <= schedule.length , schedule[i].length <= 50
  * 0 <= schedule[i].start < schedule[i].end <= 10^8
  */
+@SuppressWarnings("unused")
 public class EmployeeFreeTime {
 
     public static void main(String[] args) {
@@ -61,7 +63,7 @@ public class EmployeeFreeTime {
         avails.forEach(timeLine::addAll);
         timeLine.sort((Comparator.comparingInt(a -> a.start))); // sort by start
 
-        int end = timeLine.get(0).end;
+        int end = timeLine.getFirst().end;
         for (int i = 1; i < timeLine.size(); i++) {
             Interval cur = timeLine.get(i);
             if (cur.start > end) res.add(new Interval(end, cur.start));
@@ -78,12 +80,11 @@ public class EmployeeFreeTime {
                 intervals.add(new int[]{s[i], s[i + 1]});
         intervals.sort(Comparator.comparingInt(i -> i[0]));
 
-        int end = intervals.get(0)[1];
+        int end = intervals.getFirst()[1];
         List<Interval> res = new ArrayList<>();
         for (int i = 1; i < intervals.size(); i++) {
-            if (intervals.get(i)[0] > end) {
+            if (intervals.get(i)[0] > end)
                 res.add(new Interval(end, intervals.get(i)[0]));
-            }
             end = Math.max(end, intervals.get(i)[1]);
         }
         return res;

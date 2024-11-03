@@ -5,6 +5,7 @@ import java.util.PriorityQueue;
 
 /**
  * LeetCode 767, medium, tags: hash table, string, greedy, sorting, heap, counting.
+ * Companies: pinterest.
  * <p>
  * Given a string s, rearrange the characters of s so that any two adjacent characters are not the same.
  * <p>
@@ -28,6 +29,7 @@ import java.util.PriorityQueue;
  * Hint 1
  * Alternate placing the most common letters.
  */
+@SuppressWarnings("unused")
 public class ReorganizeString {
     public static void main(String[] args) {
         System.out.println(new ReorganizeString().reorganizeString2("aba"));

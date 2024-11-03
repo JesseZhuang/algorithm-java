@@ -5,6 +5,7 @@ import java.util.Queue;
 
 /**
  * LeetCode 1293, hard, tags: array, bfs, matrix.
+ * Companies: pinterest.
  * <p>
  * You are given an m x n integer matrix grid where each cell is either 0 (empty) or 1 (obstacle). You can move up,
  * down, left, or right from and to an empty cell in one step.

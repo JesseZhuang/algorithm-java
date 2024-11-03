@@ -16,11 +16,14 @@ class OptimalBalanceTest {
 
     OptimalBalance.Solution1 tbt1;
     OptimalBalance.Solution2 tbt2;
+    OptimalBalance.Solution3 tbt3;
+
 
     @BeforeEach
     void setUp() {
-        tbt1 = new OptimalBalance.Solution1();
         tbt2 = new OptimalBalance.Solution2();
+        tbt1 = new OptimalBalance.Solution1();
+        tbt3 = new OptimalBalance.Solution3();
     }
 
     @ParameterizedTest
@@ -28,8 +31,9 @@ class OptimalBalanceTest {
             "'[[0,1,10],[2,0,5]]', 2", "'[[0,1,10],[1,0,1],[1,2,5],[2,0,5]]', 1"})
     void test(@ConvertWith(TwoDIntegerArrayConverter.class) Integer[][] input, int expected) {
         int[][] transactions = IntArrayUtil.unbox2DIntegerArray(input);
-        assertEquals(expected, tbt1.minTransfers(transactions));
         assertEquals(expected, tbt2.minTransfers(transactions));
+        assertEquals(expected, tbt1.minTransfers(transactions));
+//        assertEquals(expected, tbt3.minTransfers(transactions));
     }
 
     @Test

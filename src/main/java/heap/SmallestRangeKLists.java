@@ -1,9 +1,14 @@
 package heap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * LeetCode 632, hard, tags: array, hash table, greedy, sliding window, sorting, heap.
+ * Companies: pinterest.
  * <p>
  * You have k lists of sorted integers in non-decreasing order. Find the smallest range that includes at least
  * one number from each of the k lists.

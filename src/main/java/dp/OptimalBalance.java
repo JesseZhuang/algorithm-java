@@ -1,11 +1,21 @@
 package dp;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * LeetCode 465, hard, LintCode 707, tags: bit manipulation, array, dynamic programming, backtracking, bit mask.
@@ -38,7 +48,7 @@ import java.util.stream.Collectors;
  * <p>
  * Constraints:
  * <p>
- * 1 <= transactions.length <= 8, e <= n^2 (no parallel edges)
+ * 1 <= transactions.length <= 8, e: O(n^2) (no parallel edges)
  * transactions[i].length == 3
  * 0 <= from_i, to_i < 12, n
  * from_i != to_i
@@ -82,7 +92,7 @@ public class OptimalBalance {
     //          min(|i|-1, min(f[j]+f[i-j])) where i!=0,sum==0 i,j non-empty, j is subset of i,
     //          |i| is bit_count or number of people in set i
     //        }
-    static class Solution2 {
+    static class Solution1 {
         // Time: O(e) + O(n * 2^n), n<=12. Space: O(2^n).
         public int minTransfers(int[][] transactions) { // [[0,1,10],[2,0,5]]
             HashMap<Integer, Integer> bal = new HashMap<>(); // person -> balance
@@ -105,17 +115,16 @@ public class OptimalBalance {
                     f[i] = Integer.bitCount(i) - 1; // init: number of people - 1
                     for (int j = (i - 1) & i; j > 0; j = (j - 1) & i)
                         f[i] = Math.min(f[i], f[j] + f[i ^ j]); // split subset into two parts and minimize
-//                    for (int k = 1; k < i; k++)
-//                        if ((i & k) == k && dp[k] + dp[i - k] < dp[i])
-//                            dp[i] = dp[k] + dp[i - k];
                 }
             }
             return f[(1 << n) - 1]; // transactions for set including all non-zero balances
         }
     }
 
-    // n!, n.
-    static class Solution1 {
+    // n!, n (recursion depth).
+    // first layer s:0, second layer s:1 for i in [2,n-1], third layer s:2 for i in [3,n-1]
+    // 1 + (n-1) + (n-1)*(n-2) + ...
+    static class Solution2 {
         public int minTransfers(int[][] transactions) {
             HashMap<Integer, Integer> balances = new HashMap<>(); // person -> balance
             for (int[] t : transactions) { // O(n)
@@ -125,7 +134,7 @@ public class OptimalBalance {
             // Collect non-zero balances (debts)
             // settle larger debts first, reducing the search space
             List<Integer> debts = balances.values().stream().filter(b -> b != 0)
-                    .sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+                    .sorted(Comparator.reverseOrder()).collect(toList());
             return dfs(debts, 0);
         }
 
@@ -145,4 +154,187 @@ public class OptimalBalance {
         }
     }
 
+    // assumption: no parallel edges.
+    // todo still failing tests
+    static class Solution3 {
+        final static int D = 100; // max amount for a transaction
+
+        public int minTransfers(int[][] transactions) {
+            Network nw = new Network();
+            for (int[] t : transactions) nw.addEdge(new Edge(t[1], t[0], t[2]));
+            nw.minimize();
+            return nw.cntEdges();
+        }
+
+        static class Network {
+            Map<Integer, Map<Integer, Edge>> adj; // from -> (to -> edge(from->to))
+            Set<Integer> vis; // visited
+            Map<Integer, Edge> edgeTo; // node -> edge led to this node during traversal
+            Set<Integer> onStack;
+            Set<Stack<Edge>> cycles;
+            Set<Stack<Edge>> paths;
+
+            Network() {
+                adj = new HashMap<>();
+            }
+
+            int cntEdges() {
+                return adj.values().stream().mapToInt(Map::size).reduce(0, Integer::sum);
+            }
+
+            void addEdge(Edge e) {
+                adj.computeIfAbsent(e.v, k -> new HashMap<>()).put(e.w, e);
+                adj.putIfAbsent(e.w, new HashMap<>());
+            }
+
+            void minimize() {
+                removeCycles();
+                System.out.println("finished removing cycles");
+                reducePaths();
+            }
+
+            // remove the min weight edge in the cycle to settle debt and remove cycle
+            void removeCycles() {
+                vis = new HashSet<>();
+                onStack = new HashSet<>();
+                cycles = new HashSet<>();
+                edgeTo = new HashMap<>();
+                for (int v : adj.keySet()) if (!vis.contains(v)) dfsC(v); // O(n+e)
+                for (Stack<Edge> cycle : cycles) {
+                    int minW = cycle.stream().min(Comparator.comparingInt(e -> e.weight)).orElseThrow().weight;
+                    if (minW == 0) continue;
+                    for (Edge e : cycle) {
+                        e.weight -= minW;
+                        if (e.weight == 0) adj.get(e.v).remove(e.w);
+                    }
+                }
+            }
+
+            // number of edges will only reduce if path >=3 and contains duplicate weights
+            // find all paths that can be settled
+            // 1) length longer than 2, e.g., 1->2(5),2->3(5),3->4(10).
+            // 2) duplicate weights in the path, this duplicate also has to be the bottleneck
+            // thought about maxflow, but need more thought
+            void reducePaths() {
+                Map<Integer, Integer> indegree = new HashMap<>(); // node->indegree
+                for (Map.Entry<Integer, Map<Integer, Edge>> e : adj.entrySet()) {
+                    indegree.put(e.getKey(), 0); // v
+                    for (int w : e.getValue().keySet()) indegree.put(w, indegree.getOrDefault(w, 0) + 1);
+                }
+                Map<Integer, Map<Integer, Edge>> level1 = new HashMap<>(); // node -> (from->edge led to this node)
+                Set<Integer> level0 = indegree.entrySet().stream().filter(e -> e.getValue() == 0)
+                        .map(Map.Entry::getKey).collect(Collectors.toSet());
+                for (int v : level0)
+                    for (int w : adj.get(v).keySet())
+                        level1.computeIfAbsent(w, k -> new HashMap<>()).put(v, adj.get(v).get(w));
+                while (hasPath(level1)) {
+                    System.out.println("reducing");
+                    System.out.println(cntEdges());
+                    Map<Integer, Map<Integer, Edge>> nLevel1 = deepCopy(level1);
+                    Map<Integer, Map<Integer, Edge>> nAdj = deepCopy(adj);
+                    for (int n : level1.keySet()) {
+                        for (Edge e1 : level1.get(n).values()) { // e1 starts from level 0, in level 1
+                            int start = e1.v, w1 = e1.weight;
+                            // 0->1(10)->2(15) become 0->2(10);1->2(5)
+                            // 0->1(10)->2(15);0->2(2) become 0->2(12);1->2(5)
+                            for (Edge e2 : adj.get(n).values()) { // e2 starts from level 1, not in level 1
+                                int end = e2.w, w2 = e2.weight, w = Math.min(w1, w2);
+                                if (w == 0) continue;
+                                Edge nE = new Edge(start, end, w);
+                                Edge existing = nAdj.get(start).get(end); // 0->2 edge exist?
+                                if (existing != null) existing.weight += w;
+                                else {
+                                    nAdj.get(start).put(end, nE);
+                                    nLevel1.computeIfAbsent(end, k -> new HashMap<>()).put(start, nE);
+                                }
+                                e1.weight -= w;
+                                e2.weight -= w;
+                                nAdj.get(e1.v).get(e1.w).weight -= w;
+                                nLevel1.get(n).get(e1.v).weight -= w;
+                                nAdj.get(e2.v).get(e2.w).weight -= w;
+                                if (e1.weight == 0) {
+                                    nAdj.get(e1.v).remove(e1.w);
+                                    nLevel1.get(e1.w).remove(e1.v);
+                                    if (nLevel1.get(e1.w).isEmpty()) nLevel1.remove(e1.w);
+                                    if (e2.weight != 0)
+                                        nLevel1.computeIfAbsent(end, k -> new HashMap<>()).put(e2.v, e2);
+                                }
+                                if (e2.weight == 0) {
+                                    nAdj.get(e2.v).remove(e2.w);
+                                    nLevel1.get(e2.w).remove(e2.v);
+                                }
+                            }
+                        }
+                    }
+                    level1 = nLevel1;
+                    adj = nAdj;
+                }
+            }
+
+            Map<Integer, Map<Integer, Edge>> deepCopy(Map<Integer, Map<Integer, Edge>> original) {
+                Map<Integer, Map<Integer, Edge>> res = new HashMap<>();
+                for (int i : original.keySet()) {
+                    res.put(i, new HashMap<>());
+                    for (Map.Entry<Integer, Edge> en : original.get(i).entrySet())
+                        res.get(i).put(en.getKey(), new Edge(en.getValue())); // deep copy edge
+                }
+                return res;
+            }
+
+
+            // whether any level1 node still has any out degree
+            boolean hasPath(Map<Integer, Map<Integer, Edge>> level1) {
+                for (Integer n : level1.keySet())
+                    if (adj.containsKey(n) && !adj.get(n).isEmpty()) return true;
+                return false;
+            }
+
+            // find all cycles
+            void dfsC(int v) {
+                onStack.add(v);
+                vis.add(v);
+                Stack<Edge> cycle;
+                for (Edge e : adj.get(v).values()) {
+                    if (!vis.contains(e.w)) {
+                        edgeTo.put(e.w, e);
+                        dfsC(e.w);
+                    } else if (onStack.contains(e.w)) {
+                        int w = e.w;
+                        cycle = new Stack<>();
+                        while (e.v != w) {
+                            cycle.push(e);
+                            e = edgeTo.get(e.v);
+                        }
+                        cycle.push(e);
+                        cycles.add(cycle);
+                    }
+                }
+                onStack.remove(v);
+            }
+        }
+
+        @Data
+        @AllArgsConstructor
+        static class Edge {
+            @EqualsAndHashCode.Include
+            int v, w;
+            @EqualsAndHashCode.Exclude
+            int weight;
+
+            public Edge(Edge e) {
+                this.v = e.v;
+                this.w = e.w;
+                this.weight = e.weight;
+            }
+
+            public static void main(String[] args) {
+                Edge e1 = new Edge(1, 3, 1), e2 = new Edge(1, 3, 2);
+                System.out.println(e1.equals(e2));
+            }
+
+            int other(int u) {
+                return u == v ? w : v;
+            }
+        }
+    }
 }
