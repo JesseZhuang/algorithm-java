@@ -1,8 +1,14 @@
 package hash;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * LeetCode 884, easy, tags: hash table, string, counting.
@@ -36,13 +42,13 @@ import java.util.List;
  * s1 and s2 do not have leading or trailing spaces.
  * All the words in s1 and s2 are separated by a single space.
  */
+@SuppressWarnings("unused")
 public class UncommonWords {
     // solution 1, map, n, n, 6ms, 42.1Mb.
     public String[] uncommonFromSentences(String s1, String s2) {
         String[] words = (s1 + " " + s2).split(" ");
-        HashMap<String, Integer> counts = new HashMap<>();
-        for (String w : words)
-            counts.put(w, counts.getOrDefault(w, 0) + 1);
+        Map<String, Integer> counts = Arrays.stream(words).collect(groupingBy(Function.identity(),
+                collectingAndThen(counting(), Long::intValue)));
         List<String> res = new ArrayList<>();
         for (String w : counts.keySet())
             if (counts.get(w) == 1) res.add(w);

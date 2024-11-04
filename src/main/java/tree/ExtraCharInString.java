@@ -26,9 +26,9 @@ import static struct.TrieNode.lce26;
  * <p>
  * Constraints:
  * <p>
- * 1 <= s.length <= 50
- * 1 <= dictionary.length <= 50
- * 1 <= dictionary[i].length <= 50
+ * 1 <= s.length <= 50, n
+ * 1 <= dictionary.length <= 50, k
+ * 1 <= dictionary[i].length <= 50, m
  * dictionary[i] and s consists of only lowercase English letters
  * dictionary contains distinct words
  * <p>
@@ -50,7 +50,7 @@ public class ExtraCharInString {
             var dp = new int[n + 1]; // note n+1, index->res: min number of extra char
             // base case dp[n] empty string: 0
             for (int start = n - 1; start >= 0; start--) {
-                dp[start] = dp[start + 1] + 1; // assume charAt(start) not in dictionary
+                dp[start] = dp[start + 1] + 1; // assume charAt(start) not in dictionary, do not forget
                 var cur = root;
                 for (int end = start; end < n; end++) {
                     int id = lce26.apply(s.charAt(end));

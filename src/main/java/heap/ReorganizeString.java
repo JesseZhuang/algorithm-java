@@ -37,6 +37,7 @@ public class ReorganizeString {
 
     // solution 1, counting, n time, k space. 1ms, 41.72Mb.
     public String reorganizeString(String s) {
+//        Map<Integer, Long> counts = s.chars().boxed().collect(Collectors.groupingBy(c -> c, Collectors.counting()));
         int[] count = new int[26]; // can use hashmap if desired
         for (int i = 0; i < s.length(); i++) count[s.charAt(i) - 'a']++;
         int max = 0, maxInd = 0;

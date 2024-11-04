@@ -189,7 +189,6 @@ public class OptimalBalance {
 
             void minimize() {
                 removeCycles();
-                System.out.println("finished removing cycles");
                 reducePaths();
             }
 
@@ -215,6 +214,7 @@ public class OptimalBalance {
             // 1) length longer than 2, e.g., 1->2(5),2->3(5),3->4(10).
             // 2) duplicate weights in the path, this duplicate also has to be the bottleneck
             // thought about maxflow, but need more thought
+            // wrong, [[0,1,10],[1,2,15],[2,3,10]] -> [2,0,5],[3,0,5],[3,1,5] 3 edges instead of 2
             void reducePaths() {
                 Map<Integer, Integer> indegree = new HashMap<>(); // node->indegree
                 for (Map.Entry<Integer, Map<Integer, Edge>> e : adj.entrySet()) {
@@ -228,8 +228,6 @@ public class OptimalBalance {
                     for (int w : adj.get(v).keySet())
                         level1.computeIfAbsent(w, k -> new HashMap<>()).put(v, adj.get(v).get(w));
                 while (hasPath(level1)) {
-                    System.out.println("reducing");
-                    System.out.println(cntEdges());
                     Map<Integer, Map<Integer, Edge>> nLevel1 = deepCopy(level1);
                     Map<Integer, Map<Integer, Edge>> nAdj = deepCopy(adj);
                     for (int n : level1.keySet()) {
@@ -253,6 +251,7 @@ public class OptimalBalance {
                                 nLevel1.get(n).get(e1.v).weight -= w;
                                 nAdj.get(e2.v).get(e2.w).weight -= w;
                                 if (e1.weight == 0) {
+//                                    indegree.put(e1.w, indegree.get(e1.w) - 1);
                                     nAdj.get(e1.v).remove(e1.w);
                                     nLevel1.get(e1.w).remove(e1.v);
                                     if (nLevel1.get(e1.w).isEmpty()) nLevel1.remove(e1.w);

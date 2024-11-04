@@ -27,13 +27,17 @@ class OptimalBalanceTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"'[[0,1,10],[1,2,15],[2,3,10]]', 2", "'[[0,1,100],[0,2,100],[1,2,1],[1,3,100],[2,3,100]]',2",
-            "'[[0,1,10],[2,0,5]]', 2", "'[[0,1,10],[1,0,1],[1,2,5],[2,0,5]]', 1"})
+    @CsvSource({
+            "'[[0,1,10],[1,2,15],[2,3,10]]', 2", // [3,0,10],[2,1,5]
+            "'[[0,1,100],[0,2,100],[1,2,1],[1,3,100],[2,3,100]]',2",
+            "'[[0,1,10],[2,0,5]]', 2", //
+            "'[[0,1,10],[1,0,1],[1,2,5],[2,0,5]]', 1"
+    })
     void test(@ConvertWith(TwoDIntegerArrayConverter.class) Integer[][] input, int expected) {
         int[][] transactions = IntArrayUtil.unbox2DIntegerArray(input);
         assertEquals(expected, tbt2.minTransfers(transactions));
         assertEquals(expected, tbt1.minTransfers(transactions));
-//        assertEquals(expected, tbt3.minTransfers(transactions));
+        assertEquals(expected, tbt3.minTransfers(transactions));
     }
 
     @Test
