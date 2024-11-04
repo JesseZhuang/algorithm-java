@@ -16,14 +16,12 @@ class OptimalBalanceTest {
 
     OptimalBalance.Solution1 tbt1;
     OptimalBalance.Solution2 tbt2;
-    OptimalBalance.Solution3 tbt3;
 
 
     @BeforeEach
     void setUp() {
         tbt2 = new OptimalBalance.Solution2();
         tbt1 = new OptimalBalance.Solution1();
-        tbt3 = new OptimalBalance.Solution3();
     }
 
     @ParameterizedTest
@@ -37,7 +35,6 @@ class OptimalBalanceTest {
         int[][] transactions = IntArrayUtil.unbox2DIntegerArray(input);
         assertEquals(expected, tbt2.minTransfers(transactions));
         assertEquals(expected, tbt1.minTransfers(transactions));
-        assertEquals(expected, tbt3.minTransfers(transactions));
     }
 
     @Test
