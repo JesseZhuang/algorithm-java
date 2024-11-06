@@ -1,5 +1,8 @@
 package array;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 import static util.CP.chmax;
@@ -58,11 +61,12 @@ import static util.CP.chmax;
  * <p>
  * 1 <= lights.length <= 10^5, n
  * lights[i].length == 2
- * -10^8 <= positioni <= 10^8
+ * -10^8 <= positioni <= 10^8, m
  * 0 <= rangei <= 10^8
  */
 @SuppressWarnings("unused")
 public class BrightestPos {
+    // nlgn, n.
     static class Solution {
         public int brightestPosition(int[][] lights) {
             TreeMap<Integer, Integer> d = new TreeMap<>(); // position -> difference array value
@@ -81,5 +85,29 @@ public class BrightestPos {
             }
             return res;
         }
+    }
+
+    // m, n. TLE in LintCode. use this if m ~ n or m<n.
+    static class Solution2 {
+        public int brightestPosition(int[][] lights) {
+            int maxP = (int) 1e8 * 2, minP = -maxP;
+            Map<Integer, Integer> da = new HashMap<>(); // difference array
+            Arrays.stream(lights).forEach(light -> {
+                int l = light[0] - light[1], r = light[0] + light[1];
+                da.merge(l, 1, Integer::sum);
+                da.merge(r + 1, -1, Integer::sum);
+            });
+            int res = 0, s = 0, max = 0;
+            for (int i = minP; i <= maxP; i++) {
+                if (!da.containsKey(i)) continue;
+                s += da.get(i);
+                if (max < s) {
+                    res = i;
+                    max = s;
+                }
+            }
+            return res;
+        }
+
     }
 }
