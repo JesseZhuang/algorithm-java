@@ -6,7 +6,8 @@ import java.util.Queue;
 import static util.Constants.dirs;
 
 /**
- * LeetCode 329, hard, tags: array, dynamic programming, dfs, bfs, graph, topological sort, memoization, matrix.
+ * LeetCode 329, LintCode 305, hard,
+ * tags: array, dynamic programming, dfs, bfs, graph, topological sort, memoization, matrix.
  * <p>
  * Given an m x n integers matrix, return the length of the longest increasing path in matrix.
  * <p>

@@ -1,7 +1,8 @@
 package util;
 
 public class Constants {
-    public static int[][] dirs = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    public static final int[][] dirs = new int[][]{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    public static final int I32_MAX = Integer.MAX_VALUE;
 
     /**
      * whether cell i,j is inside of matrix[r][c].

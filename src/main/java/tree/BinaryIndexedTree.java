@@ -28,7 +28,13 @@ public class BinaryIndexedTree {
 
     /**
      * get the sum for elements [0,index] in original array. O(lgn) time.
-     * see tree.BITSum.png in src/main/resources
+     * see tree.BITSum.png in src/main/resources and @Tushar Roy on youtube
+     * 0: dummy
+     * 1: 0+2^0, starting index, sum of number of elements, sum[0]
+     * 2: 0+2^1, sum[0,1]
+     * 3: 2^1+2^0, sum[2]
+     * 4: 0+2^2, sum[0,3]
+     * to get sum[0,6] == sum tree[7,6,4], i.e., sum [6]+[4,5]+[0,3]
      *
      * @param index index to get sum for [0,index]
      * @return sum for [0,index]

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.Math.min;
-
 /**
  * find all occurrences of the pattern inside the text.
  * O(n) time, Z array O(n) space, otherwise O(1) space.
@@ -32,7 +30,7 @@ public class Zfunction {
         int l = 0, r = 0; // keep rightmost segment match [l,r), beyond r is not scanned
         for (int i = 1; i < n; i++) {
             // i inside of [l,r)
-            if (i < r) Z[i] = min(r - i, Z[i - l]);
+            if (i < r) Z[i] = Math.min(r - i, Z[i - l]);
             // trivial match algorithm
             while (i + Z[i] < n && s.charAt(Z[i]) == s.charAt(i + Z[i])) Z[i]++;
             if (i + Z[i] > r) { // extend, similar to Manacher's algorithm
