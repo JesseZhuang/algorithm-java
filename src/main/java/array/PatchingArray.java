@@ -42,9 +42,9 @@ public class PatchingArray {
     static class Solution {
         public int minPatches(int[] nums, int n) {
             long miss = 1;
-            int res = 0, idx = 0;
+            int res = 0, i = 0;
             while (miss <= n) { // need to cover [0,n] so miss >= n+1 [0,miss)
-                if (idx < nums.length && nums[idx] <= miss) miss += nums[idx++];
+                if (i < nums.length && nums[i] <= miss) miss += nums[i++]; // extend miss to miss+nums[i]
                 else {
                     miss *= 2;
                     res++;
