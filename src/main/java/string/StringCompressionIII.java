@@ -20,7 +20,8 @@ package string;
  * <p>
  * Explanation:
  * <p>
- * Initially, comp = "". Apply the operation 5 times, choosing "a", "b", "c", "d", and "e" as the prefix in each operation.
+ * Initially, comp = "". Apply the operation 5 times, choosing "a", "b", "c", "d", and "e" as the prefix
+ * in each operation.
  * <p>
  * For each prefix, append "1" followed by the character to comp.
  * <p>
@@ -32,7 +33,8 @@ package string;
  * <p>
  * Explanation:
  * <p>
- * Initially, comp = "". Apply the operation 3 times, choosing "aaaaaaaaa", "aaaaa", and "bb" as the prefix in each operation.
+ * Initially, comp = "". Apply the operation 3 times, choosing "aaaaaaaaa", "aaaaa", and "bb" as
+ * the prefix in each operation.
  * <p>
  * For prefix "aaaaaaaaa", append "9" followed by "a" to comp.
  * For prefix "aaaaa", append "5" followed by "a" to comp.
@@ -49,35 +51,22 @@ package string;
  */
 @SuppressWarnings("unused")
 public class StringCompressionIII {
-    // todo
+    // n, 1.
     static class Solution {
-
         public String compressedString(String word) {
-            StringBuilder comp = new StringBuilder("");
-
-            // pos tracks our position in the input string
-            int pos = 0;
-
+            StringBuilder comp = new StringBuilder();
+            int i = 0;
             // Process until we reach end of string
-            while (pos < word.length()) {
-                int consecutiveCount = 0;
-
-                char currentChar = word.charAt(pos);
-
+            while (i < word.length()) {
+                int streak = 0;
+                char cur = word.charAt(i);
                 // Count consecutive occurrences (maximum 9)
-                while (
-                        pos < word.length() &&
-                                consecutiveCount < 9 &&
-                                word.charAt(pos) == currentChar
-                ) {
-                    consecutiveCount++;
-                    pos++;
+                while (i < word.length() && streak < 9 && word.charAt(i) == cur) {
+                    streak++;
+                    i++;
                 }
-
-                // Append count followed by character to result
-                comp.append(consecutiveCount).append(currentChar);
+                comp.append(streak).append(cur);
             }
-
             return comp.toString();
         }
     }
