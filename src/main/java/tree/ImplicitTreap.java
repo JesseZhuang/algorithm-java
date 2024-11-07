@@ -72,14 +72,14 @@ class ImplicitTreap<E> {
         root = merge(merge(sp.lst, newNode), sp.rst);
     }
 
-    // Delete the node at a given position
+    // Delete the node at a given position, 0-based index
     public void delete(int position) {
         SplitTreap<E> split1 = split(root, position);
         SplitTreap<E> split2 = split(split1.rst, 1);
         root = merge(split1.lst, split2.rst);
     }
 
-    // Get the value at a specific position
+    // Get the value at a specific position, 1-based index
     public E get(int position) {
         return get(root, position);
     }
