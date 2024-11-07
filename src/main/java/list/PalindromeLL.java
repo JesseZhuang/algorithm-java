@@ -29,7 +29,7 @@ import struct.ListNode;
  */
 @SuppressWarnings("unused")
 public class PalindromeLL {
-    // n,1.
+    // n,1. @StefanPochmann thread @Heronalps
     static class Solution {
         public boolean isPalindrome(ListNode head) { // 1->2->1->#
             ListNode rev = null, slow = head, fast = head;
