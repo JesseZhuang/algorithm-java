@@ -1,5 +1,8 @@
 package tree;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Random;
@@ -59,17 +62,17 @@ public class TreapNode {
      * @param key to split with.
      * @return split result with a left treap and right treap.
      */
-    public static SplitRes split(TreapNode t, int key) {
-        SplitRes res = new SplitRes(null, null);
+    public static SplitTreap split(TreapNode t, int key) {
+        SplitTreap res = new SplitTreap(null, null);
         if (t == null) return res;
         if (t.key <= key) {
-            SplitRes rRes = split(t.r, key);
-            t.r = rRes.left;
-            res = new SplitRes(t, rRes.right);
+            SplitTreap rRes = split(t.r, key);
+            t.r = rRes.lst;
+            res = new SplitTreap(t, rRes.rst);
         } else {
-            SplitRes lRes = split(t.l, key);
-            t.l = lRes.right;
-            res = new SplitRes(lRes.left, t);
+            SplitTreap lRes = split(t.l, key);
+            t.l = lRes.rst;
+            res = new SplitTreap(lRes.lst, t);
         }
         return res;
     }
@@ -102,9 +105,9 @@ public class TreapNode {
     public static TreapNode insert(TreapNode t, TreapNode tn) {
         if (t == null) return tn;
         if (t.priority < tn.priority) {
-            SplitRes res = split(t, tn.key);
-            tn.l = res.left;
-            tn.r = res.right;
+            SplitTreap res = split(t, tn.key);
+            tn.l = res.lst;
+            tn.r = res.rst;
             return tn;
         } else if (t.key <= tn.key)
             t.r = insert(t.r, tn);
@@ -138,9 +141,9 @@ public class TreapNode {
     public static TreapNode union(TreapNode t1, TreapNode t2) {
         if (t1 == null || t2 == null) return t1 == null ? t2 : t1;
         if (t1.priority < t2.priority) return union(t2, t1);
-        SplitRes res = split(t2, t1.key);
-        t1.l = union(t1.l, res.left);
-        t1.r = union(t1.r, res.right);
+        SplitTreap res = split(t2, t1.key);
+        t1.l = union(t1.l, res.lst);
+        t1.r = union(t1.r, res.rst);
         return t1;
     }
 
@@ -223,12 +226,12 @@ public class TreapNode {
         return res.toString();
     }
 
-    public static class SplitRes {
-        TreapNode left, right; // left and right of the split treap
-
-        public SplitRes(TreapNode left, TreapNode right) {
-            this.left = left;
-            this.right = right;
-        }
+    /**
+     * After treap split left and right subtrees.
+     */
+    @Data
+    @AllArgsConstructor
+    public static class SplitTreap {
+        TreapNode lst, rst; // left and right subtrees of the split treap
     }
 }
