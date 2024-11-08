@@ -71,40 +71,29 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class TextJustification {
-    // todo @sherlock321(abc), O(nw) time and space.
+    // @sherlock321(abc): python, O(nw) time and space.
     static class Solution {
         public List<String> fullJustify(String[] words, int maxWidth) {
-            List<String> result = new ArrayList<>();
-            List<StringBuilder> current = new ArrayList<>();
-            int numOfLetters = 0;
-
+            List<String> res = new ArrayList<>();
+            List<StringBuilder> cur = new ArrayList<>();
+            int nLetters = 0;
             for (String word : words) {
                 StringBuilder w = new StringBuilder(word);
-
-                if (numOfLetters + w.length() + current.size() > maxWidth) {
-
-                    for (int i = 0; i < (maxWidth - numOfLetters); i++) {
-                        if (current.size() == 1) {
-                            current.getFirst().append(" ");
-                        } else {
-                            current.get(i % (current.size() - 1)).append(" ");
-                        }
+                if (nLetters + w.length() + cur.size() > maxWidth) { // cannot fit in cur line
+                    for (int i = 0; i < maxWidth - nLetters; i++) {
+                        if (cur.size() == 1) cur.getFirst().append(" ");
+                        else cur.get(i % (cur.size() - 1)).append(" ");
                     }
-
-                    result.add(String.join("", current));
-
-                    current = new ArrayList<>();
-                    numOfLetters = 0;
+                    res.add(String.join("", cur));
+                    cur = new ArrayList<>();
+                    nLetters = 0;
                 }
-
-                current.add(w);
-                numOfLetters += w.length();
-
+                cur.add(w);
+                nLetters += w.length();
             }
-
-            result.add(String.format("%-" + maxWidth + "s", String.join(" ", current)));
-
-            return result;
+            //%[flags:-,left justified][width]conversion
+            res.add(String.format("%-" + maxWidth + "s", String.join(" ", cur)));
+            return res;
         }
     }
 }
