@@ -45,15 +45,15 @@ package bit;
  */
 @SuppressWarnings("unused")
 public class MinArrayEnd {
-    // @lee b(lgn), 1. split all bits of n-1 and fill into empty bits of x.
+    // @lee b(lgn), 1. split all bits of n-1 and fill into non-set bits of x.
     static class Solution {
-        public long minEnd(int n, int x) { // 3,4
+        public long minEnd(int n, int x) { // 6,4
             long res = x;
-            n--; // reducing n by 1 to exclude x from the iteration
-            for (long mask = 1; n > 0; mask <<= 1) {
-                if ((mask & x) == 0) {
-                    res |= (n & 1) * mask; // set the bit in result based on the least significant bit of n
-                    n >>= 1;
+            n--; // reducing n by 1 to exclude x, need to find n-1 elements > x
+            for (long mask = 1; n > 0; mask <<= 1) { // from the least significant bit 1b,10b,100b,1000b,10x
+                if ((mask & x) == 0) { // whether this is non-set bit in x, true,true,false,true
+                    res |= (n & 1) * mask; // fill the bits in n-1 (101b) into res, 4,5,5,5,13
+                    n >>= 1; // decrement n-1: 5,2,1,1,0
                 }
             }
             return res;
