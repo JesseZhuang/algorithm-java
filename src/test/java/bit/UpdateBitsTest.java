@@ -22,6 +22,7 @@ class UpdateBitsTest {
             "1024,21,2,6,1108",
             "1024,31,2,6,1148",
             "1024,31,2,31,124",
+            "456,31,27,31,-134217272"
     })
     void test(int N, int M, int i, int j, int exp) {
         assertEquals(exp, tbt.updateBits(N, M, i, j));

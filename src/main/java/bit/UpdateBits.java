@@ -35,7 +35,7 @@ public class UpdateBits {
             int mask;
             if (j < 31) mask = ~((1 << (j + 1)) - (1 << i));
             else mask = (1 << i) - 1;
-            return (m << i) + (mask & n); // clear i-j in n then put m in there
+            return m << i | mask & n; // clear i-j in n then put m in there
         }
     }
 }
