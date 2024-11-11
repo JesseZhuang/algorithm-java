@@ -4,6 +4,8 @@ import java.util.Stack;
 
 /**
  * LeetCode 20, LintCode 423, easy, tags: string, stack.
+ * Companies: Twitter, Airbnb, Amazon, Facebook, Zenefits, Microsoft, Bloomberg, Uber, Google.
+ * <p>
  * Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the
  * input string is valid.
  * <p>
@@ -36,6 +38,7 @@ import java.util.Stack;
  * 1 <= s.length <= 10^4
  * s consists of parentheses only '()[]{}'.
  */
+@SuppressWarnings("unused")
 public class ValidParentheses {
     // 1ms, 40.5Mb. O(n) time and space.
     public boolean isValid(String s) {
