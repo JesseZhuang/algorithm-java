@@ -58,10 +58,7 @@ public class FindLenLCP {
             TrieNode root = new TrieNode(10, decimal);
             for (int n : arr1) root.insert(String.valueOf(n));
             int res = 0;
-            for (int n : arr2) {
-                int len = root.lcpLen(String.valueOf(n));
-                res = Math.max(res, len);
-            }
+            for (int n : arr2) res = Math.max(res, root.lcpLen(String.valueOf(n)));
             return res;
         }
     }

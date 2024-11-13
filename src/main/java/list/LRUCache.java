@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * LeetCode 146. Medium. Tags: hash table, linked list, design, doubly-linked list.
+ * Companies: pinterest.
  * <p>
  * Design and implement a data structure for Least Recently Used (LRU) cache.
  * It should support the following operations: get and put.

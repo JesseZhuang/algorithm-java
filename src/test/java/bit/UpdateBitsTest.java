@@ -34,5 +34,6 @@ class UpdateBitsTest {
         assertEquals(1 << 31, Integer.MIN_VALUE);
         assertEquals(1 << 31 - 1, 1 << 30); // precedence
         assertEquals((1 << 31) - 1, Integer.MAX_VALUE);
+        System.out.println(Integer.toHexString(-134217272));
     }
 }
