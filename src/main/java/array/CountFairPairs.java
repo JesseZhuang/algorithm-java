@@ -7,23 +7,23 @@ import java.util.Arrays;
  */
 @SuppressWarnings("unused")
 public class CountFairPairs {
-    // O(nlgn) time and space. todo editorial
+    // O(nlgn) time and space.
     static class Solution {
         public long countFairPairs(int[] nums, int lower, int upper) {
             Arrays.sort(nums);
-            return cntLess(nums, upper + 1) - cntLess(nums, lower);
+            return cntLess(nums, upper + 1) - cntLess(nums, lower); // [0,upper+1)-[0,lower): [lower,upper]
         }
 
-        // Calculate the number of pairs with sum less than `value`.
+        // Calculate the number of pairs with a sum less than `value`.
         private long cntLess(int[] nums, int value) {
-            int left = 0, right = nums.length - 1;
+            int l = 0, r = nums.length - 1;
             long res = 0;
-            while (left < right) {
-                int sum = nums[left] + nums[right];
+            while (l < r) {
+                int sum = nums[l] + nums[r];
                 if (sum < value) {
-                    res += (right - left);
-                    left++;
-                } else right--;
+                    res += (r - l);
+                    l++;
+                } else r--;
             }
             return res;
         }

@@ -30,22 +30,27 @@ package string;
  * 1 <= s.length <= 2 * 10^5
  * s consists only of printable ASCII characters.
  */
+@SuppressWarnings("unused")
 public class ValidPalindrome {
     // 3ms 41.9 Mb. two pointer, O(n) time, O(1) space.
-    public boolean isPalindrome2P(String s) {
-        for (int l = 0, r = s.length() - 1; l < r; l++, r--) {
-            while (!Character.isLetterOrDigit(s.charAt(l)) && l < r) l++;
-            while (!Character.isLetterOrDigit(s.charAt(r)) && l < r) r--;
-            if (l < r && Character.toUpperCase(s.charAt(l)) != Character.toUpperCase(s.charAt(r)))
-                return false;
+    static class Solution1 {
+        public boolean isPalindrome2P(String s) {
+            for (int l = 0, r = s.length() - 1; l < r; l++, r--) {
+                while (!Character.isLetterOrDigit(s.charAt(l)) && l < r) l++;
+                while (!Character.isLetterOrDigit(s.charAt(r)) && l < r) r--;
+                if (l < r && Character.toUpperCase(s.charAt(l)) != Character.toUpperCase(s.charAt(r)))
+                    return false;
+            }
+            return true;
         }
-        return true;
     }
 
     // O(n) time and space. 659ms, 43.3Mb.
-    public boolean isPalindromeR(String s) {
-        String actual = s.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
-        String rev = new StringBuilder(actual).reverse().toString();
-        return actual.equals(rev);
+    static class Solution2 {
+        public boolean isPalindromeR(String s) {
+            String actual = s.replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+            String rev = new StringBuilder(actual).reverse().toString();
+            return actual.equals(rev);
+        }
     }
 }

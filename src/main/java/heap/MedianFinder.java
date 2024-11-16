@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- * LeetCode 295, hard, tags: two pointers, design, sorting, heap, data stream.
+ * LeetCode 295, LintCode 81, hard, tags: two pointers, design, sorting, heap, data stream.
  * <p>
  * The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value,
  * and the median is the mean of the two middle values.
@@ -53,8 +53,9 @@ import java.util.PriorityQueue;
  * but couldn't we just keep a count of how many numbers are above 100 and how many numbers are below 0,
  * since these numbers could never get to be the median and are therefore not important to keep?
  */
+@SuppressWarnings("unused")
+// another idea is to use treemap and maintain two pointers left, right
 public class MedianFinder {
-
     PriorityQueue<Integer> left; // peek max heap
     PriorityQueue<Integer> right; // peek min heap, size difference 0 or 1
     boolean odd;
