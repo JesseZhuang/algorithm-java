@@ -9,7 +9,7 @@ public class PrefixSum {
      * @param nums original array
      */
     public PrefixSum(int[] nums) {
-        sums = new int[nums.length];
+        sums = new int[nums.length]; // some use N+1 length with 0 as a dummy
         sums[0] = nums[0];
         for (int i = 1; i < nums.length; i++) sums[i] = nums[i] + sums[i - 1]; // sums[i] sum [0,i]
     }
