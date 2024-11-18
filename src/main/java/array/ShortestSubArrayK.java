@@ -8,6 +8,7 @@ import java.util.Deque;
  */
 @SuppressWarnings("unused")
 public class ShortestSubArrayK {
+    // n, n.
     static class Solution {
         public int shortestSubarray(int[] A, int K) {
             int N = A.length, res = N + 1;
