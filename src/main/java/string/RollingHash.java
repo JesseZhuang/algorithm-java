@@ -48,9 +48,9 @@ public class RollingHash {
      * number of strings: n
      * <p>
      * The obvious approach is O(mnlgn): sorting O(nlgn) and each comparison O(m). With
-     * hashing, comparison is O(1) so overall complexity is O(mn+nlgn).
+     * hashing, comparison is O(1), so the overall complexity is O(mn+nlgn).
      * <p>
-     * If order is not required, hashmap method below is O(mn).
+     * If order is not required, the hashmap method below is O(mn).
      *
      * @param strings input strings.
      * @return grouped strings.
