@@ -33,13 +33,15 @@ package string;
  * 1 <= source.length, target.length <= 1000
  * source and target consist of lowercase English letters.
  */
+@SuppressWarnings("unused")
 public class ShortestWayString {
-    // two pointer, mn time, 1 space.
+    // two pointers, mn time, 1 space.
     public int shortestWay(String source, String target) {
         int m = source.length(), n = target.length();
-        int res = 0;
-        for (int i = 0, j = 0; j < n; ) {
+        int res = 0, j = 0;
+        while (j < n) {
             boolean found = false;
+            int i = 0;
             while (i < m && j < n) {
                 if (source.charAt(i) == target.charAt(j)) {
                     found = true;
@@ -47,7 +49,7 @@ public class ShortestWayString {
                 }
                 i++;
             }
-            if (!found) return -1;
+            if (!found) return -1; // can not form target
             res++;
         }
         return res;
