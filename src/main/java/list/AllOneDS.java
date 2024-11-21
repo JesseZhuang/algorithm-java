@@ -48,14 +48,23 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 public class AllOneDS {
+    // 76ms, 63.8mb.
     static class Node {
-        int freq;
+        int cnt;
         Node prev;
         Node next;
         Set<String> keys = new HashSet<>(); // keys with same freq
 
-        Node(int freq) {
-            this.freq = freq;
+        Node(int cnt) {
+            this.cnt = cnt;
+        }
+
+        Node(int cnt, Node prev, Node next) {
+            this.cnt = cnt;
+            this.prev = prev;
+            this.next = next;
+            prev.next = this;
+            next.prev = this;
         }
     }
 
@@ -63,79 +72,34 @@ public class AllOneDS {
     static class AllOne {
         Node head;
         Node tail;
-        Map<String, Node> map = new HashMap<>();
+        Map<String, Node> keyNode; // key -> node
 
         AllOne() {
-            head = new Node(0); // dummy head
-            tail = new Node(0); // dummy tail
+            head = new Node(-1); // dummy head
+            tail = new Node(-1); // dummy tail
             head.next = tail;
             tail.prev = head;
+            keyNode = new HashMap<>();
         }
 
         public void inc(String key) {
-            if (map.containsKey(key)) {
-                Node node = map.get(key);
-                int freq = node.freq;
+            if (keyNode.containsKey(key)) {
+                Node node = keyNode.get(key);
                 node.keys.remove(key);
-
-                Node next = node.next;
-                if (next == tail || next.freq != freq + 1) {
-                    Node nn = new Node(freq + 1); // new node
-                    nn.keys.add(key);
-                    nn.prev = node;
-                    nn.next = next;
-                    node.next = nn;
-                    next.prev = nn;
-                    map.put(key, nn);
-                } else {
-                    next.keys.add(key);
-                    map.put(key, next);
-                }
-
+                updateNode(node.cnt + 1, key, node, true); // move key to the next node (new or existing)
                 if (node.keys.isEmpty()) removeNode(node);
-            } else {
-                Node first = head.next;
-                if (first == tail || first.freq > 1) {
-                    Node nn = new Node(1); // new node
-                    nn.keys.add(key);
-                    nn.prev = head;
-                    nn.next = first;
-                    head.next = nn;
-                    first.prev = nn;
-                    map.put(key, nn);
-                } else {
-                    first.keys.add(key);
-                    map.put(key, first);
-                }
-            }
+            } else updateNode(1, key, head, true); // add new node after head
+
         }
 
         public void dec(String key) {
-            if (!map.containsKey(key)) return;
-
-            Node node = map.get(key);
+            if (!keyNode.containsKey(key)) return;
+            Node node = keyNode.get(key);
             node.keys.remove(key);
-            int freq = node.freq;
-
-            if (freq == 1) map.remove(key);
-            else {
-                Node prevNode = node.prev;
-                if (prevNode == head || prevNode.freq != freq - 1) {
-                    Node newNode = new Node(freq - 1);
-                    newNode.keys.add(key);
-                    newNode.prev = prevNode;
-                    newNode.next = node;
-                    prevNode.next = newNode;
-                    node.prev = newNode;
-                    map.put(key, newNode);
-                } else {
-                    prevNode.keys.add(key);
-                    map.put(key, prevNode);
-                }
-            }
-
+            int cnt = node.cnt;
+            if (cnt == 1) keyNode.remove(key); // no need to move key
+            else updateNode(cnt - 1, key, node, false); // move key to the previous node (new or existing)
             if (node.keys.isEmpty()) removeNode(node);
-
         }
 
         public String getMaxKey() {
@@ -149,10 +113,27 @@ public class AllOneDS {
         }
 
         private void removeNode(Node node) {
-            Node prev = node.prev;
-            Node next = node.next;
+            Node prev = node.prev, next = node.next;
             prev.next = next;
             next.prev = prev;
+        }
+
+        /**
+         * Add a new node or move key to the correct node.
+         *
+         * @param cnt  the target cnt.
+         * @param key  the string key
+         * @param node the node where the key was.
+         * @param inc  whether to inc or dec cnt
+         */
+        void updateNode(int cnt, String key, Node node, boolean inc) {
+            Node next = node.next, prev = node.prev, res;
+            // if inc, add key to next if cnt match, otherwise insert new node between node, next
+            if (inc) res = next.cnt == cnt ? next : new Node(cnt, node, next);
+            else res = prev.cnt == cnt ? prev : new Node(cnt, prev, node);
+            // dec, add key to prev if cnt match, otherwise insert new node between prev, node
+            keyNode.put(key, res);
+            res.keys.add(key);
         }
     }
 }
