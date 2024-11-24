@@ -10,7 +10,7 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * LeetCode 465, hard, LintCode 707, tags: bit manipulation, array, dynamic programming, backtracking, bit mask.
- * Companies: pinterest.
+ * Companies: pinterest, google.
  * <p>
  * You are given an array of transactions where transactions[i] = [from_i, toi, amount_i] indicates that
  * the person with ID = from_i gave amount_i $ to the person with ID = toi.
@@ -83,8 +83,8 @@ public class OptimalBalance {
     //          min(|i|-1, min(f[j]+f[i-j])) where i!=0,sum==0 i,j non-empty, j is subset of i,
     //          |i| is bit_count or number of people in set i
     //        }
+    // Time: O(e) + O(n * 2^n), n<=12. Space: O(2^n).
     static class Solution1 {
-        // Time: O(e) + O(n * 2^n), n<=12. Space: O(2^n).
         public int minTransfers(int[][] transactions) { // [[0,1,10],[2,0,5]]
             HashMap<Integer, Integer> bal = new HashMap<>(); // person -> balance
             for (int[] t : transactions) { // O(n)
@@ -112,7 +112,7 @@ public class OptimalBalance {
         }
     }
 
-    // n!, n (recursion depth).
+    // n!, n (recursion depth). TLE LintCode.
     // first layer s:0, second layer s:1 for i in [2,n-1], third layer s:2 for i in [3,n-1]
     // 1 + (n-1) + (n-1)*(n-2) + ...
     static class Solution2 {
