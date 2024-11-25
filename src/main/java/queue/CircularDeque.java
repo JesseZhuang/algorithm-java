@@ -103,9 +103,10 @@ public class CircularDeque {
 
             public boolean deleteFront() {
                 if (isEmpty()) return false;
-                head.prev.prev.next = head; // head.prev no longer reachable, but its next still pointing to head
+                head.prev.prev.next = head;
                 head.prev = head.prev.prev;
                 size--;
+                // head.prev no longer reachable, but its next still pointing to head
                 return true;
             }
 

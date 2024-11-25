@@ -4,8 +4,9 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- * LeetCode 767, medium, tags: hash table, string, greedy, sorting, heap, counting.
+ * LeetCode 767, LintCode 1041, medium, tags: hash table, string, greedy, sorting, heap, counting.
  * Companies: pinterest.
+ * Mastered: 11/03/2024.
  * <p>
  * Given a string s, rearrange the characters of s so that any two adjacent characters are not the same.
  * <p>

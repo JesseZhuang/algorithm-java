@@ -58,6 +58,7 @@ public class TaskScheduler {
     //https://leetcode.com/problems/task-scheduler/solutions/104500/java-o-n-time-o-1-space-1-pass-no-sorting-solution-with-detailed-explanation/comments/290139
     // solution 1, O(n) time, O(1) space. 4ms, 45.96Mb.
     // solution 2, see LeetCode 767, heap, O(n+nLgk) time, O(k) space. k<=26.
+    // mastered, todo c++, rust.
     public int leastInterval(char[] tasks, int n) {
         int[] count = new int[26];
         int max = 0, maxCnt = 0; // max frequency job count, how many jobs have the same max count

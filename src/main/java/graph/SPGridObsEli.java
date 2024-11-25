@@ -4,8 +4,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * LeetCode 1293, hard, tags: array, bfs, matrix.
+ * LeetCode 1293, LintCode 1723, hard, tags: array, bfs, matrix.
  * Companies: pinterest.
+ * Mastered 11/24/24, todo c++, rust.
  * <p>
  * You are given an m x n integer matrix grid where each cell is either 0 (empty) or 1 (obstacle). You can move up,
  * down, left, or right from and to an empty cell in one step.

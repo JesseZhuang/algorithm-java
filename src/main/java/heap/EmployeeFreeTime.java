@@ -53,41 +53,45 @@ public class EmployeeFreeTime {
             l.add(i);
             t1.add(l);
         }
-        System.out.println(new EmployeeFreeTime().employeeFreeTime(t1));
-    }
-
-    // sort, n time and space. alternatively can use heap.
-    public List<Interval> employeeFreeTime(List<List<Interval>> avails) {
-        List<Interval> res = new ArrayList<>();
-        List<Interval> timeLine = new ArrayList<>();
-        avails.forEach(timeLine::addAll);
-        timeLine.sort((Comparator.comparingInt(a -> a.start))); // sort by start
-
-        int end = timeLine.getFirst().end;
-        for (int i = 1; i < timeLine.size(); i++) {
-            Interval cur = timeLine.get(i);
-            if (cur.start > end) res.add(new Interval(end, cur.start));
-            end = Math.max(end, cur.end);
-        }
-        return res;
+        System.out.println(new EmployeeFreeTime.Solution2().employeeFreeTime(t1));
     }
 
     // lint code 434ms, 23.84Mb.
-    public List<Interval> employeeFreeTimeLint(int[][] schedule) {
-        List<int[]> intervals = new ArrayList<>();
-        for (int[] s : schedule)
-            for (int i = 0; i < s.length; i += 2)
-                intervals.add(new int[]{s[i], s[i + 1]});
-        intervals.sort(Comparator.comparingInt(i -> i[0]));
+    static class Solution {
+        public List<Interval> employeeFreeTimeLint(int[][] schedule) {
+            List<int[]> intervals = new ArrayList<>();
+            for (int[] s : schedule)
+                for (int i = 0; i < s.length; i += 2)
+                    intervals.add(new int[]{s[i], s[i + 1]});
+            intervals.sort(Comparator.comparingInt(i -> i[0]));
 
-        int end = intervals.getFirst()[1];
-        List<Interval> res = new ArrayList<>();
-        for (int i = 1; i < intervals.size(); i++) {
-            if (intervals.get(i)[0] > end)
-                res.add(new Interval(end, intervals.get(i)[0]));
-            end = Math.max(end, intervals.get(i)[1]);
+            int end = intervals.getFirst()[1];
+            List<Interval> res = new ArrayList<>();
+            for (int i = 1; i < intervals.size(); i++) {
+                if (intervals.get(i)[0] > end)
+                    res.add(new Interval(end, intervals.get(i)[0]));
+                end = Math.max(end, intervals.get(i)[1]);
+            }
+            return res;
         }
-        return res;
+    }
+
+    // sort, nlgn time and n space. alternatively can use heap.
+    static class Solution2 {
+        public List<Interval> employeeFreeTime(List<List<Interval>> avails) {
+            List<Interval> res = new ArrayList<>();
+            List<Interval> timeLine = new ArrayList<>();
+            avails.forEach(timeLine::addAll);
+            timeLine.sort((Comparator.comparingInt(a -> a.start))); // sort by start
+
+            int end = timeLine.getFirst().end;
+            for (int i = 1; i < timeLine.size(); i++) {
+                Interval cur = timeLine.get(i);
+                if (cur.start > end) res.add(new Interval(end, cur.start));
+                end = Math.max(end, cur.end);
+            }
+            return res;
+        }
     }
 
     public static class Interval {
