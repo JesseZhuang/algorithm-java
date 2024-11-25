@@ -37,7 +37,7 @@ import java.util.List;
  * <p>
  * Constraints:
  * <p>
- * 1 <= schedule.length , schedule[i].length <= 50
+ * 1 <= schedule.length, schedule[i].length <= 50
  * 0 <= schedule[i].start < schedule[i].end <= 10^8
  */
 @SuppressWarnings("unused")

@@ -1,7 +1,7 @@
 package math;
 
 /**
- * LeetCode 38, easy, tags: string.
+ * LeetCode 38, LintCode 420, easy, tags: string.
  * <p>
  * The count-and-say sequence is the sequence of integers beginning as follows: 1, 11, 21, 1211, 111221, ...
  * A005150 in OEIS (Online Encyclopedia of Integer Sequences). Idea is similar to run-length encoding. If we start
@@ -81,69 +81,53 @@ package math;
 @SuppressWarnings("unused")
 public class CountSay {
     public static void main(String[] args) {
-        CountSay cs = new CountSay();
+        CountSay.Solution1 tbt = new CountSay.Solution1();
         for (int i = 1; i < 30; i++) {
-            String s = cs.countAndSayIterative(i);
+            String s = tbt.countAndSay(i);
             System.out.println(i + ": " + s);
             System.out.println("length: " + s.length());
         }
         // cs.countAndSayList(50); // may run out of heap
     }
 
-    // solution 1, O(2^n) time (worst case string length double each loop), O(2^n) space returned as result.
-    public String countAndSayIterative(int n) {
-        if (n < 1) return null;
-        String res = "1";
-        while (--n > 0) {
-            StringBuilder cur = new StringBuilder();
-            for (int i = 0; i < res.length(); i++) { // note for loop has i++, otherwise inf loop
-                int count = 1;
-                while ((i + 1) < res.length() && res.charAt(i) == res.charAt(i + 1)) {
-                    i++;
-                    count++;
+    // O(1.3^n) time, O(1.3^n) space for result, otherwise O(1) space. 8 ms, 41.49 mb.
+    static class Solution1 {
+        public String countAndSay(int n) {
+            String res = "1";
+            while (--n > 0) {
+                StringBuilder cur = new StringBuilder();
+                for (int i = 0; i < res.length(); i++) { // note for loop has i++, otherwise inf loop
+                    int count = 1;
+                    while ((i + 1) < res.length() && res.charAt(i) == res.charAt(i + 1)) {
+                        i++;
+                        count++;
+                    }
+                    cur.append(count).append(res.charAt(i)); // this way do not need to convert
                 }
-                cur.append(count).append(res.charAt(i)); // this way do not need to convert
+                res = cur.toString();
             }
-            res = cur.toString();
+            return res;
         }
-        return res;
+
     }
 
-    public String countAndSayRecursive(int n) {
-        if (n < 1) return null;
-        if (n == 1) return "1";
-        String s = countAndSayRecursive(n - 1);
-        StringBuilder sb = new StringBuilder();
-        int i = 0;
-        while (i < s.length()) {
-            char num = s.charAt(i++);
-            int count = 1;
-            while (i < s.length() && s.charAt(i) == num) {
-                count++;
-                i++;
-            }
-            sb.append(count).append(num);
-        }
-        return sb.toString();
-    }
-
-    public void countAndSayList(int n) {
-        if (n < 1) return;
-        String res = "1";
-        int nc = n;
-        while (--nc > 0) {
-            StringBuilder cur = new StringBuilder();
-            for (int i = 0; i < res.length(); i++) {
+    // same complexity plus n space for recursion stack. 1 ms, 40.72 mb.
+    static class Solution2 {
+        public String countAndSay(int n) {
+            if (n == 1) return "1";
+            String s = countAndSay(n - 1);
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            while (i < s.length()) {
+                char num = s.charAt(i++);
                 int count = 1;
-                while ((i + 1) < res.length()
-                        && res.charAt(i) == res.charAt(i + 1)) {
-                    i++;
+                while (i < s.length() && s.charAt(i) == num) {
                     count++;
+                    i++;
                 }
-                cur.append(count).append(res.charAt(i));
+                sb.append(count).append(num);
             }
-            res = cur.toString();
-            System.out.println(n - nc + ": " + res.length());
+            return sb.toString();
         }
     }
 }

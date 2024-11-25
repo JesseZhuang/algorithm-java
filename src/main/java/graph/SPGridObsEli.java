@@ -41,6 +41,7 @@ import java.util.Queue;
  * Hint 1: Use BFS.
  * Hint 2: BFS on (x,y,r) x,y is coordinate, r is remain number of obstacles you can remove.
  */
+@SuppressWarnings("unused")
 public class SPGridObsEli {
     // bfs, mnk time, mnk space. 25ms, 45.81Mb.
     public int shortestPath(int[][] grid, int k) {
