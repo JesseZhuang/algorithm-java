@@ -13,9 +13,8 @@ class KMP1DTest {
 
     /**
      * restartTable[j] is used as j=restartTable[j-1] when search needle in haystack
-     * for aaab example, table[2]=2. for haystack aaaab
-     * mismatch when j==3, i==3
-     * we back up j to 2, will match when haystack[i] == 'a'. then match 'b' j==3, i==4, found needle
+     * for example, needle: aaab , table[2]=2; haystack aaaab, mismatch when j==3, i==3
+     * we back up j to 2, will match because haystack[i] == 'a'. then match 'b' j==3, i==4, found needle
      * In brute force search, on mismatch at i==3 j==3, we back up i to 1, j to 0.
      */
     @Test

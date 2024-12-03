@@ -33,67 +33,46 @@ import java.util.Arrays;
  * Follow up: If you have figured out the O(n) solution, try coding another solution using the divide and conquer
  * approach, which is more subtle.
  */
+@SuppressWarnings("unused")
 public class MaxSubarray {
+
     /**
      * solution 1, 2ms, memory 73.2 Mb. Kadane's algorithm.
      * O(N) time, O(1) space. If use array to track status, O(N) space.
      */
-    int maxSubarrayDP(int[] nums) { //-2,1,-3,4,-1,2,1,-5,4
-        int maxEndHere = 0, maxSofar = Integer.MIN_VALUE;
-        for (int num : nums) {
-            maxEndHere = Math.max(num, maxEndHere + num); // -2,1,-2,4,3,5,6,1,4; note first item is num, not 0
-            maxSofar = Math.max(maxSofar, maxEndHere);       // -2,1, 1,4,4,5,6,6,6
+    static class Solution1 {
+        int maxSubarrayDP(int[] nums) { //-2,1,-3,4,-1,2,1,-5,4
+            int maxHere = 0, res = Integer.MIN_VALUE; // max sum ending at current index
+            for (int n : nums) {
+                maxHere = Math.max(n, maxHere + n); // -2,1,-2,4,3,5,6,1,4; note that the first item is num, not 0
+                res = Math.max(res, maxHere);       // -2,1, 1,4,4,5,6,6,6
+            }
+            return res;
         }
-        return maxSofar;
     }
 
-    int maxSubarrayDC1(int[] nums) {
-        return maxSubarrayDC1Helper(nums, 0, nums.length - 1);
-    }
-
-    /**
-     * 212 ms, memory 126.8 Mb.
-     * divide and conquer, O(NlgN) time, O(N) space. T(N) = 2T(N/2) + O(N).
-     * max sub array sum is either entirely from left, right, or spanning across.
-     */
-    int maxSubarrayDC1Helper(int[] nums, int left, int right) {
-        if (left > right) return Integer.MIN_VALUE;
-        int mid = (left + right) / 2, leftSum = 0, rightSum = 0;
-        // leftSum = max subarray sum in [left, mid-1] and starting from mid-1
-        for (int i = mid - 1, curSum = 0; i >= left; i--) {
-            curSum += nums[i];
-            leftSum = Math.max(leftSum, curSum);
+    static class Solution2 {
+        int maxSubarrayDC2(int[] nums) {
+            // pre[i] denotes maximum sum subarray ending at i and suf[i] denotes the maximum subarray starting at i
+            int[] pre, suf;
+            pre = Arrays.copyOf(nums, nums.length);
+            suf = Arrays.copyOf(nums, nums.length);
+            for (int i = 1; i < nums.length; i++) pre[i] += Math.max(0, pre[i - 1]);
+            for (int i = nums.length - 2; i >= 0; i--) suf[i] += Math.max(0, suf[i + 1]);
+            return maxSubarrayDC2Helper(nums, 0, nums.length - 1, pre, suf);
         }
-        // rightSum = max subarray sum in [mid+1, right] and starting from mid+1
-        for (int i = mid + 1, curSum = 0; i <= right; i++) {
-            curSum += nums[i];
-            rightSum = Math.max(rightSum, curSum);
+
+        /**
+         * 219 ms, memory 125 Mb.
+         * divide and conquer, O(N) time, O(N) space. T(N) = 2T(N/2) + O(1).
+         */
+        int maxSubarrayDC2Helper(int[] nums, int left, int right, int[] pre, int[] suf) {
+            // note stop a little earlier than DC1 to avoid pre[mid-1] index out of bound when left+1==right
+            if (left == right) return nums[left];
+            int mid = (left + right) / 2;
+            return IntArrayUtil.maxOfArrayWithStream(new int[]{maxSubarrayDC2Helper(nums, left, mid, pre, suf),
+                    maxSubarrayDC2Helper(nums, mid + 1, right, pre, suf), pre[mid] + suf[mid + 1]});
         }
-        // return max of 3 cases
-        return IntArrayUtil.maxOfArrayWithStream(new int[]{maxSubarrayDC1Helper(nums, left, mid - 1),
-                maxSubarrayDC1Helper(nums, mid + 1, right), leftSum + nums[mid] + rightSum});
-    }
-
-    int maxSubarrayDC2(int[] nums) {
-        // pre[i] denotes maximum sum subarray ending at i and suf[i] denotes the maximum subarray starting at i
-        int[] pre, suf;
-        pre = Arrays.copyOf(nums, nums.length);
-        suf = Arrays.copyOf(nums, nums.length);
-        for (int i = 1; i < nums.length; i++) pre[i] += Math.max(0, pre[i - 1]);
-        for (int i = nums.length - 2; i >= 0; i--) suf[i] += Math.max(0, suf[i + 1]);
-        return maxSubarrayDC2Helper(nums, 0, nums.length - 1, pre, suf);
-    }
-
-    /**
-     * 219 ms, memory 125 Mb.
-     * divide and conquer, O(N) time, O(N) space. T(N) = 2T(N/2) + O(1).
-     */
-    int maxSubarrayDC2Helper(int[] nums, int left, int right, int[] pre, int[] suf) {
-        // note stop a little earlier than DC1 to avoid pre[mid-1] index out of bound when left+1==right
-        if (left == right) return nums[left];
-        int mid = (left + right) / 2;
-        return IntArrayUtil.maxOfArrayWithStream(new int[]{maxSubarrayDC2Helper(nums, left, mid, pre, suf),
-                maxSubarrayDC2Helper(nums, mid + 1, right, pre, suf), pre[mid] + suf[mid + 1]});
     }
 
 }

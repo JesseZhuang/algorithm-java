@@ -11,11 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MaxConsecutiveOnesIITest {
 
-    MaxConsecutiveOnesII.Solution2 tbt;
+    MaxConsecutiveOnesII.Solution2 tbt2;
+    MaxConsecutiveOnesII.Solution tbt1;
 
     @BeforeEach
     void setUp() {
-        tbt = new MaxConsecutiveOnesII.Solution2();
+        tbt2 = new MaxConsecutiveOnesII.Solution2();
+        tbt1 = new MaxConsecutiveOnesII.Solution();
     }
 
     @ParameterizedTest
@@ -24,8 +26,12 @@ class MaxConsecutiveOnesIITest {
             "'1,0,1,1,0,1', 4",
             "'1,0,1,1,0', 4",
             "'1,0,1,0,1', 3",
+            "'1,1,1', 3"
     })
     void test(@ConvertWith(IntegerArrayConverter.class) Integer[] nums, int expected) {
-        assertEquals(expected, tbt.findMaxConsecutiveOnes(IntArrayUtil.unBoxIntegerArray(nums)));
+        int[] numsP = IntArrayUtil.unBoxIntegerArray(nums);
+        assertEquals(expected, tbt2.findMaxConsecutiveOnes(numsP));
+        assertEquals(expected, tbt1.findMaxConsecutiveOnes(numsP));
+        assertEquals(expected, tbt2.followUp(numsP));
     }
 }

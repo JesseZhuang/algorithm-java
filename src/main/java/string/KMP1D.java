@@ -18,6 +18,8 @@ public class KMP1D {
 
     /**
      * A method to find the longest palindrome prefix.
+     * Restart table value will keep increment by oen if prefix is matched, for a palindrome prefix,
+     * restart[-1] would be that prefix length.
      *
      * @param s the string to look into.
      * @return the longest palindrome prefix from s.

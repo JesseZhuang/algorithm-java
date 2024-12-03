@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * LeetCode 146. Medium. Tags: hash table, linked list, design, doubly-linked list.
+ * LeetCode 146, LintCode 134, medium, tags: hash table, linked list, design, doubly-linked list.
  * Companies: pinterest.
  * <p>
  * Design and implement a data structure for Least Recently Used (LRU) cache.
@@ -38,98 +38,86 @@ import java.util.Map;
  * <p>
  * <ul>
  * <li>Cannot use java standard library linked list, remove is O(N). Use hash table and doubly
- * linked list O(1) time, O(N) space. Note cannot use HashTable at leetcode, not imported maybe. 38ms, 109.8Mb.
+ * linked list O(1) time, O(N) space. Note cannot use HashTable at leetcode, not imported maybe. 46 ms, 111 mb.
  * </ul>
  */
 @SuppressWarnings("unused")
 public class LRUCache {
-    private Map<Integer, Node> cache = new HashMap<>();
-    private int count;
-    private int capacity;
-    private Node head, tail;
+    Map<Integer, Node> cache; // key -> node
+    int cnt;
+    int capacity;
+    Node head, tail;
 
     public LRUCache(int capacity) {
-        this.count = 0;
+        this.cnt = 0;
         this.capacity = capacity;
+        cache = new HashMap<>();
         head = new Node();
-        head.pre = null;
         tail = new Node();
-        tail.post = null;
-        head.post = tail;
+        head.next = tail;
         tail.pre = head;
     }
 
-    /**
-     * Always add the new node right after head;
-     */
-    private void addNode(Node node) {
+    private void addToHead(Node node) {
         node.pre = head;
-        node.post = head.post;
-
-        head.post.pre = node;
-        head.post = node;
+        node.next = head.next;
+        head.next.pre = node;
+        head.next = node;
     }
 
-    /**
-     * Remove an existing node from the linked list.
-     */
     private void removeNode(Node node) {
-        Node pre = node.pre;
-        Node post = node.post;
-
-        pre.post = post;
-        post.pre = pre;
+        node.pre.next = node.next;
+        node.next.pre = node.pre;
     }
 
-    /**
-     * Move certain node in between to the head.
-     */
     private void moveToHead(Node node) {
-        this.removeNode(node);
-        this.addNode(node);
+        removeNode(node);
+        addToHead(node);
     }
 
-    // pop the current tail.
     private Node popTail() {
         Node res = tail.pre;
-        this.removeNode(res);
+        removeNode(res);
         return res;
     }
 
     public int get(int key) {
         Node node = cache.get(key);
         if (node == null) return -1;
-        // move the accessed node to the head;
-        this.moveToHead(node);
-        return node.value;
+        moveToHead(node);
+        return node.v;
     }
-
 
     public void put(int key, int value) {
         Node node = cache.get(key);
         if (node == null) {
-            Node newNode = new Node();
-            newNode.key = key;
-            newNode.value = value;
-            this.cache.put(key, newNode);
-            this.addNode(newNode);
-            ++count;
-            if (count > capacity) {
-                Node tail = this.popTail();
-                this.cache.remove(tail.key);
-                --count;
+            Node newNode = new Node(key, value);
+            cache.put(key, newNode);
+            addToHead(newNode);
+            ++cnt;
+            if (cnt > capacity) {
+                Node tail = popTail();
+                cache.remove(tail.k);
+                --cnt;
             }
         } else {
-            // update the value.
-            node.value = value;
-            this.moveToHead(node);
+            node.v = value;
+            moveToHead(node);
         }
     }
 
-    class Node {
-        int key;
-        int value;
+    static class Node {
+        int k;
+        int v;
         Node pre;
-        Node post;
+        Node next;
+
+        Node(int k, int v) {
+            this.k = k;
+            this.v = v;
+        }
+
+        Node() {
+        }
     }
 }
