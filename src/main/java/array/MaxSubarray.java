@@ -1,7 +1,5 @@
 package array;
 
-import util.IntArrayUtil;
-
 import java.util.Arrays;
 
 /**
@@ -37,41 +35,44 @@ import java.util.Arrays;
 public class MaxSubarray {
 
     /**
-     * solution 1, 2ms, memory 73.2 Mb. Kadane's algorithm.
-     * O(N) time, O(1) space. If use array to track status, O(N) space.
+     * Solution 1, dp, 1 ms, 57.33 Mb. Kadane's algorithm.
+     * O(N) time, O(1) space. If you use an array to track status, O(N) space.
      */
     static class Solution1 {
-        int maxSubarrayDP(int[] nums) { //-2,1,-3,4,-1,2,1,-5,4
+        int maxSubArray(int[] nums) {
             int maxHere = 0, res = Integer.MIN_VALUE; // max sum ending at current index
             for (int n : nums) {
-                maxHere = Math.max(n, maxHere + n); // -2,1,-2,4,3,5,6,1,4; note that the first item is num, not 0
-                res = Math.max(res, maxHere);       // -2,1, 1,4,4,5,6,6,6
+                maxHere = Math.max(n, maxHere + n); // note that the first item is num, not 0
+                res = Math.max(res, maxHere);
             }
             return res;
         }
     }
 
     static class Solution2 {
-        int maxSubarrayDC2(int[] nums) {
-            // pre[i] denotes maximum sum subarray ending at i and suf[i] denotes the maximum subarray starting at i
-            int[] pre, suf;
-            pre = Arrays.copyOf(nums, nums.length);
-            suf = Arrays.copyOf(nums, nums.length);
-            for (int i = 1; i < nums.length; i++) pre[i] += Math.max(0, pre[i - 1]);
-            for (int i = nums.length - 2; i >= 0; i--) suf[i] += Math.max(0, suf[i + 1]);
-            return maxSubarrayDC2Helper(nums, 0, nums.length - 1, pre, suf);
+        int[] pre, suf;
+
+        int maxSubArray(int[] nums) {
+            int n = nums.length;
+            pre = Arrays.copyOf(nums, n);
+            suf = Arrays.copyOf(nums, n);
+            for (int i = 1; i < n; i++) pre[i] += Math.max(0, pre[i - 1]);
+            for (int i = n - 2; i >= 0; i--) suf[i] += Math.max(0, suf[i + 1]);
+            return helper(nums, 0, n - 1);
         }
 
         /**
-         * 219 ms, memory 125 Mb.
-         * divide and conquer, O(N) time, O(N) space. T(N) = 2T(N/2) + O(1).
+         * 72 ms, 58.05 mb.
+         * Divide and conquer, O(N) time, O(N) space. T(N) = 2T(N/2) + O(1).
+         * Alternative DnC solution available for O(NlgN) time and O(lgN) recursive stack space.
          */
-        int maxSubarrayDC2Helper(int[] nums, int left, int right, int[] pre, int[] suf) {
-            // note stop a little earlier than DC1 to avoid pre[mid-1] index out of bound when left+1==right
+        int helper(int[] nums, int left, int right) {
             if (left == right) return nums[left];
             int mid = (left + right) / 2;
-            return IntArrayUtil.maxOfArrayWithStream(new int[]{maxSubarrayDC2Helper(nums, left, mid, pre, suf),
-                    maxSubarrayDC2Helper(nums, mid + 1, right, pre, suf), pre[mid] + suf[mid + 1]});
+            return Arrays.stream(new int[]{
+                    helper(nums, left, mid),
+                    helper(nums, mid + 1, right),
+                    pre[mid] + suf[mid + 1]}).max().orElseThrow();
         }
     }
 

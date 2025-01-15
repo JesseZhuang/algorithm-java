@@ -1,12 +1,8 @@
 package tree;
 
 import struct.TreeNode;
-import util.Pair;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * LeetCode 314, LintCode 651, medium, tags: tree, bfs, dfs, hash table.
@@ -65,24 +61,26 @@ public class BTVerticalOrder {
 
     // solution 1, hashmap, n time, n space. LintCode 233ms, 20.17Mb.
     // another, treemap, nlgn time, n space.
-    public List<List<Integer>> verticalOrder(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<>();
-        if (root == null) return res;
-        ArrayDeque<Pair<TreeNode, Integer>> q = new ArrayDeque<>(); // bfs
-        q.offer(new Pair<>(root, 0));
-        HashMap<Integer, List<Integer>> colNodes = new HashMap<>(); // column -> nodes
-        int minC = 0, maxC = 0;
-        while (!q.isEmpty()) {
-            Pair<TreeNode, Integer> p = q.remove();
-            root = p.getKey();
-            int col = p.getValue();
-            colNodes.computeIfAbsent(col, c -> new ArrayList<>()).add(root.val);
-            if (root.left != null) q.add(new Pair<>(root.left, col - 1));
-            if (root.right != null) q.offer(new Pair<>(root.right, col + 1));
-            if (minC > col) minC = col;
-            if (maxC < col) maxC = col;
+    static class Solution {
+        public List<List<Integer>> verticalOrder(TreeNode root) {
+            List<List<Integer>> res = new ArrayList<>();
+            if (root == null) return res;
+            ArrayDeque<Map.Entry<TreeNode, Integer>> q = new ArrayDeque<>(); // bfs
+            q.offer(new AbstractMap.SimpleEntry<>(root, 0));
+            HashMap<Integer, List<Integer>> colNodes = new HashMap<>(); // column -> nodes
+            int minC = 0, maxC = 0;
+            while (!q.isEmpty()) {
+                var p = q.remove();
+                root = p.getKey();
+                int col = p.getValue();
+                colNodes.computeIfAbsent(col, c -> new ArrayList<>()).add(root.val);
+                if (root.left != null) q.add(new AbstractMap.SimpleEntry<>(root.left, col - 1));
+                if (root.right != null) q.offer(new AbstractMap.SimpleEntry<>(root.right, col + 1));
+                if (minC > col) minC = col;
+                if (maxC < col) maxC = col;
+            }
+            for (int c = minC; c <= maxC; c++) res.add(colNodes.get(c));
+            return res;
         }
-        for (int c = minC; c <= maxC; c++) res.add(colNodes.get(c));
-        return res;
     }
 }

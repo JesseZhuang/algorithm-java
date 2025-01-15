@@ -1,8 +1,5 @@
 package array;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * LeetCode 167, medium, tags: array, two pointers, binary search.
  * <p>
@@ -63,33 +60,4 @@ public class TwoSumII {
         }
         return new int[]{l + 1, r + 1};
     }
-
-    // binary search O(nLgn) time, O(1) space, 0ms, 38.39Mb
-    public int[] twoSumBS(int[] numbers, int target) {
-        int[] result = new int[2];
-        for (int i = 0; i < numbers.length; i++) {
-            int lo = i + 1, hi = numbers.length - 1;
-            if (lo > hi) continue;
-            int other = target - numbers[i];
-            while (lo <= hi) {
-                int mid = lo + (hi - lo) / 2;
-                if (numbers[mid] == other) return new int[]{i + 1, mid + 1};
-                else if (numbers[mid] < other) lo = mid + 1;
-                else hi = mid - 1;
-            }
-        }
-        return result;
-    }
-
-    // O(N) time and space. 6ms, 44.9Mb.
-    public int[] twoSumMap(int[] numbers, int target) {
-        int[] result = new int[2];
-        Map<Integer, Integer> numIndex = new HashMap<>();
-        for (int i = 0; i < numbers.length; i++) {
-            if (numIndex.containsKey(target - numbers[i])) return new int[]{numIndex.get(target - numbers[i]), i + 1};
-            numIndex.put(numbers[i], i + 1);
-        }
-        return result;
-    }
-
 }

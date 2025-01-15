@@ -41,6 +41,13 @@ public class CoinChange {
         // coinChangeBFS(new int[]{1}, 100);
         // coinChangeBFS(new int[]{1, 2, 5}, 100);
         System.out.println(tbt.coinChangeBFS(new int[]{1, 3, 5, 6, 7, 10, 72}, 100));
+        Deque<Integer> q = new ArrayDeque<>();
+        q.add(1);
+        for (int i = 0; i < q.size() && i < 10; i++) { // q.size() evaluated dynamically every iteration
+            System.out.println(i + ", " + q.remove());
+            q.add(2);
+            q.add(3);
+        }
     }
 
     // solution 1, 10 ms 44.57 Mb. O(N*M) time, O(M) space. coins length is N, amount is M.

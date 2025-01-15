@@ -23,8 +23,6 @@ public class TwoSumIITest {
     void testTwoSum(@ConvertWith(IntegerArrayConverter.class) Integer[] nums,
                     int target, @ConvertWith(IntegerArrayConverter.class) Integer[] indexes) {
         int[] intArray = unBoxIntegerArray(nums);
-        assertArrayEquals(indexes, boxIntArray(tbt.twoSumBS(intArray, target)));
-        assertArrayEquals(indexes, boxIntArray(tbt.twoSumMap(intArray, target)));
         assertArrayEquals(indexes, boxIntArray(tbt.twoSum2P(intArray, target)));
     }
 }

@@ -139,7 +139,7 @@ public class IntArrayUtil {
     }
 
     public static int maxOfArrayWithStream(int[] nums) {
-        return Arrays.stream(nums).max().getAsInt();
+        return Arrays.stream(nums).max().orElseThrow();
     }
 
 }

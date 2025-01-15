@@ -47,22 +47,26 @@ package array;
  * cause problems when the active area encroaches upon the border of the array (i.e., live cells reach the border).
  * How would you address these problems?
  */
+@SuppressWarnings("unused")
 public class GameOfLife {
     // solution 1, O(mn) time, O(1) space, 0ms, 40.7MB.
-    public void gameOfLife(int[][] board) {
-        int m = board.length, n = board[0].length;
-        for (int r = 0; r < m; r++) {
-            for (int c = 0; c < n; c++) {
-                int count = 0;
-                for (int i = Math.max(r - 1, 0); i < Math.min(r + 2, m); i++)
-                    for (int j = Math.max(c - 1, 0); j < Math.min(j + 2, n); j++)
-                        count += board[i][j] & 1;
-                // [2nd bit, 1st bit] use 2nd bit to store next state
-                if (count == 3 || count - board[r][c] == 3) board[r][c] |= 2; // rules 2,4
+    static class Solution {
+        public void gameOfLife(int[][] board) {
+            int m = board.length, n = board[0].length;
+            for (int r = 0; r < m; r++) {
+                for (int c = 0; c < n; c++) {
+                    int count = 0;
+                    for (int i = Math.max(r - 1, 0); i < Math.min(r + 2, m); i++)
+                        for (int j = Math.max(c - 1, 0); j < Math.min(j + 2, n); j++)
+                            count += board[i][j] & 1;
+                    // [2nd bit, 1st bit] use 2nd bit to store next state
+                    if (count == 3 || count - board[r][c] == 3) board[r][c] |= 2; // rules 2,4
+                }
             }
+            for (int r = 0; r < m; r++)
+                for (int c = 0; c < n; c++)
+                    board[r][c] >>= 1;
         }
-        for (int r = 0; r < m; r++)
-            for (int c = 0; c < n; c++)
-                board[r][c] >>= 1;
+
     }
 }

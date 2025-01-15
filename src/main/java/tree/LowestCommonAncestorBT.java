@@ -42,7 +42,7 @@ import struct.BTNode;
  * <p>
  * Input: root = [1,2], p = 1, q = 2
  * <p>
- * Output: 1
+ * Output: Ï1
  * <p>
  * Constraints:
  * <p>
@@ -52,14 +52,17 @@ import struct.BTNode;
  * p != q
  * p and q exist in the tree.
  */
+@SuppressWarnings("unused")
 public class LowestCommonAncestorBT {
     // solution 1, two pointer, O(h) time, O(1) space. h:tree height, worst case O(n). LintCode 2550ms, 21.95Mb.
-    public BTNode lowestCommonAncestor(BTNode p, BTNode q) {
-        BTNode a = p, b = q;
-        while (a != b) {
-            a = a.parent == null ? q : a.parent;
-            b = b.parent == null ? p : b.parent;
+    static class Solution {
+        public BTNode lowestCommonAncestor(BTNode p, BTNode q) {
+            BTNode a = p, b = q;
+            while (a != b) {
+                a = a.parent == null ? q : a.parent;
+                b = b.parent == null ? p : b.parent;
+            }
+            return a;
         }
-        return a;
     }
 }

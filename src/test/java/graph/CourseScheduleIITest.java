@@ -2,11 +2,13 @@ package graph;
 
 import junit.converter.TwoDIntegerArrayConverter;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import util.IntArrayUtil;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.fail;
@@ -45,6 +47,23 @@ class CourseScheduleIITest {
         if (!foundOnePath)
             fail("actual topological order" + Arrays.toString(actual) + " not in " + Arrays.toString(orders));
 
+    }
+
+    @Test
+    void testQueueSizeEvaluation() {
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+        q.add(0);
+        int k = 3;
+        while (!q.isEmpty() && k-- > 0) {
+            System.out.println("start polling from the q");
+            for (int i = 0; i < q.size(); i++) { // q.size() evaluated dynamically for every iteration
+                if (q.size() > 5) return;
+                System.out.println("size: " + q.size() + " i: " + i);
+                System.out.println(q.removeFirst());
+                q.add(i * 10 + 1);
+                q.add(i * 10 + 2);
+            }
+        }
     }
 
 }
