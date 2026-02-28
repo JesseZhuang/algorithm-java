@@ -3,7 +3,7 @@ package list;
 import struct.ListNode;
 
 /**
- * LeetCode 21. Easy.
+ * LeetCode 21, Easy.
  * <p>
  * Merge two sorted linked lists and return it as a new list. The new list should be made by
  * splicing together the nodes of the first two lists.
@@ -21,8 +21,8 @@ import struct.ListNode;
  */
 public class Merge2SortedLists {
 
-    // solution 1, O(n) time, O(1) space. 0ms 41.8Mb.
-    public static ListNode mergeTwoListsIter2(ListNode l1, ListNode l2) {
+    // solution 1, O(n) time, O(1) space. 0 ms 42.87 mb.
+    public static ListNode mergeTwoListsIter(ListNode l1, ListNode l2) {
         ListNode dummy = new ListNode(0), cur = dummy;
         while (l1 != null && l2 != null) {
             if (l1.val < l2.val) {

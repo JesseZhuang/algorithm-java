@@ -1,7 +1,7 @@
 package array;
 
 /**
- * LeetCode 238. Product of Array Except Self. Medium. Tags: array, prefix sum.
+ * LeetCode 238, product of Array Except Self, medium, tags: array, prefix sum.
  * <p>
  * Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements
  * of nums except nums[i].

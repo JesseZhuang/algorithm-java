@@ -30,6 +30,6 @@ public class Merge2SortedListsTest {
     void testReverseLinkedListIter2(@ConvertWith(ListNodeConverter.class) ListNode l1,
                                     @ConvertWith(ListNodeConverter.class) ListNode l2,
                                     @ConvertWith(ListNodeConverter.class) ListNode merged) {
-        assertEquals(merged, toBeTested.mergeTwoListsIter2(l1, l2));
+        assertEquals(merged, toBeTested.mergeTwoListsIter(l1, l2));
     }
 }
