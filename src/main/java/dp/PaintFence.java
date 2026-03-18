@@ -18,7 +18,7 @@ package dp;
  * <li>Permutation sum, basically same with dp.
  * </ul>
  *
- * @author Zexi Jesse Zhuang
+ * @author JZ
  */
 public class PaintFence {
 

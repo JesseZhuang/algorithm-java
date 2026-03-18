@@ -22,7 +22,7 @@ package dp;
  * <li><b>DP, use variables to mark lo, med, hi 3 numbers. O(n) time, O(1) space.</b>
  * </ul>
  *
- * @author Zexi Jesse Zhuang
+ * @author JZ
  */
 public class IncreaseTripletSubSeq {
 

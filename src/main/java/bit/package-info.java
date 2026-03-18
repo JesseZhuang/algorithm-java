@@ -1,6 +1,6 @@
 /**
  * Bit manipulation algorithm and questions.
  *
- * @author Zexi Jesse Zhuang
+ * @author JZ
  */
 package bit;

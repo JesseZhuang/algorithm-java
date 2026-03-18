@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Utility reflection methods on methods.
  *
- * @author Zexi Jesse Zhuang
+ * @author JZ
  */
 public class MethodUtil {
 
