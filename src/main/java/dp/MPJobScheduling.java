@@ -63,4 +63,39 @@ public class MPJobScheduling {
         }
         return endTp.lastEntry().getValue();
     }
+
+    // solution 2, dp + binary search, nlgn time, n space.
+    public static int jobScheduling2(int[] startTime, int[] endTime, int[] profit) {
+        int n = startTime.length;
+        int[][] jobs = new int[n][3];
+        for (int i = 0; i < n; i++) {
+            jobs[i][0] = endTime[i];
+            jobs[i][1] = startTime[i];
+            jobs[i][2] = profit[i];
+        }
+        Arrays.sort(jobs, Comparator.comparingInt(a -> a[0]));
+        int[] ends = new int[n];
+        for (int i = 0; i < n; i++)
+            ends[i] = jobs[i][0];
+        int[] dp = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            int s = jobs[i - 1][1];
+            int p = jobs[i - 1][2];
+            int j = bisectRight(ends, s, 0, i - 1);
+            dp[i] = Math.max(dp[i - 1], dp[j] + p);
+        }
+        return dp[n];
+    }
+
+    private static int bisectRight(int[] a, int key, int from, int to) {
+        int lo = from, hi = to;
+        while (lo < hi) {
+            int mid = (lo + hi) >>> 1;
+            if (a[mid] <= key)
+                lo = mid + 1;
+            else
+                hi = mid;
+        }
+        return lo;
+    }
 }
