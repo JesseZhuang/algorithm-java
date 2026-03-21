@@ -1,3 +1,9 @@
+## 2026 Update
+
+Switch to cursor IDE or AI cli agents (codex/claude).
+
+Install openjdk@21 with homebrew and follow the symlink command on mac.
+
 ## Setup
 
 Use IntelliJ-Idea and gradle wrapper (fixing gradle to a specific version).
