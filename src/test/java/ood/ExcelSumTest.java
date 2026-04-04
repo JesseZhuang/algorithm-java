@@ -1,48 +1,83 @@
 package ood;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Mirrors {@code InCodeLearning-Python3/test/test_excel_sum_formula.py} for both {@link ExcelSum.Excel} and
+ * {@link ExcelSum.ExcelLazy}.
+ */
 class ExcelSumTest {
-    ExcelSum.Excel tbt;
 
-    @Test
-    void testExample() {
-        tbt = new ExcelSum.Excel(3, 'C');
-        assertEquals(0, tbt.get(1, 'A'));
-        tbt.set(1, 'A', 2);
-        assertEquals(2, tbt.get(1, 'A'));
+    @SuppressWarnings("Convert2MethodRef")
+    static Stream<Arguments> spreadsheetFactories() {
+        return Stream.of(
+                Arguments.of(
+                        "eager",
+                        (BiFunction<Integer, Character, ExcelSum.Spreadsheet>) ExcelSum.Excel::new),
+                Arguments.of(
+                        "lazy",
+                        (BiFunction<Integer, Character, ExcelSum.Spreadsheet>) ExcelSum.ExcelLazy::new));
+    }
 
-        assertEquals(0, tbt.get(3, 'C'));
-        tbt.sum(3, 'C', new String[]{"A1", "A1:B2"});
-        assertEquals(1, tbt.sheet[2][0].dependee.size()); // C3->A2
-        assertEquals(4, tbt.get(3, 'C'));
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("spreadsheetFactories")
+    void example(String ignored, BiFunction<Integer, Character, ExcelSum.Spreadsheet> factory) {
+        ExcelSum.Spreadsheet sheet = factory.apply(3, 'C');
+        sheet.set(1, 'A', 2);
+        assertEquals(4, sheet.sum(3, 'C', new String[]{"A1", "A1:B2"}));
+        sheet.set(2, 'B', 2);
+        assertEquals(6, sheet.get(3, 'C'));
+    }
 
-        assertEquals(0, tbt.get(2, 'B'));
-        tbt.set(2, 'B', 2);
-        assertEquals(2, tbt.get(2, 'B'));
-        assertEquals(6, tbt.get(3, 'C'));
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("spreadsheetFactories")
+    void overwriteFormulaWithRawValue(String ignored, BiFunction<Integer, Character, ExcelSum.Spreadsheet> factory) {
+        ExcelSum.Spreadsheet sheet = factory.apply(2, 'C');
+        sheet.set(1, 'A', 5);
+        sheet.set(1, 'B', 3);
+        assertEquals(8, sheet.sum(2, 'C', new String[]{"A1:B1"}));
+        assertEquals(8, sheet.get(2, 'C'));
+        sheet.set(2, 'C', 100);
+        sheet.set(1, 'A', 20);
+        assertEquals(100, sheet.get(2, 'C'));
+    }
 
-        assertEquals(0, tbt.get(2, 'C'));
-        tbt.sum(2, 'C', new String[]{"A1:A2", "C3"}); // C3->A1 and C2->A1 C2->C3, kind of parallel edges
-        assertEquals(8, tbt.get(2, 'C'));
-        assertEquals(2, tbt.sheet[1][0].dependee.size()); // (C3,C2)->A1
-        assertEquals(1, tbt.sheet[3][2].dependee.size()); // C2->C3
-        assertEquals(2, tbt.sheet[2][0].dependee.size()); // (C3,C2)->A2
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("spreadsheetFactories")
+    void replaceFormulaAndUpdateChain(String ignored, BiFunction<Integer, Character, ExcelSum.Spreadsheet> factory) {
+        ExcelSum.Spreadsheet sheet = factory.apply(2, 'D');
+        sheet.set(1, 'A', 2);
+        sheet.set(1, 'B', 3);
+        assertEquals(7, sheet.sum(1, 'C', new String[]{"A1", "A1:B1"}));
+        assertEquals(10, sheet.sum(2, 'A', new String[]{"C1", "B1"}));
+        assertEquals(10, sheet.get(2, 'A'));
+        assertEquals(3, sheet.sum(1, 'C', new String[]{"B1"}));
+        assertEquals(6, sheet.get(2, 'A'));
+        sheet.set(1, 'A', 10);
+        assertEquals(3, sheet.get(1, 'C'));
+        assertEquals(6, sheet.get(2, 'A'));
+        sheet.set(1, 'B', 5);
+        assertEquals(5, sheet.get(1, 'C'));
+        assertEquals(10, sheet.get(2, 'A'));
+    }
 
-        tbt.sum(3, 'C', new String[]{"A1"});
-        assertEquals(1, tbt.sheet[2][0].dependee.size()); // cell[2]['A'] dependee -= 1
-        assertEquals(0, tbt.sheet[1][1].dependee.size()); // B1 dependee decrease to 0
-        assertEquals(2, tbt.sheet[1][0].dependee.size()); // cell[1]['A'] reset then add back
-        assertEquals(2, tbt.get(3, 'C'));
-        assertEquals(4, tbt.get(2, 'C'));
-        assertEquals(1, tbt.sheet[3][2].dependee.size()); // C2->C3 should not change
-
-
-        tbt.set(1, 'A', 4);
-        assertEquals(4, tbt.get(1, 'A'));
-        assertEquals(4, tbt.get(3, 'C'));
-        assertEquals(8, tbt.get(2, 'C'));
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("spreadsheetFactories")
+    void overlappingRangesCountMultipleTimes(String ignored, BiFunction<Integer, Character, ExcelSum.Spreadsheet> factory) {
+        ExcelSum.Spreadsheet sheet = factory.apply(3, 'D');
+        sheet.set(1, 'A', 1);
+        sheet.set(1, 'B', 2);
+        sheet.set(2, 'A', 3);
+        sheet.set(2, 'B', 4);
+        assertEquals(16, sheet.sum(3, 'D', new String[]{"A1:B2", "B1:B2"}));
+        sheet.set(2, 'B', 5);
+        assertEquals(18, sheet.get(3, 'D'));
     }
 }

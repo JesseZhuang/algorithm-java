@@ -30,7 +30,7 @@ class MPJobSchedulingTest {
         int[] s = unBoxIntegerArray(startTime);
         int[] e = unBoxIntegerArray(endTime);
         int[] p = unBoxIntegerArray(profit);
-        assertEquals(expected, MPJobScheduling.jobScheduling(s, e, p));
+        assertEquals(expected, new MPJobScheduling().jobScheduling(s, e, p));
         assertEquals(expected, MPJobScheduling.jobScheduling2(s, e, p));
     }
 }
