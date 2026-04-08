@@ -47,6 +47,10 @@ import java.util.PriorityQueue;
 public class KthSmallestMatrix {
     int m, n;
 
+    public int kthSmallest(int[][] matrix, int k) {
+        return kthSmallestBS(matrix, k);
+    }
+
     // solution 1, binary search, nlgr time, 1 space. 0ms, 47.56Mb.
     public int kthSmallestBS(int[][] matrix, int k) {
         m = matrix.length;
@@ -85,6 +89,10 @@ public class KthSmallestMatrix {
             if (c + 1 < n) minHeap.offer(new int[]{matrix[r][c + 1], r, c + 1});
         }
         return ans;
+    }
+
+    public int kthSmallestHeap(int[][] matrix, int k) {
+        return kthSmallest2(matrix, k);
     }
 
     // solution 3, max heap, mnlgk time, k space. 16ms, 45.95Mb.
