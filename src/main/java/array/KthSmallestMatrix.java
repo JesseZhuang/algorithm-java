@@ -54,23 +54,28 @@ public class KthSmallestMatrix {
     // solution 1, binary search, nlgr time, 1 space. 0ms, 47.56Mb.
     public int kthSmallestBS(int[][] matrix, int k) {
         m = matrix.length;
-        n = matrix[0].length; // For general, the mleeatrix need not be a square
-        int left = matrix[0][0], right = matrix[m - 1][n - 1], ans = -1;
-        while (left <= right) {
+        n = matrix[0].length; // For general, the matrix need not be a square
+        int left = matrix[0][0], right = matrix[m - 1][n - 1];
+        while (left < right) {
             int mid = left + (right - left) / 2;
             if (countLessOrEqual(matrix, mid) >= k) {
-                ans = mid; // mid may have duplicate, [[1,3,7],[5,10,12],[6,10,15]] countLessOrEqual(10)==7 > 6
-                right = mid - 1;
-            } else left = mid + 1;
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
         }
-        return ans;
+        return left;
     }
 
     int countLessOrEqual(int[][] matrix, int x) {
-        int cnt = 0, c = n - 1; // start with the rightmost column
-        for (int r = 0; r < m; ++r) {
-            while (c >= 0 && matrix[r][c] > x) --c;  // decrease column until matrix[r][c] <= x
-            cnt += (c + 1);
+        int cnt = 0, r = m - 1, c = 0;
+        while (r >= 0 && c < n) {
+            if (matrix[r][c] <= x) {
+                cnt += r + 1;
+                ++c;
+            } else {
+                --r;
+            }
         }
         return cnt;
     }
