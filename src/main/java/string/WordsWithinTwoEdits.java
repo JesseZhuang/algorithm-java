@@ -37,7 +37,7 @@ public final class WordsWithinTwoEdits {
     private WordsWithinTwoEdits() {}
 
     /**
-     * Brute force: compare each query with every dictionary word character by character.
+     * Brute force: compare each query with every dictionary word character by character. 5ms, 44.38mb.
      * Time O(q * d * m), Space O(1) extra, where q = queries.length, d = dictionary.length, m = word length.
      */
     public static List<String> twoEditWordsBrute(String[] queries, String[] dictionary) {
@@ -58,6 +58,7 @@ public final class WordsWithinTwoEdits {
 
     /**
      * Trie with DFS: build a trie from dictionary words, then DFS each query allowing up to 2 mismatches.
+     * 12ms, 47.90mb.
      * Time O(d * m) build + O(q * 26^2 * m) worst-case query. Space O(d * m) for trie.
      */
     public static List<String> twoEditWordsTrie(String[] queries, String[] dictionary) {
