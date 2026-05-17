@@ -90,8 +90,8 @@ public class Permutation {
         private void swap(int i, int j) {
             if (i != j) {
                 int temp = nums[i];
-                nums[j] = nums[i];
-                nums[i] = temp;
+                nums[i] = nums[j];
+                nums[j] = temp;
             }
         }
     }
