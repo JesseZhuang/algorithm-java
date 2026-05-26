@@ -52,16 +52,16 @@ public class NetworkDelayTime {
             graph.putIfAbsent(edge[0], new ArrayList<>());
             graph.get(edge[0]).add(new int[]{edge[1], edge[2]});// source -> [destination, weight/dist]
         }
-        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1])); // sort by dist
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0])); // sort by dist
         int[] distTo = new int[n + 1]; // shortest path from source k, nodes numbered 1-n
         Arrays.fill(distTo, Integer.MAX_VALUE);
         distTo[k] = 0; // k->k dist == 0
-        pq.offer(new int[]{k, 0}); // [destination node v, dist(k->v)]
+        pq.offer(new int[]{0, k}); // [dist(k->v), destination node v]
         int max = 0;
         while (!pq.isEmpty()) {
             int[] cur = pq.remove();
-            int v = cur[1]; // node v
             int curDist = cur[0]; // k->v dist
+            int v = cur[1]; // node v
             if (curDist > distTo[v]) continue; // already found shorter path
             max = curDist;
             n--;
