@@ -62,4 +62,46 @@ public class SurroundedRegions {
         boundaryDFS(board, i, j - 1);
         boundaryDFS(board, i, j + 1);
     }
+
+    // Union-Find, O(mn * alpha(mn)) time, O(mn) space.
+    int[] parent, rank;
+
+    public void solveUF(char[][] board) {
+        if (board.length < 2 || board[0].length < 2) return;
+        int m = board.length, n = board[0].length;
+        int dummy = m * n;
+        parent = new int[m * n + 1];
+        rank = new int[m * n + 1];
+        for (int i = 0; i <= m * n; i++) parent[i] = i;
+
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] != 'O') continue;
+                int idx = i * n + j;
+                if (i == 0 || i == m - 1 || j == 0 || j == n - 1) union(idx, dummy);
+                if (i > 0 && board[i - 1][j] == 'O') union(idx, (i - 1) * n + j);
+                if (j > 0 && board[i][j - 1] == 'O') union(idx, i * n + j - 1);
+            }
+
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                if (board[i][j] == 'O' && find(i * n + j) != find(dummy))
+                    board[i][j] = 'X';
+    }
+
+    private int find(int x) {
+        while (parent[x] != x) {
+            parent[x] = parent[parent[x]];
+            x = parent[x];
+        }
+        return x;
+    }
+
+    private void union(int x, int y) {
+        int px = find(x), py = find(y);
+        if (px == py) return;
+        if (rank[px] < rank[py]) { int t = px; px = py; py = t; }
+        parent[py] = px;
+        if (rank[px] == rank[py]) rank[px]++;
+    }
 }
