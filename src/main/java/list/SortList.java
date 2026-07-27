@@ -76,4 +76,36 @@ public class SortList {
         return cur;
     }
 
+    // O(nLgn) time, O(Lgn) space for recursion stack. top-down merge sort. 12ms, 56 Mb.
+    public static ListNode sortListRecursive(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) { // O(n/2) find middle
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode mid = slow.next;
+        slow.next = null;
+        ListNode left = sortListRecursive(head); // T(n/2)
+        ListNode right = sortListRecursive(mid); // T(n/2)
+        return mergeSorted(left, right);
+    }
+
+    private static ListNode mergeSorted(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+        while (l1 != null && l2 != null) { // O(n)
+            if (l1.val <= l2.val) {
+                cur.next = l1;
+                l1 = l1.next;
+            } else {
+                cur.next = l2;
+                l2 = l2.next;
+            }
+            cur = cur.next;
+        }
+        cur.next = l1 != null ? l1 : l2;
+        return dummy.next;
+    }
+
 }
