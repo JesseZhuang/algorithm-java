@@ -72,7 +72,7 @@ public class CapacityShipPackages {
 //        });
 
         int l = max, r = sum, res = l;
-        while (l < r) { // not <= because if l incremented to r from r-1, r-1 does not work, r must work
+        while (l <= r) {
             int mid = l + (r - l) / 2, count = 1, cur = 0; // note count starts with 1
             for (int w : weights) {
                 if (cur + w > mid) { // not >=
