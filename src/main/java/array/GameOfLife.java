@@ -57,7 +57,7 @@ public class GameOfLife {
                 for (int c = 0; c < n; c++) {
                     int count = 0;
                     for (int i = Math.max(r - 1, 0); i < Math.min(r + 2, m); i++)
-                        for (int j = Math.max(c - 1, 0); j < Math.min(j + 2, n); j++)
+                        for (int j = Math.max(c - 1, 0); j < Math.min(c + 2, n); j++)
                             count += board[i][j] & 1;
                     // [2nd bit, 1st bit] use 2nd bit to store next state
                     if (count == 3 || count - board[r][c] == 3) board[r][c] |= 2; // rules 2,4
