@@ -25,4 +25,12 @@ public class TwoSumIITest {
         int[] intArray = unBoxIntegerArray(nums);
         assertArrayEquals(indexes, boxIntArray(tbt.twoSum2P(intArray, target)));
     }
+
+    @ParameterizedTest(name = "BS: array {0} target {1} : indexes {2}")
+    @CsvFileSource(resources = "/TwoSum2.csv", numLinesToSkip = 2, delimiter = ' ')
+    void testTwoSumBS(@ConvertWith(IntegerArrayConverter.class) Integer[] nums,
+                      int target, @ConvertWith(IntegerArrayConverter.class) Integer[] indexes) {
+        int[] intArray = unBoxIntegerArray(nums);
+        assertArrayEquals(indexes, boxIntArray(tbt.twoSumBS(intArray, target)));
+    }
 }

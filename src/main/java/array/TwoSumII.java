@@ -1,5 +1,7 @@
 package array;
 
+import java.util.Arrays;
+
 /**
  * LeetCode 167, medium, tags: array, two pointers, binary search.
  * <p>
@@ -59,5 +61,14 @@ public class TwoSumII {
             else r--;
         }
         return new int[]{l + 1, r + 1};
+    }
+
+    // solution 2, binary search, O(n log n) time, O(1) space
+    public int[] twoSumBS(int[] numbers, int target) {
+        for (int i = 0; i < numbers.length - 1; i++) {
+            int j = Arrays.binarySearch(numbers, i + 1, numbers.length, target - numbers[i]);
+            if (j > 0) return new int[]{i + 1, j + 1};
+        }
+        return new int[]{};
     }
 }
