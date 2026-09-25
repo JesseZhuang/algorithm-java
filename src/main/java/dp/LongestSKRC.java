@@ -55,6 +55,26 @@ public class LongestSKRC {
         return res;
     }
 
+    // solution 2, divide and conquer, 26n time, 26 space. O(n) time, O(1) space.
+    // find a char with freq < k, split on it, recurse on each part, return max.
+    public static int longestSubstring2(String s, int k) {
+        return dc(s, 0, s.length(), k);
+    }
+
+    private static int dc(String s, int start, int end, int k) {
+        if (end - start < k) return 0;
+        int[] count = new int[26];
+        for (int i = start; i < end; i++) count[s.charAt(i) - 'a']++;
+        for (int i = start; i < end; i++) {
+            if (count[s.charAt(i) - 'a'] >= k) continue;
+            // s.charAt(i) cannot be part of any valid substring, split here
+            int j = i + 1;
+            while (j < end && count[s.charAt(j) - 'a'] < k) j++;
+            return Math.max(dc(s, start, i, k), dc(s, j, end, k));
+        }
+        return end - start; // all chars meet threshold
+    }
+
     // get the number of unique letters in the string s
     static int countUnique(String s) {
         boolean seen[] = new boolean[26];
