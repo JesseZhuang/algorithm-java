@@ -28,4 +28,18 @@ class ZeroOneMatrixTest {
         assertArrayEquals(expected, s1.updateMatrix(new int[][]{{0, 0, 0}, {0, 1, 0}, {1, 1, 1}}));
         assertArrayEquals(expected, s2.updateMatrix(new int[][]{{0, 0, 0}, {0, 1, 0}, {1, 1, 1}}));
     }
+
+    @Test
+    void testSingleRowWithZeroOnRight() {
+        int[][] expected = {{2, 1, 0}};
+        assertArrayEquals(expected, s1.updateMatrix(new int[][]{{1, 1, 0}}));
+        assertArrayEquals(expected, s2.updateMatrix(new int[][]{{1, 1, 0}}));
+    }
+
+    @Test
+    void testSingleColumnWithZeroAtBottom() {
+        int[][] expected = {{2}, {1}, {0}};
+        assertArrayEquals(expected, s1.updateMatrix(new int[][]{{1}, {1}, {0}}));
+        assertArrayEquals(expected, s2.updateMatrix(new int[][]{{1}, {1}, {0}}));
+    }
 }
